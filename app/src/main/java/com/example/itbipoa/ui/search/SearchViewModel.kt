@@ -41,6 +41,11 @@ class SearchViewModel(private val repository: ItbiRepository) : ViewModel() {
         uiState = uiState.copy(anoSelecionado = ano)
     }
 
+    /** Limpa os campos de busca e os resultados, voltando ao estado inicial da tela. */
+    fun limpar() {
+        uiState = SearchUiState()
+    }
+
     fun buscar(forcarAtualizacao: Boolean = false) {
         val estadoAtual = uiState
         if (estadoAtual.logradouro.isBlank()) {
