@@ -1,0 +1,176 @@
+package com.example.itbipoa.ui.detail
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import com.example.itbipoa.data.model.ItbiRecord
+import com.example.itbipoa.ui.components.BotaoLivro
+import com.example.itbipoa.ui.components.CaixaContorno
+import com.example.itbipoa.ui.components.HorizontalTraco
+import com.example.itbipoa.ui.components.LinhaCampo
+import com.example.itbipoa.ui.components.LinhaFicha
+import com.example.itbipoa.ui.theme.DouradoLinha
+import com.example.itbipoa.ui.theme.EstiloValorGrande
+import com.example.itbipoa.ui.theme.Terracota
+import com.example.itbipoa.util.ResultadoCorrecao
+import java.text.NumberFormat
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+private val formatoDataBr = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+private val formatoMoeda: NumberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+
+@Composable
+fun DetailScreen(
+    registro: ItbiRecord,
+    viewModel: DetailViewModel,
+    onVoltar: () -> Unit
+) {
+    val estado = viewModel.uiState
+    val dataInicio = registro.dataReferencia
+    val valor = registro.baseCalculo
+
+    Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            // Cabeçalho com "voltar" textual, sem AppBar padrão do Material.
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 20.dp)
+                    .clickable(onClick = onVoltar),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("←", color = Terracota, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    "VOLTAR À PESQUISA",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            HorizontalTraco(cor = DouradoLinha, espessura = 1.dp)
+
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text(registro.enderecoCompleto, style = MaterialTheme.typography.headlineMedium)
+                registro.bairro?.let {
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        it.uppercase(),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(Modifier.height(24.dp))
+                HorizontalTraco(cor = DouradoLinha)
+                Spacer(Modifier.height(20.dp))
+
+                LinhaFicha("Valor da negociação", valor?.let { formatoMoeda.format(it) } ?: "não informado")
+                LinhaFicha("Data de referência", dataInicio?.format(formatoDataBr) ?: "não informada")
+                LinhaFicha("Data estimativa", registro.dataEstimativa?.format(formatoDataBr) ?: "—")
+                LinhaFicha("Data pagamento", registro.dataPagamento?.format(formatoDataBr) ?: "—")
+                LinhaFicha("Percentual transmitido", registro.percTransmitido?.let { "%.2f%%".format(it) } ?: "—")
+                LinhaFicha("Finalidade", registro.finalidadeConstrucao ?: "—")
+                LinhaFicha("Área total do terreno", registro.areaTotalTerreno?.let { "%.2f m²".format(it) } ?: "—")
+                LinhaFicha("Área construída total", registro.areaConstrTotal?.let { "%.2f m²".format(it) } ?: "—")
+                LinhaFicha("Área construída privativa", registro.areaConstrPrivativa?.let { "%.2f m²".format(it) } ?: "—")
+                LinhaFicha("Ano de construção", registro.anoConstrucao?.toString() ?: "—")
+                LinhaFicha("Matrícula", registro.numeroMatricula ?: "—")
+                LinhaFicha("CEP", registro.cep ?: "—")
+                LinhaFicha("Situação", registro.situacao ?: "—")
+
+                Spacer(Modifier.height(8.dp))
+                HorizontalTraco(cor = DouradoLinha)
+                Spacer(Modifier.height(28.dp))
+
+                Text("Correção do valor", style = MaterialTheme.typography.titleLarge)
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    "Atualiza o valor da negociação até hoje, por CDI (% à sua escolha) ou por IPCA.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(Modifier.height(20.dp))
+
+                if (valor == null || dataInicio == null) {
+                    Text(
+                        "Não é possível calcular: falta o valor ou a data desta negociação.",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                } else {
+                    LinhaCampo(
+                        valor = estado.percentualCdi,
+                        aoMudar = viewModel::onPercentualCdiChange,
+                        rotulo = "% do CDI desejado",
+                        placeholder = "Ex: 90, 100, 110",
+                        teclado = KeyboardType.Decimal
+                    )
+
+                    Spacer(Modifier.height(20.dp))
+                    BotaoLivro(
+                        texto = if (estado.calculando) "Calculando..." else "Calcular correção",
+                        aoClicar = { viewModel.calcular(valor, dataInicio) },
+                        habilitado = !estado.calculando,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    estado.erro?.let {
+                        Spacer(Modifier.height(12.dp))
+                        Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                    }
+
+                    estado.resultadoCdi?.let { cdi ->
+                        Spacer(Modifier.height(20.dp))
+                        BlocoResultado(
+                            titulo = "${estado.percentualCdi}% do CDI",
+                            resultado = cdi
+                        )
+                    }
+
+                    estado.resultadoIpca?.let { ipca ->
+                        Spacer(Modifier.height(14.dp))
+                        BlocoResultado(
+                            titulo = "IPCA",
+                            resultado = ipca
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(32.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun BlocoResultado(titulo: String, resultado: ResultadoCorrecao) {
+    CaixaContorno(cor = DouradoLinha) {
+        Text(
+            titulo.uppercase(),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(formatoMoeda.format(resultado.valorCorrigido), style = EstiloValorGrande)
+        Spacer(Modifier.height(6.dp))
+        Text(
+            "Variação acumulada: +${"%.2f".format(resultado.percentualAcumulado)}%  ·  " +
+                "${resultado.dataInicio.format(formatoDataBr)} a ${resultado.dataFim.format(formatoDataBr)}",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
