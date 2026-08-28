@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -78,7 +78,7 @@ fun LinhaCampo(
                 value = valor,
                 onValueChange = aoMudar,
                 singleLine = true,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                 cursorBrush = SolidColor(Terracota),
                 keyboardOptions = KeyboardOptions(keyboardType = teclado),
                 interactionSource = interacao,
@@ -115,15 +115,31 @@ fun CartaoSuave(
     aoClicar: (() -> Unit)? = null,
     conteudo: @Composable ColumnScope.() -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .shadow(elevation = 3.dp, shape = CantoPadrao, ambientColor = Color.Black.copy(alpha = 0.12f))
-            .clip(CantoPadrao)
-            .background(MaterialTheme.colorScheme.surface)
-            .then(if (aoClicar != null) Modifier.clickable(onClick = aoClicar) else Modifier)
-            .padding(16.dp),
-        content = conteudo
-    )
+    // Usa Surface (não só um Modifier.background) para que o texto dentro do
+    // cartão herde automaticamente a cor correta (onSurface), independente
+    // da cor do fundo da tela por trás do cartão.
+    if (aoClicar != null) {
+        Surface(
+            onClick = aoClicar,
+            modifier = modifier,
+            shape = CantoPadrao,
+            color = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            shadowElevation = 3.dp
+        ) {
+            Column(modifier = Modifier.padding(16.dp), content = conteudo)
+        }
+    } else {
+        Surface(
+            modifier = modifier,
+            shape = CantoPadrao,
+            color = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            shadowElevation = 3.dp
+        ) {
+            Column(modifier = Modifier.padding(16.dp), content = conteudo)
+        }
+    }
 }
 
 /** Botão principal, com cantos levemente arredondados e ícone opcional. */
@@ -218,7 +234,7 @@ fun LinhaFicha(rotulo: String, valor: String) {
         Text(
             valor,
             style = EstiloValor,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.End,
             modifier = Modifier.weight(1.2f)
         )

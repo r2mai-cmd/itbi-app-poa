@@ -33,10 +33,10 @@ import com.example.itbipoa.ui.components.CartaoSuave
 import com.example.itbipoa.ui.components.HorizontalTraco
 import com.example.itbipoa.ui.components.LinhaCampo
 import com.example.itbipoa.ui.components.RotuloCampo
-import com.example.itbipoa.ui.theme.CeuAzulProfundo
 import com.example.itbipoa.ui.theme.DouradoLinha
 import com.example.itbipoa.ui.theme.EstiloValor
 import com.example.itbipoa.ui.theme.Terracota
+import com.example.itbipoa.ui.theme.TextoSobreFundoSutil
 import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -67,7 +67,7 @@ fun SearchScreen(
                             valor = estado.logradouro,
                             aoMudar = viewModel::onLogradouroChange,
                             rotulo = "Endereço (rua ou avenida)",
-                            placeholder = "Ex: Barbedo"
+                            placeholder = "Ex: Nome da rua ou avenida"
                         )
 
                         Spacer(Modifier.height(20.dp))
@@ -183,7 +183,7 @@ fun SearchScreen(
                         Text(
                             "${estado.resultados.size} REGISTRO(S) ENCONTRADO(S)",
                             style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = TextoSobreFundoSutil,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
                     }
@@ -210,45 +210,36 @@ private fun CabecalhoUsina() {
     ) {
         Image(
             painter = painterResource(id = R.drawable.header_usina),
-            contentDescription = "Ilustração da Usina do Gasômetro, Porto Alegre",
+            contentDescription = "Ilustração da Usina do Gasômetro ao pôr do sol, Porto Alegre",
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize()
         )
-        // Véu de gradiente por cima da imagem, para o texto ficar legível
-        // e a faixa se fundir ao azul do céu da própria ilustração.
-        // matchParentSize() (não fillMaxSize()) é essencial aqui: ele copia o
-        // tamanho que a Box já tem, em vez de tentar expandir a Box para
-        // ocupar todo o espaço disponível na tela.
+        // Véu sutil só na parte de cima, garantindo contraste do título
+        // mesmo se o céu da ilustração for mais claro em algum ponto.
+        // matchParentSize() (não fillMaxSize()) é essencial: ele copia o
+        // tamanho que a Box já tem, em vez de tentar expandir a Box.
         Box(
             modifier = Modifier
                 .matchParentSize()
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            CeuAzulProfundo.copy(alpha = 0.15f),
-                            CeuAzulProfundo.copy(alpha = 0.75f)
-                        )
+                            Color.Black.copy(alpha = 0.32f),
+                            Color.Transparent
+                        ),
+                        endY = 260f
                     )
                 )
         )
-        Column(
+        Text(
+            "ITBI POA",
+            style = MaterialTheme.typography.headlineLarge,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(horizontal = 20.dp, vertical = 16.dp)
-        ) {
-            Text(
-                "Livro do ITBI",
-                style = MaterialTheme.typography.headlineLarge,
-                color = Color.White,
-                fontWeight = FontWeight.Medium
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                "REGISTRO DE TRANSMISSÕES IMOBILIÁRIAS · PORTO ALEGRE",
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.White.copy(alpha = 0.9f)
-            )
-        }
+                .align(Alignment.TopStart)
+                .padding(horizontal = 20.dp, vertical = 18.dp)
+        )
     }
 }
 
@@ -295,6 +286,13 @@ private fun LinhaResultado(registro: ItbiRecord, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+            Spacer(Modifier.width(10.dp))
+            Text(
+                "+",
+                style = MaterialTheme.typography.titleLarge,
+                color = Terracota,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

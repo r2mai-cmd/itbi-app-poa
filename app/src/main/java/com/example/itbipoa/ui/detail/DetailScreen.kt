@@ -12,11 +12,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.itbipoa.data.model.ItbiRecord
@@ -24,9 +27,12 @@ import com.example.itbipoa.ui.components.BotaoLivro
 import com.example.itbipoa.ui.components.CartaoSuave
 import com.example.itbipoa.ui.components.LinhaCampo
 import com.example.itbipoa.ui.components.LinhaFicha
+import com.example.itbipoa.ui.theme.AguaTurquesa
 import com.example.itbipoa.ui.theme.CeuAzulProfundo
 import com.example.itbipoa.ui.theme.EstiloValorGrande
+import com.example.itbipoa.ui.theme.TextoSobreFundoSutil
 import com.example.itbipoa.util.ResultadoCorrecao
+import java.net.URLEncoder
 import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -43,6 +49,24 @@ fun DetailScreen(
     val estado = viewModel.uiState
     val dataInicio = registro.dataReferencia
     val valor = registro.baseCalculo
+
+    // Endereço só com rua + número (ignora unidade/complemento/bloco), para
+    // o link do StreetView apontar pro prédio, não pro apartamento específico.
+    val enderecoParaMapa = registro.logradouro?.takeIf { it.isNotBlank() }?.let { rua ->
+        val numero = registro.numeroEndereco?.takeIf { it.isNotBlank() && it != "0" }
+        listOfNotNull(rua, numero).joinToString(", ") + ", Porto Alegre - RS, Brasil"
+    }
+    val uriHandler = LocalUriHandler.current
+
+    // Calcula a correção automaticamente ao abrir a tela, usando o %CDI
+    // padrão (100%) — o usuário pode ajustar o percentual e recalcular
+    // depois, mas já vê os valores atualizados de cara, sem precisar tocar
+    // em nada. Só dispara uma vez (não recalcula à toa a cada recomposição).
+    LaunchedEffect(registro) {
+        if (valor != null && dataInicio != null && estado.resultadoCdi == null && !estado.calculando) {
+            viewModel.calcular(valor, dataInicio)
+        }
+    }
 
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(
@@ -79,13 +103,34 @@ fun DetailScreen(
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
                 Spacer(Modifier.height(20.dp))
                 Text(registro.enderecoCompleto, style = MaterialTheme.typography.headlineMedium)
-                registro.bairro?.let {
+                if (registro.bairro != null || enderecoParaMapa != null) {
                     Spacer(Modifier.height(4.dp))
-                    Text(
-                        it.uppercase(),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        registro.bairro?.let {
+                            Text(
+                                it.uppercase(),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = TextoSobreFundoSutil
+                            )
+                        }
+                        if (registro.bairro != null && enderecoParaMapa != null) {
+                            Text("   ·   ", style = MaterialTheme.typography.labelMedium, color = TextoSobreFundoSutil)
+                        }
+                        enderecoParaMapa?.let { endereco ->
+                            Text(
+                                "VER NO STREETVIEW",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = AguaTurquesa,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.clickable {
+                                    val consulta = URLEncoder.encode(endereco, "UTF-8")
+                                    uriHandler.openUri(
+                                        "https://www.google.com/maps/search/?api=1&query=$consulta&layer=c"
+                                    )
+                                }
+                            )
+                        }
+                    }
                 }
 
                 Spacer(Modifier.height(20.dp))
@@ -130,7 +175,7 @@ fun DetailScreen(
                 Text(
                     "Atualiza o valor da negociação até hoje, por CDI (% à sua escolha) e por IPCA.",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = TextoSobreFundoSutil
                 )
                 Spacer(Modifier.height(16.dp))
 
@@ -152,7 +197,7 @@ fun DetailScreen(
 
                         Spacer(Modifier.height(18.dp))
                         BotaoLivro(
-                            texto = if (estado.calculando) "Calculando..." else "Calcular correção",
+                            texto = if (estado.calculando) "Calculando..." else "Recalcular correção",
                             aoClicar = { viewModel.calcular(valor, dataInicio) },
                             habilitado = !estado.calculando,
                             icone = Icons.Default.Calculate,
@@ -198,7 +243,7 @@ private fun BlocoResultado(titulo: String, resultado: ResultadoCorrecao?) {
         Spacer(Modifier.height(8.dp))
         if (resultado == null) {
             Text(
-                "Toque em \"Calcular correção\" para ver o valor atualizado.",
+                "Toque em \"Recalcular correção\" para atualizar o valor.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
