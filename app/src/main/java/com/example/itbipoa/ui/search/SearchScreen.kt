@@ -1,10 +1,12 @@
 package com.example.itbipoa.ui.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -14,9 +16,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.itbipoa.R
 import com.example.itbipoa.data.model.ItbiRecord
 import com.example.itbipoa.data.network.PoaDataSource
 import com.example.itbipoa.ui.components.BotaoLivro
@@ -25,6 +33,7 @@ import com.example.itbipoa.ui.components.CartaoSuave
 import com.example.itbipoa.ui.components.HorizontalTraco
 import com.example.itbipoa.ui.components.LinhaCampo
 import com.example.itbipoa.ui.components.RotuloCampo
+import com.example.itbipoa.ui.theme.CeuAzulProfundo
 import com.example.itbipoa.ui.theme.DouradoLinha
 import com.example.itbipoa.ui.theme.EstiloValor
 import com.example.itbipoa.ui.theme.Terracota
@@ -46,15 +55,7 @@ fun SearchScreen(
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
 
-            Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp)) {
-                Text("Livro do ITBI", style = MaterialTheme.typography.headlineLarge)
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    "REGISTRO DE TRANSMISSÕES IMOBILIÁRIAS · PORTO ALEGRE",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            CabecalhoUsina()
 
             LazyColumn(
                 modifier = Modifier.weight(1f),
@@ -195,6 +196,56 @@ fun SearchScreen(
 
                 item { Spacer(Modifier.height(24.dp)) }
             }
+        }
+    }
+}
+
+@Composable
+private fun CabecalhoUsina() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.header_usina),
+            contentDescription = "Ilustração da Usina do Gasômetro, Porto Alegre",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(170.dp)
+        )
+        // Véu de gradiente por cima da imagem, para o texto ficar legível
+        // e a faixa se fundir ao azul do céu da própria ilustração.
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            CeuAzulProfundo.copy(alpha = 0.15f),
+                            CeuAzulProfundo.copy(alpha = 0.75f)
+                        )
+                    )
+                )
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(horizontal = 20.dp, vertical = 16.dp)
+        ) {
+            Text(
+                "Livro do ITBI",
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.White,
+                fontWeight = FontWeight.Medium
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "REGISTRO DE TRANSMISSÕES IMOBILIÁRIAS · PORTO ALEGRE",
+                style = MaterialTheme.typography.labelMedium,
+                color = Color.White.copy(alpha = 0.9f)
+            )
         }
     }
 }

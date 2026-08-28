@@ -5,12 +5,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val EsquemaClaro = lightColorScheme(
     primary = TintaVerde,
     onPrimary = Pergaminho,
     secondary = Terracota,
     onSecondary = Pergaminho,
+    tertiary = CeuAzul,
+    onTertiary = Color.White,
     background = Pergaminho,
     onBackground = TintaVerde,
     surface = PergaminhoEscuro,
@@ -27,6 +30,8 @@ private val EsquemaEscuro = darkColorScheme(
     onPrimary = NoiteVerde,
     secondary = TerracotaClara,
     onSecondary = NoiteVerde,
+    tertiary = AguaTurquesa,
+    onTertiary = NoiteVerde,
     background = NoiteVerde,
     onBackground = PergaminhoSobreNoite,
     surface = NoiteSuperficie,

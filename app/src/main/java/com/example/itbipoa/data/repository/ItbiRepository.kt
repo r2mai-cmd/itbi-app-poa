@@ -6,9 +6,6 @@ import com.example.itbipoa.data.model.ItbiRecord
 import com.example.itbipoa.data.network.PoaDataSource
 import com.example.itbipoa.util.normalizarParaBusca
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -32,11 +29,13 @@ class ItbiRepository(private val cache: CsvCache) {
      * @param forcarAtualizacao ignora o cache local e baixa tudo de novo.
      * @param onProgresso callback opcional chamado a cada ano processado (útil para "Todos").
      *
-     * Importante: o filtro é aplicado ano a ano, logo após o parse de cada CSV,
-     * em vez de acumular todos os registros de todos os anos na memória antes de
-     * filtrar. Isso evita picos de memória (e travamentos) ao pesquisar "Todos".
-     * Se um ano específico falhar ao baixar, os demais continuam normalmente e o
-     * ano problemático é reportado em [ResultadoBusca.anosComErro].
+     * IMPORTANTE sobre memória: os anos são processados um de cada vez, em
+     * sequência (nunca em paralelo). Cada CSV é lido e filtrado linha a linha,
+     * via Sequence — só os registros que batem com a busca ficam guardados na
+     * memória; o restante é descartado imediatamente pelo coletor de lixo antes
+     * de passar para o próximo ano. Isso é o que evita o travamento ao
+     * pesquisar "Todos os anos": nunca existem vários CSVs inteiros (ou vários
+     * anos inteiros já convertidos) na memória ao mesmo tempo.
      */
     suspend fun buscar(
         ano: Int?,
@@ -44,43 +43,51 @@ class ItbiRepository(private val cache: CsvCache) {
         numero: String? = null,
         forcarAtualizacao: Boolean = false,
         onProgresso: ((anoProcessado: Int, total: Int) -> Unit)? = null
-    ): ResultadoBusca = coroutineScope {
+    ): ResultadoBusca {
         val anos = ano?.let { listOf(it) } ?: PoaDataSource.anosDisponiveis
         val total = anos.size
-        var processados = 0
+        val logradouroBusca = logradouro.normalizarParaBusca()
+        val numeroBusca = numero?.trim()
 
-        val deferreds = anos.map { anoAtual ->
-            async {
-                processados++
-                val progressoAtual = processados
-                onProgresso?.invoke(progressoAtual, total)
-                try {
-                    val registrosDoAno = obterRegistrosDoAno(anoAtual, forcarAtualizacao)
-                    val filtrados = filtrar(registrosDoAno, logradouro, numero)
-                    Result.success(filtrados)
-                } catch (e: Throwable) {
-                    Result.failure<List<ItbiRecord>>(e)
-                }
+        val registros = mutableListOf<ItbiRecord>()
+        val anosComErro = mutableListOf<Int>()
+
+        anos.forEachIndexed { indice, anoAtual ->
+            onProgresso?.invoke(indice + 1, total)
+            try {
+                val filtrados = obterRegistrosFiltradosDoAno(
+                    ano = anoAtual,
+                    forcarAtualizacao = forcarAtualizacao,
+                    logradouroBusca = logradouroBusca,
+                    numeroBusca = numeroBusca
+                )
+                registros.addAll(filtrados)
+            } catch (t: Throwable) {
+                anosComErro.add(anoAtual)
             }
         }
 
-        val resultadosPorAno = deferreds.awaitAll()
-        val registros = resultadosPorAno.mapNotNull { it.getOrNull() }.flatten()
-        val anosComErro = anos.filterIndexed { index, _ -> resultadosPorAno[index].isFailure }
-
         if (registros.isEmpty() && anosComErro.size == anos.size) {
-            // Nenhum ano funcionou: melhor propagar um erro claro do que devolver silêncio.
-            throw resultadosPorAno.first().exceptionOrNull()
-                ?: java.io.IOException("Não foi possível obter os dados de nenhum ano.")
+            throw java.io.IOException("Não foi possível obter os dados de nenhum ano consultado.")
         }
 
-        ResultadoBusca(
+        return ResultadoBusca(
             registros = registros.sortedByDescending { it.dataReferencia ?: LocalDate.MIN },
             anosComErro = anosComErro
         )
     }
 
-    private suspend fun obterRegistrosDoAno(ano: Int, forcarAtualizacao: Boolean): List<ItbiRecord> {
+    /**
+     * Baixa (ou lê do cache) o CSV de um ano e já devolve só os registros que
+     * batem com o filtro — processado linha a linha via Sequence, sem nunca
+     * materializar a lista inteira (filtrada ou não) do ano em memória.
+     */
+    private suspend fun obterRegistrosFiltradosDoAno(
+        ano: Int,
+        forcarAtualizacao: Boolean,
+        logradouroBusca: String,
+        numeroBusca: String?
+    ): List<ItbiRecord> {
         val csvTexto = if (!forcarAtualizacao && cache.estaValido(ano)) {
             cache.ler(ano)
         } else {
@@ -88,30 +95,32 @@ class ItbiRepository(private val cache: CsvCache) {
             cache.salvar(ano, baixado)
             baixado
         }
+
         return withContext(Dispatchers.Default) {
-            CsvParser.parseBody(csvTexto).mapNotNull { campos ->
-                try {
-                    converter(campos, ano)
-                } catch (e: Exception) {
-                    null // ignora silenciosamente uma linha malformada, sem derrubar o restante
+            csvTexto.lineSequence()
+                .drop(1) // cabeçalho
+                .map { it.trimEnd('\r') }
+                .filter { it.isNotBlank() }
+                .mapNotNull { linha ->
+                    try {
+                        converter(CsvParser.parseLine(linha), ano)
+                    } catch (e: Exception) {
+                        null // ignora silenciosamente uma linha malformada
+                    }
                 }
-            }
+                .filter { registro -> coincide(registro, logradouroBusca, numeroBusca) }
+                .toList()
         }
     }
 
-    private fun filtrar(registros: List<ItbiRecord>, logradouro: String, numero: String?): List<ItbiRecord> {
-        val logradouroBusca = logradouro.normalizarParaBusca()
-        val numeroBusca = numero?.trim()
+    private fun coincide(registro: ItbiRecord, logradouroBusca: String, numeroBusca: String?): Boolean {
+        val logradouroOk = logradouroBusca.isBlank() ||
+            (registro.logradouro?.normalizarParaBusca()?.contains(logradouroBusca) == true)
 
-        return registros.filter { registro ->
-            val logradouroOk = logradouroBusca.isBlank() ||
-                (registro.logradouro?.normalizarParaBusca()?.contains(logradouroBusca) == true)
+        val numeroOk = numeroBusca.isNullOrBlank() ||
+            registro.numeroEndereco?.trim() == numeroBusca
 
-            val numeroOk = numeroBusca.isNullOrBlank() ||
-                registro.numeroEndereco?.trim() == numeroBusca
-
-            logradouroOk && numeroOk
-        }
+        return logradouroOk && numeroOk
     }
 
     private fun converter(campos: List<String>, ano: Int): ItbiRecord? {
