@@ -205,21 +205,23 @@ private fun CabecalhoUsina() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .height(190.dp)
             .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
     ) {
         Image(
             painter = painterResource(id = R.drawable.header_usina),
             contentDescription = "Ilustração da Usina do Gasômetro, Porto Alegre",
             contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(170.dp)
+            modifier = Modifier.matchParentSize()
         )
         // Véu de gradiente por cima da imagem, para o texto ficar legível
         // e a faixa se fundir ao azul do céu da própria ilustração.
+        // matchParentSize() (não fillMaxSize()) é essencial aqui: ele copia o
+        // tamanho que a Box já tem, em vez de tentar expandir a Box para
+        // ocupar todo o espaço disponível na tela.
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .matchParentSize()
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(

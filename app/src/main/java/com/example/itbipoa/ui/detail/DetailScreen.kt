@@ -1,8 +1,10 @@
 package com.example.itbipoa.ui.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -13,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.itbipoa.data.model.ItbiRecord
@@ -20,8 +24,8 @@ import com.example.itbipoa.ui.components.BotaoLivro
 import com.example.itbipoa.ui.components.CartaoSuave
 import com.example.itbipoa.ui.components.LinhaCampo
 import com.example.itbipoa.ui.components.LinhaFicha
+import com.example.itbipoa.ui.theme.CeuAzulProfundo
 import com.example.itbipoa.ui.theme.EstiloValorGrande
-import com.example.itbipoa.ui.theme.Terracota
 import com.example.itbipoa.util.ResultadoCorrecao
 import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
@@ -46,22 +50,34 @@ fun DetailScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Row(
+            // Faixa azul no topo — a mesma cor do céu do cabeçalho da busca,
+            // para as duas telas terem a mesma identidade visual.
+            Box(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 20.dp)
-                    .clickable(onClick = onVoltar),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                    .background(CeuAzulProfundo)
             ) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Terracota, modifier = Modifier.size(20.dp))
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    "VOLTAR À PESQUISA",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(onClick = onVoltar)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Voltar", tint = Color.White, modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        "VOLTAR À PESQUISA",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.White.copy(alpha = 0.95f)
+                    )
+                }
             }
 
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                Spacer(Modifier.height(20.dp))
                 Text(registro.enderecoCompleto, style = MaterialTheme.typography.headlineMedium)
                 registro.bairro?.let {
                     Spacer(Modifier.height(4.dp))
