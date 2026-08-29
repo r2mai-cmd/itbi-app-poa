@@ -3,13 +3,17 @@ package com.example.itbipoa.data.model
 import java.time.LocalDate
 
 /**
- * Representa uma linha (uma transação de ITBI) de um dos CSVs abertos
- * da Prefeitura de Porto Alegre.
+ * Representa uma linha (uma transação de ITBI) de um dos CSVs abertos de
+ * uma prefeitura. Cada cidade tem seu próprio formato de CSV — quem
+ * converte para este modelo comum é a respectiva
+ * [com.example.itbipoa.data.source.FonteDadosItbi]. Campos que uma cidade
+ * não informe simplesmente ficam null e a tela de detalhe já sabe omiti-los.
  *
- * Dicionário de dados oficial:
+ * Dicionário de dados de Porto Alegre (referência original deste modelo):
  * https://dadosabertos.poa.br/dataset/itbi/resource/b0fe9643-82bb-4b91-be26-b6292b7aeac7
  */
 data class ItbiRecord(
+    val cidade: Cidade,
     val ano: Int,
     val dataEstimativa: LocalDate?,
     val dataPagamento: LocalDate?,

@@ -54,7 +54,8 @@ fun DetailScreen(
     // o link do StreetView apontar pro prédio, não pro apartamento específico.
     val enderecoParaMapa = registro.logradouro?.takeIf { it.isNotBlank() }?.let { rua ->
         val numero = registro.numeroEndereco?.takeIf { it.isNotBlank() && it != "0" }
-        listOfNotNull(rua, numero).joinToString(", ") + ", Porto Alegre - RS, Brasil"
+        val cidadeEstado = "${registro.cidade.nomeExibicao} - ${registro.cidade.estadoSigla}"
+        listOfNotNull(rua, numero).joinToString(", ") + ", $cidadeEstado, Brasil"
     }
     val uriHandler = LocalUriHandler.current
 
@@ -142,6 +143,7 @@ fun DetailScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(Modifier.height(14.dp))
+                    LinhaFicha("Cidade", "${registro.cidade.nomeExibicao} - ${registro.cidade.estadoSigla}")
                     LinhaFicha("Valor da negociação", valor?.let { formatoMoeda.format(it) } ?: "não informado")
                     LinhaFicha("Data de referência", dataInicio?.format(formatoDataBr) ?: "não informada")
                     LinhaFicha("Data estimativa", registro.dataEstimativa?.format(formatoDataBr) ?: "—")

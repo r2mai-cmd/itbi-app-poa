@@ -20,13 +20,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.itbipoa.R
 import com.example.itbipoa.data.model.ItbiRecord
-import com.example.itbipoa.data.network.PoaDataSource
+import com.example.itbipoa.data.source.RegistroFontesItbi
 import com.example.itbipoa.ui.components.BotaoLivro
 import com.example.itbipoa.ui.components.BotaoTexto
 import com.example.itbipoa.ui.components.CartaoSuave
@@ -51,6 +53,12 @@ fun SearchScreen(
 ) {
     val estado = viewModel.uiState
     var menuAnoAberto by remember { mutableStateOf(false) }
+    var menuCidadeAberto by remember { mutableStateOf(false) }
+    val anosDaCidadeAtual = remember(estado.cidadeSelecionada) {
+        RegistroFontesItbi.fonteParaCidade(estado.cidadeSelecionada).anosDisponiveis
+    }
+    val gerenciadorFoco = LocalFocusManager.current
+    val controladorTeclado = LocalSoftwareKeyboardController.current
 
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -63,6 +71,43 @@ fun SearchScreen(
             ) {
                 item {
                     CartaoSuave(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            RotuloCampo("Cidade")
+                            Spacer(Modifier.height(6.dp))
+                            Box {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { menuCidadeAberto = true },
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        "${estado.cidadeSelecionada.nomeExibicao} - ${estado.cidadeSelecionada.estadoSigla}",
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                    Icon(
+                                        Icons.Default.KeyboardArrowDown,
+                                        contentDescription = "Selecionar cidade",
+                                        tint = Terracota,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                                DropdownMenu(expanded = menuCidadeAberto, onDismissRequest = { menuCidadeAberto = false }) {
+                                    RegistroFontesItbi.cidadesDisponiveis.forEach { cidade ->
+                                        DropdownMenuItem(
+                                            text = { Text("${cidade.nomeExibicao} - ${cidade.estadoSigla}") },
+                                            onClick = { viewModel.onCidadeChange(cidade); menuCidadeAberto = false }
+                                        )
+                                    }
+                                }
+                            }
+                            Spacer(Modifier.height(6.dp))
+                            HorizontalTraco(cor = DouradoLinha, espessura = 1.dp)
+                        }
+
+                        Spacer(Modifier.height(20.dp))
+
                         LinhaCampo(
                             valor = estado.logradouro,
                             aoMudar = viewModel::onLogradouroChange,
@@ -109,7 +154,7 @@ fun SearchScreen(
                                             text = { Text("Todos") },
                                             onClick = { viewModel.onAnoChange(null); menuAnoAberto = false }
                                         )
-                                        PoaDataSource.anosDisponiveis.forEach { ano ->
+                                        anosDaCidadeAtual.forEach { ano ->
                                             DropdownMenuItem(
                                                 text = { Text(ano.toString()) },
                                                 onClick = { viewModel.onAnoChange(ano); menuAnoAberto = false }
@@ -126,7 +171,11 @@ fun SearchScreen(
 
                         BotaoLivro(
                             texto = "Pesquisar",
-                            aoClicar = { viewModel.buscar(forcarAtualizacao = false) },
+                            aoClicar = {
+                                gerenciadorFoco.clearFocus()
+                                controladorTeclado?.hide()
+                                viewModel.buscar(forcarAtualizacao = false)
+                            },
                             habilitado = !estado.carregando,
                             icone = Icons.Default.Search,
                             modifier = Modifier.fillMaxWidth()
@@ -205,14 +254,13 @@ private fun CabecalhoUsina() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(190.dp)
             .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
     ) {
         Image(
             painter = painterResource(id = R.drawable.header_usina),
             contentDescription = "Ilustração da Usina do Gasômetro ao pôr do sol, Porto Alegre",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.matchParentSize()
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
         )
         // Véu sutil só na parte de cima, garantindo contraste do título
         // mesmo se o céu da ilustração for mais claro em algum ponto.

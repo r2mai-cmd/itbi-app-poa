@@ -5,17 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.itbipoa.data.model.Cidade
 import com.example.itbipoa.data.model.ItbiRecord
-import com.example.itbipoa.data.network.PoaDataSource
 import com.example.itbipoa.data.repository.ItbiRepository
+import com.example.itbipoa.data.source.RegistroFontesItbi
 import kotlinx.coroutines.launch
 
+private val CIDADE_PADRAO = Cidade.PORTO_ALEGRE
+
 data class SearchUiState(
+    val cidadeSelecionada: Cidade = CIDADE_PADRAO,
     val logradouro: String = "",
     val numero: String = "",
     // Padrão = ano mais recente disponível (nunca "Todos"), para a primeira busca
     // ser rápida e leve. "Todos" continua disponível, só não é o padrão.
-    val anoSelecionado: Int? = PoaDataSource.anosDisponiveis.firstOrNull(),
+    val anoSelecionado: Int? = RegistroFontesItbi.fonteParaCidade(CIDADE_PADRAO).anosDisponiveis.firstOrNull(),
     val carregando: Boolean = false,
     val progresso: String? = null,
     val resultados: List<ItbiRecord> = emptyList(),
@@ -41,6 +45,24 @@ class SearchViewModel(private val repository: ItbiRepository) : ViewModel() {
         uiState = uiState.copy(anoSelecionado = ano)
     }
 
+    /**
+     * Troca a cidade pesquisada. O ano volta para o mais recente disponível
+     * nessa cidade (as cidades podem ter anos diferentes disponíveis), e os
+     * resultados anteriores são descartados, já que pertenciam à cidade
+     * antiga.
+     */
+    fun onCidadeChange(cidade: Cidade) {
+        val anoPadraoDaCidade = RegistroFontesItbi.fonteParaCidade(cidade).anosDisponiveis.firstOrNull()
+        uiState = uiState.copy(
+            cidadeSelecionada = cidade,
+            anoSelecionado = anoPadraoDaCidade,
+            resultados = emptyList(),
+            jaBuscou = false,
+            erro = null,
+            avisoAnosComErro = null
+        )
+    }
+
     /** Limpa os campos de busca e os resultados, voltando ao estado inicial da tela. */
     fun limpar() {
         uiState = SearchUiState()
@@ -57,6 +79,7 @@ class SearchViewModel(private val repository: ItbiRepository) : ViewModel() {
             uiState = uiState.copy(carregando = true, erro = null, progresso = null, avisoAnosComErro = null)
             try {
                 val resultado = repository.buscar(
+                    cidade = estadoAtual.cidadeSelecionada,
                     ano = estadoAtual.anoSelecionado,
                     logradouro = estadoAtual.logradouro,
                     numero = estadoAtual.numero.ifBlank { null },
