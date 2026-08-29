@@ -57,15 +57,34 @@ object BcbApi {
         }
     }
 
-    private fun parseResposta(json: String): List<PontoSerie> {
-        val array = JSONArray(json)
-        val lista = mutableListOf<PontoSerie>()
-        for (i in 0 until array.length()) {
-            val obj = array.getJSONObject(i)
-            val data = LocalDate.parse(obj.getString("data"), formatoBr)
-            val valor = obj.getString("valor").replace(",", ".").toDouble()
-            lista.add(PontoSerie(data, valor))
+    private fun parseResposta(corpoBruto: String): List<PontoSerie> {
+        val corpo = corpoBruto.trim()
+        // A API do Banco Central às vezes devolve uma resposta que não é o
+        // JSON esperado (por exemplo, uma página de erro em XML/HTML quando
+        // o serviço deles está instável). Detectar isso aqui evita que o app
+        // quebre com um erro técnico feio — em vez disso, mostra uma
+        // mensagem clara e o usuário pode simplesmente tentar de novo.
+        if (!corpo.startsWith("[")) {
+            throw java.io.IOException(
+                "O Banco Central não respondeu como esperado agora. Toque em \"Recalcular\" para tentar de novo."
+            )
         }
-        return lista
+
+        return try {
+            val array = JSONArray(corpo)
+            val lista = mutableListOf<PontoSerie>()
+            for (i in 0 until array.length()) {
+                val obj = array.getJSONObject(i)
+                val data = LocalDate.parse(obj.getString("data"), formatoBr)
+                val valor = obj.getString("valor").replace(",", ".").toDouble()
+                lista.add(PontoSerie(data, valor))
+            }
+            lista
+        } catch (e: org.json.JSONException) {
+            throw java.io.IOException(
+                "Não foi possível interpretar os dados do Banco Central. Toque em \"Recalcular\" para tentar de novo.",
+                e
+            )
+        }
     }
 }
