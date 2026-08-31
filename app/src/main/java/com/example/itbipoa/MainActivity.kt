@@ -2,6 +2,7 @@ package com.example.itbipoa
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -55,6 +56,14 @@ private fun AppNavHost(
     indiceRepository: IndiceRepository
 ) {
     var tela by remember { mutableStateOf<Tela>(Tela.Busca) }
+
+    // Sem isso, o botão/gesto de voltar do sistema fecha o app direto
+    // (não sabe que existe uma tela anterior, já que a navegação aqui é
+    // feita "na mão"). Intercepta o voltar do sistema só quando estamos no
+    // detalhe, e volta pra busca em vez de fechar o app.
+    BackHandler(enabled = tela is Tela.Detalhe) {
+        tela = Tela.Busca
+    }
 
     val searchViewModel: SearchViewModel = viewModel(
         factory = viewModelFactory { SearchViewModel(itbiRepository) }

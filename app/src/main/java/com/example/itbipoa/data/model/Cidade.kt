@@ -16,5 +16,6 @@ enum class Cidade(
     val nomeExibicao: String,
     val estadoSigla: String
 ) {
-    PORTO_ALEGRE(id = "poa", nomeExibicao = "Porto Alegre", estadoSigla = "RS")
+    PORTO_ALEGRE(id = "poa", nomeExibicao = "Porto Alegre", estadoSigla = "RS"),
+    FORTALEZA(id = "for", nomeExibicao = "Fortaleza", estadoSigla = "CE")
 }

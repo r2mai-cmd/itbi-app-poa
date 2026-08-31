@@ -5,7 +5,7 @@ import com.example.itbipoa.data.model.Cidade
 import com.example.itbipoa.data.model.ItbiRecord
 import com.example.itbipoa.data.source.FonteDadosItbi
 import com.example.itbipoa.data.source.RegistroFontesItbi
-import com.example.itbipoa.util.normalizarParaBusca
+import com.example.itbipoa.util.normalizarLogradouro
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -51,7 +51,7 @@ class ItbiRepository(private val cache: CsvCache) {
         val fonte = RegistroFontesItbi.fonteParaCidade(cidade)
         val anos = ano?.let { listOf(it) } ?: fonte.anosDisponiveis
         val total = anos.size
-        val logradouroBusca = logradouro.normalizarParaBusca()
+        val logradouroBusca = logradouro.normalizarLogradouro()
         val numeroBusca = numero?.trim()
 
         val registros = mutableListOf<ItbiRecord>()
@@ -114,7 +114,7 @@ class ItbiRepository(private val cache: CsvCache) {
 
     private fun coincide(registro: ItbiRecord, logradouroBusca: String, numeroBusca: String?): Boolean {
         val logradouroOk = logradouroBusca.isBlank() ||
-            (registro.logradouro?.normalizarParaBusca()?.contains(logradouroBusca) == true)
+            (registro.logradouro?.normalizarLogradouro()?.contains(logradouroBusca) == true)
 
         val numeroOk = numeroBusca.isNullOrBlank() ||
             registro.numeroEndereco?.trim() == numeroBusca
