@@ -1,5 +1,6 @@
 package com.example.itbipoa.ui.search
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -63,7 +64,7 @@ fun SearchScreen(
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
 
-            CabecalhoUsina()
+            CabecalhoUsina(compacto = estado.jaBuscou)
 
             LazyColumn(
                 modifier = Modifier.weight(1f),
@@ -250,17 +251,19 @@ fun SearchScreen(
 }
 
 @Composable
-private fun CabecalhoUsina() {
+private fun CabecalhoUsina(compacto: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .then(if (compacto) Modifier.height(130.dp) else Modifier)
+            .animateContentSize()
             .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
     ) {
         Image(
             painter = painterResource(id = R.drawable.header_usina),
             contentDescription = "Ilustração da Usina do Gasômetro ao pôr do sol, Porto Alegre",
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier.fillMaxWidth()
+            contentScale = if (compacto) ContentScale.Crop else ContentScale.FillWidth,
+            modifier = if (compacto) Modifier.matchParentSize() else Modifier.fillMaxWidth()
         )
         // Véu sutil só na parte de cima, garantindo contraste do título
         // mesmo se o céu da ilustração for mais claro em algum ponto.
