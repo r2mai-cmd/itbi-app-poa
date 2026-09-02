@@ -175,7 +175,7 @@ fun DetailScreen(
                 Text("Correção do valor", style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "Atualiza o valor da negociação até hoje, por CDI (% à sua escolha) e por IPCA.",
+                    "Atualiza o valor da negociação até hoje, por CDI (% à sua escolha), IPCA ou IGP-M.",
                     style = MaterialTheme.typography.bodySmall,
                     color = TextoSobreFundoSutil
                 )
@@ -214,9 +214,9 @@ fun DetailScreen(
 
                     Spacer(Modifier.height(14.dp))
 
-                    // Os dois blocos de resultado ficam sempre visíveis (mesmo antes de
-                    // calcular), para deixar claro que a correção por CDI e por IPCA
-                    // são duas opções disponíveis, não algo escondido.
+                    // Os três blocos de resultado ficam sempre visíveis (mesmo antes de
+                    // calcular), para deixar claro que a correção por CDI, IPCA e IGP-M
+                    // são opções disponíveis, não algo escondido.
                     BlocoResultado(
                         titulo = if (estado.resultadoCdi != null) "${estado.percentualCdi}% do CDI" else "CDI",
                         resultado = estado.resultadoCdi
@@ -225,6 +225,11 @@ fun DetailScreen(
                     BlocoResultado(
                         titulo = "IPCA",
                         resultado = estado.resultadoIpca
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    BlocoResultado(
+                        titulo = "IGP-M",
+                        resultado = estado.resultadoIgpm
                     )
                 }
 

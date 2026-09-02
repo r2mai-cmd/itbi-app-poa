@@ -16,6 +16,7 @@ data class DetailUiState(
     val calculando: Boolean = false,
     val resultadoCdi: ResultadoCorrecao? = null,
     val resultadoIpca: ResultadoCorrecao? = null,
+    val resultadoIgpm: ResultadoCorrecao? = null,
     val erro: String? = null
 )
 
@@ -52,7 +53,17 @@ class DetailViewModel(private val indiceRepository: IndiceRepository) : ViewMode
                     dataInicio = dataInicio,
                     indiceRepository = indiceRepository
                 )
-                uiState = uiState.copy(calculando = false, resultadoCdi = cdi, resultadoIpca = ipca)
+                val igpm = CorrecaoMonetaria.corrigirPorIgpm(
+                    valor = valorOriginal,
+                    dataInicio = dataInicio,
+                    indiceRepository = indiceRepository
+                )
+                uiState = uiState.copy(
+                    calculando = false,
+                    resultadoCdi = cdi,
+                    resultadoIpca = ipca,
+                    resultadoIgpm = igpm
+                )
             } catch (t: Throwable) {
                 uiState = uiState.copy(
                     calculando = false,

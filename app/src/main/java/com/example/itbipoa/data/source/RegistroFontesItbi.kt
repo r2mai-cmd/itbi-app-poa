@@ -13,11 +13,12 @@ import com.example.itbipoa.data.model.Cidade
 object RegistroFontesItbi {
 
     private val fontes: Map<Cidade, FonteDadosItbi> = mapOf(
-        Cidade.PORTO_ALEGRE to FonteDadosPortoAlegre()
+        Cidade.PORTO_ALEGRE to FonteDadosPortoAlegre(),
+        Cidade.FORTALEZA to FonteDadosFortaleza()
     )
 
     /** Cidades disponíveis para busca no app, na ordem em que devem aparecer no seletor. */
-    val cidadesDisponiveis: List<Cidade> = listOf(Cidade.PORTO_ALEGRE)
+    val cidadesDisponiveis: List<Cidade> = listOf(Cidade.PORTO_ALEGRE, Cidade.FORTALEZA)
 
     fun fonteParaCidade(cidade: Cidade): FonteDadosItbi =
         fontes[cidade] ?: error("Nenhuma fonte de dados de ITBI cadastrada para $cidade")

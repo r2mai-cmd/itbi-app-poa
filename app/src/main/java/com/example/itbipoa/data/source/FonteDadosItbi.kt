@@ -24,12 +24,28 @@ interface FonteDadosItbi {
     suspend fun baixarCsv(ano: Int): String
 
     /**
-     * Converte o texto bruto do CSV em registros no formato comum do app.
+     * Chave usada para guardar o CSV desse ano em cache local. Por padrão,
+     * uma chave por cidade+ano (o caso comum: um arquivo por ano). Cidades
+     * que publicam um único arquivo com todos os anos juntos (ex.:
+     * Fortaleza) devem sobrescrever isso para devolver sempre a MESMA
+     * chave, independente do [ano] — assim o app baixa e guarda em cache
+     * esse arquivo grande uma única vez, em vez de uma cópia duplicada por
+     * ano pesquisado.
+     */
+    fun chaveCache(ano: Int): String = "${cidade.id}_$ano"
+
+    /**
+     * Converte o texto bruto do CSV em registros no formato comum do app,
+     * já filtrados para o [ano] pedido (uma fonte cujo arquivo já vem
+     * separado por ano pode ignorar esse parâmetro na filtragem, já que o
+     * próprio arquivo baixado já é só daquele ano; uma fonte com tudo num
+     * arquivo só, como Fortaleza, usa esse parâmetro para selecionar dentro
+     * do arquivo somente as linhas daquele ano).
      *
      * Implementado como [Sequence] de propósito: permite que o repositório
      * processe e filtre linha a linha sem nunca precisar montar a lista
-     * inteira (filtrada ou não) do ano inteiro em memória — o que é
-     * essencial para não travar o app ao pesquisar vários anos de uma vez.
+     * inteira (filtrada ou não) em memória — o que é essencial para não
+     * travar o app ao pesquisar vários anos de uma vez.
      */
     fun processarCsv(csvTexto: String, ano: Int): Sequence<ItbiRecord>
 }

@@ -16,4 +16,10 @@ class IndiceRepository {
         return BcbApi.buscarSerie(BcbApi.SERIE_IPCA_MENSAL, inicio, LocalDate.now())
             .map { it.valor }
     }
+
+    /** Variações mensais do IGP-M (%) entre [inicio] e hoje. */
+    suspend fun taxasIgpmMensais(inicio: LocalDate): List<Double> {
+        return BcbApi.buscarSerie(BcbApi.SERIE_IGPM_MENSAL, inicio, LocalDate.now())
+            .map { it.valor }
+    }
 }

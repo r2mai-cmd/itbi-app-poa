@@ -50,7 +50,28 @@ object CorrecaoMonetaria {
         dataInicio: LocalDate,
         indiceRepository: IndiceRepository
     ): ResultadoCorrecao {
-        val taxasMensais = indiceRepository.taxasIpcaMensais(dataInicio)
+        return corrigirPorTaxasMensais(valor, dataInicio, indiceRepository.taxasIpcaMensais(dataInicio))
+    }
+
+    /**
+     * Corrige [valor] pelo IGP-M acumulado (composição das variações mensais,
+     * série 189 do BCB — calculada pela FGV) desde [dataInicio] até hoje.
+     * É o índice mais comum em reajuste de aluguel e contratos imobiliários,
+     * além de ser usado em alguns financiamentos.
+     */
+    suspend fun corrigirPorIgpm(
+        valor: Double,
+        dataInicio: LocalDate,
+        indiceRepository: IndiceRepository
+    ): ResultadoCorrecao {
+        return corrigirPorTaxasMensais(valor, dataInicio, indiceRepository.taxasIgpmMensais(dataInicio))
+    }
+
+    private fun corrigirPorTaxasMensais(
+        valor: Double,
+        dataInicio: LocalDate,
+        taxasMensais: List<Double>
+    ): ResultadoCorrecao {
         var fator = 1.0
         for (taxaMes in taxasMensais) {
             fator *= (1 + taxaMes / 100.0)

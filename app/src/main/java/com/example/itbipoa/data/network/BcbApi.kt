@@ -16,11 +16,13 @@ import java.util.concurrent.TimeUnit
  * Séries usadas:
  *  - 12  = CDI, taxa diária (% ao dia)
  *  - 433 = IPCA, variação mensal (%)
+ *  - 189 = IGP-M, variação mensal (%) — calculado pela FGV, série mantida pelo BCB
  */
 object BcbApi {
 
     const val SERIE_CDI_DIARIO = 12
     const val SERIE_IPCA_MENSAL = 433
+    const val SERIE_IGPM_MENSAL = 189
 
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)

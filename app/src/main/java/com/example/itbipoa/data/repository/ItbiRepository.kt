@@ -96,7 +96,7 @@ class ItbiRepository(private val cache: CsvCache) {
         logradouroBusca: String,
         numeroBusca: String?
     ): List<ItbiRecord> {
-        val chaveCache = "${fonte.cidade.id}_$ano"
+        val chaveCache = fonte.chaveCache(ano)
         val csvTexto = if (!forcarAtualizacao && cache.estaValido(chaveCache)) {
             cache.ler(chaveCache)
         } else {
