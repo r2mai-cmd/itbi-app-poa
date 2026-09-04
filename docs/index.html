@@ -38,15 +38,19 @@
 
   /* ===== Cabecalho: hero de site, edge-to-edge, sempre expandido ===== */
   .cabecalho {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 5;
     width: 100%;
+    height: 400px;
     overflow: hidden;
-    max-height: 420px;
   }
   .cabecalho img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
   }
   .cabecalho-veu {
     position: absolute;
@@ -90,7 +94,7 @@
     width: 340px;
     flex-shrink: 0;
     position: sticky;
-    top: 32px;
+    top: 420px;
   }
   .area-principal {
     flex: 1;
@@ -108,6 +112,7 @@
   @media (max-width: 900px) {
     .corpo { flex-direction: column; padding: 20px; gap: 20px; }
     .barra-lateral { width: 100%; position: static; }
+    .cabecalho { height: 220px; }
   }
 
   .cartao {
@@ -769,16 +774,18 @@
     }
     document.getElementById("link-voltar").addEventListener("click", fecharDetalhe);
 
-    elResultados.hidden = true;
-    elContagem.hidden = true;
+    elResultados.style.display = "none";
+    elContagem.style.display = "none";
     elDetalhe.hidden = false;
+    elDetalhe.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function fecharDetalhe() {
     elDetalhe.hidden = true;
-    elResultados.hidden = false;
-    elContagem.hidden = false;
+    elDetalhe.style.display = "none";
+    elResultados.style.display = "";
+    elContagem.style.display = "";
   }
 
   function executarBusca(forcarAtualizacao) {
@@ -818,6 +825,13 @@
       elTextoErro.textContent = erro.message || "Não foi possível concluir a busca. Tente novamente.";
     });
   }
+
+  // Enter em qualquer campo do formulário dispara a pesquisa
+  [elEndereco, elNumero].forEach(function (el) {
+    el.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); executarBusca(false); }
+    });
+  });
 
   elBtnPesquisar.addEventListener("click", function () { executarBusca(false); });
   elBtnAtualizar.addEventListener("click", function () { executarBusca(true); });
