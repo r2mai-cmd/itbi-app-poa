@@ -38,15 +38,19 @@
 
   /* ===== Cabecalho: hero de site, edge-to-edge, sempre expandido ===== */
   .cabecalho {
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 5;
     width: 100%;
+    height: 400px;
     overflow: hidden;
-    max-height: 420px;
   }
   .cabecalho img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
   }
   .cabecalho-veu {
     position: absolute;
@@ -59,8 +63,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 40px max(5vw, 24px) 32px;
-    max-width: 1280px;
+    padding: 40px 32px 32px;
+    max-width: 1800px;
     margin: 0 auto;
   }
   .cabecalho-titulo {
@@ -79,18 +83,18 @@
   }
 
   /* ===== Corpo: barra lateral fixa + area principal ===== */
-  .pagina { max-width: 1280px; margin: 0 auto; }
+  .pagina { max-width: 1800px; margin: 0 auto; }
   .corpo {
     display: flex;
     align-items: flex-start;
-    gap: 32px;
-    padding: 32px max(5vw, 24px);
+    gap: 28px;
+    padding: 32px;
   }
   .barra-lateral {
-    width: 360px;
+    width: 340px;
     flex-shrink: 0;
     position: sticky;
-    top: 32px;
+    top: 420px;
   }
   .area-principal {
     flex: 1;
@@ -100,15 +104,15 @@
     gap: 12px;
   }
   .grade-resultados {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   @media (max-width: 900px) {
     .corpo { flex-direction: column; padding: 20px; gap: 20px; }
     .barra-lateral { width: 100%; position: static; }
-    .grade-resultados { grid-template-columns: 1fr; }
+    .cabecalho { height: 220px; }
   }
 
   .cartao {
@@ -284,9 +288,9 @@
   @media (max-width: 700px) { .ficha-cartoes { grid-template-columns: 1fr; } }
 
   .rodape {
-    padding: 24px max(5vw, 24px) 36px;
+    padding: 24px 32px 36px;
     border-top: 1px solid rgba(243, 238, 224, 0.15);
-    max-width: 1280px;
+    max-width: 1800px;
     margin: 0 auto;
   }
   .rodape p { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); text-align: center; }
@@ -770,16 +774,18 @@
     }
     document.getElementById("link-voltar").addEventListener("click", fecharDetalhe);
 
-    elResultados.hidden = true;
-    elContagem.hidden = true;
+    elResultados.style.display = "none";
+    elContagem.style.display = "none";
     elDetalhe.hidden = false;
+    elDetalhe.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function fecharDetalhe() {
     elDetalhe.hidden = true;
-    elResultados.hidden = false;
-    elContagem.hidden = false;
+    elDetalhe.style.display = "none";
+    elResultados.style.display = "";
+    elContagem.style.display = "";
   }
 
   function executarBusca(forcarAtualizacao) {
@@ -819,6 +825,13 @@
       elTextoErro.textContent = erro.message || "Não foi possível concluir a busca. Tente novamente.";
     });
   }
+
+  // Enter em qualquer campo do formulário dispara a pesquisa
+  [elEndereco, elNumero].forEach(function (el) {
+    el.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); executarBusca(false); }
+    });
+  });
 
   elBtnPesquisar.addEventListener("click", function () { executarBusca(false); });
   elBtnAtualizar.addEventListener("click", function () { executarBusca(true); });
