@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HTD7CLQPZ2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-HTD7CLQPZ2');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
@@ -326,6 +317,47 @@
   .rodape p { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); text-align: center; }
   .rodape p:last-child { margin-bottom: 0; }
   .rodape a { color: var(--agua-turquesa); text-decoration: underline; }
+
+  .banner-cookies {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    background: var(--fundo-escuro-claro);
+    border-top: 1px solid rgba(245, 243, 237, 0.15);
+    box-shadow: 0 -4px 14px rgba(0,0,0,0.25);
+    padding: 16px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .banner-cookies p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--texto-sobre-fundo-sutil);
+    max-width: 70ch;
+    text-align: center;
+  }
+  .banner-cookies a { color: var(--agua-turquesa); text-decoration: underline; }
+  .banner-cookies button {
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%);
+    color: #fff;
+    font-family: var(--fonte-corpo);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .banner-cookies button:hover { filter: brightness(1.06); }
 </style>
 </head>
 <body>
@@ -422,32 +454,21 @@
     </footer>
   </div>
 
+  <div id="cookie-banner" class="banner-cookies">
+    <p>
+      Utilizamos cookies e tecnologias semelhantes para analisar o tr\u00e1fego do site e melhorar sua experi\u00eancia.
+      Ao continuar navegando, voc\u00ea concorda com a nossa
+      <a href="privacidade.html">Pol\u00edtica de Privacidade</a>.
+    </p>
+    <button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
+  </div>
+
 <script>
 (function () {
   "use strict";
 
-  // ===== URLs oficiais dos CSVs de ITBI de Porto Alegre =====
-  var BASE = "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource";
-  var URLS_POR_ANO = {
-    2020: BASE + "/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv",
-    2021: BASE + "/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv",
-    2022: BASE + "/102520c0-3edc-4f85-947f-6a98b96ed160/download/itbi-2022.csv",
-    2023: BASE + "/2a4b0aee-7126-4323-936d-5f82fd04aeef/download/itbi-2023.csv",
-    2024: BASE + "/4947bed6-6be6-40e6-a120-42957e745da5/download/itbi-2024.csv",
-    2025: BASE + "/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv",
-    2026: BASE + "/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
-  };
-  var ANOS_DISPONIVEIS = [2026, 2025, 2024, 2023, 2022, 2021, 2020];
-
-  // Anos cujo CSV está hospedado junto com o próprio site (mesma origem,
-  // então nunca esbarra em CORS). Os demais anos seguem tentando o acesso
-  // direto ao site da prefeitura, com o proxy como contorno.
-  var ARQUIVOS_LOCAIS_POR_ANO = {
-    2025: "data/itbi-2025.csv",
-    2026: "data/itbi-2026.csv"
-  };
-
-  // Cache em memória (dura enquanto a página estiver aberta)
+  // Cache em memória (dura enquanto a página estiver aberta), chaveado por
+  // cidade+ano (ver FONTES[cidade].chaveCache).
   var cacheCsv = {};
 
   // ===== Parser de CSV (delimitador ; e aspas simples, igual ao app Android) =====
@@ -519,8 +540,8 @@
     return d2(data.d) + "/" + d2(data.mo) + "/" + data.y;
   }
 
-  // ===== Converte uma linha em registro =====
-  function converterRegistro(campos, ano) {
+  // ===== Converte uma linha em registro (Porto Alegre) =====
+  function converterRegistroPoa(campos, ano) {
     if (campos.length < 18) return null;
     function c(i) {
       var v = campos[i];
@@ -537,6 +558,8 @@
     var dataEstimativa = parseDataPoa(c(0));
     var dataPagamento = parseDataPoa(c(1));
     return {
+      cidadeNome: "Porto Alegre",
+      estadoSigla: "RS",
       ano: ano,
       dataEstimativa: dataEstimativa,
       dataPagamento: dataPagamento,
@@ -557,6 +580,66 @@
       numeroMatricula: c(15),
       numeroZona: c(16),
       situacao: c(17)
+    };
+  }
+
+  // ===== Datas no formato "dd/MM/yyyy HH:mm" (Fortaleza) =====
+  function parseDataFortaleza(texto) {
+    if (!texto) return null;
+    var m = texto.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+    if (!m) return null;
+    return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
+  }
+
+  // ===== Converte uma linha em registro (Fortaleza) =====
+  // Formato bem diferente de POA: delimitador ; SEM aspas, números com
+  // vírgula decimal, um único arquivo com todos os anos (por isso recebe
+  // o ano pedido e confere se bate com a coluna EXERCICIO da própria linha).
+  function converterRegistroFortaleza(campos, anoPedido) {
+    if (campos.length < 31) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined) return null;
+      v = v.trim();
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      var n = parseFloat(v.replace(",", "."));
+      return isNaN(n) ? null : n;
+    }
+    var ano = c(4) ? parseInt(c(4), 10) : null;
+    if (ano !== anoPedido) return null;
+
+    var fracaoIdeal = num(13);
+    var dataConstrucao = parseDataFortaleza(c(16));
+    var dataEstimativa = parseDataFortaleza(c(5));
+    var dataPagamento = parseDataFortaleza(c(24));
+
+    return {
+      cidadeNome: "Fortaleza",
+      estadoSigla: "CE",
+      ano: ano,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(27),
+      percTransmitido: fracaoIdeal !== null ? fracaoIdeal * 100 : null,
+      finalidadeConstrucao: c(18),
+      logradouro: c(8),
+      numeroEndereco: c(9),
+      numeroUnidade: null,
+      complementoEndereco: null,
+      bairro: c(7),
+      cep: c(6),
+      areaTotalTerreno: num(14),
+      areaConstrTotal: num(15),
+      areaConstrPrivativa: null,
+      anoConstrucao: dataConstrucao ? dataConstrucao.y : null,
+      numeroMatricula: null,
+      numeroZona: c(23),
+      situacao: c(19)
     };
   }
 
@@ -608,35 +691,123 @@
     });
   }
 
-  function baixarCsvDoAno(ano, forcarAtualizacao) {
-    if (!forcarAtualizacao && cacheCsv[ano]) {
-      return Promise.resolve(cacheCsv[ano]);
+  // Igual a baixarTexto, mas devolve os bytes brutos (ArrayBuffer) em vez de
+  // ja decodificar como texto — usado por fontes que nao sao UTF-8 (ex.: uma
+  // futura cidade com CSV em outra codificacao).
+  function tentarBinarioComProxies(url, indiceProxy, ultimoErro) {
+    if (indiceProxy >= PROXIES_CORS.length) {
+      throw ultimoErro || new Error("Todas as tentativas de acesso falharam.");
     }
-    var arquivoLocal = ARQUIVOS_LOCAIS_POR_ANO[ano];
-    var promessa = arquivoLocal
-      ? fetch(arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
-          return resp.text();
-        })
-      : baixarTexto(URLS_POR_ANO[ano]);
-    return promessa.then(function (texto) {
-      cacheCsv[ano] = texto;
-      return texto;
+    var proxied = PROXIES_CORS[indiceProxy](url);
+    return fetch(proxied).then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status + " (proxy " + (indiceProxy + 1) + ")");
+      return resp.arrayBuffer();
+    }).catch(function (erro) {
+      return tentarBinarioComProxies(url, indiceProxy + 1, erro);
     });
   }
 
-  function processarCsv(texto, ano) {
-    var linhas = texto.split("\n");
-    var registros = [];
-    for (var i = 1; i < linhas.length; i++) {
-      var linha = linhas[i].replace(/\r$/, "");
-      if (!linha.trim()) continue;
-      try {
-        var reg = converterRegistro(parseLinhaCsv(linha), ano);
-        if (reg) registros.push(reg);
-      } catch (e) { /* ignora linha malformada */ }
+  function baixarBinarioComProxy(url) {
+    return fetch(url).then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      return resp.arrayBuffer();
+    }).catch(function (erroDireto) {
+      return tentarBinarioComProxies(url, 0, erroDireto).catch(function (erroFinal) {
+        var motivo = erroDireto && erroDireto.message ? erroDireto.message : String(erroDireto);
+        throw new Error("Falha ao acessar os dados \u2014 " + motivo);
+      });
+    });
+  }
+
+  // ===== Fontes de dados por cidade =====
+  // Para adicionar uma nova cidade: registre uma entrada aqui com
+  // anosDisponiveis, baixarCsv (retorna o texto do CSV) e processarCsv
+  // (recebe o texto + ano pedido, devolve os registros já convertidos).
+  var BASE_POA = "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource";
+
+  var FONTES = {
+    poa: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      urlPorAno: {
+        2020: BASE_POA + "/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv",
+        2021: BASE_POA + "/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv",
+        2022: BASE_POA + "/102520c0-3edc-4f85-947f-6a98b96ed160/download/itbi-2022.csv",
+        2023: BASE_POA + "/2a4b0aee-7126-4323-936d-5f82fd04aeef/download/itbi-2023.csv",
+        2024: BASE_POA + "/4947bed6-6be6-40e6-a120-42957e745da5/download/itbi-2024.csv",
+        2025: BASE_POA + "/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv",
+        2026: BASE_POA + "/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
+      },
+      // Anos hospedados junto com o próprio site (nunca esbarra em CORS).
+      arquivoLocalPorAno: { 2025: "data/itbi-2025.csv", 2026: "data/itbi-2026.csv" },
+      chaveCache: function (ano) { return "poa_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (arquivoLocal) {
+          return fetch(arquivoLocal).then(function (resp) {
+            if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
+            return resp.text();
+          });
+        }
+        return baixarTexto(this.urlPorAno[ano]);
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroPoa(parseLinhaCsv(linha), ano);
+            if (reg) registros.push(reg);
+          } catch (e) { /* ignora linha malformada */ }
+        }
+        return registros;
+      }
+    },
+
+    fortaleza: {
+      // Estimativa razoável (mesmo período de POA) — o arquivo é único,
+      // sem separação por ano, então um ano "vazio" simplesmente não
+      // aparece nos resultados, não é erro.
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      url: "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv",
+      // Mesma chave sempre: é o mesmo arquivo de ~25MB pra qualquer ano —
+      // sem isso, "Todos" baixaria e guardaria em cache 7 cópias idênticas.
+      chaveCache: function () { return "fortaleza_completo"; },
+      baixarCsv: function () {
+        // O arquivo da prefeitura não é UTF-8 — é ISO-8859-1/Windows-1252
+        // (comum em sistemas legados do setor público). Por isso baixamos
+        // os bytes brutos e decodificamos explicitamente, em vez de usar
+        // .text() (que assumiria UTF-8 e quebraria a acentuação).
+        return baixarBinarioComProxy(this.url).then(function (buffer) {
+          return new TextDecoder("iso-8859-1").decode(buffer);
+        });
+      },
+      processarCsv: function (texto, anoPedido) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroFortaleza(linha.split(";"), anoPedido);
+            if (reg) registros.push(reg);
+          } catch (e) { /* ignora linha malformada */ }
+        }
+        return registros;
+      }
     }
-    return registros;
+  };
+
+  function baixarCsvDaFonte(fonte, ano, forcarAtualizacao) {
+    var chave = fonte.chaveCache(ano);
+    if (!forcarAtualizacao && cacheCsv[chave]) {
+      return Promise.resolve(cacheCsv[chave]);
+    }
+    return fonte.baixarCsv(ano).then(function (texto) {
+      cacheCsv[chave] = texto;
+      return texto;
+    });
   }
 
   function coincide(registro, logradouroBusca, numeroBusca) {
@@ -648,8 +819,9 @@
   }
 
   // ===== Busca principal (sequencial, ano a ano) =====
-  function buscar(anoUnico, logradouro, numero, forcarAtualizacao, aoProgredir) {
-    var anos = anoUnico ? [anoUnico] : ANOS_DISPONIVEIS;
+  function buscar(cidadeId, anoUnico, logradouro, numero, forcarAtualizacao, aoProgredir) {
+    var fonte = FONTES[cidadeId];
+    var anos = anoUnico ? [anoUnico] : fonte.anosDisponiveis;
     var logradouroBusca = normalizarLogradouro(logradouro);
     var numeroBusca = numero ? numero.trim() : null;
     var registros = [];
@@ -671,8 +843,8 @@
       var ano = anos[indice];
       indice++;
       if (aoProgredir) aoProgredir(indice, anos.length);
-      return baixarCsvDoAno(ano, forcarAtualizacao).then(function (texto) {
-        var doAno = processarCsv(texto, ano).filter(function (r) {
+      return baixarCsvDaFonte(fonte, ano, forcarAtualizacao).then(function (texto) {
+        var doAno = fonte.processarCsv(texto, ano).filter(function (r) {
           return coincide(r, logradouroBusca, numeroBusca);
         });
         registros = registros.concat(doAno);
@@ -764,7 +936,8 @@
     var percTxt = (r.percTransmitido !== null && r.percTransmitido !== undefined) ? r.percTransmitido.toFixed(2).replace(".", ",") + "%" : "—";
 
     var numero = r.numeroEndereco && r.numeroEndereco !== "0" ? r.numeroEndereco : null;
-    var enderecoMapa = r.logradouro ? [r.logradouro, numero].filter(Boolean).join(", ") + ", Porto Alegre - RS, Brasil" : null;
+    var cidadeEstado = r.cidadeNome && r.estadoSigla ? r.cidadeNome + " - " + r.estadoSigla : "Brasil";
+    var enderecoMapa = r.logradouro ? [r.logradouro, numero].filter(Boolean).join(", ") + ", " + cidadeEstado + ", Brasil" : null;
 
     var html = '<a class="link-voltar" id="link-voltar">&larr; Voltar à lista</a>';
     html += '<h2 class="ficha-titulo"></h2>';
@@ -856,7 +1029,7 @@
     var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
     var numero = elNumero.value.trim();
 
-    buscar(anoValor, logradouro, numero, forcarAtualizacao, function (feito, total) {
+    buscar("poa", anoValor, logradouro, numero, forcarAtualizacao, function (feito, total) {
       if (total > 1) {
         elTextoProgresso.style.display = "block";
         elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
@@ -897,6 +1070,21 @@
     elResultados.innerHTML = "";
     fecharDetalhe();
   });
+  // ===== Banner de cookies =====
+  (function () {
+    var banner = document.getElementById("cookie-banner");
+    var btn = document.getElementById("btn-aceitar-cookies");
+    try {
+      if (localStorage.getItem("cookies_aceitos") === "sim") {
+        banner.style.display = "none";
+      }
+    } catch (e) { /* localStorage indisponível (ex.: navegação privada) — mantém o banner visível */ }
+
+    btn.addEventListener("click", function () {
+      banner.style.display = "none";
+      try { localStorage.setItem("cookies_aceitos", "sim"); } catch (e) { /* ignora */ }
+    });
+  })();
 })();
 </script>
 </body>
