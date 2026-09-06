@@ -907,16 +907,21 @@ white-space: nowrap;
       // sem separação por ano, então um ano "vazio" simplesmente não
       // aparece nos resultados, não é erro.
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      url: "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv",
-      // Mesma chave sempre: é o mesmo arquivo de ~25MB pra qualquer ano —
-      // sem isso, "Todos" baixaria e guardaria em cache 7 cópias idênticas.
+      // Hospedado junto com o próprio site (mesma origem) — sem isso, o
+      // arquivo de ~25MB não conseguia passar nem direto nem pelos proxies.
+      arquivoLocal: "data/itbi-fortaleza.csv",
+      // Mesma chave sempre: é o mesmo arquivo pra qualquer ano — sem isso,
+      // "Todos" guardaria em cache 7 cópias idênticas.
       chaveCache: function () { return "fortaleza_completo"; },
       baixarCsv: function () {
         // O arquivo da prefeitura não é UTF-8 — é ISO-8859-1/Windows-1252
         // (comum em sistemas legados do setor público). Por isso baixamos
         // os bytes brutos e decodificamos explicitamente, em vez de usar
         // .text() (que assumiria UTF-8 e quebraria a acentuação).
-        return baixarBinarioComProxy(this.url).then(function (buffer) {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-fortaleza.csv)");
+          return resp.arrayBuffer();
+        }).then(function (buffer) {
           return new TextDecoder("iso-8859-1").decode(buffer);
         });
       },
