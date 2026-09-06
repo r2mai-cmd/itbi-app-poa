@@ -429,6 +429,51 @@ cursor: pointer;
 white-space: nowrap;
 }
 .banner-cookies button:hover { filter: brightness(1.06); }
+ /* Unifica os três blocos de índices e remove o acavalamento */
+#bloco-cdi, #bloco-ipca, #bloco-igpm {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 1.1rem 0 !important;
+  border-bottom: 1px solid rgba(36, 35, 31, 0.12) !important;
+}
+
+#bloco-cdi {
+  padding-top: 0.2rem !important;
+}
+
+#bloco-igpm {
+  border-bottom: none !important;
+  padding-bottom: 0.2rem !important;
+}
+
+/* Título de cada índice (ex: 100% DO CDI) */
+.ficha-secao-titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--texto-card-sutil, #6B6A63);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.25rem 0;
+}
+
+/* Valor atualizado com destaque e negrito forte */
+.valor-corrigido {
+  font-size: 1.45rem;
+  font-weight: 800 !important;
+  color: var(--texto-card, #24231F);
+  font-family: var(--fonte-mono, monospace);
+  line-height: 1.2;
+  margin: 0.15rem 0 0.35rem 0;
+}
+
+/* Legenda da variação acumulada e datas */
+.correcao-legenda {
+  font-size: 0.8rem;
+  color: var(--texto-card-sutil, #6B6A63);
+  margin: 0;
+} 
 </style>
 </head>
 <body>
