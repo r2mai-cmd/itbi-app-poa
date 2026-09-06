@@ -429,51 +429,43 @@ cursor: pointer;
 white-space: nowrap;
 }
 .banner-cookies button:hover { filter: brightness(1.06); }
- /* Unifica os três blocos de índices e remove o acavalamento */
+/* Cards individuais de cada índice: sem acavalar e com fundo bege correto */
 #bloco-cdi, #bloco-ipca, #bloco-igpm {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  padding: 1.1rem 0 !important;
-  border-bottom: 1px solid rgba(36, 35, 31, 0.12) !important;
+  background-color: var(--pergaminho, #EDE9DE) !important;
+  border-radius: 12px !important;
+  margin-top: 14px !important;
+  margin-bottom: 0 !important;
+  padding: 16px 20px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
 }
 
-#bloco-cdi {
-  padding-top: 0.2rem !important;
-}
-
-#bloco-igpm {
-  border-bottom: none !important;
-  padding-bottom: 0.2rem !important;
-}
-
-/* Título de cada índice (ex: 100% DO CDI) */
+/* Título de cada índice */
 .ficha-secao-titulo {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--texto-card-sutil, #6B6A63);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 0 0 0.25rem 0;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #6B6A63 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin: 0 0 6px 0 !important;
 }
 
-/* Valor atualizado com destaque e negrito forte */
+/* Valor atualizado em negrito escuro e nítido */
 .valor-corrigido {
-  font-size: 1.45rem;
+  font-size: 1.4rem !important;
   font-weight: 800 !important;
-  color: var(--texto-card, #24231F);
-  font-family: var(--fonte-mono, monospace);
-  line-height: 1.2;
-  margin: 0.15rem 0 0.35rem 0;
+  color: #24231F !important;
+  font-family: var(--fonte-mono, monospace) !important;
+  line-height: 1.2 !important;
+  margin: 0 0 6px 0 !important;
 }
 
-/* Legenda da variação acumulada e datas */
+/* Legenda com percentual e período */
 .correcao-legenda {
-  font-size: 0.8rem;
-  color: var(--texto-card-sutil, #6B6A63);
-  margin: 0;
-} 
+  font-size: 0.8rem !important;
+  color: #6B6A63 !important;
+  margin: 0 !important;
+}
 </style>
 </head>
 <body>
