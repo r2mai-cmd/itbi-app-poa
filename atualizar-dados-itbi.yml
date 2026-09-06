@@ -1,0 +1,58 @@
+name: Atualizar dados de ITBI
+
+# Roda automaticamente todo dia 1 de cada mês às 06:00 UTC (03:00 em
+# Brasília), e também pode ser disparado manualmente a qualquer momento pela
+# aba Actions (botão "Run workflow"), caso queira forçar uma atualização
+# antes da próxima data agendada.
+on:
+  schedule:
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Baixar CSV de Porto Alegre — 2025
+        run: |
+          curl -fsSL -o docs/data/itbi-2025.csv \
+            "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv"
+
+      - name: Baixar CSV de Porto Alegre — 2026
+        run: |
+          curl -fsSL -o docs/data/itbi-2026.csv \
+            "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
+
+      - name: Baixar CSV de Fortaleza (todos os anos)
+        run: |
+          curl -fsSL -o docs/data/itbi-fortaleza.csv \
+            "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv"
+
+      - name: Verificar tamanho dos arquivos baixados
+        run: |
+          for f in docs/data/itbi-2025.csv docs/data/itbi-2026.csv docs/data/itbi-fortaleza.csv; do
+            tamanho=$(stat -c%s "$f")
+            echo "$f: $tamanho bytes"
+            if [ "$tamanho" -lt 1000 ]; then
+              echo "::error::Arquivo $f ficou suspeitosamente pequeno ($tamanho bytes) — abortando sem commitar, para não substituir dados bons por um download que falhou."
+              exit 1
+            fi
+          done
+
+      - name: Commitar e enviar, se houver mudança nos dados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/*.csv
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança nos dados desde a última atualização."
+          else
+            git commit -m "Atualiza dados de ITBI automaticamente ($(date -u +%Y-%m-%d))"
+            git push
+          fi
