@@ -942,24 +942,31 @@ white-space: nowrap;
     if (!carregando) elTextoProgresso.style.display = "none";
   }
 
-  function renderizarResultados(registros) {
+ function renderizarResultados(registros) {
     elResultados.innerHTML = "";
     registros.forEach(function (r, indice) {
       var card = document.createElement("div");
       card.className = "resultado";
       var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
       var subTxt = [r.bairro, r.finalidadeConstrucao].filter(Boolean).join(" · ");
+      var precoTxt = (r.baseCalculo !== null && r.baseCalculo !== undefined && r.baseCalculo > 0)
+        ? formatoMoeda.format(r.baseCalculo)
+        : "—";
+
       card.innerHTML =
         '<div class="resultado-info">' +
           '<p class="resultado-endereco"></p>' +
           '<p class="resultado-sub"></p>' +
         '</div>' +
         '<div class="resultado-valores">' +
+          '<div class="resultado-preco"></div>' +
           '<div class="resultado-data"></div>' +
         '</div>' +
         '<div class="resultado-mais">+</div>';
+
       card.querySelector(".resultado-endereco").textContent = enderecoCompleto(r);
       card.querySelector(".resultado-sub").textContent = subTxt;
+      card.querySelector(".resultado-preco").textContent = precoTxt;
       card.querySelector(".resultado-data").textContent = dataTxt;
       card.addEventListener("click", function () { abrirDetalhe(indice); });
       elResultados.appendChild(card);
