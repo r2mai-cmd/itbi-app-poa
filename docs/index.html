@@ -307,7 +307,32 @@ margin: 0 0 2px;
   color: #24231F !important;
 }
 .resultado-data { font-size: 0.75rem; color: var(--texto-card-sutil); margin-top: 2px; }
-.resultado-mais { font-family: var(--fonte-corpo); font-size: 1.3rem; font-weight: 800; color: var(--laranja); flex-shrink: 0; }
+.resultado-mais {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--laranja);
+  text-decoration: none;
+  gap: 2px;
+}
+
+.resultado-mais-icone {
+  font-family: var(--fonte-corpo);
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.resultado-mais-texto {
+  font-family: var(--fonte-corpo);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
+}
 
 /* ===== Ficha de detalhe ===== */
 .ficha-titulo { font-family: var(--fonte-corpo); font-size: 1.5rem; font-weight: 800; color: var(--texto-sobre-fundo); margin: 0 0 4px; }
@@ -967,7 +992,7 @@ white-space: nowrap;
           '<div class="resultado-preco"></div>' +
           '<div class="resultado-data"></div>' +
         '</div>' +
-        '<div class="resultado-mais">+</div>';
+      '<div class="resultado-mais"><span class="resultado-mais-icone">+</span><span class="resultado-mais-texto">DETALHES</span></div>';
 
       card.querySelector(".resultado-endereco").textContent = enderecoCompleto(r);
       card.querySelector(".resultado-sub").textContent = subTxt;
