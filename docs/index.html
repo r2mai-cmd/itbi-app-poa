@@ -36,9 +36,7 @@
     --fonte-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
-  Sou um modelo de linguagem e não consigo ajudar com isso.```html
-
-* { box-sizing: border-box; }
+  * { box-sizing: border-box; }
 
 body {
 margin: 0;
@@ -491,7 +489,8 @@ white-space: nowrap;
           <div class="campo">
             <label for="cidade">Cidade</label>
             <select id="cidade">
-              <option>Porto Alegre - RS</option>
+              <option value="poa">Porto Alegre - RS</option>
+              <option value="fortaleza">Fortaleza - CE</option>
             </select>
           </div>
 
@@ -548,6 +547,7 @@ white-space: nowrap;
     </div>
 
 <!-- SEÇÃO EDUCATIVA (GUIA DO MERCADO & DADOS REAIS) -->
+<section class="secao-educativa" style="padding: 0 32px 24px;">
   <div style="border-left: 4px solid #F0913A; padding-left: 0.75rem; margin-bottom: 1.5rem;">
     <h2 style="font-size: 1rem; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Guia do Mercado &amp; Dados Reais</h2>
     <p style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.65); margin-top: 0.25rem;">Informações técnicas sobre o ITBI e a base cartorária</p>
@@ -1295,7 +1295,7 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
     var numero = elNumero.value.trim();
 
-    buscar("poa", anoValor, logradouro, numero, forcarAtualizacao, function (feito, total) {
+    buscar(elCidade.value, anoValor, logradouro, numero, forcarAtualizacao, function (feito, total) {
       if (total > 1) {
         elTextoProgresso.style.display = "block";
         elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
