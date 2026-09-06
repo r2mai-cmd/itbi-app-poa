@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Google tag (gtag.js) -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
+
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HTD7CLQPZ2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-HTD7CLQPZ2');
 </script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -316,6 +316,16 @@
   .ficha-secao-titulo { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--texto-card-sutil); margin: 0 0 12px; }
   .ficha-cartoes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   @media (max-width: 700px) { .ficha-cartoes { grid-template-columns: 1fr; } }
+
+  .titulo-correcao { font-size: 1.2rem; font-weight: 800; color: var(--texto-sobre-fundo); margin: 8px 0 4px; }
+  .legenda-correcao { font-size: 0.85rem; color: var(--texto-sobre-fundo-sutil); margin: 0 0 16px; }
+  .bloco-correcao-form { margin-bottom: 14px; }
+  .bloco-correcao-form .campo { margin-bottom: 16px; }
+  .bloco-correcao { margin-bottom: 12px; }
+  .valor-corrigido { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 700; color: var(--texto-card); margin: 6px 0; }
+  .correcao-legenda { margin: 0; font-size: 0.78rem; color: var(--texto-card-sutil); }
+  .texto-erro-correcao { display: none; color: var(--vermelho-erro); font-size: 0.8rem; margin: 10px 0 0; }
+  .texto-erro-correcao.ativa { display: block; }
 
   .rodape {
     padding: 24px 32px 36px;
@@ -908,7 +918,6 @@
     registros.forEach(function (r, indice) {
       var card = document.createElement("div");
       card.className = "resultado";
-      var precoTxt = (r.baseCalculo !== null && r.baseCalculo !== undefined) ? formatoMoeda.format(r.baseCalculo) : "—";
       var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
       var subTxt = [r.bairro, r.finalidadeConstrucao].filter(Boolean).join(" · ");
       card.innerHTML =
@@ -917,13 +926,11 @@
           '<p class="resultado-sub"></p>' +
         '</div>' +
         '<div class="resultado-valores">' +
-          '<div class="resultado-preco"></div>' +
           '<div class="resultado-data"></div>' +
         '</div>' +
         '<div class="resultado-mais">+</div>';
       card.querySelector(".resultado-endereco").textContent = enderecoCompleto(r);
       card.querySelector(".resultado-sub").textContent = subTxt;
-      card.querySelector(".resultado-preco").textContent = precoTxt;
       card.querySelector(".resultado-data").textContent = dataTxt;
       card.addEventListener("click", function () { abrirDetalhe(indice); });
       elResultados.appendChild(card);
@@ -973,6 +980,25 @@
     html += '</div>';
     html += '</div>';
 
+    html += '<h3 class="titulo-correcao">Correção do valor</h3>';
+    html += '<p class="legenda-correcao">Atualiza o valor da negociação até hoje, por CDI (% à sua escolha), IPCA ou IGP-M.</p>';
+
+    if (r.baseCalculo != null && r.dataReferencia) {
+      html += '<div class="cartao bloco-correcao-form">';
+      html += '  <div class="campo">';
+      html += '    <label for="input-perc-cdi">% do CDI desejado</label>';
+      html += '    <input type="text" id="input-perc-cdi" value="100" inputmode="decimal">';
+      html += '  </div>';
+      html += '  <button class="botao botao-primario" id="btn-recalcular" type="button">Recalcular correção</button>';
+      html += '  <p class="texto-erro-correcao" id="correcao-erro"></p>';
+      html += '</div>';
+      html += '<div class="cartao bloco-correcao" id="bloco-cdi"></div>';
+      html += '<div class="cartao bloco-correcao" id="bloco-ipca"></div>';
+      html += '<div class="cartao bloco-correcao" id="bloco-igpm"></div>';
+    } else {
+      html += '<p class="legenda-correcao">Não é possível calcular: falta o valor ou a data desta negociação.</p>';
+    }
+
     elDetalhe.innerHTML = html;
     elDetalhe.querySelector(".ficha-titulo").textContent = enderecoCompleto(r);
     var bairroEl = elDetalhe.querySelector("#ficha-bairro");
@@ -993,6 +1019,25 @@
       history.back();
     });
 
+    if (r.baseCalculo != null && r.dataReferencia) {
+      var btnRecalcular = document.getElementById("btn-recalcular");
+      var inputPercCdi = document.getElementById("input-perc-cdi");
+      btnRecalcular.addEventListener("click", function () {
+        var perc = parseFloat(inputPercCdi.value.replace(",", "."));
+        var elErro = document.getElementById("correcao-erro");
+        if (isNaN(perc) || perc <= 0) {
+          elErro.textContent = "Informe um percentual de CDI válido (ex.: 90, 100, 110).";
+          elErro.classList.add("ativa");
+          return;
+        }
+        elErro.classList.remove("ativa");
+        calcularCorrecoes(r.baseCalculo, r.dataReferencia, perc);
+      });
+      // Calcula automaticamente ao abrir (100% do CDI por padrão) — o
+      // usuário pode ajustar o percentual e recalcular depois.
+      calcularCorrecoes(r.baseCalculo, r.dataReferencia, 100);
+    }
+
     if (!detalheEmpilhadoNoHistorico) {
       history.pushState({ itbidataDetalhe: true }, "");
       detalheEmpilhadoNoHistorico = true;
@@ -1003,6 +1048,91 @@
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // ===== Correção monetária (CDI, IPCA, IGP-M) via API do Banco Central =====
+  function dataParaBcb(data) {
+    function d2(n) { return n < 10 ? "0" + n : "" + n; }
+    return d2(data.d) + "/" + d2(data.mo) + "/" + data.y;
+  }
+
+  function hojeObj() {
+    var agora = new Date();
+    return { d: agora.getDate(), mo: agora.getMonth() + 1, y: agora.getFullYear() };
+  }
+
+  function buscarSerieBcb(codigo, dataInicioObj, dataFimObj) {
+    var url = "https://api.bcb.gov.br/dados/serie/bcdata.sgs." + codigo + "/dados?formato=json" +
+      "&dataInicial=" + dataParaBcb(dataInicioObj) + "&dataFinal=" + dataParaBcb(dataFimObj);
+    return fetch(url).then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      return resp.text();
+    }).then(function (corpo) {
+      corpo = corpo.trim();
+      // O Banco Central às vezes devolve algo que não é o JSON esperado
+      // (ex.: instabilidade do serviço deles) — detecta isso aqui em vez
+      // de deixar o JSON.parse quebrar com um erro técnico feio.
+      if (corpo.charAt(0) !== "[") {
+        throw new Error("O Banco Central não respondeu como esperado agora.");
+      }
+      var array = JSON.parse(corpo);
+      return array.map(function (item) { return parseFloat(String(item.valor).replace(",", ".")); });
+    });
+  }
+
+  function comporTaxasMensais(taxas) {
+    var fator = 1;
+    taxas.forEach(function (t) { fator *= (1 + t / 100); });
+    return fator;
+  }
+
+  function comporCdi(taxasDiarias, percCdi) {
+    var fator = 1;
+    taxasDiarias.forEach(function (t) { fator *= (1 + (t / 100) * (percCdi / 100)); });
+    return fator;
+  }
+
+  function preencherPlaceholder(blocoId, titulo, mensagem) {
+    var el = document.getElementById(blocoId);
+    if (!el) return;
+    el.innerHTML = '<p class="ficha-secao-titulo">' + titulo + '</p>' +
+      '<p class="correcao-legenda">' + mensagem + '</p>';
+  }
+
+  function preencherResultado(blocoId, titulo, valorOriginal, fator, dataInicioObj, dataFimObj) {
+    var el = document.getElementById(blocoId);
+    if (!el) return;
+    var valorCorrigido = valorOriginal * fator;
+    var percentual = (fator - 1) * 100;
+    el.innerHTML = '<p class="ficha-secao-titulo">' + titulo + '</p>' +
+      '<div class="valor-corrigido">' + formatoMoeda.format(valorCorrigido) + '</div>' +
+      '<p class="correcao-legenda">Variação acumulada: +' + percentual.toFixed(2).replace(".", ",") + '%  ·  ' +
+      formatarDataBr(dataInicioObj) + ' a ' + formatarDataBr(dataFimObj) + '</p>';
+  }
+
+  function calcularCorrecoes(valorOriginal, dataInicioObj, percCdi) {
+    var hoje = hojeObj();
+    preencherPlaceholder("bloco-cdi", percCdi + "% do CDI", "Calculando...");
+    preencherPlaceholder("bloco-ipca", "IPCA", "Calculando...");
+    preencherPlaceholder("bloco-igpm", "IGP-M", "Calculando...");
+
+    Promise.all([
+      buscarSerieBcb(12, dataInicioObj, hoje),
+      buscarSerieBcb(433, dataInicioObj, hoje),
+      buscarSerieBcb(189, dataInicioObj, hoje)
+    ]).then(function (resultados) {
+      var fatorCdi = comporCdi(resultados[0], percCdi);
+      var fatorIpca = comporTaxasMensais(resultados[1]);
+      var fatorIgpm = comporTaxasMensais(resultados[2]);
+      preencherResultado("bloco-cdi", percCdi + "% do CDI", valorOriginal, fatorCdi, dataInicioObj, hoje);
+      preencherResultado("bloco-ipca", "IPCA", valorOriginal, fatorIpca, dataInicioObj, hoje);
+      preencherResultado("bloco-igpm", "IGP-M", valorOriginal, fatorIgpm, dataInicioObj, hoje);
+    }).catch(function (erro) {
+      var mensagem = "Não foi possível calcular agora. " + (erro.message || "");
+      preencherPlaceholder("bloco-cdi", percCdi + "% do CDI", mensagem);
+      preencherPlaceholder("bloco-ipca", "IPCA", mensagem);
+      preencherPlaceholder("bloco-igpm", "IGP-M", mensagem);
+    });
   }
 
   function fecharDetalhe() {
