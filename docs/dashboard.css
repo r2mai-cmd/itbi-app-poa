@@ -7,6 +7,34 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Cole a partir daqui */
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: lighten;
+}
+
+.logo-texto {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+
+.logo-texto span {
+  color: #eb8634;
+}
+/* Até aqui */
+
+.nav-voltar {
+  color: #fff;
 .nav-voltar {
   color: #fff;
   text-decoration: none;
