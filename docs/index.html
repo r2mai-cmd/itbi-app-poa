@@ -488,11 +488,12 @@ white-space: nowrap;
         <section class="cartao">
           <div class="campo">
             <label for="cidade">Cidade</label>
-            <select id="cidade">
-              <option value="poa">Porto Alegre - RS</option>
-              <option value="fortaleza">Fortaleza - CE</option>
-              <option value="bh">Belo Horizonte - MG</option>
-            </select>
+           <select id="cidade">
+            <option value="bh">Belo Horizonte - MG</option>
+            <option value="fortaleza">Fortaleza - CE</option>
+            <option value="poa">Porto Alegre - RS</option>
+            <option value="recife">Recife - PE</option>
+          </select>
           </div>
 
           <div class="campo">
@@ -973,6 +974,34 @@ function converterRegistroBH(campos, anoPedido) {
       }
       return registros;
     }
+  },
+ 
+  recife: {
+    anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015],
+    arquivoLocal: function (ano) {
+      return "data/itbi-recife-" + ano + ".csv";
+    },
+    chaveCache: function (ano) { return "recife_" + ano; },
+    baixarCsv: function (ano) {
+      var url = this.arquivoLocal(ano);
+      return fetch(url).then(function (resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + url + ")");
+        return resp.text();
+      });
+    },
+    processarCsv: function (texto, anoPedido) {
+      var linhas = texto.split("\n");
+      var registros = [];
+      for (var i = 1; i < linhas.length; i++) {
+        var linha = linhas[i].replace(/\r$/, "");
+        if (!linha.trim()) continue;
+        try {
+          var reg = converterRegistroPoa(parseLinhaCsv(linha), anoPedido);
+          if (reg) registros.push(reg);
+        } catch (e) { }
+      }
+      return registros;
+    }
   }
 };
 
@@ -1400,27 +1429,7 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
         var cidadeNome = (data.city || "").toLowerCase();
         var estado = (data.region_code || "").toUpperCase();
 
-        var mapeamento = {
-          "porto alegre": "poa",
-          "fortaleza": "fortaleza",
-          "belo horizonte": "bh"
-        };
-
-        var chave = null;
-
-        for (var nome in mapeamento) {
-          if (cidadeNome.indexOf(nome) !== -1) {
-            chave = mapeamento[nome];
-            break;
-          }
-        }
-
-        if (!chave) {
-          if (estado === "MG") chave = "bh";
-          else if (estado === "RS") chave = "poa";
-          else if (estado === "CE") chave = "fortaleza";
-        }
-
+        
         if (chave && elCidade && elCidade.value !== chave) {
           elCidade.value = chave;
           elCidade.dispatchEvent(new Event("change"));
