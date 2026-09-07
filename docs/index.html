@@ -493,12 +493,13 @@ white-space: nowrap;
           <div class="campo">
             <label for="cidade">Cidade</label>
       <select id="cidade">
-            <option value="" disabled selected>Selecione a cidade</option>
-            <option value="bh">Belo Horizonte - MG</option>
-            <option value="fortaleza">Fortaleza - CE</option>
-            <option value="poa">Porto Alegre - RS</option>
-            <option value="recife">Recife - PE</option>
-          </select>
+  <option value="" disabled selected>Selecione a cidade</option>
+  <option value="bh">Belo Horizonte - MG</option>
+  <option value="fortaleza">Fortaleza - CE</option>
+  <option value="poa">Porto Alegre - RS</option>
+  <option value="recife">Recife - PE</option>
+  <option value="sp">São Paulo - SP</option>
+</select>
           </div>
 
           <div class="campo">
@@ -792,7 +793,14 @@ function converterRegistroBH(campos, anoPedido) {
       situacao: c(19)
     };
   }
-
+// ===== Converte uma linha em registro (São Paulo) =====
+  function converterRegistroSp(campos, anoPedido) {
+    var reg = converterRegistroPoa(campos, anoPedido);
+    if (!reg) return null;
+    reg.cidadeNome = "São Paulo";
+    reg.estadoSigla = "SP";
+    return reg;
+  }
   function enderecoCompleto(r) {
     var partes = [];
     if (r.logradouro) partes.push(r.logradouro);
@@ -914,7 +922,35 @@ function converterRegistroBH(campos, anoPedido) {
         return registros;
       }
     },
-
+sp: {
+    anosDisponiveis: [2026],
+    urlPorAno: {},
+    arquivoLocalPorAno: { 2026: "data/itbi-sp-2026.csv" },
+    chaveCache: function (ano) { return "sp_" + ano; },
+    baixarCsv: function (ano) {
+      var arquivoLocal = this.arquivoLocalPorAno[ano];
+      if (arquivoLocal) {
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (" + arquivoLocal + ")");
+          return resp.text();
+        });
+      }
+      return Promise.reject("Arquivo de São Paulo não encontrado para o ano " + ano);
+    },
+    processarCsv: function (texto, ano) {
+      var linhas = texto.split("\n");
+      var registros = [];
+      for (var i = 1; i < linhas.length; i++) {
+        var linha = linhas[i].replace(/\r$/, "");
+        if (!linha.trim()) continue;
+        try {
+          var reg = converterRegistroSp(parseLinhaCsv(linha), ano);
+          if (reg) registros.push(reg);
+        } catch (e) { /* ignora linha malformada */ }
+      }
+      return registros;
+    }
+  },
     fortaleza: {
       // Estimativa razoável (mesmo período de POA) — o arquivo é único,
       // sem separação por ano, então um ano "vazio" simplesmente não
@@ -1508,8 +1544,21 @@ atualizarOpcoesAnos();
       .then(function (data) {
         var cidadeNome = (data.city || "").toLowerCase();
         var estado = (data.region_code || "").toUpperCase();
+var elCidade = document.getElementById("cidade");
+        var chave = "";
 
-        
+        if (cidadeNome.includes("porto alegre") || estado === "RS") {
+          chave = "poa";
+        } else if (cidadeNome.includes("são paulo") || cidadeNome.includes("sao paulo") || estado === "SP") {
+          chave = "sp";
+        } else if (cidadeNome.includes("belo horizonte") || estado === "MG") {
+          chave = "bh";
+        } else if (cidadeNome.includes("recife") || estado === "PE") {
+          chave = "recife";
+        } else if (cidadeNome.includes("fortaleza") || estado === "CE") {
+          chave = "fortaleza";
+        }
+
         if (chave && elCidade && elCidade.value !== chave) {
           elCidade.value = chave;
           elCidade.dispatchEvent(new Event("change"));
