@@ -140,10 +140,10 @@ gap: 28px;
 padding: 32px;
 }
 .barra-lateral {
-width: 340px;
-flex-shrink: 0;
-position: sticky;
-top: 348px;
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
 }
 .area-principal {
 flex: 1;
@@ -155,9 +155,14 @@ gap: 12px;
 .grade-resultados { display: flex; flex-direction: column; gap: 12px; }
 
 @media (max-width: 900px) {
-.corpo { flex-direction: column; padding: 20px; gap: 20px; }
-.barra-lateral { width: 100%; position: static; }
-.cabecalho { height: 200px; }
+  .corpo { flex-direction: column; padding: 16px; gap: 20px; }
+  .barra-lateral { width: 100%; position: static; }
+  .barra-lateral .cartao { width: 100%; box-sizing: border-box; }
+  .area-principal { width: 100%; }
+  .cabecalho { height: 260px; }
+  .cabecalho img { object-position: center bottom; }
+  .cabecalho-texto { padding: 16px 20px 20px; }
+  .cabecalho-titulo { font-size: 1.25rem; }
 }
 
 .cartao {
