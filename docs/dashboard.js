@@ -9,19 +9,19 @@ const formatadorNumero = new Intl.NumberFormat('pt-BR');
 let dadosJson = null;
 let chartEvolucao = null;
 let chartRanking = null;
+let chartHistorico = null;
 
 const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
 async function inicializar() {
-  // Remova o "data/" da URL:
-const resposta = await fetch('estatisticas.json');
+  const resposta = await fetch('estatisticas.json');
   dadosJson = await resposta.json();
 
   const cidade = dadosJson.cidades['porto-alegre'];
   const selBairro = document.getElementById('filtro-bairro');
   const selAno = document.getElementById('filtro-ano');
 
-  // Popula bairros
+  // Popula bairros em ordem alfabética
   selBairro.innerHTML = '';
   cidade.bairros.forEach(b => {
     const opt = document.createElement('option');
@@ -30,9 +30,10 @@ const resposta = await fetch('estatisticas.json');
     selBairro.appendChild(opt);
   });
 
-  // Popula anos
-  selAno.innerHTML = '';
-  cidade.anos_disponiveis.forEach(a => {
+  // Popula anos do menor para o maior (ex: 2020 a 2026)
+  selAno.innerHTML = '<option value="todos">Todos os Anos</option>';
+  const anosOrdenados = [...cidade.anos_disponiveis].sort((a, b) => a - b);
+  anosOrdenados.forEach(a => {
     const opt = document.createElement('option');
     opt.value = a;
     opt.textContent = a;
@@ -49,23 +50,25 @@ const resposta = await fetch('estatisticas.json');
 function atualizar() {
   const cidadeChave = document.getElementById('filtro-cidade').value;
   const bairroSel = document.getElementById('filtro-bairro').value;
-  const anoSel = parseInt(document.getElementById('filtro-ano').value, 10);
+  const anoValor = document.getElementById('filtro-ano').value;
+  const anoSel = anoValor === 'todos' ? 'todos' : parseInt(anoValor, 10);
   const mesSel = document.getElementById('filtro-mes').value;
 
-  const historico = dadosJson.cidades[cidadeChave].historico_mensal;
+  const cidade = dadosJson.cidades[cidadeChave];
+  const historico = cidade.historico_mensal;
 
   // Filtragem dos KPIs
   const filtrados = historico.filter(item => {
     const mBairro = item.bairro === bairroSel;
-    const mAno = item.ano === anoSel;
+    const mAno = anoSel === 'todos' ? true : item.ano === anoSel;
     const mMes = mesSel === 'todos' ? true : item.mes === parseInt(mesSel, 10);
     return mBairro && mAno && mMes;
   });
 
   if (filtrados.length > 0) {
-    const totalTransacoes = filtrados.reduce((acc, c) => acc + c.transacoes, 0);
-    const somaPonderada = filtrados.reduce((acc, c) => acc + (c.m2_medio * c.transacoes), 0);
-    const mediaM2 = somaPonderada / totalTransacoes;
+    const totalTransacoes = filtrados.reduce((acc, c) => acc + (c.transacoes || 0), 0);
+    const somaPonderada = filtrados.reduce((acc, c) => acc + ((c.m2_medio || 0) * (c.transacoes || 0)), 0);
+    const mediaM2 = totalTransacoes > 0 ? somaPonderada / totalTransacoes : 0;
 
     document.getElementById('kpi-m2').textContent = formatadorMoeda.format(mediaM2);
     document.getElementById('kpi-transacoes').textContent = formatadorNumero.format(totalTransacoes);
@@ -74,15 +77,19 @@ function atualizar() {
     document.getElementById('kpi-transacoes').textContent = '0';
   }
 
-  // Gráfico 1: Evolução Mensal do Bairro no Ano
+  // Gráfico 1: Evolução Mensal no Ano Selecionado (se 'todos', usa o ano mais recente disponível)
+  const anoParaMensal = anoSel === 'todos' ? Math.max(...cidade.anos_disponiveis) : anoSel;
   const dadosEvolucao = historico
-    .filter(item => item.bairro === bairroSel && item.ano === anoSel)
+    .filter(item => item.bairro === bairroSel && item.ano === anoParaMensal)
     .sort((a, b) => a.mes - b.mes);
 
-  desenharGraficoEvolucao(bairroSel, anoSel, dadosEvolucao);
+  desenharGraficoEvolucao(bairroSel, anoParaMensal, dadosEvolucao);
 
-  // Gráfico 2: Top 10 Bairros Mais Caros do Ano Selecionado
-  desenharGraficoRanking(historico, anoSel, mesSel);
+  // Gráfico 2: Top 10 Bairros Mais Valorizados
+  desenharGraficoRanking(historico, anoSel, mesSel, cidade.anos_disponiveis);
+
+  // Gráfico 3: Histórico Completo de Todos os Anos do Bairro Selecionado
+  desenharGraficoHistorico(bairroSel, historico);
 }
 
 function desenharGraficoEvolucao(bairro, ano, dados) {
@@ -131,31 +138,34 @@ function desenharGraficoEvolucao(bairro, ano, dados) {
   });
 }
 
-function desenharGraficoRanking(historico, ano, mes) {
+function desenharGraficoRanking(historico, ano, mes, anosDisponiveis) {
   const ctx = document.getElementById('graficoRanking').getContext('2d');
 
-  // Filtra pelo ano e opcionalmente pelo mês
-  const itensAno = historico.filter(item => {
-    const mAno = item.ano === ano;
+  const anoReferencia = ano === 'todos' ? Math.max(...anosDisponiveis) : ano;
+
+  const itensFiltrados = historico.filter(item => {
+    const mAno = item.ano === anoReferencia;
     const mMes = mes === 'todos' ? true : item.mes === parseInt(mes, 10);
     return mAno && mMes;
   });
 
-  // Agrupa médias por bairro
   const agrupadoBairro = {};
-  itensAno.forEach(i => {
+  itensFiltrados.forEach(i => {
     if (!agrupadoBairro[i.bairro]) {
       agrupadoBairro[i.bairro] = { somaPonderada: 0, totalTransacoes: 0 };
     }
-    agrupadoBairro[i.bairro].somaPonderada += i.m2_medio * i.transacoes;
-    agrupadoBairro[i.bairro].totalTransacoes += i.transacoes;
+    agrupadoBairro[i.bairro].somaPonderada += (i.m2_medio || 0) * (i.transacoes || 0);
+    agrupadoBairro[i.bairro].totalTransacoes += (i.transacoes || 0);
   });
 
   const ranking = Object.keys(agrupadoBairro)
     .map(b => ({
       bairro: b,
-      mediaM2: agrupadoBairro[b].somaPonderada / agrupadoBairro[b].totalTransacoes
+      mediaM2: agrupadoBairro[b].totalTransacoes > 0
+        ? agrupadoBairro[b].somaPonderada / agrupadoBairro[b].totalTransacoes
+        : 0
     }))
+    .filter(r => r.mediaM2 > 0)
     .sort((a, b) => b.mediaM2 - a.mediaM2)
     .slice(0, 10);
 
@@ -190,6 +200,67 @@ function desenharGraficoRanking(historico, ano, mes) {
           grid: { color: 'rgba(0, 0, 0, 0.06)' }
         },
         y: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+function desenharGraficoHistorico(bairro, historico) {
+  const ctx = document.getElementById('graficoHistorico').getContext('2d');
+  document.getElementById('titulo-grafico-historico').textContent = `Evolução Histórica do m² — ${bairro} (Série Histórica Completa)`;
+
+  const dadosBairro = historico.filter(item => item.bairro === bairro);
+
+  // Agrupa médias ponderadas por ano
+  const anosMap = {};
+  dadosBairro.forEach(i => {
+    if (!anosMap[i.ano]) anosMap[i.ano] = { soma: 0, qtd: 0 };
+    anosMap[i.ano].soma += (i.m2_medio || 0) * (i.transacoes || 0);
+    anosMap[i.ano].qtd += (i.transacoes || 0);
+  });
+
+  // Ordena anos do menor para o maior (ex: 2020 a 2026)
+  const anosLabels = Object.keys(anosMap).sort((a, b) => a - b);
+  const valoresAnuais = anosLabels.map(ano => {
+    const totalQtd = anosMap[ano].qtd;
+    return totalQtd > 0 ? Math.round(anosMap[ano].soma / totalQtd) : null;
+  });
+
+  if (chartHistorico) chartHistorico.destroy();
+
+  chartHistorico = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: anosLabels,
+      datasets: [{
+        label: 'Média Anual m²',
+        data: valoresAnuais,
+        borderColor: '#252e37',
+        backgroundColor: 'rgba(37, 46, 55, 0.08)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.3,
+        spanGaps: true,
+        pointBackgroundColor: '#3b929c',
+        pointRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: c => `Média Anual: ${formatadorMoeda.format(c.raw)}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => formatadorMoeda.format(v) },
+          grid: { color: 'rgba(0, 0, 0, 0.06)' }
+        },
+        x: { grid: { display: false } }
       }
     }
   });
