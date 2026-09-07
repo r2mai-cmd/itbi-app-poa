@@ -944,35 +944,34 @@ function converterRegistroBH(campos, anoPedido) {
             if (reg) registros.push(reg);
           } catch (e) { /* ignora linha malformada */ }
         }
-        return registros;
-      }
-    }
+        return registros;    
   },
-    bh: {
-      anosDisponiveis: [2024],
-      arquivoLocal: "data/itbi-bh-2024.csv",
-      chaveCache: function () { return "bh_2024"; },
-      baixarCsv: function () {
-        return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-bh-2024.csv)");
-          return resp.text();
-        });
-      },
-      processarCsv: function (texto, anoPedido) {
-        var linhas = texto.split("\n");
-        var registros = [];
-        for (var i = 1; i < linhas.length; i++) {
-          var linha = linhas[i].replace(/\r$/, "");
-          if (!linha.trim()) continue;
-          try {
-            var reg = converterRegistroBH(linha.split(";"), anoPedido);
-            if (reg) registros.push(reg);
-          } catch (e) { /* ignora linha malformada */ }
-        }
-        return registros;
+
+  bh: {
+    anosDisponiveis: [2024],
+    arquivoLocal: "data/itbi-bh-2024.csv",
+    chaveCache: function () { return "bh_2024"; },
+    baixarCsv: function () {
+      return fetch(this.arquivoLocal).then(function (resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-bh-2024.csv)");
+        return resp.text();
+      });
+    },
+    processarCsv: function (texto, anoPedido) {
+      var linhas = texto.split("\n");
+      var registros = [];
+      for (var i = 1; i < linhas.length; i++) {
+        var linha = linhas[i].replace(/\r$/, "");
+        if (!linha.trim()) continue;
+        try {
+          var reg = converterRegistroBH(linha.split(";"), anoPedido);
+          if (reg) registros.push(reg);
+        } catch (e) { /* ignora linha malformada */ }
       }
+      return registros;
     }
-  };
+  }
+};
 
   function baixarCsvDaFonte(fonte, ano, forcarAtualizacao) {
     var chave = fonte.chaveCache(ano);
