@@ -67,16 +67,14 @@
           <option value="12">Dezembro</option>
         </select>
       </div>
-    </section>
-</section>
+   </section>
 
-<!-- ESPAÇO AD 1: Topo Estratégico -->
-<div class="anuncio-container">
-  <span class="anuncio-rotulo">PUBLICIDADE</span>
-  <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
-</div>
+    <!-- ESPAÇO AD 1: Topo Estratégico -->
+    <div class="anuncio-container">
+      <span class="anuncio-rotulo">PUBLICIDADE</span>
+      <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
+    </div>
 
-<!-- Cards de Métricas -->
     <!-- Cards de Métricas -->
     <section class="grid-kpis">
       <div class="cartao kpi">
@@ -84,11 +82,14 @@
         <strong class="kpi-valor" id="kpi-m2">R$ 0,00</strong>
       </div>
       <div class="cartao kpi">
+        <span class="kpi-titulo">TICKET MÉDIO</span>
+        <strong class="kpi-valor" id="kpi-ticket">R$ 0,00</strong>
+      </div>
+      <div class="cartao kpi">
         <span class="kpi-titulo">TRANSAÇÕES NO PERÍODO</span>
         <strong class="kpi-valor" id="kpi-transacoes">0</strong>
       </div>
     </section>
-
    <!-- Gráficos -->
     <section class="grid-graficos">
       <div class="cartao painel-grafico">
@@ -105,14 +106,27 @@
         </div>
       </div>
 
-      <div class="cartao painel-grafico painel-full">
-        <h3 id="titulo-grafico-historico">Evolução Histórica Anual do m²</h3>
-        <div class="canvas-box">
-          <canvas id="graficoHistorico"></canvas>
-        </div>
+      <div class="cartao painel-grafico">
+      <h3 id="titulo-grafico-historico">Evolução Histórica Anual do m²</h3>
+      <div class="canvas-box">
+        <canvas id="graficoHistorico"></canvas>
       </div>
-    </section>
-  </main>
+    </div>
+
+    <div class="cartao painel-grafico">
+      <h3>Distribuição por Metragem Privativa</h3>
+      <div class="canvas-box">
+        <canvas id="graficoMetragem"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPAÇO AD 2: Rodapé de Conversão -->
+  <div class="anuncio-container">
+    <span class="anuncio-rotulo">PUBLICIDADE</span>
+    <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
+  </div>
+</main>
 
   <script src="dashboard.js"></script>
 </body>
