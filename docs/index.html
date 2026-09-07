@@ -872,7 +872,7 @@ function converterRegistroBH(campos, anoPedido) {
 
   var FONTES = {
     poa: {
-      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018],
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       urlPorAno: {
         2020: BASE_POA + "/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv",
         2021: BASE_POA + "/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv",
@@ -948,7 +948,7 @@ function converterRegistroBH(campos, anoPedido) {
     }
   },
  bh: {
-    anosDisponiveis: [2026, 2025, 2024],
+   anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018],
     arquivoLocal: function (ano) {
       return "data/itbi-bh-" + ano + ".csv";
     },
