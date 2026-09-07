@@ -488,7 +488,8 @@ white-space: nowrap;
         <section class="cartao">
           <div class="campo">
             <label for="cidade">Cidade</label>
-           <select id="cidade">
+      <select id="cidade">
+            <option value="" disabled selected>Selecione a cidade</option>
             <option value="bh">Belo Horizonte - MG</option>
             <option value="fortaleza">Fortaleza - CE</option>
             <option value="poa">Porto Alegre - RS</option>
@@ -1348,13 +1349,19 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     }
   });
 
-  function executarBusca(forcarAtualizacao) {
-    var logradouro = elEndereco.value.trim();
-    if (!logradouro) {
-      elFaixaErro.classList.add("ativa");
-      elTextoErro.textContent = "Digite ao menos parte do nome da rua/avenida.";
-      return;
-    }
+ function executarBusca(forcarAtualizacao) {
+  if (!elCidade.value) {
+    elFaixaErro.classList.add("ativa");
+    elTextoErro.textContent = "Selecione uma cidade para realizar a pesquisa.";
+    return;
+  }
+
+  var logradouro = elEndereco.value.trim();
+  if (!logradouro) {
+    elFaixaErro.classList.add("ativa");
+    elTextoErro.textContent = "Digite ao menos parte do nome da rua/avenida.";
+    return;
+  }
 
     elFaixaErro.classList.remove("ativa");
     elFaixaAvisoAnos.classList.remove("ativa");
