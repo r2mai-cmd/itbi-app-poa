@@ -1,0 +1,130 @@
+.barra-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background-color: #1f272e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav-voltar {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.2s;
+}
+
+.nav-voltar:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.container-dashboard {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filtros-dashboard {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: #252e37;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.seletor-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.seletor-grupo label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #9cb1bf;
+}
+
+.seletor-grupo select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f7f5f0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1a232a;
+}
+
+.grid-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.cartao {
+  background: #f7f5f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cartao.kpi {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kpi-titulo {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #6d7b85;
+}
+
+.kpi-valor {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a232a;
+}
+
+.grid-graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 20px;
+}
+
+.painel-grafico {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.painel-grafico h3 {
+  margin: 0 0 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a232a;
+}
+
+.canvas-box {
+  position: relative;
+  width: 100%;
+  height: 350px;
+}
+
+@media (max-width: 768px) {
+  .grid-graficos {
+    grid-template-columns: 1fr;
+  }
+}

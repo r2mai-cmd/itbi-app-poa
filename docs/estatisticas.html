@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITBIData - Estatísticas Imobiliárias</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="fundo-escuro">
+
+  <header class="barra-topo">
+    <div class="marca">
+      <img src="favicon.png" alt="Logo itbidata" class="logo-img" />
+      <span class="logo-texto">itbi<span>data</span></span>
+    </div>
+    <a href="index.html" class="nav-voltar">← Voltar à Busca</a>
+  </header>
+
+  <main class="container-dashboard">
+    <!-- Barra de Filtros -->
+    <section class="filtros-dashboard">
+      <div class="seletor-grupo">
+        <label for="filtro-cidade">CIDADE</label>
+        <select id="filtro-cidade">
+          <option value="porto-alegre">Porto Alegre - RS</option>
+        </select>
+      </div>
+
+      <div class="seletor-grupo">
+        <label for="filtro-bairro">BAIRRO</label>
+        <select id="filtro-bairro"></select>
+      </div>
+
+      <div class="seletor-grupo">
+        <label for="filtro-ano">ANO</label>
+        <select id="filtro-ano"></select>
+      </div>
+
+      <div class="seletor-grupo">
+        <label for="filtro-mes">MÊS</label>
+        <select id="filtro-mes">
+          <option value="todos">Todos os Meses</option>
+          <option value="1">Janeiro</option>
+          <option value="2">Fevereiro</option>
+          <option value="3">Março</option>
+          <option value="4">Abril</option>
+          <option value="5">Maio</option>
+          <option value="6">Junho</option>
+          <option value="7">Julho</option>
+          <option value="8">Agosto</option>
+          <option value="9">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Cards de Métricas -->
+    <section class="grid-kpis">
+      <div class="cartao kpi">
+        <span class="kpi-titulo">M² MÉDIO NO PERÍODO</span>
+        <strong class="kpi-valor" id="kpi-m2">R$ 0,00</strong>
+      </div>
+      <div class="cartao kpi">
+        <span class="kpi-titulo">TRANSAÇÕES NO PERÍODO</span>
+        <strong class="kpi-valor" id="kpi-transacoes">0</strong>
+      </div>
+    </section>
+
+    <!-- Gráficos -->
+    <section class="grid-graficos">
+      <div class="cartao painel-grafico">
+        <h3 id="titulo-grafico-evolucao">Evolução Mensal do Valor do m²</h3>
+        <div class="canvas-box">
+          <canvas id="graficoEvolucao"></canvas>
+        </div>
+      </div>
+
+      <div class="cartao painel-grafico">
+        <h3>Top 10 Bairros Mais Valorizados (m²)</h3>
+        <div class="canvas-box">
+          <canvas id="graficoRanking"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
