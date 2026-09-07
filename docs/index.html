@@ -513,13 +513,7 @@ white-space: nowrap;
             <option value="">Todos</option>
           </select>
             </div>
-            <div class="campo">
-          <label for="ordem-data">Ordem da Data</label>
-          <select id="ordem-data">
-            <option value="desc">Mais recentes primeiro</option>
-            <option value="asc">Mais antigas primeiro</option>
-          </select>
-        </div>
+            
           </div>
 
           <button class="botao botao-primario" id="btn-pesquisar">&#128269; Pesquisar</button>
@@ -544,6 +538,11 @@ white-space: nowrap;
 
       <main class="area-principal">
         <p class="contagem" id="contagem"></p>
+        <div id="barra-ordenacao" style="display: none; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: 1rem;">
+        <span style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">Ordenar:</span>
+        <button type="button" class="btn-ordem ativo" data-ordem="desc" style="cursor: pointer; background: #2a2d32; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais recentes</button>
+        <button type="button" class="btn-ordem" data-ordem="asc" style="cursor: pointer; background: transparent; border: 1px solid #444; color: rgba(245, 243, 237, 0.6); border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais antigos</button>
+      </div>
         <div class="grade-resultados" id="resultados"></div>
         <div id="detalhe" hidden></div>
       </main>
@@ -1069,7 +1068,9 @@ function converterRegistroBH(campos, anoPedido) {
   var elEndereco = document.getElementById("endereco");
   var elNumero = document.getElementById("numero");
   var elAno = document.getElementById("ano");
-  var elOrdemData = document.getElementById("ordem-data");
+  var elBarraOrdenacao = document.getElementById("barra-ordenacao");
+var botoesOrdem = document.querySelectorAll(".btn-ordem");
+var ordemDataAtual = "desc";
   var elBtnPesquisar = document.getElementById("btn-pesquisar");
   var elBtnLimpar = document.getElementById("btn-limpar");
   var elBtnAtualizar = document.getElementById("btn-atualizar");
@@ -1399,7 +1400,22 @@ atualizarOpcoesAnos();
       }
     }).then(function (resultado) {
       definirCarregando(false);
-      
+      ultimosRegistros = resultado.registros;
+
+    ultimosRegistros.sort(function (a, b) {
+      var vA = chaveOrdenacao(a.dataReferencia);
+      var vB = chaveOrdenacao(b.dataReferencia);
+      return ordemDataAtual === "asc" ? vA - vB : vB - vA;
+    });
+
+    elContagem.classList.add("ativa");
+    elContagem.textContent = ultimosRegistros.length + " registro(s) encontrado(s)";
+
+    if (elBarraOrdenacao) {
+     elBarraOrdenacao.style.display = ultimosRegistros.length > 0 ? "flex" : "none";
+    }
+
+    renderizarResultados(ultimosRegistros);
       if (resultado.anosComErro.length > 0) {
         elFaixaAvisoAnos.classList.add("ativa");
         elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
@@ -1424,24 +1440,45 @@ atualizarOpcoesAnos();
     elEndereco.value = "";
     elNumero.value = "";
     elAno.value = "2026";
-    if (elOrdemData) elOrdemData.value = "desc";
     elContagem.classList.remove("ativa");
-    elContagem.classList.remove("ativa");
+    if (elBarraOrdenacao) elBarraOrdenacao.style.display = "none";
+    ordemDataAtual = "desc";
+    if (botoesOrdem) {
+      botoesOrdem.forEach(function (b) {
+        var ehDesc = b.getAttribute("data-ordem") === "desc";
+        b.classList.toggle("ativo", ehDesc);
+        b.style.background = ehDesc ? "#2a2d32" : "transparent";
+        b.style.color = ehDesc ? "#fff" : "rgba(245, 243, 237, 0.6)";
+      });
+    }
     elFaixaAvisoAnos.classList.remove("ativa");
     elResultados.innerHTML = "";
     fecharDetalhe();
   });
-  if (elOrdemData) {
-    elOrdemData.addEventListener("change", function () {
-      if (ultimosRegistros && ultimosRegistros.length > 0) {
-        var ordem = elOrdemData.value;
-        ultimosRegistros.sort(function (a, b) {
-          var vA = chaveOrdenacao(a.dataReferencia);
-          var vB = chaveOrdenacao(b.dataReferencia);
-          return ordem === "asc" ? vA - vB : vB - vA;
+
+  if (botoesOrdem) {
+    botoesOrdem.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        ordemDataAtual = this.getAttribute("data-ordem");
+
+        botoesOrdem.forEach(function (b) {
+          b.classList.remove("ativo");
+          b.style.background = "transparent";
+          b.style.color = "rgba(245, 243, 237, 0.6)";
         });
-        renderizarResultados(ultimosRegistros);
-      }
+        this.classList.add("ativo");
+        this.style.background = "#2a2d32";
+        this.style.color = "#fff";
+
+        if (ultimosRegistros && ultimosRegistros.length > 0) {
+          ultimosRegistros.sort(function (a, b) {
+            var vA = chaveOrdenacao(a.dataReferencia);
+            var vB = chaveOrdenacao(b.dataReferencia);
+            return ordemDataAtual === "asc" ? vA - vB : vB - vA;
+          });
+          renderizarResultados(ultimosRegistros);
+        }
+      });
     });
   }
   // ===== Banner de cookies =====
