@@ -509,16 +509,9 @@ white-space: nowrap;
             </div>
             <div class="campo">
               <label for="ano">Ano</label>
-              <select id="ano">
-                <option value="">Todos</option>
-                <option value="2026" selected>2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-              </select>
+             <select id="ano">
+            <option value="">Todos</option>
+          </select>
             </div>
           </div>
 
@@ -1347,8 +1340,28 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     if (!elDetalhe.hidden) {
       fecharDetalhe();
     }
+  }); 
+  function atualizarOpcoesAnos() {
+  var config = FONTES[elCidade.value];
+  var anoAnterior = elAno.value;
+
+  elAno.innerHTML = '<option value="">Todos</option>';
+  if (!config || !config.anosDisponiveis) return;
+
+  config.anosDisponiveis.forEach(function (ano) {
+    var opt = document.createElement("option");
+    opt.value = ano;
+    opt.textContent = ano;
+    elAno.appendChild(opt);
   });
 
+  if (config.anosDisponiveis.indexOf(parseInt(anoAnterior, 10)) !== -1) {
+    elAno.value = anoAnterior;
+  }
+}
+
+elCidade.addEventListener("change", atualizarOpcoesAnos);
+atualizarOpcoesAnos();
  function executarBusca(forcarAtualizacao) {
   if (!elCidade.value) {
     elFaixaErro.classList.add("ativa");
