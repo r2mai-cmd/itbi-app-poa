@@ -128,3 +128,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+.painel-full {
+  grid-column: 1 / -1;
+}
