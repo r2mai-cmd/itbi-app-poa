@@ -947,13 +947,16 @@ function converterRegistroBH(campos, anoPedido) {
     return registros;
     }
   },
-  bh: {
-    anosDisponiveis: [2024],
-    arquivoLocal: "data/itbi-bh-2024.csv",
-    chaveCache: function () { return "bh_2024"; },
-    baixarCsv: function () {
-      return fetch(this.arquivoLocal).then(function (resp) {
-        if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-bh-2024.csv)");
+ bh: {
+    anosDisponiveis: [2026, 2025, 2024],
+    arquivoLocal: function (ano) {
+      return "data/itbi-bh-" + ano + ".csv";
+    },
+    chaveCache: function (ano) { return "bh_" + ano; },
+    baixarCsv: function (ano) {
+      var url = this.arquivoLocal(ano);
+      return fetch(url).then(function (resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + url + ")");
         return resp.text();
       });
     },
