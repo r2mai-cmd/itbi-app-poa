@@ -794,11 +794,25 @@ function converterRegistroBH(campos, anoPedido) {
     };
   }
 // ===== Converte uma linha em registro (São Paulo) =====
-  function converterRegistroSp(campos, anoPedido) {
+ function converterRegistroSp(campos, anoPedido) {
     var reg = converterRegistroPoa(campos, anoPedido);
     if (!reg) return null;
     reg.cidadeNome = "São Paulo";
     reg.estadoSigla = "SP";
+
+    var dataRaw = campos[0] ? campos[0].trim() : "";
+    if (dataRaw) {
+      var partes = dataRaw.split("/");
+      if (partes.length === 3) {
+        reg.dataReferencia = {
+          d: parseInt(partes[0], 10),
+          mo: parseInt(partes[1], 10),
+          y: parseInt(partes[2], 10)
+        };
+        reg.dataPagamento = reg.dataReferencia;
+      }
+    }
+
     return reg;
   }
   function enderecoCompleto(r) {
