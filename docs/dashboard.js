@@ -13,7 +13,8 @@ let chartRanking = null;
 const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
 async function inicializar() {
-  const resposta = await fetch('data/estatisticas.json');
+  // Remova o "data/" da URL:
+const resposta = await fetch('estatisticas.json');
   dadosJson = await resposta.json();
 
   const cidade = dadosJson.cidades['porto-alegre'];
