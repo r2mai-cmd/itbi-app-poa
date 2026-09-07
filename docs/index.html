@@ -872,7 +872,7 @@ function converterRegistroBH(campos, anoPedido) {
 
   var FONTES = {
     poa: {
-      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018],
       urlPorAno: {
         2020: BASE_POA + "/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv",
         2021: BASE_POA + "/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv",
@@ -1392,6 +1392,42 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     });
   })();
 })();
+  // ===== Auto-detecção de cidade por IP =====
+  (function () {
+    fetch("https://ipapi.co/json/")
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        var cidadeNome = (data.city || "").toLowerCase();
+        var estado = (data.region_code || "").toUpperCase();
+
+        var mapeamento = {
+          "porto alegre": "poa",
+          "fortaleza": "fortaleza",
+          "belo horizonte": "bh"
+        };
+
+        var chave = null;
+
+        for (var nome in mapeamento) {
+          if (cidadeNome.indexOf(nome) !== -1) {
+            chave = mapeamento[nome];
+            break;
+          }
+        }
+
+        if (!chave) {
+          if (estado === "MG") chave = "bh";
+          else if (estado === "RS") chave = "poa";
+          else if (estado === "CE") chave = "fortaleza";
+        }
+
+        if (chave && elCidade && elCidade.value !== chave) {
+          elCidade.value = chave;
+          elCidade.dispatchEvent(new Event("change"));
+        }
+      })
+      .catch(function () {});
+  })();
 </script>
 </body>
 </html>
