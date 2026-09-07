@@ -513,6 +513,13 @@ white-space: nowrap;
             <option value="">Todos</option>
           </select>
             </div>
+            <div class="campo">
+          <label for="ordem-data">Ordem da Data</label>
+          <select id="ordem-data">
+            <option value="desc">Mais recentes primeiro</option>
+            <option value="asc">Mais antigas primeiro</option>
+          </select>
+        </div>
           </div>
 
           <button class="botao botao-primario" id="btn-pesquisar">&#128269; Pesquisar</button>
@@ -1062,6 +1069,7 @@ function converterRegistroBH(campos, anoPedido) {
   var elEndereco = document.getElementById("endereco");
   var elNumero = document.getElementById("numero");
   var elAno = document.getElementById("ano");
+  var elOrdemData = document.getElementById("ordem-data");
   var elBtnPesquisar = document.getElementById("btn-pesquisar");
   var elBtnLimpar = document.getElementById("btn-limpar");
   var elBtnAtualizar = document.getElementById("btn-atualizar");
@@ -1391,10 +1399,7 @@ atualizarOpcoesAnos();
       }
     }).then(function (resultado) {
       definirCarregando(false);
-      ultimosRegistros = resultado.registros;
-      elContagem.classList.add("ativa");
-      elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
-      renderizarResultados(resultado.registros);
+      
       if (resultado.anosComErro.length > 0) {
         elFaixaAvisoAnos.classList.add("ativa");
         elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
@@ -1419,12 +1424,26 @@ atualizarOpcoesAnos();
     elEndereco.value = "";
     elNumero.value = "";
     elAno.value = "2026";
+    if (elOrdemData) elOrdemData.value = "desc";
     elContagem.classList.remove("ativa");
-    elFaixaErro.classList.remove("ativa");
+    elContagem.classList.remove("ativa");
     elFaixaAvisoAnos.classList.remove("ativa");
     elResultados.innerHTML = "";
     fecharDetalhe();
   });
+  if (elOrdemData) {
+    elOrdemData.addEventListener("change", function () {
+      if (ultimosRegistros && ultimosRegistros.length > 0) {
+        var ordem = elOrdemData.value;
+        ultimosRegistros.sort(function (a, b) {
+          var vA = chaveOrdenacao(a.dataReferencia);
+          var vB = chaveOrdenacao(b.dataReferencia);
+          return ordem === "asc" ? vA - vB : vB - vA;
+        });
+        renderizarResultados(ultimosRegistros);
+      }
+    });
+  }
   // ===== Banner de cookies =====
   (function () {
     var banner = document.getElementById("cookie-banner");
