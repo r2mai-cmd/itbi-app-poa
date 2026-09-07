@@ -11,7 +11,7 @@ let chartEvolucao = null;
 let chartRanking = null;
 let chartHistorico = null;
 let chartMetragem = null;
-
+let chartVolumeMes = null;
 const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
 async function inicializar() {
@@ -107,8 +107,10 @@ function atualizar() {
 
   // Gráfico 4: Distribuição por Faixa de Metragem
   desenharGraficoMetragem(bairroSel, filtrados);
+desenharGraficoMetragem(bairroSel, filtrados);
+  // Gráfico 5: Volume de Negócios Mês a Mês
+  desenharGraficoVolumeMes(bairroSel, anoParaMensal, historico);
 }
-
 function desenharGraficoEvolucao(bairro, ano, dados) {
   const ctx = document.getElementById('graficoEvolucao').getContext('2d');
   document.getElementById('titulo-grafico-evolucao').textContent = `Evolução Mensal do m² — ${bairro} (${ano})`;
@@ -331,5 +333,55 @@ function desenharGraficoMetragem(bairro, filtrados) {
     }
   });
 }
+function desenharGraficoVolumeMes(bairro, ano, historico) {
+  const canvas = document.getElementById('graficoVolumeMes');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
 
+  // Inicializa os 12 meses zerados
+  const contagemMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  // Filtra pelo bairro e ano selecionado
+  const dadosBairroAno = historico.filter(item => item.bairro === bairro && item.ano === ano);
+  dadosBairroAno.forEach(item => {
+    if (item.mes >= 1 && item.mes <= 12) {
+      contagemMes[item.mes - 1] += (item.transacoes || 0);
+    }
+  });
+
+  if (chartVolumeMes) chartVolumeMes.destroy();
+
+  chartVolumeMes = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: mesesAbrev,
+      datasets: [{
+        label: 'Volume de Negócios',
+        data: contagemMes,
+        backgroundColor: '#eb8634',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => `${formatadorNumero.format(c.raw)} negócios`
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 },
+          grid: { color: 'rgba(0, 0, 0, 0.06)' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
 document.addEventListener('DOMContentLoaded', inicializar);
