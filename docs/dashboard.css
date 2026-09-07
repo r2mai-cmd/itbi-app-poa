@@ -1,3 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #19222a; /* Fundo grafite idêntico ao index */
+  color: #f7f5f0;
+  min-height: 100vh;
+}
+
 .barra-topo {
   display: flex;
   justify-content: space-between;
@@ -7,7 +20,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Cole a partir daqui */
 .marca {
   display: flex;
   align-items: center;
@@ -73,6 +85,7 @@
     max-height: 140px;
   }
 }
+
 .container-dashboard {
   max-width: 1300px;
   margin: 0 auto;
@@ -90,6 +103,7 @@
   padding: 20px;
   border-radius: 12px;
   border-top: 3px solid #eb8634;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
 }
 
 .seletor-grupo {
@@ -115,6 +129,12 @@
   font-weight: 600;
   font-size: 0.9rem;
   color: #1a232a;
+  outline: none;
+}
+
+.seletor-grupo select:focus {
+  border-color: #eb8634;
+  box-shadow: 0 0 0 2px rgba(235, 134, 52, 0.25);
 }
 
 .grid-kpis {
@@ -124,9 +144,9 @@
 }
 
 .cartao {
-  background: #f7f5f0;
+  background: #f7f5f0; /* Fundo creme/marfim idêntico aos cards do index */
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .cartao.kpi {
@@ -134,40 +154,22 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-.grid-kpis .cartao.kpi:first-child {
-  border-left: 5px solid #eb8634;
+  border-left: 5px solid transparent;
 }
 
-.grid-kpis .cartao.kpi:last-child {
-  border-left: 5px solid #2bb0a6;
+/* Bordas coloridas temáticas para os 3 cartões */
+.grid-kpis .cartao.kpi:nth-child(1) {
+  border-left-color: #eb8634; /* Laranja ITBI */
 }
 
-.anuncio-container {
-  width: 100%;
-  margin: 18px 0;
-  text-align: center;
+.grid-kpis .cartao.kpi:nth-child(2) {
+  border-left-color: #f59e0b; /* Âmbar Ticket */
 }
 
-.anuncio-rotulo {
-  display: block;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  color: #64748b;
-  margin-bottom: 4px;
+.grid-kpis .cartao.kpi:nth-child(3) {
+  border-left-color: #2bb0a6; /* Ciano Volume */
 }
 
-.anuncio-placeholder {
-  min-height: 90px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #64748b;
-  font-size: 0.8rem;
-}
 .kpi-titulo {
   font-size: 0.75rem;
   font-weight: 700;
@@ -206,12 +208,34 @@
   height: 350px;
 }
 
+.anuncio-container {
+  width: 100%;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.anuncio-rotulo {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.anuncio-placeholder {
+  min-height: 90px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
 @media (max-width: 768px) {
   .grid-graficos {
     grid-template-columns: 1fr;
   }
-}
-
-.painel-full {
-  grid-column: 1 / -1;
 }
