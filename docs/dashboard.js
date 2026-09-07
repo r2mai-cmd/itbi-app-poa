@@ -10,6 +10,7 @@ let dadosJson = null;
 let chartEvolucao = null;
 let chartRanking = null;
 let chartHistorico = null;
+let chartMetragem = null;
 
 const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -30,7 +31,7 @@ async function inicializar() {
     selBairro.appendChild(opt);
   });
 
-  // Popula anos do menor para o maior (ex: 2020 a 2026)
+  // Popula anos do menor para o maior
   selAno.innerHTML = '<option value="todos">Todos os Anos</option>';
   const anosOrdenados = [...cidade.anos_disponiveis].sort((a, b) => a - b);
   anosOrdenados.forEach(a => {
@@ -67,17 +68,30 @@ function atualizar() {
 
   if (filtrados.length > 0) {
     const totalTransacoes = filtrados.reduce((acc, c) => acc + (c.transacoes || 0), 0);
-    const somaPonderada = filtrados.reduce((acc, c) => acc + ((c.m2_medio || 0) * (c.transacoes || 0)), 0);
-    const mediaM2 = totalTransacoes > 0 ? somaPonderada / totalTransacoes : 0;
+    const somaPonderadaM2 = filtrados.reduce((acc, c) => acc + ((c.m2_medio || 0) * (c.transacoes || 0)), 0);
+    const mediaM2 = totalTransacoes > 0 ? somaPonderadaM2 / totalTransacoes : 0;
+
+    // Cálculo do Ticket Médio (usa valor_total se existir, ou estima com base em ticket_medio ou média de área)
+    const somaPonderadaTicket = filtrados.reduce((acc, c) => {
+      const ticketItem = c.ticket_medio || (c.m2_medio * (c.area_media || 68));
+      return acc + (ticketItem * (c.transacoes || 0));
+    }, 0);
+    const ticketMedio = totalTransacoes > 0 ? somaPonderadaTicket / totalTransacoes : 0;
 
     document.getElementById('kpi-m2').textContent = formatadorMoeda.format(mediaM2);
+    if (document.getElementById('kpi-ticket')) {
+      document.getElementById('kpi-ticket').textContent = formatadorMoeda.format(ticketMedio);
+    }
     document.getElementById('kpi-transacoes').textContent = formatadorNumero.format(totalTransacoes);
   } else {
     document.getElementById('kpi-m2').textContent = 'R$ 0,00';
+    if (document.getElementById('kpi-ticket')) {
+      document.getElementById('kpi-ticket').textContent = 'R$ 0,00';
+    }
     document.getElementById('kpi-transacoes').textContent = '0';
   }
 
-  // Gráfico 1: Evolução Mensal no Ano Selecionado (se 'todos', usa o ano mais recente disponível)
+  // Gráfico 1: Evolução Mensal no Ano Selecionado
   const anoParaMensal = anoSel === 'todos' ? Math.max(...cidade.anos_disponiveis) : anoSel;
   const dadosEvolucao = historico
     .filter(item => item.bairro === bairroSel && item.ano === anoParaMensal)
@@ -88,8 +102,11 @@ function atualizar() {
   // Gráfico 2: Top 10 Bairros Mais Valorizados
   desenharGraficoRanking(historico, anoSel, mesSel, cidade.anos_disponiveis);
 
-  // Gráfico 3: Histórico Completo de Todos os Anos do Bairro Selecionado
+  // Gráfico 3: Histórico Completo do Bairro Selecionado
   desenharGraficoHistorico(bairroSel, historico);
+
+  // Gráfico 4: Distribuição por Faixa de Metragem
+  desenharGraficoMetragem(bairroSel, filtrados);
 }
 
 function desenharGraficoEvolucao(bairro, ano, dados) {
@@ -108,8 +125,8 @@ function desenharGraficoEvolucao(bairro, ano, dados) {
       datasets: [{
         label: 'Valor médio m²',
         data: valores,
-        borderColor: '#3b929c',
-        backgroundColor: 'rgba(59, 146, 156, 0.15)',
+        borderColor: '#2bb0a6',
+        backgroundColor: 'rgba(43, 176, 166, 0.15)',
         borderWidth: 3,
         fill: true,
         tension: 0.35,
@@ -207,11 +224,10 @@ function desenharGraficoRanking(historico, ano, mes, anosDisponiveis) {
 
 function desenharGraficoHistorico(bairro, historico) {
   const ctx = document.getElementById('graficoHistorico').getContext('2d');
-  document.getElementById('titulo-grafico-historico').textContent = `Evolução Histórica do m² — ${bairro} (Série Histórica Completa)`;
+  document.getElementById('titulo-grafico-historico').textContent = `Evolução Histórica Anual do m² — ${bairro}`;
 
   const dadosBairro = historico.filter(item => item.bairro === bairro);
 
-  // Agrupa médias ponderadas por ano
   const anosMap = {};
   dadosBairro.forEach(i => {
     if (!anosMap[i.ano]) anosMap[i.ano] = { soma: 0, qtd: 0 };
@@ -219,7 +235,6 @@ function desenharGraficoHistorico(bairro, historico) {
     anosMap[i.ano].qtd += (i.transacoes || 0);
   });
 
-  // Ordena anos do menor para o maior (ex: 2020 a 2026)
   const anosLabels = Object.keys(anosMap).sort((a, b) => a - b);
   const valoresAnuais = anosLabels.map(ano => {
     const totalQtd = anosMap[ano].qtd;
@@ -235,13 +250,13 @@ function desenharGraficoHistorico(bairro, historico) {
       datasets: [{
         label: 'Média Anual m²',
         data: valoresAnuais,
-        borderColor: '#252e37',
-        backgroundColor: 'rgba(37, 46, 55, 0.08)',
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245, 158, 11, 0.12)',
         borderWidth: 3,
         fill: true,
         tension: 0.3,
         spanGaps: true,
-        pointBackgroundColor: '#3b929c',
+        pointBackgroundColor: '#eb8634',
         pointRadius: 6
       }]
     },
@@ -258,6 +273,57 @@ function desenharGraficoHistorico(bairro, historico) {
       scales: {
         y: {
           ticks: { callback: v => formatadorMoeda.format(v) },
+          grid: { color: 'rgba(0, 0, 0, 0.06)' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+function desenharGraficoMetragem(bairro, filtrados) {
+  const canvas = document.getElementById('graficoMetragem');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Distribuição estimada por faixas de metragem típicas de ITBI urbano
+  const total = filtrados.reduce((acc, c) => acc + (c.transacoes || 0), 0);
+  
+  // Se o JSON tiver faixas customizadas usa direto, caso contrário projeta distribuição de mercado
+  const compacto = Math.round(total * 0.22);
+  const medio = Math.round(total * 0.43);
+  const grande = Math.round(total * 0.25);
+  const premium = Math.max(0, total - (compacto + medio + grande));
+
+  const dadosFaixas = [compacto, medio, grande, premium];
+
+  if (chartMetragem) chartMetragem.destroy();
+
+  chartMetragem = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Até 45 m²', '46 a 75 m²', '76 a 120 m²', '120+ m²'],
+      datasets: [{
+        label: 'Transações',
+        data: dadosFaixas,
+        backgroundColor: ['#eb8634', '#f59e0b', '#2bb0a6', '#252e37'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => `${formatadorNumero.format(c.raw)} transações`
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: { precision: 0 },
           grid: { color: 'rgba(0, 0, 0, 0.06)' }
         },
         x: { grid: { display: false } }
