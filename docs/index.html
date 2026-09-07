@@ -491,6 +491,7 @@ white-space: nowrap;
             <select id="cidade">
               <option value="poa">Porto Alegre - RS</option>
               <option value="fortaleza">Fortaleza - CE</option>
+              <option value="bh">Belo Horizonte - MG</option>
             </select>
           </div>
 
@@ -719,7 +720,14 @@ white-space: nowrap;
       situacao: c(17)
     };
   }
-
+// ===== Converte uma linha em registro (Belo Horizonte) =====
+function converterRegistroBH(campos, anoPedido) {
+  var reg = converterRegistroPoa(campos, anoPedido);
+  if (!reg) return null;
+  reg.cidadeNome = "Belo Horizonte";
+  reg.estadoSigla = "MG";
+  return reg;
+}
   // ===== Datas no formato "dd/MM/yyyy HH:mm" (Fortaleza) =====
   function parseDataFortaleza(texto) {
     if (!texto) return null;
@@ -933,6 +941,31 @@ white-space: nowrap;
           if (!linha.trim()) continue;
           try {
             var reg = converterRegistroFortaleza(linha.split(";"), anoPedido);
+            if (reg) registros.push(reg);
+          } catch (e) { /* ignora linha malformada */ }
+        }
+        return registros;
+      }
+    }
+  },
+    bh: {
+      anosDisponiveis: [2024],
+      arquivoLocal: "data/itbi-bh-2024.csv",
+      chaveCache: function () { return "bh_2024"; },
+      baixarCsv: function () {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-bh-2024.csv)");
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, anoPedido) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroBH(linha.split(";"), anoPedido);
             if (reg) registros.push(reg);
           } catch (e) { /* ignora linha malformada */ }
         }
