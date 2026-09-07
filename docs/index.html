@@ -89,15 +89,18 @@ letter-spacing: -0.01em;
 }
 /* ===== Cabecalho: foto + titulo ===== */
 .cabecalho {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
-  }
-width: 100%;
-height: 100%;
-object-fit: cover;
-object-position: center 55%;
+  position: relative;
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+}
+
+.cabecalho img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 80%;
 }
 .cabecalho-veu {
   position: absolute;
@@ -159,10 +162,10 @@ gap: 12px;
   .barra-lateral { width: 100%; position: static; }
   .barra-lateral .cartao { width: 100%; box-sizing: border-box; }
   .area-principal { width: 100%; }
-  .cabecalho { height: 260px; }
-  .cabecalho img { object-position: center bottom; }
-  .cabecalho-texto { padding: 16px 20px 20px; }
-  .cabecalho-titulo { font-size: 1.25rem; }
+  .cabecalho { height: 340px; }
+  .cabecalho img { object-fit: cover; object-position: 70% bottom; }
+  .cabecalho-texto { padding: 24px 20px 24px; }
+  .cabecalho-titulo { font-size: 1.35rem; line-height: 1.25; }
 }
 
 .cartao {
