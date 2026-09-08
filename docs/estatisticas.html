@@ -135,7 +135,8 @@
         <strong class="kpi-valor" id="kpi-transacoes">0</strong>
       </div>
     </section>
-   <!-- Gráficos -->
+
+    <!-- Gráficos -->
     <section class="grid-graficos">
       <div class="cartao painel-grafico">
         <h3 id="titulo-grafico-evolucao">Evolução Mensal do Valor do m²</h3>
@@ -152,32 +153,40 @@
       </div>
 
       <div class="cartao painel-grafico">
-      <h3 id="titulo-grafico-historico">Evolução Histórica Anual do m²</h3>
-      <div class="canvas-box">
-        <canvas id="graficoHistorico"></canvas>
+        <h3 id="titulo-grafico-historico">Evolução Histórica Anual do m²</h3>
+        <div class="canvas-box">
+          <canvas id="graficoHistorico"></canvas>
+        </div>
       </div>
-    </div>
 
-    <div class="cartao painel-grafico">
-      <h3>Distribuição por Metragem Privativa</h3>
-      <div class="canvas-box">
-        <canvas id="graficoMetragem"></canvas>
+      <div class="cartao painel-grafico">
+        <h3>Distribuição por Metragem Privativa</h3>
+        <div class="canvas-box">
+          <canvas id="graficoMetragem"></canvas>
+        </div>
       </div>
-    </div>
-      <div class="cartao painel-grafico" style="grid-column: 1 / -1;">
+
+      <div class="cartao painel-grafico">
         <h3>Volume de Negócios (Mês a Mês)</h3>
         <div class="canvas-box">
           <canvas id="graficoVolumeMes"></canvas>
         </div>
       </div>
-  </section>
 
-  <!-- ESPAÇO AD 2: Rodapé de Conversão -->
-  <div class="anuncio-container">
-    <span class="anuncio-rotulo">PUBLICIDADE</span>
-    <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
-  </div>
-</main>
+      <div class="cartao painel-grafico">
+        <h3>Top 10 Bairros com Mais Negócios</h3>
+        <div class="canvas-box">
+          <canvas id="graficoRankingVolume"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESPAÇO AD 2: Rodapé de Conversão -->
+    <div class="anuncio-container">
+      <span class="anuncio-rotulo">PUBLICIDADE</span>
+      <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
+    </div>
+  </main>
 
   <script src="dashboard.js"></script>
 </body>
