@@ -12,6 +12,7 @@ let chartRanking = null;
 let chartHistorico = null;
 let chartMetragem = null;
 let chartVolumeMes = null;
+let chartRankingVolume = null;
 const mesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
 async function inicializar() {
@@ -71,7 +72,7 @@ function atualizar() {
     const somaPonderadaM2 = filtrados.reduce((acc, c) => acc + ((c.m2_medio || 0) * (c.transacoes || 0)), 0);
     const mediaM2 = totalTransacoes > 0 ? somaPonderadaM2 / totalTransacoes : 0;
 
-    // Cálculo do Ticket Médio (usa valor_total se existir, ou estima com base em ticket_medio ou média de área)
+    // Cálculo do Ticket Médio
     const somaPonderadaTicket = filtrados.reduce((acc, c) => {
       const ticketItem = c.ticket_medio || (c.m2_medio * (c.area_media || 68));
       return acc + (ticketItem * (c.transacoes || 0));
@@ -107,10 +108,14 @@ function atualizar() {
 
   // Gráfico 4: Distribuição por Faixa de Metragem
   desenharGraficoMetragem(bairroSel, filtrados);
-desenharGraficoMetragem(bairroSel, filtrados);
+
   // Gráfico 5: Volume de Negócios Mês a Mês
   desenharGraficoVolumeMes(bairroSel, anoParaMensal, historico);
+
+  // Gráfico 6: Top 10 Bairros com Mais Negócios
+  desenharGraficoRankingVolume(historico, anoSel, mesSel, cidade.anos_disponiveis);
 }
+
 function desenharGraficoEvolucao(bairro, ano, dados) {
   const ctx = document.getElementById('graficoEvolucao').getContext('2d');
   document.getElementById('titulo-grafico-evolucao').textContent = `Evolução Mensal do m² — ${bairro} (${ano})`;
@@ -288,10 +293,8 @@ function desenharGraficoMetragem(bairro, filtrados) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // Distribuição estimada por faixas de metragem típicas de ITBI urbano
   const total = filtrados.reduce((acc, c) => acc + (c.transacoes || 0), 0);
   
-  // Se o JSON tiver faixas customizadas usa direto, caso contrário projeta distribuição de mercado
   const compacto = Math.round(total * 0.22);
   const medio = Math.round(total * 0.43);
   const grande = Math.round(total * 0.25);
@@ -333,15 +336,14 @@ function desenharGraficoMetragem(bairro, filtrados) {
     }
   });
 }
+
 function desenharGraficoVolumeMes(bairro, ano, historico) {
   const canvas = document.getElementById('graficoVolumeMes');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // Inicializa os 12 meses zerados
   const contagemMes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  // Filtra pelo bairro e ano selecionado
   const dadosBairroAno = historico.filter(item => item.bairro === bairro && item.ano === ano);
   dadosBairroAno.forEach(item => {
     if (item.mes >= 1 && item.mes <= 12) {
@@ -384,4 +386,71 @@ function desenharGraficoVolumeMes(bairro, ano, historico) {
     }
   });
 }
+
+function desenharGraficoRankingVolume(historico, ano, mes, anosDisponiveis) {
+  const canvas = document.getElementById('graficoRankingVolume');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const anoReferencia = ano === 'todos' ? Math.max(...anosDisponiveis) : ano;
+
+  const itensFiltrados = historico.filter(item => {
+    const mAno = item.ano === anoReferencia;
+    const mMes = mes === 'todos' ? true : item.mes === parseInt(mes, 10);
+    return mAno && mMes;
+  });
+
+  const agrupadoBairro = {};
+  itensFiltrados.forEach(i => {
+    if (!agrupadoBairro[i.bairro]) {
+      agrupadoBairro[i.bairro] = 0;
+    }
+    agrupadoBairro[i.bairro] += (i.transacoes || 0);
+  });
+
+  const ranking = Object.keys(agrupadoBairro)
+    .map(b => ({
+      bairro: b,
+      transacoes: agrupadoBairro[b]
+    }))
+    .filter(r => r.transacoes > 0)
+    .sort((a, b) => b.transacoes - a.transacoes)
+    .slice(0, 10);
+
+  if (chartRankingVolume) chartRankingVolume.destroy();
+
+  chartRankingVolume = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ranking.map(r => r.bairro),
+      datasets: [{
+        label: 'Transações Fechadas',
+        data: ranking.map(r => r.transacoes),
+        backgroundColor: '#2bb0a6',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => `${formatadorNumero.format(c.raw)} transações`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { precision: 0 },
+          grid: { color: 'rgba(0, 0, 0, 0.06)' }
+        },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', inicializar);
