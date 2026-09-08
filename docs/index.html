@@ -15,7 +15,7 @@
   gtag('config', 'G-HTD7CLQPZ2');
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
-<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -163,7 +163,6 @@
     .cabecalho img { object-fit: cover; object-position: 70% bottom; }
     .cabecalho-texto { padding: 24px 20px 24px; }
     .cabecalho-titulo { font-size: 1.35rem; line-height: 1.25; }
-    .barra-filtros-topo { flex-direction: column; align-items: flex-start; gap: 10px; }
   }
 
   .cartao {
@@ -296,38 +295,6 @@
   }
   .contagem.ativa { display: block; }
 
-  /* Barra de filtros do topo (ordenar e itens por página) */
-  .barra-filtros-topo {
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-  .grupo-filtro-topo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .filtro-rotulo {
-    font-size: 0.75rem;
-    color: rgba(245, 243, 237, 0.6);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .select-itens-pag {
-    background: #2a2d32;
-    border: 1px solid #444;
-    color: #fff;
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-size: 0.8rem;
-    font-family: var(--fonte-corpo);
-    outline: none;
-    cursor: pointer;
-  }
-
   .resultado {
     background: var(--pergaminho);
     border-radius: 12px;
@@ -382,6 +349,77 @@
     letter-spacing: 0.05em;
     text-transform: uppercase;
     line-height: 1;
+  }
+
+  /* Paginação e Controles de Tela */
+  .controles-superiores {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .controles-paginacao-qtd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: rgba(245, 243, 237, 0.7);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .controles-paginacao-qtd select {
+    background: #2a2d32;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    outline: none;
+  }
+
+  .barra-paginacao-numerica {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .btn-pagina {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background-color: #2a2d32;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .btn-pagina:hover:not(:disabled) {
+    background-color: #41464A;
+    border-color: var(--laranja);
+  }
+  .btn-pagina.ativo {
+    background-color: var(--laranja);
+    border-color: var(--laranja);
+    color: #fff;
+  }
+  .btn-pagina:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .reticencias-pagina {
+    color: rgba(245, 243, 237, 0.6);
+    padding: 0 4px;
   }
 
   .ficha-titulo { font-family: var(--fonte-corpo); font-size: 1.5rem; font-weight: 800; color: var(--texto-sobre-fundo); margin: 0 0 4px; }
@@ -478,48 +516,6 @@
     font-size: 0.8rem !important;
     color: #6B6A63 !important;
     margin: 0 !important;
-  }
-
-  /* Estilos dos Botões de Paginação */
-  .paginacao-conteiner {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin: 28px 0 16px;
-    flex-wrap: wrap;
-  }
-  .paginacao-btn {
-    background: #2a2d32;
-    border: 1px solid #444;
-    color: #fff;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-family: var(--fonte-corpo);
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .paginacao-btn:hover:not(:disabled) {
-    background: var(--fundo-escuro-claro);
-    border-color: #666;
-  }
-  .paginacao-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
-  .paginacao-btn.ativo {
-    background: var(--laranja) !important;
-    border-color: var(--laranja-escuro) !important;
-    color: #fff !important;
-    font-weight: 800;
-  }
-  .paginacao-reticencias {
-    color: var(--texto-sobre-fundo-sutil);
-    font-weight: 700;
-    padding: 0 4px;
-    user-select: none;
   }
 </style>
 </head>
@@ -618,36 +614,28 @@
       </aside>
 
       <main class="area-principal">
-        <p class="contagem" id="contagem"></p>
-
-        <!-- Barra superior: Itens por página e Ordenação -->
-        <div class="barra-filtros-topo" id="barra-ordenacao">
-          <div class="grupo-filtro-topo">
-            <span class="filtro-rotulo">Itens por página:</span>
-            <select id="itens-por-pagina" class="select-itens-pag">
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50" selected>50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-
-          <div class="grupo-filtro-topo">
-            <span class="filtro-rotulo">Ordenar:</span>
-            <button type="button" class="btn-ordem ativo" data-ordem="desc" style="cursor: pointer; background: #2a2d32; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais recentes</button>
-            <button type="button" class="btn-ordem" data-ordem="asc" style="cursor: pointer; background: transparent; border: 1px solid #444; color: rgba(245, 243, 237, 0.6); border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais antigos</button>
+        <div class="controles-superiores">
+          <p class="contagem" id="contagem" style="margin:0;"></p>
+          <div id="controles-qtd-pagina" style="display: none; align-items: center; gap: 16px;">
+            <div class="controles-paginacao-qtd">
+              <span>Itens por página:</span>
+              <select id="sel-itens-pagina">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+            <div id="barra-ordenacao" style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">Ordenar:</span>
+              <button type="button" class="btn-ordem ativo" data-ordem="desc" style="cursor: pointer; background: #2a2d32; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais recentes</button>
+              <button type="button" class="btn-ordem" data-ordem="asc" style="cursor: pointer; background: transparent; border: 1px solid #444; color: rgba(245, 243, 237, 0.6); border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais antigos</button>
+            </div>
           </div>
         </div>
 
         <div class="grade-resultados" id="resultados"></div>
-
-        <!-- Controles de Paginação -->
-        <div class="paginacao-conteiner" id="paginacao">
-          <button class="paginacao-btn" id="btn-pag-ant" type="button">&larr; Anterior</button>
-          <div id="paginacao-numeros" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"></div>
-          <button class="paginacao-btn" id="btn-pag-prox" type="button">Próxima &rarr;</button>
-        </div>
-
+        <div class="barra-paginacao-numerica" id="barra-paginacao" style="display: none;"></div>
         <div id="detalhe" hidden></div>
       </main>
     </div>
@@ -710,9 +698,6 @@
   "use strict";
 
   var cacheCsv = {};
-
-  var itensPorPagina = 50;
-  var paginaAtual = 1;
 
   function parseLinhaCsv(linha) {
     var resultado = [];
@@ -916,51 +901,18 @@
     return partes.join(", ");
   }
 
-  var PROXIES_CORS = [
-    function (url) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url); },
-    function (url) { return "https://corsproxy.io/?url=" + encodeURIComponent(url); }
-  ];
-
-  function tentarComProxies(url, indiceProxy, ultimoErro) {
-    if (indiceProxy >= PROXIES_CORS.length) {
-      throw ultimoErro || new Error("Todas as tentativas de acesso falharam.");
-    }
-    var proxied = PROXIES_CORS[indiceProxy](url);
-    return fetch(proxied).then(function (resp) {
-      if (!resp.ok) throw new Error("HTTP " + resp.status + " (proxy " + (indiceProxy + 1) + ")");
-      return resp.text();
-    }).catch(function (erro) {
-      return tentarComProxies(url, indiceProxy + 1, erro);
-    });
-  }
-
-  function baixarTexto(url) {
-    return fetch(url).then(function (resp) {
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      return resp.text();
-    }).catch(function (erroDireto) {
-      return tentarComProxies(url, 0, erroDireto).catch(function (erroFinal) {
-        var motivo = erroDireto && erroDireto.message ? erroDireto.message : String(erroDireto);
-        throw new Error("Falha ao acessar " + url.split("/download/")[1] + " \u2014 " + motivo);
-      });
-    });
-  }
-
-  var BASE_POA = "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource";
-
   var FONTES = {
     poa: {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      urlPorAno: {
-        2020: BASE_POA + "/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv",
-        2021: BASE_POA + "/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv",
-        2022: BASE_POA + "/102520c0-3edc-4f85-947f-6a98b96ed160/download/itbi-2022.csv",
-        2023: BASE_POA + "/2a4b0aee-7126-4323-936d-5f82fd04aeef/download/itbi-2023.csv",
-        2024: BASE_POA + "/4947bed6-6be6-40e6-a120-42957e745da5/download/itbi-2024.csv",
-        2025: BASE_POA + "/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv",
-        2026: BASE_POA + "/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
+      arquivoLocalPorAno: {
+        2026: "data/itbi-2026.csv",
+        2025: "data/itbi-2025.csv",
+        2024: "data/itbi-2024.csv",
+        2023: "data/itbi-2023.csv",
+        2022: "data/itbi-2022.csv",
+        2021: "data/itbi-2021.csv",
+        2020: "data/itbi-2020.csv"
       },
-      arquivoLocalPorAno: { 2025: "data/itbi-2025.csv", 2026: "data/itbi-2026.csv" },
       chaveCache: function (ano) { return "poa_" + ano; },
       baixarCsv: function (ano) {
         var arquivoLocal = this.arquivoLocalPorAno[ano];
@@ -970,7 +922,7 @@
             return resp.text();
           });
         }
-        return baixarTexto(this.urlPorAno[ano]);
+        return Promise.reject("Arquivo de Porto Alegre não encontrado para o ano " + ano);
       },
       processarCsv: function (texto, ano) {
         var linhas = texto.split("\n");
@@ -988,7 +940,6 @@
     },
     sp: {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      urlPorAno: {},
       arquivoLocalPorAno: {
         2026: "data/itbi-sp-2026.csv",
         2025: "data/itbi-sp-2025.csv",
@@ -1051,9 +1002,7 @@
     },
     bh: {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018],
-      arquivoLocal: function (ano) {
-        return "data/itbi-bh-" + ano + ".csv";
-      },
+      arquivoLocal: function (ano) { return "data/itbi-bh-" + ano + ".csv"; },
       chaveCache: function (ano) { return "bh_" + ano; },
       baixarCsv: function (ano) {
         var url = this.arquivoLocal(ano);
@@ -1078,9 +1027,7 @@
     },
     recife: {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015],
-      arquivoLocal: function (ano) {
-        return "data/itbi-recife-" + ano + ".csv";
-      },
+      arquivoLocal: function (ano) { return "data/itbi-recife-" + ano + ".csv"; },
       chaveCache: function (ano) { return "recife_" + ano; },
       baixarCsv: function (ano) {
         var url = this.arquivoLocal(ano);
@@ -1167,7 +1114,8 @@
   var elNumero = document.getElementById("numero");
   var elAno = document.getElementById("ano");
   var elBarraOrdenacao = document.getElementById("barra-ordenacao");
-  var elSelectItensPag = document.getElementById("itens-por-pagina");
+  var elControlesQtdPagina = document.getElementById("controles-qtd-pagina");
+  var elSelItensPagina = document.getElementById("sel-itens-pagina");
   var botoesOrdem = document.querySelectorAll(".btn-ordem");
   var ordemDataAtual = "desc";
   var elBtnPesquisar = document.getElementById("btn-pesquisar");
@@ -1181,22 +1129,13 @@
   var elTextoAvisoAnos = document.getElementById("texto-aviso-anos");
   var elContagem = document.getElementById("contagem");
   var elResultados = document.getElementById("resultados");
+  var elBarraPaginacao = document.getElementById("barra-paginacao");
   var elDetalhe = document.getElementById("detalhe");
-  var elPaginacao = document.getElementById("paginacao");
-  var elPaginacaoNumeros = document.getElementById("paginacao-numeros");
-  var elBtnPagAnt = document.getElementById("btn-pag-ant");
-  var elBtnPagProx = document.getElementById("btn-pag-prox");
-
-  if (window.location.protocol === "file:") {
-    elFaixaErro.classList.add("ativa");
-    elTextoErro.textContent =
-      "Este arquivo foi aberto direto do dispositivo (file://). A busca só funciona quando o site está " +
-      "hospedado de verdade (ex.: GitHub Pages) — abrir o arquivo local bloqueia o navegador de buscar dados, " +
-      "mesmo os que estão na mesma pasta.";
-  }
 
   var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
   var ultimosRegistros = [];
+  var paginaAtual = 1;
+  var itensPorPagina = 50;
 
   function definirCarregando(carregando) {
     elBtnPesquisar.disabled = carregando;
@@ -1206,73 +1145,31 @@
     if (!carregando) elTextoProgresso.style.display = "none";
   }
 
-  function gerarBotoesPaginacao(totalPaginas, paginaAtiva) {
-    elPaginacaoNumeros.innerHTML = "";
+  function renderizarResultados() {
+    elResultados.innerHTML = "";
+    var total = ultimosRegistros.length;
 
-    function adicionarBotao(num, rotulo, desabilitado, ativo) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "paginacao-btn" + (ativo ? " ativo" : "");
-      b.textContent = rotulo || num;
-      if (desabilitado) {
-        b.disabled = true;
-      } else {
-        b.addEventListener("click", function () {
-          renderizarPagina(ultimosRegistros, num);
-          window.scrollTo({ top: elResultados.offsetTop - 40, behavior: "smooth" });
-        });
-      }
-      elPaginacaoNumeros.appendChild(b);
-    }
-
-    function adicionarReticencias() {
-      var span = document.createElement("span");
-      span.className = "paginacao-reticencias";
-      span.textContent = "...";
-      elPaginacaoNumeros.appendChild(span);
-    }
-
-    if (totalPaginas <= 7) {
-      for (var i = 1; i <= totalPaginas; i++) {
-        adicionarBotao(i, i, false, i === paginaAtiva);
-      }
+    if (total === 0) {
+      elContagem.classList.remove("ativa");
+      if (elControlesQtdPagina) elControlesQtdPagina.style.display = "none";
+      elBarraPaginacao.style.display = "none";
       return;
     }
 
-    adicionarBotao(1, 1, false, paginaAtiva === 1);
+    elContagem.classList.add("ativa");
+    elContagem.textContent = total.toLocaleString("pt-BR") + " registro(s) encontrado(s)";
+    if (elControlesQtdPagina) elControlesQtdPagina.style.display = "flex";
 
-    if (paginaAtiva > 3) {
-      adicionarReticencias();
-    }
-
-    var inicio = Math.max(2, paginaAtiva - 1);
-    var fim = Math.min(totalPaginas - 1, paginaAtiva + 1);
-
-    for (var j = inicio; j <= fim; j++) {
-      adicionarBotao(j, j, false, j === paginaAtiva);
-    }
-
-    if (paginaAtiva < totalPaginas - 2) {
-      adicionarReticencias();
-    }
-
-    adicionarBotao(totalPaginas, totalPaginas, false, paginaAtiva === totalPaginas);
-  }
-
-  function renderizarPagina(registros, pagina) {
-    elResultados.innerHTML = "";
-    var totalItens = registros.length;
-    var totalPaginas = Math.ceil(totalItens / itensPorPagina) || 1;
-
-    if (pagina < 1) pagina = 1;
-    if (pagina > totalPaginas) pagina = totalPaginas;
-    paginaAtual = pagina;
+    var totalPaginas = Math.ceil(total / itensPorPagina);
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+    if (paginaAtual < 1) paginaAtual = 1;
 
     var inicio = (paginaAtual - 1) * itensPorPagina;
-    var fim = Math.min(inicio + itensPorPagina, totalItens);
+    var fim = Math.min(inicio + itensPorPagina, total);
+    var paginaItens = ultimosRegistros.slice(inicio, fim);
 
-    for (var i = inicio; i < fim; i++) {
-      var r = registros[i];
+    for (var indice = 0; indice < paginaItens.length; indice++) {
+      var r = paginaItens[indice];
       var card = document.createElement("div");
       card.className = "resultado";
       var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
@@ -1296,42 +1193,68 @@
       card.querySelector(".resultado-sub").textContent = subTxt;
       card.querySelector(".resultado-preco").textContent = precoTxt;
       card.querySelector(".resultado-data").textContent = dataTxt;
+      
+      var globalIdx = inicio + indice;
       (function (idx) {
         card.addEventListener("click", function () { abrirDetalhe(idx); });
-      })(i);
+      })(globalIdx);
+
       elResultados.appendChild(card);
     }
 
-    if (totalPaginas > 1) {
-      elPaginacao.style.display = "flex";
-      elBtnPagAnt.disabled = paginaAtual <= 1;
-      elBtnPagProx.disabled = paginaAtual >= totalPaginas;
-      gerarBotoesPaginacao(totalPaginas, paginaAtual);
-    } else {
-      elPaginacao.style.display = "none";
-    }
+    renderizarPaginacaoNumerica(totalPaginas);
   }
 
-  elBtnPagAnt.addEventListener("click", function () {
-    if (paginaAtual > 1) {
-      renderizarPagina(ultimosRegistros, paginaAtual - 1);
-      window.scrollTo({ top: elResultados.offsetTop - 40, behavior: "smooth" });
+  function renderizarPaginacaoNumerica(totalPaginas) {
+    if (totalPaginas <= 1) {
+      elBarraPaginacao.style.display = "none";
+      elBarraPaginacao.innerHTML = "";
+      return;
     }
-  });
 
-  elBtnPagProx.addEventListener("click", function () {
-    var totalPaginas = Math.ceil(ultimosRegistros.length / itensPorPagina);
-    if (paginaAtual < totalPaginas) {
-      renderizarPagina(ultimosRegistros, paginaAtual + 1);
-      window.scrollTo({ top: elResultados.offsetTop - 40, behavior: "smooth" });
+    elBarraPaginacao.style.display = "flex";
+    var botoes = [];
+
+    botoes.push('<button type="button" class="btn-pagina" ' + (paginaAtual === 1 ? 'disabled' : '') + ' onclick="mudarPagina(' + (paginaAtual - 1) + ')">&laquo;</button>');
+
+    var delta = 2;
+    var range = [];
+    for (var i = Math.max(2, paginaAtual - delta); i <= Math.min(totalPaginas - 1, paginaAtual + delta); i++) {
+      range.push(i);
     }
-  });
 
-  elSelectItensPag.addEventListener("change", function () {
+    botoes.push('<button type="button" class="btn-pagina ' + (paginaAtual === 1 ? 'ativo' : '') + '" onclick="mudarPagina(1)">1</button>');
+
+    if (range.length > 0 && range[0] > 2) {
+      botoes.push('<span class="reticencias-pagina">...</span>');
+    }
+
+    for (var p = 0; p < range.length; p++) {
+      var numPag = range[p];
+      botoes.push('<button type="button" class="btn-pagina ' + (paginaAtual === numPag ? 'ativo' : '') + '" onclick="mudarPagina(' + numPag + ')">' + numPag + '</button>');
+    }
+
+    if (range.length > 0 && range[range.length - 1] < totalPaginas - 1) {
+      botoes.push('<span class="reticencias-pagina">...</span>');
+    }
+
+    botoes.push('<button type="button" class="btn-pagina ' + (paginaAtual === totalPaginas ? 'ativo' : '') + '" onclick="mudarPagina(' + totalPaginas + ')">' + totalPaginas + '</button>');
+
+    botoes.push('<button type="button" class="btn-pagina ' + (paginaAtual === totalPaginas ? 'disabled' : '') + '" onclick="mudarPagina(' + (paginaAtual + 1) + ')">&raquo;</button>');
+
+    elBarraPaginacao.innerHTML = botoes.join("");
+  }
+
+  window.mudarPagina = function (p) {
+    paginaAtual = p;
+    renderizarResultados();
+    window.scrollTo({ top: 200, behavior: "smooth" });
+  };
+
+  elSelItensPagina.addEventListener("change", function () {
     itensPorPagina = parseInt(this.value, 10) || 50;
-    if (ultimosRegistros && ultimosRegistros.length > 0) {
-      renderizarPagina(ultimosRegistros, 1);
-    }
+    paginaAtual = 1;
+    renderizarResultados();
   });
 
   function linhaFicha(rotulo, valor) {
@@ -1448,9 +1371,9 @@
     }
 
     elResultados.style.display = "none";
+    if (elControlesQtdPagina) elControlesQtdPagina.style.display = "none";
     elContagem.style.display = "none";
-    elBarraOrdenacao.style.display = "none";
-    elPaginacao.style.display = "none";
+    elBarraPaginacao.style.display = "none";
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1541,13 +1464,10 @@
     elDetalhe.hidden = true;
     elDetalhe.style.display = "none";
     elResultados.style.display = "";
+    if (ultimosRegistros.length > 0 && elControlesQtdPagina) {
+      elControlesQtdPagina.style.display = "flex";
+    }
     elContagem.style.display = "";
-    if (ultimosRegistros.length > 0) {
-      elBarraOrdenacao.style.display = "flex";
-    }
-    if (ultimosRegistros.length > itensPorPagina) {
-      elPaginacao.style.display = "flex";
-    }
     detalheEmpilhadoNoHistorico = false;
   }
 
@@ -1617,14 +1537,8 @@
         return ordemDataAtual === "asc" ? vA - vB : vB - vA;
       });
 
-      elContagem.classList.add("ativa");
-      elContagem.textContent = ultimosRegistros.length + " registro(s) encontrado(s)";
-
-      if (elBarraOrdenacao) {
-        elBarraOrdenacao.style.display = ultimosRegistros.length > 0 ? "flex" : "none";
-      }
-
-      renderizarPagina(ultimosRegistros, 1);
+      paginaAtual = 1;
+      renderizarResultados();
 
       if (resultado.anosComErro.length > 0) {
         elFaixaAvisoAnos.classList.add("ativa");
@@ -1648,10 +1562,10 @@
   elBtnLimpar.addEventListener("click", function () {
     elEndereco.value = "";
     elNumero.value = "";
-    elAno.value = "2026";
+    elAno.value = "";
     elContagem.classList.remove("ativa");
-    if (elBarraOrdenacao) elBarraOrdenacao.style.display = "none";
-    if (elPaginacao) elPaginacao.style.display = "none";
+    if (elControlesQtdPagina) elControlesQtdPagina.style.display = "none";
+    if (elBarraPaginacao) elBarraPaginacao.style.display = "none";
     ordemDataAtual = "desc";
     if (botoesOrdem) {
       botoesOrdem.forEach(function (b) {
@@ -1686,7 +1600,8 @@
             var vB = chaveOrdenacao(b.dataReferencia);
             return ordemDataAtual === "asc" ? vA - vB : vB - vA;
           });
-          renderizarPagina(ultimosRegistros, 1);
+          paginaAtual = 1;
+          renderizarResultados();
         }
       });
     });
