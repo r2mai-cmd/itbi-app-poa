@@ -19,11 +19,7 @@
       --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-main);
@@ -35,55 +31,21 @@
       flex-direction: column;
     }
 
-    /* Top Hero Header */
     header {
-      background: linear-gradient(rgba(20, 24, 29, 0.82), rgba(20, 24, 29, 0.94)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400"><rect width="800" height="400" fill="%231e242c"/><path d="M0 300 L200 180 L450 250 L800 120 L800 400 L0 400 Z" fill="%23252c36"/></svg>') center/cover no-repeat;
+      background: linear-gradient(rgba(20, 24, 29, 0.82), rgba(20, 24, 29, 0.94));
       padding: 48px 24px 36px 24px;
       border-bottom: 1px solid var(--border-dark);
     }
 
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .header-container { max-width: 1200px; margin: 0 auto; }
+    .header-container h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; text-transform: uppercase; margin-bottom: 8px; }
+    .header-container p { color: var(--text-muted); font-size: 0.95rem; max-width: 650px; }
 
-    .header-container h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
+    main { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; padding: 30px 20px 60px 20px; }
 
-    .header-container p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      max-width: 650px;
-    }
+    .grid-layout { display: grid; grid-template-columns: 320px 1fr; gap: 28px; align-items: start; }
+    @media (max-width: 860px) { .grid-layout { grid-template-columns: 1fr; } }
 
-    /* Main Container */
-    main {
-      flex: 1;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 30px 20px 60px 20px;
-    }
-
-    .grid-layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 28px;
-      align-items: start;
-    }
-
-    @media (max-width: 860px) {
-      .grid-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Sidebar Filters */
     .filter-panel {
       background-color: #f7eedf;
       color: var(--text-dark);
@@ -92,371 +54,69 @@
       box-shadow: 0 4px 18px rgba(0,0,0,0.25);
     }
 
-    .filter-group {
-      margin-bottom: 16px;
-    }
-
+    .filter-group { margin-bottom: 16px; }
     .filter-group label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #636260;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 6px;
+      display: block; font-size: 0.72rem; font-weight: 800; color: #636260;
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
     }
 
-    .filter-group input,
-    .filter-group select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 6px;
-      border: 1px solid #d4c8b8;
-      background-color: #fff;
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: #222;
-      outline: none;
-      transition: border-color 0.2s;
+    .filter-group input, .filter-group select {
+      width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #d4c8b8;
+      background-color: #fff; font-size: 0.92rem; font-weight: 600; color: #222; outline: none;
     }
 
-    .filter-group input:focus,
-    .filter-group select:focus {
-      border-color: var(--accent-orange);
-    }
-
-    .filter-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
     .btn-search {
-      width: 100%;
-      background-color: var(--accent-orange);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.9rem;
-      border: none;
-      border-radius: 8px;
-      padding: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background-color 0.2s;
-      margin-top: 8px;
+      width: 100%; background-color: var(--accent-orange); color: #fff; font-weight: 700;
+      font-size: 0.9rem; border: none; border-radius: 8px; padding: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px;
     }
+    .btn-search:hover { background-color: var(--accent-orange-hover); }
 
-    .btn-search:hover {
-      background-color: var(--accent-orange-hover);
-    }
+    .btn-links-row { display: flex; justify-content: space-between; margin-top: 14px; font-size: 0.78rem; font-weight: 700; }
+    .btn-links-row a { color: #555; text-decoration: none; cursor: pointer; }
+    .btn-links-row a:hover { color: #000; }
 
-    .btn-links-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 14px;
-      font-size: 0.78rem;
-      font-weight: 700;
-    }
-
-    .btn-links-row a {
-      color: #555;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-links-row a:hover {
-      color: #000;
-    }
-
-    /* Results Header */
     .results-top-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 4px 14px 4px;
-      border-bottom: 1px solid var(--border-dark);
-      margin-bottom: 18px;
-      gap: 12px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      padding: 0 4px 14px 4px; border-bottom: 1px solid var(--border-dark); margin-bottom: 18px; gap: 12px;
     }
+    .results-count { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.8px; text-transform: uppercase; }
 
-    .results-count {
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--text-muted);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-    }
+    .results-controls { display: flex; align-items: center; gap: 18px; font-size: 0.8rem; }
+    .results-controls select { background: #2b313a; color: #fff; border: 1px solid #414a56; border-radius: 4px; padding: 4px 8px; }
 
-    .results-controls {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 0.8rem;
-    }
+    .sort-links { display: flex; gap: 10px; align-items: center; }
+    .sort-links span { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 700; }
+    .sort-links button { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.78rem; }
+    .sort-links button.active { color: #fff; font-weight: 700; text-decoration: underline; }
 
-    .results-controls select {
-      background: #2b313a;
-      color: #fff;
-      border: 1px solid #414a56;
-      border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 0.8rem;
-      outline: none;
-    }
-
-    .sort-links {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .sort-links span {
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .sort-links button {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 0.78rem;
-      padding: 2px 4px;
-    }
-
-    .sort-links button.active {
-      color: #fff;
-      font-weight: 700;
-      text-decoration: underline;
-    }
-
-    /* Transaction Cards */
-    .results-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+    .results-list { display: flex; flex-direction: column; gap: 14px; }
 
     .tx-card {
-      background-color: var(--bg-card-item);
-      color: var(--text-dark);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background-color: var(--bg-card-item); color: var(--text-dark); border-radius: 12px;
+      padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      transition: transform 0.15s, box-shadow 0.15s;
     }
+    .tx-info { flex: 1; padding-right: 18px; }
+    .tx-title { font-size: 1.05rem; font-weight: 800; color: #1a1e24; margin-bottom: 4px; }
+    .tx-meta { font-size: 0.75rem; font-weight: 700; color: #6c757d; letter-spacing: 0.5px; text-transform: uppercase; }
+    .tx-side { text-align: right; min-width: 140px; }
+    .tx-price { font-size: 1.25rem; font-weight: 900; color: #16181b; margin-bottom: 2px; white-space: nowrap; }
+    .tx-date { font-size: 0.75rem; color: #636b75; font-weight: 600; margin-bottom: 6px; }
+    .tx-details-btn { color: var(--accent-orange); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; background: transparent; border: none; cursor: pointer; }
 
-    .tx-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.28);
-    }
-
-    .tx-info {
-      flex: 1;
-      padding-right: 18px;
-    }
-
-    .tx-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: #1a1e24;
-      margin-bottom: 4px;
-    }
-
-    .tx-meta {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #6c757d;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .tx-side {
-      text-align: right;
-      min-width: 140px;
-    }
-
-    .tx-price {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #16181b;
-      margin-bottom: 2px;
-      white-space: nowrap;
-    }
-
-    .tx-date {
-      font-size: 0.75rem;
-      color: #636b75;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .tx-details-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      color: var(--accent-orange);
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-
-    .tx-details-btn:hover {
-      text-decoration: underline;
-    }
-
-    /* Modal / Expanded Details */
     .details-box {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed #d1c7ba;
-      font-size: 0.8rem;
-      color: #333;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 8px;
+      margin-top: 10px; padding-top: 10px; border-top: 1px dashed #d1c7ba;
+      font-size: 0.8rem; color: #333; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;
     }
+    .details-box strong { display: block; font-size: 0.68rem; color: #737373; text-transform: uppercase; }
 
-    .detail-item strong {
-      display: block;
-      font-size: 0.68rem;
-      color: #737373;
-      text-transform: uppercase;
-    }
-
-    /* Pagination */
-    .pagination-bar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      margin-top: 26px;
-      flex-wrap: wrap;
-    }
-
-    .page-btn {
-      min-width: 36px;
-      height: 36px;
-      padding: 0 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border-dark);
-      background-color: var(--bg-card);
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .page-btn:hover:not(:disabled) {
-      background-color: #38404c;
-      border-color: var(--accent-orange);
-    }
-
-    .page-btn.active {
-      background-color: var(--accent-orange);
-      border-color: var(--accent-orange);
-      color: #fff;
-    }
-
-    .page-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .page-ellipsis {
-      color: var(--text-muted);
-      padding: 0 4px;
-    }
-
-    /* Guide Footer Section */
-    .guide-section {
-      margin-top: 50px;
-      border-top: 1px solid var(--border-dark);
-      padding-top: 30px;
-    }
-
-    .guide-title {
-      border-left: 4px solid var(--accent-orange);
-      padding-left: 12px;
-      margin-bottom: 20px;
-    }
-
-    .guide-title h2 {
-      font-size: 1.15rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .guide-title p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .guide-content h3 {
-      font-size: 0.92rem;
-      font-weight: 700;
-      margin-top: 16px;
-      margin-bottom: 6px;
-      color: #e2e4e8;
-    }
-
-    .guide-content p {
-      font-size: 0.82rem;
-      color: #a4abb5;
-      line-height: 1.6;
-    }
-
-    /* Empty and Loading States */
-    .empty-state {
-      text-align: center;
-      padding: 50px 20px;
-      color: var(--text-muted);
-      background: var(--bg-card);
-      border-radius: 12px;
-    }
-
-    .empty-state svg {
-      margin-bottom: 12px;
-      opacity: 0.6;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 28px;
-      height: 28px;
-      border: 3px solid rgba(255,255,255,0.2);
-      border-radius: 50%;
-      border-top-color: var(--accent-orange);
-      animation: spin 0.8s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    .empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); background: var(--bg-card); border-radius: 12px; }
   </style>
 </head>
 <body>
-
   <header>
     <div class="header-container">
       <h1>Sua Fonte de Inteligência para Preços de Imóveis</h1>
@@ -466,7 +126,6 @@
 
   <main>
     <div class="grid-layout">
-      <!-- Filtros -->
       <aside class="filter-panel">
         <div class="filter-group">
           <label for="selCidade">Cidade</label>
@@ -493,20 +152,17 @@
             <label for="selAno">Ano</label>
             <select id="selAno">
               <option value="2026">2026</option>
-              <option value="2025">2025</option>
+              <option value="2025" selected>2025</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
               <option value="2022">2022</option>
-              <option value="2021" selected>2021</option>
+              <option value="2021">2021</option>
               <option value="2020">2020</option>
             </select>
           </div>
         </div>
 
-        <button class="btn-search" id="btnPesquisar">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
-          PESQUISAR
-        </button>
+        <button class="btn-search" id="btnPesquisar">PESQUISAR</button>
 
         <div class="btn-links-row">
           <a id="btnLimpar">✕ LIMPAR</a>
@@ -514,15 +170,12 @@
         </div>
       </aside>
 
-      <!-- Área de Resultados -->
       <section>
         <div class="results-top-bar">
-          <div class="results-count" id="lblContagem">
-            0 REGISTRO(S) ENCONTRADO(S)
-          </div>
+          <div class="results-count" id="lblContagem">0 REGISTRO(S) ENCONTRADO(S)</div>
           <div class="results-controls">
             <div>
-              <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Itens por página:</span>
+              <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: 700;">ITENS POR PÁGINA:</span>
               <select id="selItensPorPagina">
                 <option value="10">10</option>
                 <option value="25">25</option>
@@ -531,44 +184,23 @@
               </select>
             </div>
             <div class="sort-links">
-              <span>Ordenar:</span>
+              <span>ORDENAR:</span>
               <button id="btnSortRecentes" class="active">Mais recentes</button>
               <button id="btnSortAntigos">Mais antigos</button>
             </div>
           </div>
         </div>
 
-        <!-- Lista de Cards -->
         <div class="results-list" id="listaResultados">
           <div class="empty-state">
-            Preencha os campos ao lado e clique em <strong>Pesquisar</strong> para consultar as transações de ITBI.
+            Preencha os campos ao lado e clique em <b>Pesquisar</b> para consultar as transações de ITBI.
           </div>
         </div>
-
-        <!-- Barra de Paginação -->
-        <div class="pagination-bar" id="barraPaginacao" style="display: none;"></div>
       </section>
     </div>
-
-    <!-- Guia de Mercado -->
-    <section class="guide-section">
-      <div class="guide-title">
-        <h2>Guia do Mercado & Dados Reais</h2>
-        <p>Informações técnicas sobre o ITBI e a base cartorária</p>
-      </div>
-      <div class="guide-content">
-        <h3>1. O que é o ITBI e quem deve pagar?</h3>
-        <p>O Imposto sobre Transmissão de Bens Imóveis (ITBI) incide na transferência onerosa de propriedades entre vivos. O recolhimento cabe ao adquirente (comprador) e é condição indispensável para a lavratura da escritura definitiva e matrícula no Cartório de Registro de Imóveis.</p>
-
-        <h3>2. Como dados reais ajudam na avaliação?</h3>
-        <p>Diferente de preços anunciados em portais (que incluem margem de negociação e superavaliação), o ITBI reflete o valor efetivamente liquidado e formalizado perante o Fisco Municipal, constituindo o padrão ouro para inteligência e precificação por metro quadrado.</p>
-      </div>
-    </section>
   </main>
 
   <script>
-    // Configuração de rotas de dados
-    // TODOS os anos de Porto Alegre agora apontam para os arquivos limpos na pasta local 'data/'
     const FONTES_LOCAL = {
       poa: {
         2020: "data/itbi-2020.csv",
@@ -578,64 +210,20 @@
         2024: "data/itbi-2024.csv",
         2025: "data/itbi-2025.csv",
         2026: "data/itbi-2026.csv"
-      },
-      sp: {
-        2020: "data/itbi-sp-2020.csv",
-        2021: "data/itbi-sp-2021.csv",
-        2022: "data/itbi-sp-2022.csv",
-        2023: "data/itbi-sp-2023.csv",
-        2024: "data/itbi-sp-2024.csv",
-        2025: "data/itbi-sp-2025.csv"
-      },
-      bh: {
-        2021: "data/itbi-bh-2021.csv",
-        2022: "data/itbi-bh-2022.csv",
-        2023: "data/itbi-bh-2023.csv",
-        2024: "data/itbi-bh-2024.csv",
-        2025: "data/itbi-bh-2025.csv",
-        2026: "data/itbi-bh-2026.csv"
-      },
-      recife: {
-        2021: "data/itbi-recife-2021.csv",
-        2022: "data/itbi-recife-2022.csv",
-        2023: "data/itbi-recife-2023.csv",
-        2024: "data/itbi-recife-2024.csv"
-      },
-      fortaleza: {
-        2024: "data/itbi-fortaleza.csv"
       }
     };
 
-    // Cache e Estado
     const cacheArquivos = {};
     let registrosFiltrados = [];
     let paginaAtual = 1;
     let itensPorPagina = 50;
     let ordemCrescente = false;
 
-    // Elementos DOM
-    const elCidade = document.getElementById("selCidade");
-    const elAno = document.getElementById("selAno");
-    const elLogradouro = document.getElementById("txtLogradouro");
-    const elNumero = document.getElementById("txtNumero");
-    const elBtnPesquisar = document.getElementById("btnPesquisar");
-    const elBtnLimpar = document.getElementById("btnLimpar");
-    const elBtnAtualizar = document.getElementById("btnAtualizar");
-    const elListaResultados = document.getElementById("listaResultados");
-    const elContagem = document.getElementById("lblContagem");
-    const elSelItens = document.getElementById("selItensPorPagina");
-    const elBarraPaginacao = document.getElementById("barraPaginacao");
-    const elSortRecentes = document.getElementById("btnSortRecentes");
-    const elSortAntigos = document.getElementById("btnSortAntigos");
-
-    // Formatação monetária
     function formatarMoeda(val) {
       const num = parseFloat(String(val).replace(",", "."));
-      if (isNaN(num)) return "R$ 0,00";
-      return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      return isNaN(num) ? "R$ 0,00" : num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
-    // Parser CSV robusto com suporte a aspas e ponto-e-vírgula
     function parseCSV(texto) {
       const linhas = [];
       let linhaAtual = [];
@@ -656,10 +244,8 @@
         } else if (c === ';' && !dentroAspas) {
           linhaAtual.push(campo.trim());
           campo = "";
-        } else if ((c === '' || c === '
-') && !dentroAspas) {
-          if (c === '' && next === '
-') i++;
+        } else if ((c === '\r' || c === '\n') && !dentroAspas) {
+          if (c === '\r' && next === '\n') i++;
           linhaAtual.push(campo.trim());
           if (linhaAtual.some(col => col.length > 0)) {
             linhas.push(linhaAtual);
@@ -677,40 +263,26 @@
       return linhas;
     }
 
-    // Carregamento de CSV via fetch local com cache
-    async function carregarDados(cidade, ano, forcarAtualizacao = false) {
+    async function carregarDados(cidade, ano, forcar = false) {
       const chave = `${cidade}_${ano}`;
-      if (!forcarAtualizacao && cacheArquivos[chave]) {
-        return cacheArquivos[chave];
-      }
+      if (!forcar && cacheArquivos[chave]) return cacheArquivos[chave];
 
       const url = FONTES_LOCAL[cidade]?.[ano];
-      if (!url) {
-        throw new Error(`Dados não disponíveis para ${cidade.toUpperCase()} no ano ${ano}.`);
-      }
+      if (!url) throw new Error("Dados não disponíveis para este ano.");
 
-      // Adiciona timestamp para furar cache do navegador se solicitado
-      const fetchUrl = forcarAtualizacao ? `${url}?_t=${Date.now()}` : url;
-      
-      const res = await fetch(fetchUrl);
-      if (!res.ok) {
-        throw new Error(`Falha ao carregar arquivo de dados (${url}). Verifique se o arquivo existe na pasta data.`);
-      }
+      const res = await fetch(forcar ? `${url}?_t=${Date.now()}` : url);
+      if (!res.ok) throw new Error("Arquivo CSV não encontrado na pasta data.");
 
       const texto = await res.text();
       const linhas = parseCSV(texto);
-
       if (linhas.length <= 1) return [];
 
-      // Mapeamento das 18 colunas padrão
-      // DATA_ESTIMATIVA;DATA_PAGAMENTO;VALOR;PERC;USO;LOGRADOURO;NUMERO;UNIDADE;COMPL;BAIRRO;CEP;AREA_TERRENO;AREA_TOTAL;AREA_PRIV;ANO_CONST;MATRICULA;CARTORIO;SITUACAO
       const dados = [];
       const inicio = (linhas[0][0] && linhas[0][0].toUpperCase().includes("DATA")) ? 1 : 0;
 
       for (let i = inicio; i < linhas.length; i++) {
         const col = linhas[i];
         if (col.length < 5) continue;
-
         dados.push({
           dataEstimativa: col[0] || "",
           dataPagamento: col[1] || "",
@@ -732,247 +304,94 @@
           situacao: col[17] || ""
         });
       }
-
       cacheArquivos[chave] = dados;
       return dados;
     }
 
-    // Normalização de strings para busca sem acentos
     function normalizar(str) {
-      return (str || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[̀-ͯ]/g, "")
-        .trim();
+      return (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
 
-    // Parse de data DD/MM/YYYY para milissegundos
     function dataParaTimestamp(dataStr) {
       if (!dataStr) return 0;
       const partes = dataStr.split("/");
-      if (partes.length === 3) {
-        return new Date(`${partes[2]}-${partes[1]}-${partes[0]}`).getTime() || 0;
-      }
-      return 0;
+      return partes.length === 3 ? (new Date(`${partes[2]}-${partes[1]}-${partes[0]}`).getTime() || 0) : 0;
     }
 
-    // Executa a busca
-    async function executarPesquisa(forcarAtualizacao = false) {
-      const cidade = elCidade.value;
-      const ano = elAno.value;
-      const ruaBusca = normalizar(elLogradouro.value);
-      const numBusca = normalizar(elNumero.value);
+    async function executarPesquisa(forcar = false) {
+      const cidade = document.getElementById("selCidade").value;
+      const ano = document.getElementById("selAno").value;
+      const ruaBusca = normalizar(document.getElementById("txtLogradouro").value);
+      const numBusca = normalizar(document.getElementById("txtNumero").value);
 
-      elListaResultados.innerHTML = `
-        <div class="empty-state">
-          <div class="spinner"></div>
-          <p style="margin-top: 14px;">Carregando e processando transações...</p>
-        </div>
-      `;
-      elBarraPaginacao.style.display = "none";
-
+      document.getElementById("listaResultados").innerHTML = '<div class="empty-state">Carregando transações...</div>';
+      
       try {
-        const dados = await carregarDados(cidade, ano, forcarAtualizacao);
-
-        // Filtro pelos inputs do usuário
+        const dados = await carregarDados(cidade, ano, forcar);
         registrosFiltrados = dados.filter(item => {
-          if (ruaBusca && !normalizar(item.logradouro).includes(ruaBusca)) {
-            return false;
-          }
-          if (numBusca && normalizar(item.numero) !== numBusca) {
-            return false;
-          }
+          if (ruaBusca && !normalizar(item.logradouro).includes(ruaBusca)) return false;
+          if (numBusca && normalizar(item.numero) !== numBusca) return false;
           return true;
         });
 
-        // Ordenação
-        ordenarResultados();
-        paginaAtual = 1;
-        renderizarResultados();
+        registrosFiltrados.sort((a, b) => {
+          const tA = dataParaTimestamp(a.dataPagamento || a.dataEstimativa);
+          const tB = dataParaTimestamp(b.dataPagamento || b.dataEstimativa);
+          return ordemCrescente ? (tA - tB) : (tB - tA);
+        });
 
+        paginaAtual = 1;
+        renderizar();
       } catch (err) {
-        elListaResultados.innerHTML = `
-          <div class="empty-state" style="color: #f87171;">
-            <p><strong>Erro na consulta:</strong> ${err.message}</p>
-          </div>
-        `;
-        elContagem.innerText = "0 REGISTRO(S) ENCONTRADO(S)";
+        document.getElementById("listaResultados").innerHTML = `<div class="empty-state" style="color:#f87171;">Erro: ${err.message}</div>`;
       }
     }
 
-    function ordenarResultados() {
-      registrosFiltrados.sort((a, b) => {
-        const tA = dataParaTimestamp(a.dataPagamento || a.dataEstimativa);
-        const tB = dataParaTimestamp(b.dataPagamento || b.dataEstimativa);
-        return ordemCrescente ? (tA - tB) : (tB - tA);
-      });
-    }
-
-    // Renderiza cards e paginação
-    function renderizarResultados() {
+    function renderizar() {
       const total = registrosFiltrados.length;
-      elContagem.innerText = `${total.toLocaleString("pt-BR")} REGISTRO(S) ENCONTRADO(S)`;
-
+      document.getElementById("lblContagem").innerText = `${total.toLocaleString("pt-BR")} REGISTRO(S) ENCONTRADO(S)`;
+      
       if (total === 0) {
-        elListaResultados.innerHTML = `
-          <div class="empty-state">
-            Nenhuma transação encontrada com os filtros selecionados.
-          </div>
-        `;
-        elBarraPaginacao.style.display = "none";
+        document.getElementById("listaResultados").innerHTML = '<div class="empty-state">Nenhuma transação encontrada. Verifique o ano selecionado.</div>';
         return;
       }
 
-      const totalPaginas = Math.ceil(total / itensPorPagina);
-      if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
-
       const inicio = (paginaAtual - 1) * itensPorPagina;
-      const fim = Math.min(inicio + itensPorPagina, total);
-      const paginaItens = registrosFiltrados.slice(inicio, fim);
+      const paginaItens = registrosFiltrados.slice(inicio, inicio + itensPorPagina);
 
       let html = "";
       paginaItens.forEach((item, idx) => {
-        const idCard = `card_${inicio + idx}`;
-        const enderecoTitulo = `${item.logradouro}, ${item.numero}${item.unidade ? ', Unid. ' + item.unidade : ''}${item.compl ? ', ' + item.compl : ''}`;
-        const dataExibir = item.dataPagamento || item.dataEstimativa || "--/--/----";
-
+        const id = `c_${inicio + idx}`;
+        const titulo = `${item.logradouro}, ${item.numero}${item.unidade ? ', Unid. ' + item.unit : ''}${item.compl ? ', ' + item.compl : ''}`;
         html += `
           <div class="tx-card">
             <div class="tx-info">
-              <div class="tx-title">${enderecoTitulo}</div>
+              <div class="tx-title">${titulo}</div>
               <div class="tx-meta">${item.bairro} · ${item.uso}</div>
-              <div id="${idCard}_detalhes" class="details-box" style="display: none;">
-                <div class="detail-item"><strong>Área Privativa</strong>${item.areaPriv ? item.areaPriv + ' m²' : '-'}</div>
-                <div class="detail-item"><strong>Área Total</strong>${item.areaTotal ? item.areaTotal + ' m²' : '-'}</div>
-                <div class="detail-item"><strong>Ano Construção</strong>${item.anoConst || '-'}</div>
-                <div class="detail-item"><strong>Matrícula</strong>${item.matricula || '-'}</div>
-                <div class="detail-item"><strong>Cartório</strong>${item.cartorio || '-'}</div>
-                <div class="detail-item"><strong>Situação</strong>${item.situacao || 'Liquidada'}</div>
+              <div id="${id}" class="details-box" style="display:none;">
+                <div><strong>Área Privativa</strong>${item.areaPriv} m²</div>
+                <div><strong>Matrícula</strong>${item.matricula || '-'}</div>
+                <div><strong>Situação</strong>${item.situacao || 'Liquidada'}</div>
               </div>
             </div>
             <div class="tx-side">
               <div class="tx-price">${formatarMoeda(item.valor)}</div>
-              <div class="tx-date">${dataExibir}</div>
-              <button class="tx-details-btn" onclick="toggleDetalhes('${idCard}_detalhes', this)">+ DETALHES</button>
+              <div class="tx-date">${item.dataPagamento || item.dataEstimativa}</div>
+              <button class="tx-details-btn" onclick="const e=document.getElementById('${id}'); e.style.display=e.style.display==='none'?'grid':'none';">+ DETALHES</button>
             </div>
           </div>
         `;
       });
-
-      elListaResultados.innerHTML = html;
-      renderizarPaginacao(totalPaginas);
+      document.getElementById("listaResultados").innerHTML = html;
     }
 
-    // Alternar visibilidade de detalhes do card
-    window.toggleDetalhes = function(id, btn) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (el.style.display === "none") {
-        el.style.display = "grid";
-        btn.innerText = "− MENOS";
-      } else {
-        el.style.display = "none";
-        btn.innerText = "+ DETALHES";
-      }
-    };
-
-    // Controle numérico inteligente de paginação: [1] [2] ... [X]
-    function renderizarPaginacao(totalPaginas) {
-      if (totalPaginas <= 1) {
-        elBarraPaginacao.style.display = "none";
-        return;
-      }
-
-      elBarraPaginacao.style.display = "flex";
-      let botoes = [];
-
-      // Botão Anterior
-      botoes.push(`<button class="page-btn" ${paginaAtual === 1 ? 'disabled' : ''} onclick="mudarPagina(${paginaAtual - 1})">«</button>`);
-
-      // Páginas visíveis
-      const delta = 2;
-      let range = [];
-      for (let i = Math.max(2, paginaAtual - delta); i <= Math.min(totalPaginas - 1, paginaAtual + delta); i++) {
-        range.push(i);
-      }
-
-      // Primeira página sempre
-      botoes.push(`<button class="page-btn ${paginaAtual === 1 ? 'active' : ''}" onclick="mudarPagina(1)">1</button>`);
-
-      if (range.length > 0 && range[0] > 2) {
-        botoes.push(`<span class="page-ellipsis">...</span>`);
-      }
-
-      for (let p of range) {
-        botoes.push(`<button class="page-btn ${paginaAtual === p ? 'active' : ''}" onclick="mudarPagina(${p})">${p}</button>`);
-      }
-
-      if (range.length > 0 && range[range.length - 1] < totalPaginas - 1) {
-        botoes.push(`<span class="page-ellipsis">...</span>`);
-      }
-
-      // Última página sempre
-      botoes.push(`<button class="page-btn ${paginaAtual === totalPaginas ? 'active' : ''}" onclick="mudarPagina(${totalPaginas})">${totalPaginas}</button>`);
-
-      // Botão Próximo
-      botoes.push(`<button class="page-btn ${paginaAtual === totalPaginas ? 'disabled' : ''} onclick="mudarPagina(${paginaAtual + 1})">»</button>`);
-
-      elBarraPaginacao.innerHTML = botoes.join("");
-    }
-
-    window.mudarPagina = function(p) {
-      paginaAtual = p;
-      renderizarResultados();
-      window.scrollTo({ top: 200, behavior: 'smooth' });
-    };
-
-    // Event Listeners
-    elBtnPesquisar.addEventListener("click", () => executarPesquisa(false));
-    
-    elBtnAtualizar.addEventListener("click", () => {
-      executarPesquisa(true);
-    });
-
-    elBtnLimpar.addEventListener("click", () => {
-      elLogradouro.value = "";
-      elNumero.value = "";
+    document.getElementById("btnPesquisar").addEventListener("click", () => executarPesquisa(false));
+    document.getElementById("btnAtualizar").addEventListener("click", () => executarPesquisa(true));
+    document.getElementById("btnLimpar").addEventListener("click", () => {
+      document.getElementById("txtLogradouro").value = "";
+      document.getElementById("txtNumero").value = "";
       registrosFiltrados = [];
-      elContagem.innerText = "0 REGISTRO(S) ENCONTRADO(S)";
-      elListaResultados.innerHTML = `
-        <div class="empty-state">
-          Preencha os campos ao lado e clique em <strong>Pesquisar</strong> para consultar as transações de ITBI.
-        </div>
-      `;
-      elBarraPaginacao.style.display = "none";
-    });
-
-    elSelItens.addEventListener("change", (e) => {
-      itensPorPagina = parseInt(e.target.value, 10) || 50;
-      paginaAtual = 1;
-      renderizarResultados();
-    });
-
-    elSortRecentes.addEventListener("click", () => {
-      ordemCrescente = false;
-      elSortRecentes.classList.add("active");
-      elSortAntigos.classList.remove("active");
-      ordenarResultados();
-      renderizarResultados();
-    });
-
-    elSortAntigos.addEventListener("click", () => {
-      ordemCrescente = true;
-      elSortAntigos.classList.add("active");
-      elSortRecentes.classList.remove("active");
-      ordenarResultados();
-      renderizarResultados();
-    });
-
-    // Submeter com Enter
-    [elLogradouro, elNumero].forEach(input => {
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") executarPesquisa(false);
-      });
+      renderizar();
     });
   </script>
 </body>
