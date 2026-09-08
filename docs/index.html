@@ -607,9 +607,9 @@ white-space: nowrap;
     
     <footer class="rodape">
       <p>
-        Dados: Prefeitura Municipal de Porto Alegre &mdash;
-        <a href="https://dadosabertos.poa.br/dataset/itbi" target="_blank" rel="noopener">dadosabertos.poa.br</a>,
-        sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR" target="_blank" rel="noopener">Creative Commons Atribuição (CC-BY)</a>.
+        Dados: prefeituras participantes, sob suas respectivas licenças de dados abertos.
+        Atualmente: Porto Alegre (<a href="https://dadosabertos.poa.br/dataset/itbi" target="_blank" rel="noopener">dadosabertos.poa.br</a>, <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR" target="_blank" rel="noopener">CC-BY</a>),
+        Fortaleza, São Paulo, Belo Horizonte e Recife.
       </p>
       <p>
         O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura.
@@ -623,9 +623,9 @@ white-space: nowrap;
 
   <div id="cookie-banner" class="banner-cookies">
     <p>
-      Utilizamos cookies e tecnologias semelhantes para analisar o tr\u00e1fego do site e melhorar sua experi\u00eancia.
-      Ao continuar navegando, voc\u00ea concorda com a nossa
-      <a href="privacidade.html">Pol\u00edtica de Privacidade</a>.
+      Utilizamos cookies e tecnologias semelhantes para analisar o tráfego do site e melhorar sua experiência.
+      Ao continuar navegando, você concorda com a nossa
+      <a href="privacidade.html">Política de Privacidade</a>.
     </p>
     <button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
   </div>
@@ -878,8 +878,8 @@ function converterRegistroBH(campos, anoPedido) {
       return resp.text();
     }).catch(function (erroDireto) {
       return tentarComProxies(url, 0, erroDireto).catch(function (erroFinal) {
-        // Repassa uma mensagem que mostra a causa real (\u00fatil pra diagnosticar
-        // se o problema \u00e9 CORS, rede, ou o servidor da prefeitura).
+        // Repassa uma mensagem que mostra a causa real (útil pra diagnosticar
+        // se o problema é CORS, rede, ou o servidor da prefeitura).
         var motivo = erroDireto && erroDireto.message ? erroDireto.message : String(erroDireto);
         throw new Error("Falha ao acessar " + url.split("/download/")[1] + " \u2014 " + motivo);
       });
