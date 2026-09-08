@@ -15,7 +15,7 @@
   gtag('config', 'G-HTD7CLQPZ2');
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -163,6 +163,7 @@
     .cabecalho img { object-fit: cover; object-position: 70% bottom; }
     .cabecalho-texto { padding: 24px 20px 24px; }
     .cabecalho-titulo { font-size: 1.35rem; line-height: 1.25; }
+    .barra-filtros-topo { flex-direction: column; align-items: flex-start; gap: 10px; }
   }
 
   .cartao {
@@ -294,6 +295,38 @@
     color: var(--texto-sobre-fundo-sutil); margin: 0 2px; display: none;
   }
   .contagem.ativa { display: block; }
+
+  /* Barra de filtros do topo (ordenar e itens por página) */
+  .barra-filtros-topo {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .grupo-filtro-topo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filtro-rotulo {
+    font-size: 0.75rem;
+    color: rgba(245, 243, 237, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .select-itens-pag {
+    background: #2a2d32;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-family: var(--fonte-corpo);
+    outline: none;
+    cursor: pointer;
+  }
 
   .resultado {
     background: var(--pergaminho);
@@ -446,6 +479,48 @@
     color: #6B6A63 !important;
     margin: 0 !important;
   }
+
+  /* Estilos dos Botões de Paginação */
+  .paginacao-conteiner {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 28px 0 16px;
+    flex-wrap: wrap;
+  }
+  .paginacao-btn {
+    background: #2a2d32;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-family: var(--fonte-corpo);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .paginacao-btn:hover:not(:disabled) {
+    background: var(--fundo-escuro-claro);
+    border-color: #666;
+  }
+  .paginacao-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .paginacao-btn.ativo {
+    background: var(--laranja) !important;
+    border-color: var(--laranja-escuro) !important;
+    color: #fff !important;
+    font-weight: 800;
+  }
+  .paginacao-reticencias {
+    color: var(--texto-sobre-fundo-sutil);
+    font-weight: 700;
+    padding: 0 4px;
+    user-select: none;
+  }
 </style>
 </head>
 <body>
@@ -544,12 +619,35 @@
 
       <main class="area-principal">
         <p class="contagem" id="contagem"></p>
-        <div id="barra-ordenacao" style="display: none; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: 1rem;">
-          <span style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.6); text-transform: uppercase; letter-spacing: 0.05em;">Ordenar:</span>
-          <button type="button" class="btn-ordem ativo" data-ordem="desc" style="cursor: pointer; background: #2a2d32; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais recentes</button>
-          <button type="button" class="btn-ordem" data-ordem="asc" style="cursor: pointer; background: transparent; border: 1px solid #444; color: rgba(245, 243, 237, 0.6); border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais antigos</button>
+
+        <!-- Barra superior: Itens por página e Ordenação -->
+        <div class="barra-filtros-topo" id="barra-ordenacao">
+          <div class="grupo-filtro-topo">
+            <span class="filtro-rotulo">Itens por página:</span>
+            <select id="itens-por-pagina" class="select-itens-pag">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50" selected>50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+
+          <div class="grupo-filtro-topo">
+            <span class="filtro-rotulo">Ordenar:</span>
+            <button type="button" class="btn-ordem ativo" data-ordem="desc" style="cursor: pointer; background: #2a2d32; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais recentes</button>
+            <button type="button" class="btn-ordem" data-ordem="asc" style="cursor: pointer; background: transparent; border: 1px solid #444; color: rgba(245, 243, 237, 0.6); border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais antigos</button>
+          </div>
         </div>
+
         <div class="grade-resultados" id="resultados"></div>
+
+        <!-- Controles de Paginação -->
+        <div class="paginacao-conteiner" id="paginacao">
+          <button class="paginacao-btn" id="btn-pag-ant" type="button">&larr; Anterior</button>
+          <div id="paginacao-numeros" style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;"></div>
+          <button class="paginacao-btn" id="btn-pag-prox" type="button">Próxima &rarr;</button>
+        </div>
+
         <div id="detalhe" hidden></div>
       </main>
     </div>
@@ -612,6 +710,9 @@
   "use strict";
 
   var cacheCsv = {};
+
+  var itensPorPagina = 50;
+  var paginaAtual = 1;
 
   function parseLinhaCsv(linha) {
     var resultado = [];
@@ -1066,6 +1167,7 @@
   var elNumero = document.getElementById("numero");
   var elAno = document.getElementById("ano");
   var elBarraOrdenacao = document.getElementById("barra-ordenacao");
+  var elSelectItensPag = document.getElementById("itens-por-pagina");
   var botoesOrdem = document.querySelectorAll(".btn-ordem");
   var ordemDataAtual = "desc";
   var elBtnPesquisar = document.getElementById("btn-pesquisar");
@@ -1080,6 +1182,10 @@
   var elContagem = document.getElementById("contagem");
   var elResultados = document.getElementById("resultados");
   var elDetalhe = document.getElementById("detalhe");
+  var elPaginacao = document.getElementById("paginacao");
+  var elPaginacaoNumeros = document.getElementById("paginacao-numeros");
+  var elBtnPagAnt = document.getElementById("btn-pag-ant");
+  var elBtnPagProx = document.getElementById("btn-pag-prox");
 
   if (window.location.protocol === "file:") {
     elFaixaErro.classList.add("ativa");
@@ -1100,12 +1206,73 @@
     if (!carregando) elTextoProgresso.style.display = "none";
   }
 
-  function renderizarResultados(registros) {
+  function gerarBotoesPaginacao(totalPaginas, paginaAtiva) {
+    elPaginacaoNumeros.innerHTML = "";
+
+    function adicionarBotao(num, rotulo, desabilitado, ativo) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "paginacao-btn" + (ativo ? " ativo" : "");
+      b.textContent = rotulo || num;
+      if (desabilitado) {
+        b.disabled = true;
+      } else {
+        b.addEventListener("click", function () {
+          renderizarPagina(ultimosRegistros, num);
+          window.scrollTo({ top: elResultados.offsetTop - 40, behavior: "smooth" });
+        });
+      }
+      elPaginacaoNumeros.appendChild(b);
+    }
+
+    function adicionarReticencias() {
+      var span = document.createElement("span");
+      span.className = "paginacao-reticencias";
+      span.textContent = "...";
+      elPaginacaoNumeros.appendChild(span);
+    }
+
+    if (totalPaginas <= 7) {
+      for (var i = 1; i <= totalPaginas; i++) {
+        adicionarBotao(i, i, false, i === paginaAtiva);
+      }
+      return;
+    }
+
+    adicionarBotao(1, 1, false, paginaAtiva === 1);
+
+    if (paginaAtiva > 3) {
+      adicionarReticencias();
+    }
+
+    var inicio = Math.max(2, paginaAtiva - 1);
+    var fim = Math.min(totalPaginas - 1, paginaAtiva + 1);
+
+    for (var j = inicio; j <= fim; j++) {
+      adicionarBotao(j, j, false, j === paginaAtiva);
+    }
+
+    if (paginaAtiva < totalPaginas - 2) {
+      adicionarReticencias();
+    }
+
+    adicionarBotao(totalPaginas, totalPaginas, false, paginaAtiva === totalPaginas);
+  }
+
+  function renderizarPagina(registros, pagina) {
     elResultados.innerHTML = "";
-    // Otimização de performance para evitar travamento em buscas com milhares de linhas
-    var limite = Math.min(registros.length, 200);
-    for (var indice = 0; indice < limite; indice++) {
-      var r = registros[indice];
+    var totalItens = registros.length;
+    var totalPaginas = Math.ceil(totalItens / itensPorPagina) || 1;
+
+    if (pagina < 1) pagina = 1;
+    if (pagina > totalPaginas) pagina = totalPaginas;
+    paginaAtual = pagina;
+
+    var inicio = (paginaAtual - 1) * itensPorPagina;
+    var fim = Math.min(inicio + itensPorPagina, totalItens);
+
+    for (var i = inicio; i < fim; i++) {
+      var r = registros[i];
       var card = document.createElement("div");
       card.className = "resultado";
       var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
@@ -1131,10 +1298,41 @@
       card.querySelector(".resultado-data").textContent = dataTxt;
       (function (idx) {
         card.addEventListener("click", function () { abrirDetalhe(idx); });
-      })(indice);
+      })(i);
       elResultados.appendChild(card);
     }
+
+    if (totalPaginas > 1) {
+      elPaginacao.style.display = "flex";
+      elBtnPagAnt.disabled = paginaAtual <= 1;
+      elBtnPagProx.disabled = paginaAtual >= totalPaginas;
+      gerarBotoesPaginacao(totalPaginas, paginaAtual);
+    } else {
+      elPaginacao.style.display = "none";
+    }
   }
+
+  elBtnPagAnt.addEventListener("click", function () {
+    if (paginaAtual > 1) {
+      renderizarPagina(ultimosRegistros, paginaAtual - 1);
+      window.scrollTo({ top: elResultados.offsetTop - 40, behavior: "smooth" });
+    }
+  });
+
+  elBtnPagProx.addEventListener("click", function () {
+    var totalPaginas = Math.ceil(ultimosRegistros.length / itensPorPagina);
+    if (paginaAtual < totalPaginas) {
+      renderizarPagina(ultimosRegistros, paginaAtual + 1);
+      window.scrollTo({ top: elResultados.offsetTop - 40, behavior: "smooth" });
+    }
+  });
+
+  elSelectItensPag.addEventListener("change", function () {
+    itensPorPagina = parseInt(this.value, 10) || 50;
+    if (ultimosRegistros && ultimosRegistros.length > 0) {
+      renderizarPagina(ultimosRegistros, 1);
+    }
+  });
 
   function linhaFicha(rotulo, valor) {
     return '<div class="ficha-linha"><div class="ficha-rotulo">' + rotulo +
@@ -1149,7 +1347,6 @@
     var areaTxt = function (v) { return (v !== null && v !== undefined) ? v.toFixed(2).replace(".", ",") + " m²" : "—"; };
     var dataTxt = function (d) { return formatarDataBr(d) || "—"; };
     
-    // Normalização automática de porcentagem (corrige o bug de 10000%)
     var percValor = r.percTransmitido;
     if (percValor !== null && percValor !== undefined) {
       if (percValor > 100) percValor = percValor / 100;
@@ -1252,6 +1449,8 @@
 
     elResultados.style.display = "none";
     elContagem.style.display = "none";
+    elBarraOrdenacao.style.display = "none";
+    elPaginacao.style.display = "none";
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1343,6 +1542,12 @@
     elDetalhe.style.display = "none";
     elResultados.style.display = "";
     elContagem.style.display = "";
+    if (ultimosRegistros.length > 0) {
+      elBarraOrdenacao.style.display = "flex";
+    }
+    if (ultimosRegistros.length > itensPorPagina) {
+      elPaginacao.style.display = "flex";
+    }
     detalheEmpilhadoNoHistorico = false;
   }
 
@@ -1413,14 +1618,14 @@
       });
 
       elContagem.classList.add("ativa");
-      var avisoLimite = ultimosRegistros.length > 200 ? " (exibindo os 200 mais recentes)" : "";
-      elContagem.textContent = ultimosRegistros.length + " registro(s) encontrado(s)" + avisoLimite;
+      elContagem.textContent = ultimosRegistros.length + " registro(s) encontrado(s)";
 
       if (elBarraOrdenacao) {
         elBarraOrdenacao.style.display = ultimosRegistros.length > 0 ? "flex" : "none";
       }
 
-      renderizarResultados(ultimosRegistros);
+      renderizarPagina(ultimosRegistros, 1);
+
       if (resultado.anosComErro.length > 0) {
         elFaixaAvisoAnos.classList.add("ativa");
         elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
@@ -1446,6 +1651,7 @@
     elAno.value = "2026";
     elContagem.classList.remove("ativa");
     if (elBarraOrdenacao) elBarraOrdenacao.style.display = "none";
+    if (elPaginacao) elPaginacao.style.display = "none";
     ordemDataAtual = "desc";
     if (botoesOrdem) {
       botoesOrdem.forEach(function (b) {
@@ -1480,7 +1686,7 @@
             var vB = chaveOrdenacao(b.dataReferencia);
             return ordemDataAtual === "asc" ? vA - vB : vB - vA;
           });
-          renderizarResultados(ultimosRegistros);
+          renderizarPagina(ultimosRegistros, 1);
         }
       });
     });
