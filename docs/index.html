@@ -960,9 +960,17 @@ function converterRegistroBH(campos, anoPedido) {
       }
     },
 sp: {
-    anosDisponiveis: [2026],
+    anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
     urlPorAno: {},
-    arquivoLocalPorAno: { 2026: "data/itbi-sp-2026.csv" },
+    arquivoLocalPorAno: {
+      2026: "data/itbi-sp-2026.csv",
+      2025: "data/itbi-sp-2025.csv",
+      2024: "data/itbi-sp-2024.csv",
+      2023: "data/itbi-sp-2023.csv",
+      2022: "data/itbi-sp-2022.csv",
+      2021: "data/itbi-sp-2021.csv",
+      2020: "data/itbi-sp-2020.csv"
+    },
     chaveCache: function (ano) { return "sp_" + ano; },
     baixarCsv: function (ano) {
       var arquivoLocal = this.arquivoLocalPorAno[ano];
