@@ -50,70 +50,61 @@
   .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .botoes-topo { display: flex; gap: 10px; align-items: center; }
-  .btn-topo {
+  .menu-nav { display: flex; align-items: center; gap: 10px; }
+  .btn-nav {
     color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
     padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
     transition: all 0.2s;
   }
-  .btn-topo:hover { background-color: rgba(255,255,255,0.1); }
+  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
-  .cabecalho-pagina {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 36px 24px 20px;
-    width: 100%;
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-conteudo {
+    display: none; position: absolute; right: 0; top: 100%; min-width: 270px;
+    background-color: var(--fundo-escuro-claro); border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px;
+    border: 1px solid rgba(255,255,255,0.12);
   }
-  .cabecalho-pagina h1 {
-    font-size: clamp(1.6rem, 3vw, 2.3rem);
-    font-weight: 800;
-    margin: 0 0 10px;
-    color: #fff;
+  .dropdown-conteudo a {
+    color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block;
+    font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
   }
-  .cabecalho-pagina p {
-    margin: 0;
-    font-size: 0.95rem;
-    color: var(--texto-sobre-fundo-sutil);
-    max-width: 75ch;
-    line-height: 1.5;
+  .dropdown-conteudo a:hover {
+    background-color: rgba(240, 145, 58, 0.18); color: var(--laranja);
   }
+  .dropdown:hover .dropdown-conteudo { display: block; }
+
+  .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
+  .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
+  .cabecalho-veu {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%);
+  }
+  .cabecalho-texto {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto;
+  }
+  .cabecalho-titulo { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; text-transform: uppercase; color: #fff; }
+  .cabecalho-subtitulo { margin: 6px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 70ch; }
 
   .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px 40px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+    max-width: 1200px; margin: 0 auto; padding: 28px 24px 40px; width: 100%;
+    display: flex; flex-direction: column; gap: 32px;
   }
 
   .grid-simulador {
-    background: var(--pergaminho);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    overflow: hidden;
-    color: var(--texto-card);
+    background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
   }
 
   @media (max-width: 860px) {
     .grid-simulador { grid-template-columns: 1fr; }
+    .cabecalho { height: 220px; }
   }
 
-  .col-formulario {
-    padding: 32px;
-    border-right: 1px solid var(--dourado-linha);
-  }
-
-  .col-resultados {
-    padding: 32px;
-    background: #f7f5ef;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
+  .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
 
   .campo { margin-bottom: 18px; }
   .campo label {
@@ -139,12 +130,8 @@
   }
 
   .card-destaque {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-left: 4px solid var(--agua-turquesa);
+    background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--agua-turquesa);
   }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
   .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.55rem; font-weight: 800; color: var(--texto-card); margin: 0; }
@@ -158,9 +145,7 @@
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
 
   .box-tutorial {
-    background: var(--fundo-escuro-claro);
-    border-radius: 16px;
-    padding: 32px;
+    background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px;
     border: 1px solid rgba(255,255,255,0.08);
   }
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
@@ -176,15 +161,29 @@
       <img src="./favicon.png" alt="itbidata" />
       <span class="nome-marca">itbi<span>data</span></span>
     </a>
-    <div class="botoes-topo">
-      <a href="index.html" class="btn-topo">Busca de ITBI</a>
-      <a href="estatisticas.html" class="btn-topo">Estatísticas</a>
+    <div class="menu-nav">
+      <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
+      <div class="dropdown">
+        <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+        <div class="dropdown-conteudo">
+          <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
+          <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
+          <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
+          <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
+          <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
+          <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <header class="cabecalho-pagina">
-    <h1>Consórcio vs. Financiamento Imobiliário</h1>
-    <p>Compare lado a lado o custo total de uma carta de crédito sem juros bancários contra um financiamento tradicional com liberação imediata.</p>
+  <header class="cabecalho">
+    <img src="./banner.jpg" alt="Mercado Imobiliário" />
+    <div class="cabecalho-veu"></div>
+    <div class="cabecalho-texto">
+      <h1 class="cabecalho-titulo">Consórcio vs. Financiamento Imobiliário</h1>
+      <p class="cabecalho-subtitulo">Compare o custo total acumulado entre uma carta de consórcio sem cobrança de juros e o financiamento com liberação imediata.</p>
+    </div>
   </header>
 
   <main class="container">
@@ -248,15 +247,15 @@
     </div>
 
     <section class="box-tutorial">
-      <h2>Principais diferenças estratégicas entre as duas modalidades</h2>
-      <p><strong>1. Consórcio não tem juros, mas tem taxa de administração:</strong> Em vez de pagar juros compostos ao banco, você paga uma taxa fixa diluída ao longo de todo o plano (geralmente entre 18% e 24% no total). A economia final costuma ser expressiva.</p>
-      <p><strong>2. O fator tempo e a contemplação:</strong> No consórcio, você depende de sorteio mensal ou de ofertar um lance para ser contemplado e ter a carta liberada. O financiamento, por outro lado, libera o valor de imediato para fechar o negócio.</p>
-      <p><strong>3. Uso do lance como estratégia:</strong> Se você possui recursos guardados ou saldo de FGTS, pode ofertá-los como lance para antecipar a contemplação no consórcio, unindo o menor custo da modalidade com maior previsibilidade de prazo.</p>
+      <h2>Diferenças fundamentais entre Consórcio e Financiamento</h2>
+      <p><strong>1. Taxa de Administração vs. Juros:</strong> No consórcio não existem juros compostos, apenas a taxa da administradora diluída ao longo das parcelas (em torno de 18% a 24% no total). A economia final em relação ao banco tradicional costuma superar os 40%.</p>
+      <p><strong>2. O momento da compra:</strong> O financiamento é indicado para quem tem urgência imediata para mudar. O consórcio é indicado para quem pode aguardar os sorteios mensais ou planejar lances para acelerar a contemplação.</p>
+      <p><strong>3. Estratégia de lance embutido:</strong> Algumas administradoras permitem usar até 30% do próprio valor da carta de crédito como lance, viabilizando a contemplação mais rápida sem descapitalização.</p>
     </section>
   </main>
 
   <footer class="rodape">
-    &copy; itbidata &mdash; Simulador financeiro comparativo. As cartas de consórcio sofrem reajuste anual por índices da construção civil (INCC).
+    &copy; itbidata &mdash; Ferramenta comparativa. As cartas de crédito sofrem reajuste anual por índices da construção (INCC).
   </footer>
 
 <script>
@@ -291,11 +290,9 @@
     var taxaFinAa = (parseFloat(elJurosFin.value) || 10.5) / 100;
     var lance = parseFloat(elLance.value) || 0;
 
-    // Consórcio
     var totalConsorcio = credito * (1 + taxaAdmPct);
     var parcelaConsorcio = totalConsorcio / mesesConsorcio;
 
-    // Financiamento comparativo (mesmo saldo líquido a pagar após entrada)
     var financiado = Math.max(0, credito - lance);
     var i = taxaFinAa / 12;
     var parcFin = financiado * (i * Math.pow(1 + i, mesesConsorcio)) / (Math.pow(1 + i, mesesConsorcio) - 1);
