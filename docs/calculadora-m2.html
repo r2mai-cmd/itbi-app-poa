@@ -22,132 +22,89 @@
     --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
-
   * { box-sizing: border-box; }
-
   body {
-    margin: 0;
-    font-family: var(--fonte-corpo);
-    background: var(--fundo-escuro);
-    color: var(--texto-sobre-fundo);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column;
   }
-
   .barra-marca {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px max(4vw, 24px);
-    background: var(--fundo-escuro-claro);
+    display: flex; align-items: center; justify-content: space-between; padding: 16px max(4vw, 24px); background: var(--fundo-escuro-claro);
   }
   .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
   .barra-marca img {
-    height: 44px; width: 44px; object-fit: cover; object-position: center 10%;
-    transform: scale(1.2); background: #fff; border-radius: 50%;
+    height: 44px; width: 44px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background: #fff; border-radius: 50%;
   }
   .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .btn-topo {
-    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
-    padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
-    transition: all 0.2s;
+  .menu-nav { display: flex; align-items: center; gap: 10px; }
+  .btn-nav {
+    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s;
   }
-  .btn-topo:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
-  .cabecalho { position: relative; width: 100%; height: 230px; overflow: hidden; }
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-conteudo {
+    display: none; position: absolute; right: 0; top: 100%; min-width: 270px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12);
+  }
+  .dropdown-conteudo a {
+    color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block; font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
+  }
+  .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+  .dropdown:hover .dropdown-conteudo { display: block; }
+
+  .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
   .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
   .cabecalho-veu {
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%);
+    position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%);
   }
   .cabecalho-texto {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto;
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto;
   }
   .cabecalho-titulo { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; text-transform: uppercase; color: #fff; }
   .cabecalho-subtitulo { margin: 6px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 70ch; }
 
-  /* Barra de atalhos entre calculadoras */
-  .barra-simuladores-nav {
-    max-width: 1200px; margin: 24px auto 0; padding: 0 24px; width: 100%;
-  }
-  .scroll-simuladores {
-    display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin;
-  }
-  .scroll-simuladores::-webkit-scrollbar { height: 4px; }
-  .scroll-simuladores::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
-  .item-sim-nav {
-    white-space: nowrap; text-decoration: none; font-size: 0.82rem; font-weight: 700;
-    padding: 8px 16px; border-radius: 9999px; background: var(--fundo-escuro-claro);
-    color: var(--pergaminho); border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s;
-  }
-  .item-sim-nav:hover { background: rgba(240,145,58,0.2); color: var(--laranja); border-color: var(--laranja); }
-  .item-sim-nav.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
-
   .container {
-    max-width: 1200px; margin: 0 auto; padding: 20px 24px 40px; width: 100%;
-    display: flex; flex-direction: column; gap: 28px;
+    max-width: 1200px; margin: 0 auto; padding: 28px 24px 40px; width: 100%; display: flex; flex-direction: column; gap: 32px;
   }
-
   .grid-simulador {
-    background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
+    background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
   }
   @media (max-width: 860px) {
     .grid-simulador { grid-template-columns: 1fr; }
-    .cabecalho { height: 200px; }
+    .cabecalho { height: 220px; }
   }
-
   .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
   .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
-
   .abas-modo {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px;
-    background: #ded9cd; padding: 4px; border-radius: 10px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px; background: #ded9cd; padding: 4px; border-radius: 10px;
   }
   .btn-aba {
-    border: none; background: transparent; padding: 10px; font-size: 0.82rem; font-weight: 700;
-    color: var(--texto-card-sutil); cursor: pointer; border-radius: 8px; transition: all 0.2s;
+    border: none; background: transparent; padding: 10px; font-size: 0.82rem; font-weight: 700; color: var(--texto-card-sutil); cursor: pointer; border-radius: 8px; transition: all 0.2s;
   }
   .btn-aba.ativo { background: #fff; color: var(--texto-card); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-
   .campo { margin-bottom: 20px; }
   .campo label {
-    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
   }
   .campo input {
-    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha);
-    padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600;
+    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha); padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600;
   }
   .campo input:focus { border-bottom: 2px solid var(--laranja); }
-
   .card-destaque {
-    background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--agua-turquesa);
+    background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--agua-turquesa);
   }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
   .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 800; color: var(--texto-card); margin: 0; }
   .card-destaque-sub { font-size: 0.8rem; color: var(--texto-card-sutil); margin-top: 4px; }
-
-  .linha-resumo {
-    display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem;
-  }
+  .linha-resumo { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem; }
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
-
-  .box-tutorial {
-    background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
+  .box-tutorial { background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); }
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
   .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
   .box-tutorial strong { color: #fff; }
-
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -157,8 +114,19 @@
       <img src="./favicon.png" alt="itbidata" />
       <span class="nome-marca">itbi<span>data</span></span>
     </a>
-    <div>
-      <a href="index.html" class="btn-topo">← Voltar à Busca de ITBI</a>
+    <div class="menu-nav">
+      <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
+      <div class="dropdown">
+        <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+        <div class="dropdown-conteudo">
+          <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
+          <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
+          <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
+          <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
+          <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
+          <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -171,17 +139,6 @@
     </div>
   </header>
 
-  <nav class="barra-simuladores-nav">
-    <div class="scroll-simuladores">
-      <a href="simulador-financiamento.html" class="item-sim-nav">&#127968; Financiamento (SAC/PRICE)</a>
-      <a href="calculadora-itbi.html" class="item-sim-nav">&#128221; Custos de ITBI</a>
-      <a href="poder-de-compra.html" class="item-sim-nav">&#128179; Poder de Compra</a>
-      <a href="comprar-ou-alugar.html" class="item-sim-nav">&#9878; Comprar vs. Alugar</a>
-      <a href="calculadora-m2.html" class="item-sim-nav ativo">&#128207; Preço do m²</a>
-      <a href="consorcio-vs-financiamento.html" class="item-sim-nav">&#128188; Consórcio vs. Financiamento</a>
-    </div>
-  </nav>
-
   <main class="container">
     <div class="grid-simulador">
       <div class="col-formulario">
@@ -189,7 +146,6 @@
           <button type="button" class="btn-aba ativo" id="aba-descobrir-m2" data-modo="descobrir-m2">Calcular R$/m²</button>
           <button type="button" class="btn-aba" id="aba-descobrir-valor" data-modo="descobrir-valor">Estimar Preço Total</button>
         </div>
-
         <div id="bloco-modo-m2">
           <div class="campo">
             <label for="input-preco-total">Valor Total do Imóvel (R$)</label>
@@ -200,7 +156,6 @@
             <input type="number" id="input-area-privativa" value="75" step="1">
           </div>
         </div>
-
         <div id="bloco-modo-valor" style="display:none;">
           <div class="campo">
             <label for="input-m2-referencia">Valor Médio do m² na Região (R$/m²)</label>
@@ -219,7 +174,6 @@
           <p class="card-destaque-valor" id="res-valor-destaque">R$ 0,00</p>
           <p class="card-destaque-sub" id="res-sub-destaque">Métrica oficial para balizar negociações</p>
         </div>
-
         <div class="linha-resumo">
           <span class="linha-rotulo" id="res-rotulo-secundario">Valor Global do Imóvel:</span>
           <span class="linha-valor" id="res-valor-secundario">R$ 0,00</span>
@@ -241,26 +195,20 @@
 
     <section class="box-tutorial">
       <h2>Dicas práticas para avaliar o valor do metro quadrado</h2>
-      <p><strong>1. Área privativa vs. total:</strong> Sempre utilize a metragem interna do apartamento. A área total inclui garagens e áreas comuns de condomínio, o que distorce a comparação real do m².</p>
-      <p><strong>2. Cruzamento com os dados de ITBI:</strong> Anúncios imobiliários costumam pedir valores acima da média. Use o buscador principal do <strong>itbidata</strong> para conferir por quanto os imóveis da mesma rua foram de fato transacionados.</p>
+      <p><strong>1. Área privativa vs. total:</strong> Sempre utilize a metragem interna útil do apartamento. A área total inclui garagens e áreas comuns de condomínio.</p>
+      <p><strong>2. Dados reais de ITBI:</strong> Consulte o buscador principal do <strong>itbidata</strong> para conferir por quanto os imóveis da mesma rua foram de fato transacionados.</p>
     </section>
   </main>
 
-  <footer class="rodape">
-    &copy; itbidata &mdash; Ferramenta de inteligência imobiliária para precificação e análise de mercado.
-  </footer>
+  <footer class="rodape">&copy; itbidata &mdash; Ferramenta de inteligência imobiliária.</footer>
 
 <script>
 (function() {
   "use strict";
-
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-
   var modoAtual = "descobrir-m2";
-
   var elBlocoM2 = document.getElementById("bloco-modo-m2");
   var elBlocoValor = document.getElementById("bloco-modo-valor");
-
   var elPrecoTotal = document.getElementById("input-preco-total");
   var elAreaPrivativa = document.getElementById("input-area-privativa");
   var elM2Ref = document.getElementById("input-m2-referencia");
@@ -271,7 +219,6 @@
       document.querySelectorAll(".btn-aba").forEach(function(b) { b.classList.remove("ativo"); });
       this.classList.add("ativo");
       modoAtual = this.getAttribute("data-modo");
-
       if (modoAtual === "descobrir-m2") {
         elBlocoM2.style.display = "block";
         elBlocoValor.style.display = "none";
@@ -288,39 +235,30 @@
   });
 
   function calcular() {
-    var precoM2 = 0;
-    var precoTotal = 0;
-    var area = 0;
-
+    var precoM2 = 0, precoTotal = 0, area = 0;
     if (modoAtual === "descobrir-m2") {
       precoTotal = parseFloat(elPrecoTotal.value) || 0;
       area = parseFloat(elAreaPrivativa.value) || 1;
       precoM2 = precoTotal / area;
-
       document.getElementById("res-rotulo-destaque").textContent = "Preço do m² Privativo";
       document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(precoM2) + "/m²";
       document.getElementById("res-sub-destaque").textContent = "Baseado na área de " + area + " m²";
-
       document.getElementById("res-rotulo-secundario").textContent = "Valor Global Solicitado:";
       document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(precoTotal);
     } else {
       precoM2 = parseFloat(elM2Ref.value) || 0;
       area = parseFloat(elAreaAlvo.value) || 1;
       precoTotal = precoM2 * area;
-
       document.getElementById("res-rotulo-destaque").textContent = "Valor Estimado do Imóvel";
       document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(precoTotal);
       document.getElementById("res-sub-destaque").textContent = "Considerando " + fmtMoeda.format(precoM2) + "/m²";
-
       document.getElementById("res-rotulo-secundario").textContent = "Preço por m² Aplicado:";
       document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(precoM2) + "/m²";
     }
-
     document.getElementById("res-area-base").textContent = area + " m²";
     document.getElementById("res-ref-35m").textContent = fmtMoeda.format(precoM2 * 35);
     document.getElementById("res-ref-65m").textContent = fmtMoeda.format(precoM2 * 65);
   }
-
   calcular();
 })();
 </script>

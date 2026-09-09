@@ -22,131 +22,87 @@
     --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
-
   * { box-sizing: border-box; }
-
   body {
-    margin: 0;
-    font-family: var(--fonte-corpo);
-    background: var(--fundo-escuro);
-    color: var(--texto-sobre-fundo);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column;
   }
-
   .barra-marca {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px max(4vw, 24px);
-    background: var(--fundo-escuro-claro);
+    display: flex; align-items: center; justify-content: space-between; padding: 16px max(4vw, 24px); background: var(--fundo-escuro-claro);
   }
   .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
   .barra-marca img {
-    height: 44px; width: 44px; object-fit: cover; object-position: center 10%;
-    transform: scale(1.2); background: #fff; border-radius: 50%;
+    height: 44px; width: 44px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background: #fff; border-radius: 50%;
   }
   .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .btn-topo {
-    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
-    padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
-    transition: all 0.2s;
+  .menu-nav { display: flex; align-items: center; gap: 10px; }
+  .btn-nav {
+    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s;
   }
-  .btn-topo:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
-  .cabecalho { position: relative; width: 100%; height: 230px; overflow: hidden; }
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-conteudo {
+    display: none; position: absolute; right: 0; top: 100%; min-width: 270px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12);
+  }
+  .dropdown-conteudo a {
+    color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block; font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
+  }
+  .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+  .dropdown:hover .dropdown-conteudo { display: block; }
+
+  .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
   .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
   .cabecalho-veu {
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%);
+    position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%);
   }
   .cabecalho-texto {
-    position: absolute; left: 0; right: 0; bottom: 0;
-    padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto;
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto;
   }
   .cabecalho-titulo { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; text-transform: uppercase; color: #fff; }
   .cabecalho-subtitulo { margin: 6px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 70ch; }
 
-  /* Barra de atalhos entre calculadoras */
-  .barra-simuladores-nav {
-    max-width: 1200px; margin: 24px auto 0; padding: 0 24px; width: 100%;
-  }
-  .scroll-simuladores {
-    display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin;
-  }
-  .scroll-simuladores::-webkit-scrollbar { height: 4px; }
-  .scroll-simuladores::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
-  .item-sim-nav {
-    white-space: nowrap; text-decoration: none; font-size: 0.82rem; font-weight: 700;
-    padding: 8px 16px; border-radius: 9999px; background: var(--fundo-escuro-claro);
-    color: var(--pergaminho); border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s;
-  }
-  .item-sim-nav:hover { background: rgba(240,145,58,0.2); color: var(--laranja); border-color: var(--laranja); }
-  .item-sim-nav.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
-
   .container {
-    max-width: 1200px; margin: 0 auto; padding: 20px 24px 40px; width: 100%;
-    display: flex; flex-direction: column; gap: 28px;
+    max-width: 1200px; margin: 0 auto; padding: 28px 24px 40px; width: 100%; display: flex; flex-direction: column; gap: 32px;
   }
-
   .grid-simulador {
-    background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
+    background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
   }
   @media (max-width: 860px) {
     .grid-simulador { grid-template-columns: 1fr; }
-    .cabecalho { height: 200px; }
+    .cabecalho { height: 220px; }
   }
-
   .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
   .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
-
-  .campo { margin-bottom: 18px; }
+  .campo { margin-bottom: 20px; }
   .campo label {
-    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
   }
   .campo input {
-    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha);
-    padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600;
+    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha); padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600;
   }
   .campo input:focus { border-bottom: 2px solid var(--laranja); }
-
-  .botoes-seletor {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin-top: 6px;
-  }
+  .botoes-seletor { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin-top: 6px; }
   .btn-seletor {
-    background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 4px;
-    font-size: 0.82rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center;
+    background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 4px; font-size: 0.82rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center;
   }
   .btn-seletor.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
-
   .card-destaque {
-    background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja);
+    background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja);
   }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
   .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 800; color: var(--texto-card); margin: 0; }
   .card-destaque-sub { font-size: 0.8rem; color: var(--texto-card-sutil); margin-top: 4px; }
-
-  .linha-resumo {
-    display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem;
-  }
+  .linha-resumo { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem; }
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
-
-  .box-tutorial {
-    background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
+  .box-tutorial { background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); }
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
   .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
   .box-tutorial strong { color: #fff; }
-
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -156,30 +112,30 @@
       <img src="./favicon.png" alt="itbidata" />
       <span class="nome-marca">itbi<span>data</span></span>
     </a>
-    <div>
-      <a href="index.html" class="btn-topo">← Voltar à Busca de ITBI</a>
+    <div class="menu-nav">
+      <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
+      <div class="dropdown">
+        <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+        <div class="dropdown-conteudo">
+          <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
+          <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
+          <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
+          <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
+          <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
+          <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
+        </div>
+      </div>
     </div>
   </div>
 
   <header class="cabecalho">
-    <img src="./banner.jpg" alt="Financiamento Imobiliário" />
+    <img src="./banner.jpg" alt="Mercado Imobiliário" />
     <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Simulador de Financiamento Imobiliário</h1>
       <p class="cabecalho-subtitulo">Calcule o valor da parcela mensal, compare os sistemas SAC e PRICE e veja o impacto dos juros no valor final.</p>
     </div>
   </header>
-
-  <nav class="barra-simuladores-nav">
-    <div class="scroll-simuladores">
-      <a href="simulador-financiamento.html" class="item-sim-nav ativo">&#127968; Financiamento (SAC/PRICE)</a>
-      <a href="calculadora-itbi.html" class="item-sim-nav">&#128221; Custos de ITBI</a>
-      <a href="poder-de-compra.html" class="item-sim-nav">&#128179; Poder de Compra</a>
-      <a href="comprar-ou-alugar.html" class="item-sim-nav">&#9878; Comprar vs. Alugar</a>
-      <a href="calculadora-m2.html" class="item-sim-nav">&#128207; Preço do m²</a>
-      <a href="consorcio-vs-financiamento.html" class="item-sim-nav">&#128188; Consórcio vs. Financiamento</a>
-    </div>
-  </nav>
 
   <main class="container">
     <div class="grid-simulador">
@@ -188,12 +144,10 @@
           <label for="input-valor">Valor do Imóvel (R$)</label>
           <input type="number" id="input-valor" value="500000" step="10000">
         </div>
-
         <div class="campo">
           <label>Entrada (Mínimo recomendado: 20%)</label>
           <input type="number" id="input-entrada" value="100000" step="5000">
         </div>
-
         <div class="campo">
           <label>Sistema de Amortização</label>
           <div class="botoes-seletor" id="grupo-amortizacao">
@@ -201,7 +155,6 @@
             <button type="button" class="btn-seletor" data-amort="PRICE">PRICE</button>
           </div>
         </div>
-
         <div class="campo">
           <label>Prazo do Contrato</label>
           <div class="botoes-seletor" id="grupo-prazo">
@@ -211,12 +164,10 @@
             <button type="button" class="btn-seletor" data-prazo="35">35 anos</button>
           </div>
         </div>
-
         <div class="campo">
           <label for="input-juros">Taxa de Juros Anual (% a.a.)</label>
           <input type="number" id="input-juros" value="10.5" step="0.1">
         </div>
-
         <div class="campo">
           <label for="input-renda">Renda Bruta Familiar Mensal (R$)</label>
           <input type="number" id="input-renda" value="12000" step="500">
@@ -229,7 +180,6 @@
           <p class="card-destaque-valor" id="res-parcela-inicial">R$ 0,00</p>
           <p class="card-destaque-sub" id="res-parcela-final">Última parcela: R$ 0,00</p>
         </div>
-
         <div class="linha-resumo">
           <span class="linha-rotulo">Saldo Financiado:</span>
           <span class="linha-valor" id="res-saldo">R$ 0,00</span>
@@ -251,26 +201,21 @@
 
     <section class="box-tutorial">
       <h2>Como interpretar a sua simulação de financiamento</h2>
-      <p><strong>1. A diferença entre SAC e PRICE:</strong> No sistema SAC, você abate uma quantia constante da dívida a cada mês, fazendo as parcelas caírem gradativamente ao longo dos anos. Na tabela PRICE, a prestação é constante, o que alivia a parcela inicial, mas eleva o volume total de juros pagos ao banco.</p>
-      <p><strong>2. Limite prudencial dos 30%:</strong> Por regra do Banco Central, a primeira parcela não pode ultrapassar 30% da renda bruta familiar. Caso ultrapasse, é necessário compor renda com mais pessoas ou aumentar o valor da entrada.</p>
+      <p><strong>1. A diferença entre SAC e PRICE:</strong> No sistema SAC, você abate uma quantia constante da dívida a cada mês, fazendo as parcelas caírem gradativamente. Na tabela PRICE, a prestação é constante, o que alivia a parcela inicial, mas eleva o volume total de juros.</p>
+      <p><strong>2. Limite prudencial dos 30%:</strong> Por regra do Banco Central, a primeira parcela não pode ultrapassar 30% da renda bruta familiar.</p>
     </section>
   </main>
 
-  <footer class="rodape">
-    &copy; itbidata &mdash; Simulador financeiro para fins de planejamento.
-  </footer>
+  <footer class="rodape">&copy; itbidata &mdash; Simulador financeiro para fins de planejamento.</footer>
 
 <script>
 (function() {
   "use strict";
-
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-
   var elValor = document.getElementById("input-valor");
   var elEntrada = document.getElementById("input-entrada");
   var elJuros = document.getElementById("input-juros");
   var elRenda = document.getElementById("input-renda");
-
   var amortizacaoAtual = "SAC";
   var prazoAnosAtual = 30;
 
@@ -306,10 +251,7 @@
     var n = prazoAnosAtual * 12;
     var i = taxaAnual / 12;
 
-    var parcInicial = 0;
-    var parcFinal = 0;
-    var jurosTotais = 0;
-    var custoFinal = 0;
+    var parcInicial = 0, parcFinal = 0, jurosTotais = 0, custoFinal = 0;
 
     if (amortizacaoAtual === "SAC") {
       var amort = saldo / n;
@@ -317,7 +259,6 @@
       parcFinal = amort + (amort * i);
       jurosTotais = (n + 1) * saldo * i / 2;
       custoFinal = saldo + jurosTotais;
-
       document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (SAC)";
       document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinal);
       document.getElementById("res-parcela-final").style.display = "block";
@@ -325,23 +266,19 @@
       parcInicial = saldo * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
       custoFinal = parcInicial * n;
       jurosTotais = custoFinal - saldo;
-
       document.getElementById("txt-label-parcela").textContent = "Parcela Fixa (PRICE)";
       document.getElementById("res-parcela-final").textContent = "Prestação constante até o final";
     }
 
     var comprometimento = renda > 0 ? ((parcInicial / renda) * 100) : 0;
-
     document.getElementById("res-parcela-inicial").textContent = fmtMoeda.format(parcInicial);
     document.getElementById("res-saldo").textContent = fmtMoeda.format(saldo);
     document.getElementById("res-total-juros").textContent = fmtMoeda.format(jurosTotais);
     document.getElementById("res-custo-total").textContent = fmtMoeda.format(custoFinal);
-    
     var elComp = document.getElementById("res-comprometimento");
     elComp.textContent = comprometimento.toFixed(1) + "%";
     elComp.style.color = comprometimento > 30 ? "#A3372A" : "var(--laranja)";
   }
-
   calcular();
 })();
 </script>
