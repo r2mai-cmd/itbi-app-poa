@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Poder de Compra e Renda Mínima &mdash; itbidata</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="apple-touch-icon" href="./favicon.png">
+<style>
+  :root {
+    --fundo-escuro: #34383D;
+    --fundo-escuro-claro: #41464A;
+    --pergaminho: #EDE9DE;
+    --texto-card: #24231F;
+    --texto-card-sutil: #6B6A63;
+    --laranja: #F0913A;
+    --laranja-escuro: #D9762A;
+    --dourado-linha: #D8CFB8;
+    --texto-sobre-fundo: #F5F3ED;
+    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
+    --agua-turquesa: #4FBFB8;
+    --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--fonte-corpo);
+    background: var(--fundo-escuro);
+    color: var(--texto-sobre-fundo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .barra-marca {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px max(4vw, 24px);
+    background: var(--fundo-escuro-claro);
+  }
+  .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .barra-marca img {
+    height: 44px; width: 44px; object-fit: cover; object-position: center 10%;
+    transform: scale(1.2); background: #fff; border-radius: 50%;
+  }
+  .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
+  .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+
+  .botoes-topo { display: flex; gap: 10px; align-items: center; }
+  .btn-topo {
+    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
+    padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.2s;
+  }
+  .btn-topo:hover { background-color: rgba(255,255,255,0.1); }
+
+  .cabecalho-pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 20px;
+    width: 100%;
+  }
+  .cabecalho-pagina h1 {
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 800;
+    margin: 0 0 10px;
+    color: #fff;
+  }
+  .cabecalho-pagina p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--texto-sobre-fundo-sutil);
+    max-width: 75ch;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .grid-simulador {
+    background: var(--pergaminho);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    overflow: hidden;
+    color: var(--texto-card);
+  }
+
+  @media (max-width: 860px) {
+    .grid-simulador { grid-template-columns: 1fr; }
+  }
+
+  .col-formulario {
+    padding: 32px;
+    border-right: 1px solid var(--dourado-linha);
+  }
+
+  .col-resultados {
+    padding: 32px;
+    background: #f7f5ef;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .abas-modo {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px;
+    background: #ded9cd; padding: 4px; border-radius: 10px;
+  }
+  .btn-aba {
+    border: none; background: transparent; padding: 10px; font-size: 0.82rem; font-weight: 700;
+    color: var(--texto-card-sutil); cursor: pointer; border-radius: 8px; transition: all 0.2s;
+  }
+  .btn-aba.ativo {
+    background: #fff; color: var(--texto-card); box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .campo { margin-bottom: 20px; }
+  .campo label {
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
+  }
+  .campo input {
+    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha);
+    padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600;
+  }
+  .campo input:focus { border-bottom: 2px solid var(--laranja); }
+
+  .botoes-seletor {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin-top: 6px;
+  }
+  .btn-seletor {
+    background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 4px;
+    font-size: 0.82rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center;
+  }
+  .btn-seletor.ativo {
+    background: var(--laranja); color: #fff; border-color: var(--laranja);
+  }
+
+  .card-destaque {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--laranja);
+  }
+  .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
+  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 800; color: var(--texto-card); margin: 0; }
+  .card-destaque-sub { font-size: 0.8rem; color: var(--texto-card-sutil); margin-top: 4px; }
+
+  .linha-resumo {
+    display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem;
+  }
+  .linha-resumo:last-child { border-bottom: none; }
+  .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
+  .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
+
+  .box-tutorial {
+    background: var(--fundo-escuro-claro);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
+  .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
+  .box-tutorial strong { color: #fff; }
+
+  .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
+</style>
+</head>
+<body>
+  <div class="barra-marca">
+    <a href="index.html" class="link-marca">
+      <img src="./favicon.png" alt="itbidata" />
+      <span class="nome-marca">itbi<span>data</span></span>
+    </a>
+    <div class="botoes-topo">
+      <a href="index.html" class="btn-topo">Busca de ITBI</a>
+      <a href="estatisticas.html" class="btn-topo">Estatísticas</a>
+    </div>
+  </div>
+
+  <header class="cabecalho-pagina">
+    <h1>Poder de Compra e Renda Mínima para Imóveis</h1>
+    <p>Descubra o valor máximo de imóvel que cabe no seu bolso com base na renda familiar ou saiba exatamente quanto precisa comprovar para financiar o imóvel dos seus sonhos.</p>
+  </header>
+
+  <main class="container">
+    <div class="grid-simulador">
+      <div class="col-formulario">
+        <div class="abas-modo">
+          <button type="button" class="btn-aba ativo" id="aba-teto" data-modo="teto">Quanto Posso Comprar?</button>
+          <button type="button" class="btn-aba" id="aba-renda" data-modo="renda">Qual Renda Preciso?</button>
+        </div>
+
+        <!-- Bloco 1: Baseado na Renda (Teto) -->
+        <div id="campo-renda-bloco" class="campo">
+          <label for="input-renda">Renda Bruta Familiar Mensal (R$)</label>
+          <input type="number" id="input-renda" value="12000" step="500">
+        </div>
+
+        <!-- Bloco 2: Baseado no Imóvel (Renda Necessária) -->
+        <div id="campo-imovel-bloco" class="campo" style="display:none;">
+          <label for="input-imovel-alvo">Valor Alvo do Imóvel (R$)</label>
+          <input type="number" id="input-imovel-alvo" value="600000" step="10000">
+        </div>
+
+        <div class="campo">
+          <label for="input-recursos">Entrada Disponível + Saldo de FGTS (R$)</label>
+          <input type="number" id="input-recursos" value="100000" step="5000">
+        </div>
+
+        <div class="campo">
+          <label>Prazo do Financiamento</label>
+          <div class="botoes-seletor" id="grupo-prazo">
+            <button type="button" class="btn-seletor" data-prazo="15">15 anos</button>
+            <button type="button" class="btn-seletor" data-prazo="20">20 anos</button>
+            <button type="button" class="btn-seletor ativo" data-prazo="30">30 anos</button>
+            <button type="button" class="btn-seletor" data-prazo="35">35 anos</button>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="input-taxa">Taxa de Juros Anual (% a.a.)</label>
+          <input type="number" id="input-taxa" value="10.5" step="0.1">
+        </div>
+      </div>
+
+      <div class="col-resultados">
+        <div class="card-destaque">
+          <p class="card-destaque-rotulo" id="res-rotulo-destaque">Teto Máximo do Imóvel</p>
+          <p class="card-destaque-valor" id="res-valor-destaque">R$ 0,00</p>
+          <p class="card-destaque-sub" id="res-sub-destaque">Entrada + Limite de Financiamento</p>
+        </div>
+
+        <div class="linha-resumo">
+          <span class="linha-rotulo" id="res-rotulo-secundario">Financiamento Aprovável:</span>
+          <span class="linha-valor" id="res-valor-secundario">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Parcela Máxima (30% da renda):</span>
+          <span class="linha-valor" id="res-parcela-teto">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Renda Ideal Recomendada (25%):</span>
+          <span class="linha-valor" id="res-renda-ideal" style="color:var(--agua-turquesa);">R$ 0,00</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="box-tutorial">
+      <h2>Critérios de aprovação e poder de compra bancário</h2>
+      <p><strong>1. A regra de ouro dos 30%:</strong> Qualquer instituição financeira vinculada ao Sistema Financeiro de Habitação (SFH) ou Carteira Hipotecária (SFI) limita a parcela inicial a no máximo 30% da renda bruta comprovada da família.</p>
+      <p><strong>2. Renda Ideal (25%):</strong> Embora o teto legal seja 30%, os bancos pontuam com score de crédito muito melhor os perfis cujo comprometimento não passa de 25%, garantindo menores taxas de juros e aprovação mais ágil.</p>
+      <p><strong>3. Composição de Renda:</strong> Você pode compor renda com cônjuge, pais ou filhos para atingir o valor de parcela necessário para o imóvel pretendido.</p>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    &copy; itbidata &mdash; Simulador financeiro para estimativas de crédito. A aprovação final de margem depende da análise do banco emissor.
+  </footer>
+
+<script>
+(function() {
+  "use strict";
+
+  var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+  var modoAtual = "teto";
+  var prazoAnos = 30;
+
+  var elRendaBloco = document.getElementById("campo-renda-bloco");
+  var elImovelBloco = document.getElementById("campo-imovel-bloco");
+  var elRenda = document.getElementById("input-renda");
+  var elImovelAlvo = document.getElementById("input-imovel-alvo");
+  var elRecursos = document.getElementById("input-recursos");
+  var elTaxa = document.getElementById("input-taxa");
+
+  document.querySelectorAll(".btn-aba").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".btn-aba").forEach(function(b) { b.classList.remove("ativo"); });
+      this.classList.add("ativo");
+      modoAtual = this.getAttribute("data-modo");
+
+      if (modoAtual === "teto") {
+        elRendaBloco.style.display = "block";
+        elImovelBloco.style.display = "none";
+      } else {
+        elRendaBloco.style.display = "none";
+        elImovelBloco.style.display = "block";
+      }
+      calcular();
+    });
+  });
+
+  document.querySelectorAll("#grupo-prazo .btn-seletor").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll("#grupo-prazo .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
+      this.classList.add("ativo");
+      prazoAnos = parseInt(this.getAttribute("data-prazo"), 10);
+      calcular();
+    });
+  });
+
+  [elRenda, elImovelAlvo, elRecursos, elTaxa].forEach(function(input) {
+    input.addEventListener("input", calcular);
+  });
+
+  function calcular() {
+    var entrada = parseFloat(elRecursos.value) || 0;
+    var taxaAa = (parseFloat(elTaxa.value) || 10.5) / 100;
+    var n = prazoAnos * 12;
+    var i = taxaAa / 12;
+
+    if (modoAtual === "teto") {
+      var renda = parseFloat(elRenda.value) || 0;
+      var parcMax30 = renda * 0.30;
+      var financiadoMax = parcMax30 * (Math.pow(1 + i, n) - 1) / (i * Math.pow(1 + i, n));
+      var tetoImovel = financiadoMax + entrada;
+      var rendaIdeal = parcMax30 / 0.25;
+
+      document.getElementById("res-rotulo-destaque").textContent = "Poder de Compra (Teto Máximo)";
+      document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(tetoImovel);
+      document.getElementById("res-sub-destaque").textContent = "Entrada (" + fmtMoeda.format(entrada) + ") + Financiamento Aprovável";
+
+      document.getElementById("res-rotulo-secundario").textContent = "Financiamento Máximo Permitido:";
+      document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(financiadoMax);
+
+      document.getElementById("res-parcela-teto").textContent = fmtMoeda.format(parcMax30);
+      document.getElementById("res-renda-ideal").textContent = fmtMoeda.format(rendaIdeal);
+    } else {
+      var imovel = parseFloat(elImovelAlvo.value) || 0;
+      var financiadoNecessario = Math.max(0, imovel - entrada);
+      var parcMensal = financiadoNecessario * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+      var rendaMinimaExigida = parcMensal / 0.30;
+      var rendaConfortavel = parcMensal / 0.25;
+
+      document.getElementById("res-rotulo-destaque").textContent = "Renda Mínima Exigida (30%)";
+      document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(rendaMinimaExigida);
+      document.getElementById("res-sub-destaque").textContent = "Necessária para aprovar a parcela de " + fmtMoeda.format(parcMensal);
+
+      document.getElementById("res-rotulo-secundario").textContent = "Saldo a Financiar:";
+      document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(financiadoNecessario);
+
+      document.getElementById("res-parcela-teto").textContent = fmtMoeda.format(parcMensal);
+      document.getElementById("res-renda-ideal").textContent = fmtMoeda.format(rendaConfortavel);
+    }
+  }
+
+  calcular();
+})();
+</script>
+</body>
+</html>
