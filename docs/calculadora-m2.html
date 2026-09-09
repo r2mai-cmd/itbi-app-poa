@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Preço do Metro Quadrado (m²) &mdash; itbidata</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="apple-touch-icon" href="./favicon.png">
+<style>
+  :root {
+    --fundo-escuro: #34383D;
+    --fundo-escuro-claro: #41464A;
+    --pergaminho: #EDE9DE;
+    --texto-card: #24231F;
+    --texto-card-sutil: #6B6A63;
+    --laranja: #F0913A;
+    --laranja-escuro: #D9762A;
+    --dourado-linha: #D8CFB8;
+    --texto-sobre-fundo: #F5F3ED;
+    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
+    --agua-turquesa: #4FBFB8;
+    --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--fonte-corpo);
+    background: var(--fundo-escuro);
+    color: var(--texto-sobre-fundo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .barra-marca {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px max(4vw, 24px);
+    background: var(--fundo-escuro-claro);
+  }
+  .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .barra-marca img {
+    height: 44px; width: 44px; object-fit: cover; object-position: center 10%;
+    transform: scale(1.2); background: #fff; border-radius: 50%;
+  }
+  .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
+  .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+
+  .botoes-topo { display: flex; gap: 10px; align-items: center; }
+  .btn-topo {
+    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
+    padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.2s;
+  }
+  .btn-topo:hover { background-color: rgba(255,255,255,0.1); }
+
+  .cabecalho-pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 20px;
+    width: 100%;
+  }
+  .cabecalho-pagina h1 {
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 800;
+    margin: 0 0 10px;
+    color: #fff;
+  }
+  .cabecalho-pagina p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--texto-sobre-fundo-sutil);
+    max-width: 75ch;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .grid-simulador {
+    background: var(--pergaminho);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    overflow: hidden;
+    color: var(--texto-card);
+  }
+
+  @media (max-width: 860px) {
+    .grid-simulador { grid-template-columns: 1fr; }
+  }
+
+  .col-formulario {
+    padding: 32px;
+    border-right: 1px solid var(--dourado-linha);
+  }
+
+  .col-resultados {
+    padding: 32px;
+    background: #f7f5ef;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .abas-modo {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px;
+    background: #ded9cd; padding: 4px; border-radius: 10px;
+  }
+  .btn-aba {
+    border: none; background: transparent; padding: 10px; font-size: 0.82rem; font-weight: 700;
+    color: var(--texto-card-sutil); cursor: pointer; border-radius: 8px; transition: all 0.2s;
+  }
+  .btn-aba.ativo {
+    background: #fff; color: var(--texto-card); box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .campo { margin-bottom: 20px; }
+  .campo label {
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
+  }
+  .campo input {
+    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha);
+    padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600;
+  }
+  .campo input:focus { border-bottom: 2px solid var(--laranja); }
+
+  .card-destaque {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--agua-turquesa);
+  }
+  .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
+  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 800; color: var(--texto-card); margin: 0; }
+  .card-destaque-sub { font-size: 0.8rem; color: var(--texto-card-sutil); margin-top: 4px; }
+
+  .linha-resumo {
+    display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem;
+  }
+  .linha-resumo:last-child { border-bottom: none; }
+  .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
+  .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
+
+  .box-tutorial {
+    background: var(--fundo-escuro-claro);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
+  .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
+  .box-tutorial strong { color: #fff; }
+
+  .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
+</style>
+</head>
+<body>
+  <div class="barra-marca">
+    <a href="index.html" class="link-marca">
+      <img src="./favicon.png" alt="itbidata" />
+      <span class="nome-marca">itbi<span>data</span></span>
+    </a>
+    <div class="botoes-topo">
+      <a href="index.html" class="btn-topo">Busca de ITBI</a>
+      <a href="estatisticas.html" class="btn-topo">Estatísticas</a>
+    </div>
+  </div>
+
+  <header class="cabecalho-pagina">
+    <h1>Calculadora de Metro Quadrado (R$/m²)</h1>
+    <p>Calcule o valor do metro quadrado privativo de um imóvel ou estime o preço total com base na metragem e no valor médio do m² da região.</p>
+  </header>
+
+  <main class="container">
+    <div class="grid-simulador">
+      <div class="col-formulario">
+        <div class="abas-modo">
+          <button type="button" class="btn-aba ativo" id="aba-descobrir-m2" data-modo="descobrir-m2">Calcular R$/m²</button>
+          <button type="button" class="btn-aba" id="aba-descobrir-valor" data-modo="descobrir-valor">Estimar Preço Total</button>
+        </div>
+
+        <!-- Modo 1: Descobrir Preço do m² -->
+        <div id="bloco-modo-m2">
+          <div class="campo">
+            <label for="input-preco-total">Valor Total Pedido pelo Imóvel (R$)</label>
+            <input type="number" id="input-preco-total" value="650000" step="10000">
+          </div>
+          <div class="campo">
+            <label for="input-area-privativa">Área Privativa / Útil (m²)</label>
+            <input type="number" id="input-area-privativa" value="75" step="1">
+          </div>
+        </div>
+
+        <!-- Modo 2: Descobrir Preço Total -->
+        <div id="bloco-modo-valor" style="display:none;">
+          <div class="campo">
+            <label for="input-m2-referencia">Valor de Referência do m² na Região (R$/m²)</label>
+            <input type="number" id="input-m2-referencia" value="8500" step="100">
+          </div>
+          <div class="campo">
+            <label for="input-area-alvo">Metragem Privativa Pretendida (m²)</label>
+            <input type="number" id="input-area-alvo" value="80" step="1">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-resultados">
+        <div class="card-destaque">
+          <p class="card-destaque-rotulo" id="res-rotulo-destaque">Preço por m² Privativo</p>
+          <p class="card-destaque-valor" id="res-valor-destaque">R$ 0,00</p>
+          <p class="card-destaque-sub" id="res-sub-destaque">Métrica oficial para balizar negócios</p>
+        </div>
+
+        <div class="linha-resumo">
+          <span class="linha-rotulo" id="res-rotulo-secundario">Valor Global do Imóvel:</span>
+          <span class="linha-valor" id="res-valor-secundario">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Área Privativa Base:</span>
+          <span class="linha-valor" id="res-area-base">0 m²</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Referência para Studio (35 m²):</span>
+          <span class="linha-valor" id="res-ref-35m">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Referência para 2 Quartos (65 m²):</span>
+          <span class="linha-valor" id="res-ref-65m">R$ 0,00</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="box-tutorial">
+      <h2>Como avaliar o valor do metro quadrado na prática</h2>
+      <p><strong>1. Área Privativa vs. Área Total:</strong> Ao comparar imóveis, utilize sempre a <strong>área privativa</strong> (o espaço real de uso exclusivo dentro do apartamento). A área total inclui garagens e áreas comuns compartilhadas, o que reduz artificialmente o valor do m² e prejudica a comparação.</p>
+      <p><strong>2. O que dita a variação de preço:</strong> O valor do m² varia bastante no mesmo bairro dependendo do andar, da incidência solar, da idade da construção, do estado de conservação e do número de vagas de garagem.</p>
+      <p><strong>3. Cruzamento com os dados de ITBI:</strong> Anúncios de portais costumam pedir valores até 15% acima da média. Use a página inicial do <strong>itbidata</strong> para conferir por quanto os imóveis da mesma rua foram de fato registrados na prefeitura.</p>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    &copy; itbidata &mdash; Ferramenta de inteligência imobiliária para fins de precificação e análise de mercado.
+  </footer>
+
+<script>
+(function() {
+  "use strict";
+
+  var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+  var modoAtual = "descobrir-m2";
+
+  var elBlocoM2 = document.getElementById("bloco-modo-m2");
+  var elBlocoValor = document.getElementById("bloco-modo-valor");
+
+  var elPrecoTotal = document.getElementById("input-preco-total");
+  var elAreaPrivativa = document.getElementById("input-area-privativa");
+  var elM2Ref = document.getElementById("input-m2-referencia");
+  var elAreaAlvo = document.getElementById("input-area-alvo");
+
+  document.querySelectorAll(".btn-aba").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".btn-aba").forEach(function(b) { b.classList.remove("ativo"); });
+      this.classList.add("ativo");
+      modoAtual = this.getAttribute("data-modo");
+
+      if (modoAtual === "descobrir-m2") {
+        elBlocoM2.style.display = "block";
+        elBlocoValor.style.display = "none";
+      } else {
+        elBlocoM2.style.display = "none";
+        elBlocoValor.style.display = "block";
+      }
+      calcular();
+    });
+  });
+
+  [elPrecoTotal, elAreaPrivativa, elM2Ref, elAreaAlvo].forEach(function(input) {
+    input.addEventListener("input", calcular);
+  });
+
+  function calcular() {
+    var precoM2 = 0;
+    var precoTotal = 0;
+    var area = 0;
+
+    if (modoAtual === "descobrir-m2") {
+      precoTotal = parseFloat(elPrecoTotal.value) || 0;
+      area = parseFloat(elAreaPrivativa.value) || 1;
+      precoM2 = precoTotal / area;
+
+      document.getElementById("res-rotulo-destaque").textContent = "Preço do m² Privativo";
+      document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(precoM2) + "/m²";
+      document.getElementById("res-sub-destaque").textContent = "Baseado na área de " + area + " m²";
+
+      document.getElementById("res-rotulo-secundario").textContent = "Valor Global Solicitado:";
+      document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(precoTotal);
+    } else {
+      precoM2 = parseFloat(elM2Ref.value) || 0;
+      area = parseFloat(elAreaAlvo.value) || 1;
+      precoTotal = precoM2 * area;
+
+      document.getElementById("res-rotulo-destaque").textContent = "Valor Estimado do Imóvel";
+      document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(precoTotal);
+      document.getElementById("res-sub-destaque").textContent = "Considerando " + fmtMoeda.format(precoM2) + "/m²";
+
+      document.getElementById("res-rotulo-secundario").textContent = "Preço por m² Aplicado:";
+      document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(precoM2) + "/m²";
+    }
+
+    document.getElementById("res-area-base").textContent = area + " m²";
+    document.getElementById("res-ref-35m").textContent = fmtMoeda.format(precoM2 * 35);
+    document.getElementById("res-ref-65m").textContent = fmtMoeda.format(precoM2 * 65);
+  }
+
+  calcular();
+})();
+</script>
+</body>
+</html>
