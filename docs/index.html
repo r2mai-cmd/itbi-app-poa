@@ -186,16 +186,33 @@ padding: 22px 24px 24px;
 box-shadow: 0 4px 14px rgba(0,0,0,0.25);
 }
 
-/* ===== Barra de Controles de Listagem (Ordenação e Contagem) ===== */
+/* ===== Barra de Controles de Listagem (Topo) ===== */
 .barra-topo-resultados {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  background: var(--fundo-escuro-claro);
+  padding: 10px 16px;
+  border-radius: 10px;
   margin-bottom: 4px;
 }
-.ordenacao-grupo {
+.contagem {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-sobre-fundo-sutil);
+  margin: 0;
+}
+.controles-topo-direita {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.ordenacao-grupo, .tamanho-pagina-grupo {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -204,19 +221,19 @@ box-shadow: 0 4px 14px rgba(0,0,0,0.25);
   text-transform: uppercase;
   color: var(--texto-sobre-fundo-sutil);
 }
-.ordenacao-grupo select {
-  background: var(--fundo-escuro-claro);
+.ordenacao-grupo select, .tamanho-pagina-grupo select {
+  background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.2);
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 4px 10px;
+  border-radius: 6px;
   font-family: var(--fonte-corpo);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   outline: none;
 }
-.ordenacao-grupo select option { background: var(--fundo-escuro-claro); color: #fff; }
+.ordenacao-grupo select option, .tamanho-pagina-grupo select option { background: var(--fundo-escuro-claro); color: #fff; }
 
 /* ===== Campos de formulario ===== */
 .campo { margin-bottom: 18px; }
@@ -318,7 +335,7 @@ margin-bottom: 16px;
 }
 .link-voltar:hover { color: var(--agua-turquesa); }
 
-/* ===== Controles de Paginação ===== */
+/* ===== Controles de Paginação (Rodapé da Lista) ===== */
 .controles-paginacao {
   display: flex;
   justify-content: space-between;
@@ -345,20 +362,6 @@ margin-bottom: 16px;
 }
 .btn-pagina:hover:not(:disabled) { background: var(--laranja); border-color: var(--laranja); }
 .btn-pagina:disabled { opacity: 0.3; cursor: default; }
-.tamanho-pagina-grupo { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--texto-sobre-fundo-sutil); }
-.tamanho-pagina-grupo select {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-family: var(--fonte-corpo);
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  outline: none;
-}
-.tamanho-pagina-grupo select option { background: var(--fundo-escuro-claro); color: #fff; }
 
 /* ===== Progresso / avisos ===== */
 .barra-progresso {
@@ -378,12 +381,6 @@ animation: deslizar 1.1s ease-in-out infinite;
 .faixa-aviso.aviso-suave .risco { background: var(--laranja); }
 .faixa-aviso p { margin: 0; color: var(--vermelho-erro); }
 .faixa-aviso.aviso-suave p { color: var(--laranja-escuro); }
-
-.contagem {
-font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-color: var(--texto-sobre-fundo-sutil); margin: 0; display: none;
-}
-.contagem.ativa { display: block; }
 
 /* ===== Card de resultado ===== */
 .resultado {
@@ -644,14 +641,26 @@ white-space: nowrap;
       <main class="area-principal">
         <div class="barra-topo-resultados" id="barra-topo-resultados" style="display:none;">
           <p class="contagem" id="contagem"></p>
-          <div class="ordenacao-grupo">
-            <label for="select-ordenacao">Ordenar:</label>
-            <select id="select-ordenacao">
-              <option value="recente" selected>Mais recentes</option>
-              <option value="antigo">Mais antigos</option>
-              <option value="maior-valor">Maior valor</option>
-              <option value="menor-valor">Menor valor</option>
-            </select>
+          <div class="controles-topo-direita">
+            <div class="tamanho-pagina-grupo">
+              <label for="select-tamanho-pagina">Por página:</label>
+              <select id="select-tamanho-pagina">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+            <div class="ordenacao-grupo">
+              <label for="select-ordenacao">Ordenar:</label>
+              <select id="select-ordenacao">
+                <option value="recente" selected>Mais recentes</option>
+                <option value="antigo">Mais antigos</option>
+                <option value="maior-valor">Maior valor</option>
+                <option value="menor-valor">Menor valor</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -665,16 +674,6 @@ white-space: nowrap;
             <span id="paginacao-numeros" style="font-size:0.8rem; font-weight:700; margin:0 6px; color:#fff;">Pág. 1 de 1</span>
             <button class="btn-pagina" id="btn-proxima">Próxima &rsaquo;</button>
             <button class="btn-pagina" id="btn-ultima">&raquo; Última</button>
-          </div>
-          <div class="tamanho-pagina-grupo">
-            <label for="select-tamanho-pagina">Por página:</label>
-            <select id="select-tamanho-pagina">
-              <option value="5">5</option>
-              <option value="10" selected>10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
           </div>
         </div>
 
@@ -740,11 +739,8 @@ white-space: nowrap;
 (function () {
   "use strict";
 
-  // Cache em memória (dura enquanto a página estiver aberta), chaveado por
-  // cidade+ano (ver FONTES[cidade].chaveCache).
   var cacheCsv = {};
 
-  // ===== Parser de CSV (delimitador ; e aspas simples, igual ao app Android) =====
   function parseLinhaCsv(linha) {
     var resultado = [];
     var i = 0;
@@ -786,7 +782,6 @@ white-space: nowrap;
     return resultado;
   }
 
-  // ===== Normalização de texto para busca (remove acento, maiúsculas, preposições) =====
   function normalizarParaBusca(s) {
     return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
   }
@@ -797,7 +792,6 @@ white-space: nowrap;
       .trim();
   }
 
-  // ===== Datas no formato "yyyy/MM/dd HH:mm:ss" =====
   function parseDataPoa(texto) {
     if (!texto) return null;
     var m = texto.trim().match(/^(\d{4})\/(\d{2})\/(\d{2})/);
@@ -810,10 +804,9 @@ white-space: nowrap;
   function formatarDataBr(data) {
     if (!data) return null;
     function d2(n) { return n < 10 ? "0" + n : "" + n; }
-    return d2(data.d) + "/" + d2(data.mo) + "/" + data.y;
+    return d2(data.d) + "/" + d2(data.mo) + "/" + d2(data.y);
   }
 
-  // ===== Converte uma linha em registro (Porto Alegre) =====
   function converterRegistroPoa(campos, ano) {
     if (campos.length < 18) return null;
     function c(i) {
@@ -856,7 +849,6 @@ white-space: nowrap;
     };
   }
 
-  // ===== Datas no formato "dd/MM/yyyy HH:mm" (Fortaleza) =====
   function parseDataFortaleza(texto) {
     if (!texto) return null;
     var m = texto.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})/);
@@ -864,7 +856,6 @@ white-space: nowrap;
     return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
   }
 
-  // ===== Converte uma linha em registro (Fortaleza) =====
   function converterRegistroFortaleza(campos, anoPedido) {
     if (campos.length < 31) return null;
     function c(i) {
@@ -922,7 +913,6 @@ white-space: nowrap;
     return partes.join(", ");
   }
 
-  // ===== Download com contorno de CORS =====
   var PROXIES_CORS = [
     function (url) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url); },
     function (url) { return "https://corsproxy.io/?url=" + encodeURIComponent(url); }
@@ -953,7 +943,6 @@ white-space: nowrap;
     });
   }
 
-  // ===== Fontes de dados por cidade =====
   var BASE_POA = "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource";
 
   var FONTES = {
@@ -1042,7 +1031,6 @@ white-space: nowrap;
     return logradouroOk && numeroOk;
   }
 
-  // ===== Ordenação dos registros =====
   function ordenarRegistros(lista, criterio) {
     var copia = lista.slice();
     copia.sort(function(a, b) {
@@ -1064,7 +1052,6 @@ white-space: nowrap;
     return copia;
   }
 
-  // ===== Busca principal (sequencial, ano a ano) =====
   function buscar(cidadeId, anoUnico, logradouro, numero, forcarAtualizacao, aoProgredir) {
     var fonte = FONTES[cidadeId];
     var anos = anoUnico ? [anoUnico] : fonte.anosDisponiveis;
@@ -1102,7 +1089,6 @@ white-space: nowrap;
     return proximo();
   }
 
-  // ===== UI =====
   var elCidade = document.getElementById("cidade");
   var elEndereco = document.getElementById("endereco");
   var elNumero = document.getElementById("numero");
@@ -1122,7 +1108,6 @@ white-space: nowrap;
   var elBarraTopoResultados = document.getElementById("barra-topo-resultados");
   var elSelectOrdenacao = document.getElementById("select-ordenacao");
 
-  // Elementos de paginação
   var elControlesPaginacao = document.getElementById("controles-paginacao");
   var elPaginacaoInfo = document.getElementById("paginacao-info");
   var elBtnPrimeira = document.getElementById("btn-primeira");
@@ -1210,18 +1195,17 @@ white-space: nowrap;
     });
   }
 
-  // Eventos de paginação
   elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
   elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
   elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
   elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  
   elSelectTamanhoPagina.addEventListener("change", function () {
     tamanhoPagina = parseInt(this.value, 10);
     paginaAtual = 1;
     renderizarResultados(ultimosRegistros);
   });
 
-  // Evento de ordenação
   elSelectOrdenacao.addEventListener("change", function () {
     var criterio = this.value;
     ultimosRegistros = ordenarRegistros(ultimosRegistros, criterio);
@@ -1343,7 +1327,6 @@ white-space: nowrap;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // ===== Correção monetária (CDI, IPCA, IGP-M) via API do Banco Central =====
   function dataParaBcb(data) {
     function d2(n) { return n < 10 ? "0" + n : "" + n; }
     return d2(data.d) + "/" + d2(data.mo) + "/" + data.y;
@@ -1468,7 +1451,6 @@ white-space: nowrap;
       definirCarregando(false);
       ultimosRegistros = resultado.registros;
       paginaAtual = 1;
-      elContagem.classList.add("ativa");
       elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
       renderizarResultados(resultado.registros);
       if (resultado.anosComErro.length > 0) {
@@ -1494,12 +1476,9 @@ white-space: nowrap;
     elEndereco.value = "";
     elNumero.value = "";
     elAno.value = "2026";
-    elContagem.classList.remove("ativa");
-    elFaixaErro.classList.remove("ativa");
-    elFaixaAvisoAnos.classList.remove("ativa");
-    elResultados.innerHTML = "";
     elBarraTopoResultados.style.display = "none";
     elControlesPaginacao.style.display = "none";
+    elResultados.innerHTML = "";
     ultimosRegistros = [];
     fecharDetalhe();
   });
