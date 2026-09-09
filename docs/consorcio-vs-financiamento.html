@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consórcio vs. Financiamento Imobiliário &mdash; itbidata</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="apple-touch-icon" href="./favicon.png">
+<style>
+  :root {
+    --fundo-escuro: #34383D;
+    --fundo-escuro-claro: #41464A;
+    --pergaminho: #EDE9DE;
+    --texto-card: #24231F;
+    --texto-card-sutil: #6B6A63;
+    --laranja: #F0913A;
+    --laranja-escuro: #D9762A;
+    --dourado-linha: #D8CFB8;
+    --texto-sobre-fundo: #F5F3ED;
+    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
+    --agua-turquesa: #4FBFB8;
+    --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--fonte-corpo);
+    background: var(--fundo-escuro);
+    color: var(--texto-sobre-fundo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .barra-marca {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px max(4vw, 24px);
+    background: var(--fundo-escuro-claro);
+  }
+  .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .barra-marca img {
+    height: 44px; width: 44px; object-fit: cover; object-position: center 10%;
+    transform: scale(1.2); background: #fff; border-radius: 50%;
+  }
+  .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
+  .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+
+  .botoes-topo { display: flex; gap: 10px; align-items: center; }
+  .btn-topo {
+    color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
+    padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.2s;
+  }
+  .btn-topo:hover { background-color: rgba(255,255,255,0.1); }
+
+  .cabecalho-pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 24px 20px;
+    width: 100%;
+  }
+  .cabecalho-pagina h1 {
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 800;
+    margin: 0 0 10px;
+    color: #fff;
+  }
+  .cabecalho-pagina p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--texto-sobre-fundo-sutil);
+    max-width: 75ch;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .grid-simulador {
+    background: var(--pergaminho);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    overflow: hidden;
+    color: var(--texto-card);
+  }
+
+  @media (max-width: 860px) {
+    .grid-simulador { grid-template-columns: 1fr; }
+  }
+
+  .col-formulario {
+    padding: 32px;
+    border-right: 1px solid var(--dourado-linha);
+  }
+
+  .col-resultados {
+    padding: 32px;
+    background: #f7f5ef;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .campo { margin-bottom: 18px; }
+  .campo label {
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
+  }
+  .campo input {
+    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha);
+    padding: 8px 0; font-size: 1.05rem; color: var(--texto-card); outline: none; font-weight: 600;
+  }
+  .campo input:focus { border-bottom: 2px solid var(--laranja); }
+  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+
+  .botoes-seletor {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 8px; margin-top: 6px;
+  }
+  .btn-seletor {
+    background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 4px;
+    font-size: 0.8rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center;
+  }
+  .btn-seletor.ativo {
+    background: var(--laranja); color: #fff; border-color: var(--laranja);
+  }
+
+  .card-destaque {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--agua-turquesa);
+  }
+  .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
+  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.55rem; font-weight: 800; color: var(--texto-card); margin: 0; }
+  .card-destaque-sub { font-size: 0.8rem; color: var(--texto-card-sutil); margin-top: 4px; }
+
+  .linha-resumo {
+    display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem;
+  }
+  .linha-resumo:last-child { border-bottom: none; }
+  .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
+  .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
+
+  .box-tutorial {
+    background: var(--fundo-escuro-claro);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
+  .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
+  .box-tutorial strong { color: #fff; }
+
+  .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
+</style>
+</head>
+<body>
+  <div class="barra-marca">
+    <a href="index.html" class="link-marca">
+      <img src="./favicon.png" alt="itbidata" />
+      <span class="nome-marca">itbi<span>data</span></span>
+    </a>
+    <div class="botoes-topo">
+      <a href="index.html" class="btn-topo">Busca de ITBI</a>
+      <a href="estatisticas.html" class="btn-topo">Estatísticas</a>
+    </div>
+  </div>
+
+  <header class="cabecalho-pagina">
+    <h1>Consórcio vs. Financiamento Imobiliário</h1>
+    <p>Compare lado a lado o custo total de uma carta de crédito sem juros bancários contra um financiamento tradicional com liberação imediata.</p>
+  </header>
+
+  <main class="container">
+    <div class="grid-simulador">
+      <div class="col-formulario">
+        <div class="campo">
+          <label for="input-credito">Valor do Crédito / Imóvel (R$)</label>
+          <input type="number" id="input-credito" value="400000" step="10000">
+        </div>
+
+        <div class="campo">
+          <label>Prazo do Consórcio</label>
+          <div class="botoes-seletor" id="grupo-prazo-cons">
+            <button type="button" class="btn-seletor" data-meses="120">10 anos (120m)</button>
+            <button type="button" class="btn-seletor ativo" data-meses="180">15 anos (180m)</button>
+            <button type="button" class="btn-seletor" data-meses="220">18 anos (220m)</button>
+          </div>
+        </div>
+
+        <div class="campo-linha">
+          <div class="campo">
+            <label for="input-taxa-adm">Taxa de Administração Total (%)</label>
+            <input type="number" id="input-taxa-adm" value="22" step="0.5">
+          </div>
+          <div class="campo">
+            <label for="input-juros-fin">Juros do Financiamento (% a.a.)</label>
+            <input type="number" id="input-juros-fin" value="10.5" step="0.1">
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="input-lance">Recursos para Lance ou Entrada (R$)</label>
+          <input type="number" id="input-lance" value="80000" step="5000">
+        </div>
+      </div>
+
+      <div class="col-resultados">
+        <div class="card-destaque">
+          <p class="card-destaque-rotulo">Economia Escolhendo Consórcio</p>
+          <p class="card-destaque-valor" id="res-diferenca" style="color:var(--agua-turquesa);">R$ 0,00</p>
+          <p class="card-destaque-sub">Diferença em juros evitados</p>
+        </div>
+
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Parcela Inicial: Consórcio:</span>
+          <span class="linha-valor" id="res-parc-consorcio">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Parcela Inicial: Financiamento:</span>
+          <span class="linha-valor" id="res-parc-fin">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Custo Total Final no Consórcio:</span>
+          <span class="linha-valor" id="res-total-consorcio">R$ 0,00</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Custo Total no Financiamento:</span>
+          <span class="linha-valor" id="res-total-fin">R$ 0,00</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="box-tutorial">
+      <h2>Principais diferenças estratégicas entre as duas modalidades</h2>
+      <p><strong>1. Consórcio não tem juros, mas tem taxa de administração:</strong> Em vez de pagar juros compostos ao banco, você paga uma taxa fixa diluída ao longo de todo o plano (geralmente entre 18% e 24% no total). A economia final costuma ser expressiva.</p>
+      <p><strong>2. O fator tempo e a contemplação:</strong> No consórcio, você depende de sorteio mensal ou de ofertar um lance para ser contemplado e ter a carta liberada. O financiamento, por outro lado, libera o valor de imediato para fechar o negócio.</p>
+      <p><strong>3. Uso do lance como estratégia:</strong> Se você possui recursos guardados ou saldo de FGTS, pode ofertá-los como lance para antecipar a contemplação no consórcio, unindo o menor custo da modalidade com maior previsibilidade de prazo.</p>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    &copy; itbidata &mdash; Simulador financeiro comparativo. As cartas de consórcio sofrem reajuste anual por índices da construção civil (INCC).
+  </footer>
+
+<script>
+(function() {
+  "use strict";
+
+  var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+  var mesesConsorcio = 180;
+
+  var elCredito = document.getElementById("input-credito");
+  var elTaxaAdm = document.getElementById("input-taxa-adm");
+  var elJurosFin = document.getElementById("input-juros-fin");
+  var elLance = document.getElementById("input-lance");
+
+  document.querySelectorAll("#grupo-prazo-cons .btn-seletor").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll("#grupo-prazo-cons .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
+      this.classList.add("ativo");
+      mesesConsorcio = parseInt(this.getAttribute("data-meses"), 10);
+      calcular();
+    });
+  });
+
+  [elCredito, elTaxaAdm, elJurosFin, elLance].forEach(function(input) {
+    input.addEventListener("input", calcular);
+  });
+
+  function calcular() {
+    var credito = parseFloat(elCredito.value) || 0;
+    var taxaAdmPct = (parseFloat(elTaxaAdm.value) || 22) / 100;
+    var taxaFinAa = (parseFloat(elJurosFin.value) || 10.5) / 100;
+    var lance = parseFloat(elLance.value) || 0;
+
+    // Consórcio
+    var totalConsorcio = credito * (1 + taxaAdmPct);
+    var parcelaConsorcio = totalConsorcio / mesesConsorcio;
+
+    // Financiamento comparativo (mesmo saldo líquido a pagar após entrada)
+    var financiado = Math.max(0, credito - lance);
+    var i = taxaFinAa / 12;
+    var parcFin = financiado * (i * Math.pow(1 + i, mesesConsorcio)) / (Math.pow(1 + i, mesesConsorcio) - 1);
+    var totalFin = (parcFin * mesesConsorcio) + lance;
+
+    var diferenca = totalFin - totalConsorcio;
+
+    document.getElementById("res-diferenca").textContent = fmtMoeda.format(Math.max(0, diferenca));
+    document.getElementById("res-parc-consorcio").textContent = fmtMoeda.format(parcelaConsorcio);
+    document.getElementById("res-parc-fin").textContent = fmtMoeda.format(parcFin);
+    document.getElementById("res-total-consorcio").textContent = fmtMoeda.format(totalConsorcio);
+    document.getElementById("res-total-fin").textContent = fmtMoeda.format(totalFin);
+  }
+
+  calcular();
+})();
+</script>
+</body>
+</html>
