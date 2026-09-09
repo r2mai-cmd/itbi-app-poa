@@ -590,6 +590,9 @@ white-space: nowrap;
             <select id="cidade">
               <option value="poa">Porto Alegre - RS</option>
               <option value="fortaleza">Fortaleza - CE</option>
+              <option value="sao-paulo">São Paulo - SP</option>
+              <option value="belo-horizonte">Belo Horizonte - MG</option>
+              <option value="recife">Recife - PE</option>
             </select>
           </div>
 
@@ -1006,6 +1009,96 @@ white-space: nowrap;
             var reg = converterRegistroFortaleza(linha.split(";"), anoPedido);
             if (reg) registros.push(reg);
           } catch (e) { /* ignora linha malformada */ }
+        }
+        return registros;
+      }
+    },
+
+    "sao-paulo": {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocal: "data/itbi-sao-paulo.csv",
+      chaveCache: function () { return "sao-paulo_completo"; },
+      baixarCsv: function () {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var campos = parseLinhaCsv(linha);
+            var reg = converterRegistroPoa(campos, ano);
+            if (reg) {
+              reg.cidadeNome = "São Paulo";
+              reg.estadoSigla = "SP";
+              registros.push(reg);
+            }
+          } catch (e) {}
+        }
+        return registros;
+      }
+    },
+
+    "belo-horizonte": {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocal: "data/itbi-belo-horizonte.csv",
+      chaveCache: function () { return "belo-horizonte_completo"; },
+      baixarCsv: function () {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var campos = parseLinhaCsv(linha);
+            var reg = converterRegistroPoa(campos, ano);
+            if (reg) {
+              reg.cidadeNome = "Belo Horizonte";
+              reg.estadoSigla = "MG";
+              registros.push(reg);
+            }
+          } catch (e) {}
+        }
+        return registros;
+      }
+    },
+
+    recife: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocal: "data/itbi-recife.csv",
+      chaveCache: function () { return "recife_completo"; },
+      baixarCsv: function () {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var campos = parseLinhaCsv(linha);
+            var reg = converterRegistroPoa(campos, ano);
+            if (reg) {
+              reg.cidadeNome = "Recife";
+              reg.estadoSigla = "PE";
+              registros.push(reg);
+            }
+          } catch (e) {}
         }
         return registros;
       }
