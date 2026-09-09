@@ -48,22 +48,31 @@ display: flex;
 flex-direction: column;
 }
 
-/* ===== Barra de marca (logo) ===== */
+/* ===== Barra de marca (logo e menu unificado) ===== */
 .barra-marca {
 display: flex;
 align-items: center;
-gap: 10px;
-padding: 18px max(4vw, 24px);
+justify-content: space-between;
+padding: 14px max(4vw, 24px);
 background: var(--fundo-escuro-claro);
 }
+.link-marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
 .barra-marca img {
-  height: 48px;
-  width: 48px;
+  height: 38px;
+  width: 38px;
+  min-width: 38px;
   display: block;
   object-fit: cover;
   object-position: center 10%;
-  transform: scale(1.25);
-  transform-origin: center 20%;
+  transform: scale(1.2);
   background-color: #ffffff;
   border-radius: 50%;
   box-sizing: border-box;
@@ -74,19 +83,24 @@ background: var(--fundo-escuro-claro);
 .barra-marca .nome-marca {
 font-family: var(--fonte-corpo);
 font-weight: 800;
-font-size: 1.3rem;
+font-size: 1.15rem;
 color: var(--texto-sobre-fundo);
+white-space: nowrap;
 letter-spacing: -0.01em;
 }
 .barra-marca .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
-.link-marca {
-  display: flex;
-  align-items: center;
- gap: 16px;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
+
+.menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
+.btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+.btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
+
+.dropdown { position: relative; display: inline-block; }
+.dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
+.dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
+.dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+.dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
+
 /* ===== Cabecalho: foto + titulo ===== */
 .cabecalho {
 position: sticky;
@@ -271,6 +285,48 @@ cursor: pointer;
 margin-bottom: 16px;
 }
 .link-voltar:hover { color: var(--agua-turquesa); }
+
+/* ===== Controles de Paginação ===== */
+.controles-paginacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--fundo-escuro-claro);
+  padding: 12px 18px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+.paginacao-info { font-size: 0.8rem; color: var(--texto-sobre-fundo-sutil); font-weight: 500; }
+.paginacao-botoes { display: flex; align-items: center; gap: 6px; }
+.btn-pagina {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-pagina:hover:not(:disabled) { background: var(--laranja); border-color: var(--laranja); }
+.btn-pagina:disabled { opacity: 0.3; cursor: default; }
+.tamanho-pagina-grupo { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--texto-sobre-fundo-sutil); }
+.tamanho-pagina-grupo select {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: var(--fonte-corpo);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+.tamanho-pagina-grupo select option { background: var(--fundo-escuro-claro); color: #fff; }
 
 /* ===== Progresso / avisos ===== */
 .barra-progresso {
@@ -468,10 +524,24 @@ white-space: nowrap;
 </head>
 <body>
 <div class="barra-marca">
-  <a href="/" class="link-marca">
+  <a href="index.html" class="link-marca">
     <img src="./favicon.png" alt="itbidata" />
     <span class="nome-marca">itbi<span>data</span></span>
   </a>
+  <div class="menu-nav">
+    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
+    <div class="dropdown">
+      <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+      <div class="dropdown-conteudo">
+        <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
+        <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
+        <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
+        <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
+        <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
+        <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
+      </div>
+    </div>
+  </div>
 </div>
 
   <header class="cabecalho" id="cabecalho">
@@ -542,6 +612,26 @@ white-space: nowrap;
       <main class="area-principal">
         <p class="contagem" id="contagem"></p>
         <div class="grade-resultados" id="resultados"></div>
+        <div class="controles-paginacao" id="controles-paginacao" style="display:none;">
+          <div class="paginacao-info" id="paginacao-info">Mostrando 0 a 0 de 0 registros</div>
+          <div class="paginacao-botoes">
+            <button class="btn-pagina" id="btn-primeira">&laquo; Primeira</button>
+            <button class="btn-pagina" id="btn-anterior">&lsaquo; Anterior</button>
+            <span id="paginacao-numeros" style="font-size:0.8rem; font-weight:700; margin:0 6px; color:#fff;">Pág. 1 de 1</span>
+            <button class="btn-pagina" id="btn-proxima">Próxima &rsaquo;</button>
+            <button class="btn-pagina" id="btn-ultima">&raquo; Última</button>
+          </div>
+          <div class="tamanho-pagina-grupo">
+            <label for="select-tamanho-pagina">Por página:</label>
+            <select id="select-tamanho-pagina">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
         <div id="detalhe" hidden></div>
       </main>
     </div>
@@ -729,9 +819,6 @@ white-space: nowrap;
   }
 
   // ===== Converte uma linha em registro (Fortaleza) =====
-  // Formato bem diferente de POA: delimitador ; SEM aspas, números com
-  // vírgula decimal, um único arquivo com todos os anos (por isso recebe
-  // o ano pedido e confere se bate com a coluna EXERCICIO da própria linha).
   function converterRegistroFortaleza(campos, anoPedido) {
     if (campos.length < 31) return null;
     function c(i) {
@@ -790,12 +877,6 @@ white-space: nowrap;
   }
 
   // ===== Download com contorno de CORS =====
-  // Tenta o acesso direto primeiro; se o navegador bloquear por CORS,
-  // tenta em sequência alguns proxies públicos sem restrição de origem
-  // (o corsproxy.io no plano gratuito só funciona a partir de alguns
-  // domínios específicos como GitHub Pages — não funciona em arquivo
-  // aberto localmente, por exemplo). Se todos falharem, o erro real do
-  // último proxy tentado é repassado, pra dar um diagnóstico útil.
   var PROXIES_CORS = [
     function (url) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url); },
     function (url) { return "https://corsproxy.io/?url=" + encodeURIComponent(url); }
@@ -820,46 +901,13 @@ white-space: nowrap;
       return resp.text();
     }).catch(function (erroDireto) {
       return tentarComProxies(url, 0, erroDireto).catch(function (erroFinal) {
-        // Repassa uma mensagem que mostra a causa real (\u00fatil pra diagnosticar
-        // se o problema \u00e9 CORS, rede, ou o servidor da prefeitura).
         var motivo = erroDireto && erroDireto.message ? erroDireto.message : String(erroDireto);
         throw new Error("Falha ao acessar " + url.split("/download/")[1] + " \u2014 " + motivo);
       });
     });
   }
 
-  // Igual a baixarTexto, mas devolve os bytes brutos (ArrayBuffer) em vez de
-  // ja decodificar como texto — usado por fontes que nao sao UTF-8 (ex.: uma
-  // futura cidade com CSV em outra codificacao).
-  function tentarBinarioComProxies(url, indiceProxy, ultimoErro) {
-    if (indiceProxy >= PROXIES_CORS.length) {
-      throw ultimoErro || new Error("Todas as tentativas de acesso falharam.");
-    }
-    var proxied = PROXIES_CORS[indiceProxy](url);
-    return fetch(proxied).then(function (resp) {
-      if (!resp.ok) throw new Error("HTTP " + resp.status + " (proxy " + (indiceProxy + 1) + ")");
-      return resp.arrayBuffer();
-    }).catch(function (erro) {
-      return tentarBinarioComProxies(url, indiceProxy + 1, erro);
-    });
-  }
-
-  function baixarBinarioComProxy(url) {
-    return fetch(url).then(function (resp) {
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      return resp.arrayBuffer();
-    }).catch(function (erroDireto) {
-      return tentarBinarioComProxies(url, 0, erroDireto).catch(function (erroFinal) {
-        var motivo = erroDireto && erroDireto.message ? erroDireto.message : String(erroDireto);
-        throw new Error("Falha ao acessar os dados \u2014 " + motivo);
-      });
-    });
-  }
-
   // ===== Fontes de dados por cidade =====
-  // Para adicionar uma nova cidade: registre uma entrada aqui com
-  // anosDisponiveis, baixarCsv (retorna o texto do CSV) e processarCsv
-  // (recebe o texto + ano pedido, devolve os registros já convertidos).
   var BASE_POA = "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource";
 
   var FONTES = {
@@ -874,7 +922,6 @@ white-space: nowrap;
         2025: BASE_POA + "/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv",
         2026: BASE_POA + "/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
       },
-      // Anos hospedados junto com o próprio site (nunca esbarra em CORS).
       arquivoLocalPorAno: { 2025: "data/itbi-2025.csv", 2026: "data/itbi-2026.csv" },
       chaveCache: function (ano) { return "poa_" + ano; },
       baixarCsv: function (ano) {
@@ -903,21 +950,10 @@ white-space: nowrap;
     },
 
     fortaleza: {
-      // Estimativa razoável (mesmo período de POA) — o arquivo é único,
-      // sem separação por ano, então um ano "vazio" simplesmente não
-      // aparece nos resultados, não é erro.
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      // Hospedado junto com o próprio site (mesma origem) — sem isso, o
-      // arquivo de ~25MB não conseguia passar nem direto nem pelos proxies.
       arquivoLocal: "data/itbi-fortaleza.csv",
-      // Mesma chave sempre: é o mesmo arquivo pra qualquer ano — sem isso,
-      // "Todos" guardaria em cache 7 cópias idênticas.
       chaveCache: function () { return "fortaleza_completo"; },
       baixarCsv: function () {
-        // O arquivo da prefeitura não é UTF-8 — é ISO-8859-1/Windows-1252
-        // (comum em sistemas legados do setor público). Por isso baixamos
-        // os bytes brutos e decodificamos explicitamente, em vez de usar
-        // .text() (que assumiria UTF-8 e quebraria a acentuação).
         return fetch(this.arquivoLocal).then(function (resp) {
           if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-fortaleza.csv)");
           return resp.arrayBuffer();
@@ -999,7 +1035,7 @@ white-space: nowrap;
     return proximo();
   }
 
-  // ===== UI =====
+  // ===== UI e Paginação =====
   var elCidade = document.getElementById("cidade");
   var elEndereco = document.getElementById("endereco");
   var elNumero = document.getElementById("numero");
@@ -1016,6 +1052,16 @@ white-space: nowrap;
   var elContagem = document.getElementById("contagem");
   var elResultados = document.getElementById("resultados");
   var elDetalhe = document.getElementById("detalhe");
+  
+  // Elementos de paginação
+  var elControlesPaginacao = document.getElementById("controles-paginacao");
+  var elPaginacaoInfo = document.getElementById("paginacao-info");
+  var elBtnPrimeira = document.getElementById("btn-primeira");
+  var elBtnAnterior = document.getElementById("btn-anterior");
+  var elPaginacaoNumeros = document.getElementById("paginacao-numeros");
+  var elBtnProxima = document.getElementById("btn-proxima");
+  var elBtnUltima = document.getElementById("btn-ultima");
+  var elSelectTamanhoPagina = document.getElementById("select-tamanho-pagina");
 
   if (window.location.protocol === "file:") {
     elFaixaErro.classList.add("ativa");
@@ -1027,6 +1073,8 @@ white-space: nowrap;
 
   var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
   var ultimosRegistros = [];
+  var paginaAtual = 1;
+  var tamanhoPagina = 10;
 
   function definirCarregando(carregando) {
     elBtnPesquisar.disabled = carregando;
@@ -1036,9 +1084,33 @@ white-space: nowrap;
     if (!carregando) elTextoProgresso.style.display = "none";
   }
 
- function renderizarResultados(registros) {
+  function renderizarResultados(registros) {
     elResultados.innerHTML = "";
-    registros.forEach(function (r, indice) {
+    if (registros.length === 0) {
+      elControlesPaginacao.style.display = "none";
+      return;
+    }
+
+    elControlesPaginacao.style.display = "flex";
+    var totalRegistros = registros.length;
+    var totalPaginas = Math.ceil(totalRegistros / tamanhoPagina) || 1;
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+    var inicio = (paginaAtual - 1) * tamanhoPagina;
+    var fim = Math.min(inicio + tamanhoPagina, totalRegistros);
+    var paginaRegistros = registros.slice(inicio, fim);
+
+    elPaginacaoInfo.textContent = "Mostrando " + (inicio + 1) + " a " + fim + " de " + totalRegistros + " registros";
+    elPaginacaoNumeros.textContent = "Pág. " + paginaAtual + " de " + totalPaginas;
+
+    elBtnPrimeira.disabled = (paginaAtual === 1);
+    elBtnAnterior.disabled = (paginaAtual === 1);
+    elBtnProxima.disabled = (paginaAtual === totalPaginas);
+    elBtnUltima.disabled = (paginaAtual === totalPaginas);
+
+    paginaRegistros.forEach(function (r) {
+      // Encontra o índice real no array completo ultimosRegistros para o detalhe abrir corretamente
+      var indiceReal = ultimosRegistros.indexOf(r);
       var card = document.createElement("div");
       card.className = "resultado";
       var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
@@ -1062,10 +1134,21 @@ white-space: nowrap;
       card.querySelector(".resultado-sub").textContent = subTxt;
       card.querySelector(".resultado-preco").textContent = precoTxt;
       card.querySelector(".resultado-data").textContent = dataTxt;
-      card.addEventListener("click", function () { abrirDetalhe(indice); });
+      card.addEventListener("click", function () { abrirDetalhe(indiceReal); });
       elResultados.appendChild(card);
     });
   }
+
+  // Eventos de Paginação
+  elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
+  elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
+  elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  elSelectTamanhoPagina.addEventListener("change", function () {
+    tamanhoPagina = parseInt(this.value, 10);
+    paginaAtual = 1;
+    renderizarResultados(ultimosRegistros);
+  });
 
   function linhaFicha(rotulo, valor) {
     return '<div class="ficha-linha"><div class="ficha-rotulo">' + rotulo +
@@ -1092,8 +1175,8 @@ white-space: nowrap;
     html += '<div class="ficha-cartoes">';
     html += '<div class="cartao"><p class="ficha-secao-titulo">Dados da negociação</p>';
     html += linhaFicha("Valor da negociação", precoTxt);
-var m2Privativo = (r.baseCalculo && r.areaConstrPrivativa) ? formatoMoeda.format(r.baseCalculo / r.areaConstrPrivativa) + " / m²" : "—";
-html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço do m² (privativo)</div><div class="ficha-valor">' + m2Privativo + '</div></div>';
+    var m2Privativo = (r.baseCalculo && r.areaConstrPrivativa) ? formatoMoeda.format(r.baseCalculo / r.areaConstrPrivativa) + " / m²" : "—";
+    html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço do m² (privativo)</div><div class="ficha-valor">' + m2Privativo + '</div></div>';
     html += linhaFicha("Data de referência", dataTxt(r.dataReferencia));
     html += linhaFicha("Data estimativa", dataTxt(r.dataEstimativa));
     html += linhaFicha("Data pagamento", dataTxt(r.dataPagamento));
@@ -1165,8 +1248,6 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
         elErro.classList.remove("ativa");
         calcularCorrecoes(r.baseCalculo, r.dataReferencia, perc);
       });
-      // Calcula automaticamente ao abrir (100% do CDI por padrão) — o
-      // usuário pode ajustar o percentual e recalcular depois.
       calcularCorrecoes(r.baseCalculo, r.dataReferencia, 100);
     }
 
@@ -1177,6 +1258,7 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
 
     elResultados.style.display = "none";
     elContagem.style.display = "none";
+    elControlesPaginacao.style.display = "none";
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1201,9 +1283,6 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
       return resp.text();
     }).then(function (corpo) {
       corpo = corpo.trim();
-      // O Banco Central às vezes devolve algo que não é o JSON esperado
-      // (ex.: instabilidade do serviço deles) — detecta isso aqui em vez
-      // de deixar o JSON.parse quebrar com um erro técnico feio.
       if (corpo.charAt(0) !== "[") {
         throw new Error("O Banco Central não respondeu como esperado agora.");
       }
@@ -1272,11 +1351,12 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     elDetalhe.style.display = "none";
     elResultados.style.display = "";
     elContagem.style.display = "";
+    if (ultimosRegistros.length > 0) {
+      elControlesPaginacao.style.display = "flex";
+    }
     detalheEmpilhadoNoHistorico = false;
   }
 
-  // Botão/gesto de voltar do navegador: se o detalhe estiver aberto, fecha
-  // e mostra a lista de novo, em vez de sair do site.
   var detalheEmpilhadoNoHistorico = false;
   window.addEventListener("popstate", function () {
     if (!elDetalhe.hidden) {
@@ -1308,6 +1388,7 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     }).then(function (resultado) {
       definirCarregando(false);
       ultimosRegistros = resultado.registros;
+      paginaAtual = 1; // Reseta para a primeira página na nova busca
       elContagem.classList.add("ativa");
       elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
       renderizarResultados(resultado.registros);
@@ -1322,7 +1403,6 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     });
   }
 
-  // Enter em qualquer campo do formulário dispara a pesquisa
   [elEndereco, elNumero].forEach(function (el) {
     el.addEventListener("keydown", function (ev) {
       if (ev.key === "Enter") { ev.preventDefault(); executarBusca(false); }
@@ -1339,8 +1419,11 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
     elFaixaErro.classList.remove("ativa");
     elFaixaAvisoAnos.classList.remove("ativa");
     elResultados.innerHTML = "";
+    elControlesPaginacao.style.display = "none";
+    ultimosRegistros = [];
     fecharDetalhe();
   });
+
   // ===== Banner de cookies =====
   (function () {
     var banner = document.getElementById("cookie-banner");
@@ -1349,7 +1432,7 @@ html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço d
       if (localStorage.getItem("cookies_aceitos") === "sim") {
         banner.style.display = "none";
       }
-    } catch (e) { /* localStorage indisponível (ex.: navegação privada) — mantém o banner visível */ }
+    } catch (e) { /* localStorage indisponível */ }
 
     btn.addEventListener("click", function () {
       banner.style.display = "none";
