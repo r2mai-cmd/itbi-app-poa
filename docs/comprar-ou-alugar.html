@@ -37,10 +37,10 @@
   .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
   .dropdown { position: relative; display: inline-block; }
-  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12); }
+  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
   .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
   .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
-  .dropdown:hover .dropdown-conteudo { display: block; }
+  .dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
 
   .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
   .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
@@ -97,7 +97,7 @@
       <span class="nome-marca">itbi<span>data</span></span>
     </a>
     <div class="menu-nav">
-      <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
+      <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
       <div class="dropdown">
         <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
         <div class="dropdown-conteudo">
