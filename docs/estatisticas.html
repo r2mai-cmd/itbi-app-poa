@@ -1,193 +1,107 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ITBIData - Estatísticas Imobiliárias</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="dashboard.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estatísticas do Mercado Imobiliário &mdash; itbidata</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="apple-touch-icon" href="./favicon.png">
+<style>
+  :root {
+    --fundo-escuro: #34383D;
+    --fundo-escuro-claro: #41464A;
+    --pergaminho: #EDE9DE;
+    --texto-card: #24231F;
+    --texto-card-sutil: #6B6A63;
+    --laranja: #F0913A;
+    --laranja-escuro: #D9762A;
+    --dourado-linha: #D8CFB8;
+    --texto-sobre-fundo: #F5F3ED;
+    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
+    --agua-turquesa: #4FBFB8;
+    --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column; }
+  
+  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--fundo-escuro-claro); }
+  .link-marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; min-width: 0; }
+  .link-marca img { height: 38px; width: 38px; min-width: 38px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background-color: #ffffff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4); overflow: hidden; }
+  .nome-marca { font-weight: 800; font-size: 1.15rem; color: var(--texto-sobre-fundo); white-space: nowrap; }
+  .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+
+  .menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
+  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
+
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
+  .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
+  .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+  .dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
+
+  .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
+  .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
+  .cabecalho-veu { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%); }
+  .cabecalho-texto { position: absolute; left: 0; right: 0; bottom: 0; padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto; }
+  .cabecalho-titulo { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; text-transform: uppercase; color: #fff; }
+  .cabecalho-subtitulo { margin: 6px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 70ch; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 24px 40px; width: 100%; display: flex; flex-direction: column; gap: 32px; flex: 1; }
+  .card-conteudo { background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); padding: 32px; color: var(--texto-card); }
+  .card-conteudo h2 { margin-top: 0; font-size: 1.4rem; color: var(--texto-card); }
+  .card-conteudo p { font-size: 0.95rem; line-height: 1.6; color: var(--texto-card-sutil); }
+
+  .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 20px; }
+  .disclaimer-box strong { color: #fff; }
+
+  .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
+</style>
 </head>
-<body class="fundo-escuro">
-
-  <header class="barra-topo">
-   <a href="index.html" class="marca" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
-      <img src="logo.png?v=5" alt="Logo itbidata" class="logo-img" />
-      <span class="logo-texto">itbi<span>data</span></span>
+<body>
+  <div class="barra-marca">
+    <a href="index.html" class="link-marca">
+      <img src="./favicon.png" alt="itbidata" />
+      <span class="nome-marca">itbi<span>data</span></span>
     </a>
-    <a href="index.html" class="nav-voltar">← Voltar à Busca</a>
-  </header>
+    <div class="menu-nav">
+      <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
+      <div class="dropdown">
+        <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+        <div class="dropdown-conteudo">
+          <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
+          <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
+          <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
+          <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
+          <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
+          <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
- <!-- Banner específico de estatísticas -->
- <header style="
-    position: relative;
-    width: 100%;
-    height: 320px;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-  ">
-    <img src="banner-estatisticas.jpg?v=2" alt="Painel Estatístico Imobiliário ITBI" style="
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      z-index: 1;
-    " />
-
-    <div style="
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(17, 24, 39, 0.2) 0%, rgba(17, 24, 39, 0.85) 100%);
-      z-index: 2;
-    "></div>
-
-    <div style="
-      position: relative;
-      z-index: 3;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px 32px 24px;
-    ">
-      <h1 style="
-        color: #ffffff;
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        margin: 0 0 8px 0;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-      ">NEGÓCIOS BASEADOS EM FATOS, NÃO EM OPINIÕES</h1>
-      <p style="
-        color: #e5e7eb;
-        font-size: 1.05rem;
-        font-weight: 400;
-        margin: 0;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-      ">Dados reais de transações imobiliárias para embasar decisões seguras e lucrativas.</p>
+  <header class="cabecalho">
+    <img src="./banner.jpg" alt="Mercado Imobiliário" />
+    <div class="cabecalho-veu"></div>
+    <div class="cabecalho-texto">
+      <h1 class="cabecalho-titulo">Estatísticas de Mercado</h1>
+      <p class="cabecalho-subtitulo">Panorama geral e indicadores consolidados das transações imobiliárias baseados nos dados abertos.</p>
     </div>
   </header>
 
-  <main class="container-dashboard">
-    <!-- Barra de Filtros -->
-    <section class="filtros-dashboard">
-      <div class="seletor-grupo">
-        <label for="filtro-cidade">CIDADE</label>
-        <select id="filtro-cidade">
-          <option value="porto-alegre">Porto Alegre - RS</option>
-        </select>
+  <main class="container">
+    <div class="card-conteudo">
+      <h2>Indicadores e Tendências</h2>
+      <p>Esta seção consolida métricas avançadas sobre o comportamento de preços, volume de transações e valorização por região com base nas guias de ITBI processadas.</p>
+      
+      <div class="disclaimer-box">
+        <strong>Aviso Legal Importante:</strong> Os dados e valores exibidos nesta página possuem caráter estritamente estimativo e educacional, servindo apenas para planejamento inicial. Condições reais de mercado podem variar. Nunca tome decisões financeiras ou de compra sem consultar um especialista qualificado.
       </div>
-
-      <div class="seletor-grupo">
-        <label for="filtro-bairro">BAIRRO</label>
-        <select id="filtro-bairro"></select>
-      </div>
-
-      <div class="seletor-grupo">
-        <label for="filtro-ano">ANO</label>
-        <select id="filtro-ano"></select>
-      </div>
-
-      <div class="seletor-grupo">
-        <label for="filtro-mes">MÊS</label>
-        <select id="filtro-mes">
-          <option value="todos">Todos os Meses</option>
-          <option value="1">Janeiro</option>
-          <option value="2">Fevereiro</option>
-          <option value="3">Março</option>
-          <option value="4">Abril</option>
-          <option value="5">Maio</option>
-          <option value="6">Junho</option>
-          <option value="7">Julho</option>
-          <option value="8">Agosto</option>
-          <option value="9">Setembro</option>
-          <option value="10">Outubro</option>
-          <option value="11">Novembro</option>
-          <option value="12">Dezembro</option>
-        </select>
-      </div>
-   </section>
-
-    <!-- ESPAÇO AD 1: Topo Estratégico -->
-    <div class="anuncio-container">
-      <span class="anuncio-rotulo">PUBLICIDADE</span>
-      <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
-    </div>
-
-    <!-- Cards de Métricas -->
-    <section class="grid-kpis">
-      <div class="cartao kpi">
-        <span class="kpi-titulo">M² MÉDIO NO PERÍODO</span>
-        <strong class="kpi-valor" id="kpi-m2">R$ 0,00</strong>
-      </div>
-      <div class="cartao kpi">
-        <span class="kpi-titulo">TICKET MÉDIO</span>
-        <strong class="kpi-valor" id="kpi-ticket">R$ 0,00</strong>
-      </div>
-      <div class="cartao kpi">
-        <span class="kpi-titulo">TRANSAÇÕES NO PERÍODO</span>
-        <strong class="kpi-valor" id="kpi-transacoes">0</strong>
-      </div>
-    </section>
-
-    <!-- Gráficos -->
-    <section class="grid-graficos">
-      <div class="cartao painel-grafico">
-        <h3 id="titulo-grafico-evolucao">Evolução Mensal do Valor do m²</h3>
-        <div class="canvas-box">
-          <canvas id="graficoEvolucao"></canvas>
-        </div>
-      </div>
-
-      <div class="cartao painel-grafico">
-        <h3>Top 10 Bairros Mais Valorizados (m²)</h3>
-        <div class="canvas-box">
-          <canvas id="graficoRanking"></canvas>
-        </div>
-      </div>
-
-      <div class="cartao painel-grafico">
-        <h3 id="titulo-grafico-historico">Evolução Histórica Anual do m²</h3>
-        <div class="canvas-box">
-          <canvas id="graficoHistorico"></canvas>
-        </div>
-      </div>
-
-      <div class="cartao painel-grafico">
-        <h3>Distribuição por Metragem Privativa</h3>
-        <div class="canvas-box">
-          <canvas id="graficoMetragem"></canvas>
-        </div>
-      </div>
-
-      <div class="cartao painel-grafico">
-        <h3>Volume de Negócios (Mês a Mês)</h3>
-        <div class="canvas-box">
-          <canvas id="graficoVolumeMes"></canvas>
-        </div>
-      </div>
-
-      <div class="cartao painel-grafico">
-        <h3>Top 10 Bairros com Mais Negócios</h3>
-        <div class="canvas-box">
-          <canvas id="graficoRankingVolume"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- ESPAÇO AD 2: Rodapé de Conversão -->
-    <div class="anuncio-container">
-      <span class="anuncio-rotulo">PUBLICIDADE</span>
-      <div class="anuncio-placeholder">Espaço reservado para Anúncio (Responsivo)</div>
     </div>
   </main>
 
-  <script src="dashboard.js"></script>
+  <footer class="rodape">&copy; itbidata &mdash; Estatísticas e inteligência imobiliária.</footer>
 </body>
 </html>
