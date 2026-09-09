@@ -24,20 +24,21 @@
   }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column; }
-  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 16px max(4vw, 24px); background: var(--fundo-escuro-claro); }
-  .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-  .barra-marca img { height: 44px; width: 44px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background: #fff; border-radius: 50%; }
-  .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
+  
+  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--fundo-escuro-claro); }
+  .link-marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; min-width: 0; }
+  .link-marca img { height: 38px; width: 38px; min-width: 38px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background-color: #ffffff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4); overflow: hidden; }
+  .nome-marca { font-weight: 800; font-size: 1.15rem; color: var(--texto-sobre-fundo); white-space: nowrap; }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .menu-nav { display: flex; align-items: center; gap: 10px; }
-  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; }
+  .menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
   .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
   .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
   .dropdown { position: relative; display: inline-block; }
-  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 270px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12); }
-  .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block; font-size: 0.82rem; font-weight: 600; transition: background 0.15s; }
+  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12); }
+  .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
   .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
   .dropdown:hover .dropdown-conteudo { display: block; }
 
@@ -53,14 +54,25 @@
   @media (max-width: 860px) { .grid-simulador { grid-template-columns: 1fr; } .cabecalho { height: 220px; } }
   .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
   .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
+  
   .campo { margin-bottom: 18px; }
   .campo label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px; }
-  .campo input { width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha); padding: 8px 0; font-size: 1.05rem; color: var(--texto-card); outline: none; font-weight: 600; }
-  .campo input:focus { border-bottom: 2px solid var(--laranja); }
+  
+  .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo span { font-size: 1.05rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
+  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.05rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); }
+  .input-grupo input:focus, .campo select:focus { border-bottom: none; }
+  .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
+
+  .campo select {
+    border-bottom: 1px solid var(--dourado-linha);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23F0913A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 2px center; padding-right: 22px; cursor: pointer;
+  }
+  .campo select:focus { border-bottom: 2px solid var(--laranja); }
+
   .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-  .botoes-seletor { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 6px; }
-  .btn-seletor { background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 8px 2px; font-size: 0.75rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center; }
-  .btn-seletor.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
+  
   .card-destaque { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--agua-turquesa); }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
   .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.55rem; font-weight: 800; color: var(--texto-card); margin: 0; }
@@ -73,10 +85,8 @@
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
   .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
   .box-tutorial strong { color: #fff; }
-
   .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 10px; }
   .disclaimer-box strong { color: #fff; }
-
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -115,37 +125,37 @@
     <div class="grid-simulador">
       <div class="col-formulario">
         <div class="campo">
-          <label for="input-preco-compra">Valor de Compra do Imóvel (R$)</label>
-          <input type="number" id="input-preco-compra" value="500000" step="10000">
+          <label for="input-preco-compra">Valor de Compra do Imóvel</label>
+          <div class="input-grupo"><span>R$</span><input type="text" id="input-preco-compra" value="500.000,00"></div>
         </div>
         <div class="campo">
-          <label for="input-aluguel-est">Aluguel Mensal Estimado (R$)</label>
-          <input type="number" id="input-aluguel-est" value="2300" step="100">
+          <label for="input-aluguel-est">Aluguel Mensal Estimado</label>
+          <div class="input-grupo"><span>R$</span><input type="text" id="input-aluguel-est" value="2.300,00"></div>
         </div>
         <div class="campo">
-          <label for="input-entrada-comp">Entrada Disponível para Investir (R$)</label>
-          <input type="number" id="input-entrada-comp" value="100000" step="5000">
+          <label for="input-entrada-comp">Entrada Disponível para Investir</label>
+          <div class="input-grupo"><span>R$</span><input type="text" id="input-entrada-comp" value="100.000,00"></div>
         </div>
         <div class="campo">
-          <label>Horizonte da Comparação</label>
-          <div class="botoes-seletor" id="grupo-horizonte">
-            <button type="button" class="btn-seletor" data-anos="5">5 anos</button>
-            <button type="button" class="btn-seletor" data-anos="10">10 anos</button>
-            <button type="button" class="btn-seletor ativo" data-anos="15">15 anos</button>
-            <button type="button" class="btn-seletor" data-anos="20">20 anos</button>
-            <button type="button" class="btn-seletor" data-anos="25">25 anos</button>
-            <button type="button" class="btn-seletor" data-anos="30">30 anos</button>
-            <button type="button" class="btn-seletor" data-anos="35">35 anos</button>
-          </div>
+          <label for="select-horizonte">Horizonte da Comparação</label>
+          <select id="select-horizonte">
+            <option value="5">5 anos (60 meses)</option>
+            <option value="10">10 anos (120 meses)</option>
+            <option value="15" selected>15 anos (180 meses)</option>
+            <option value="20">20 anos (240 meses)</option>
+            <option value="25">25 anos (300 meses)</option>
+            <option value="30">30 anos (360 meses)</option>
+            <option value="35">35 anos (420 meses)</option>
+          </select>
         </div>
         <div class="campo-linha">
           <div class="campo">
-            <label for="input-rendimento">Rendimento Aplicações (% a.a.)</label>
-            <input type="number" id="input-rendimento" value="10.5" step="0.5">
+            <label for="input-rendimento">Rendimento (% a.a.)</label>
+            <input type="text" id="input-rendimento" value="10,5">
           </div>
           <div class="campo">
-            <label for="input-val-imovel">Valorização Imóvel (% a.a.)</label>
-            <input type="number" id="input-val-imovel" value="5.0" step="0.5">
+            <label for="input-val-imovel">Valorização (% a.a.)</label>
+            <input type="text" id="input-val-imovel" value="5,0">
           </div>
         </div>
       </div>
@@ -175,7 +185,6 @@
       <h2>Entenda a matemática do dilema Comprar vs. Alugar</h2>
       <p><strong>1. O custo de oportunidade:</strong> Ao pagar uma entrada considerável em um imóvel, esse capital deixa de render juros compostos. Com taxas atrativas na renda fixa, o dinheiro investido cresce expressivamente.</p>
       <p><strong>2. A força da valorização imobiliária:</strong> O imóvel próprio funciona como um ativo real protegido contra a inflação, com valorização constante ao longo dos anos.</p>
-      
       <div class="disclaimer-box">
         <strong>Aviso Legal Importante:</strong> Os dados e valores calculados por esta ferramenta possuem caráter estritamente estimativo e educacional, servindo apenas para planejamento inicial. Condições reais, taxas efetivas e aprovação de crédito dependem da análise individual de cada instituição financeira. Nunca tome decisões financeiras ou de compra sem consultar um especialista qualificado.
       </div>
@@ -188,32 +197,37 @@
 (function() {
   "use strict";
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-  var anosHorizonte = 15;
-  var elPreco = document.getElementById("input-preco-compra");
-  var elAluguel = document.getElementById("input-aluguel-est");
-  var elEntrada = document.getElementById("input-entrada-comp");
-  var elRent = document.getElementById("input-rendimento");
-  var elVal = document.getElementById("input-val-imovel");
 
-  document.querySelectorAll("#grupo-horizonte .btn-seletor").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      document.querySelectorAll("#grupo-horizonte .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
-      this.classList.add("ativo");
-      anosHorizonte = parseInt(this.getAttribute("data-anos"), 10);
-      calcular();
-    });
+  function formatarMilhar(input) {
+    var v = input.value.replace(/\D/g, "");
+    if (v === "") { input.value = ""; return; }
+    input.value = Number(v).toLocaleString("pt-BR") + ",00";
+  }
+
+  function lerNumero(inputId) {
+    var val = document.getElementById(inputId).value;
+    if (!val) return 0;
+    return parseFloat(val.replace(/\./g, "").replace(",", ".")) || 0;
+  }
+
+  ["input-preco-compra", "input-aluguel-est", "input-entrada-comp"].forEach(function(id) {
+    document.getElementById(id).addEventListener("input", function() { formatarMilhar(this); calcular(); });
   });
 
-  [elPreco, elAluguel, elEntrada, elRent, elVal].forEach(function(input) {
-    input.addEventListener("input", calcular);
+  ["input-rendimento", "input-val-imovel"].forEach(function(id) {
+    document.getElementById(id).addEventListener("input", calcular);
   });
+
+  var elHorizonte = document.getElementById("select-horizonte");
+  elHorizonte.addEventListener("change", calcular);
 
   function calcular() {
-    var vImovel = parseFloat(elPreco.value) || 0;
-    var vAluguel = parseFloat(elAluguel.value) || 0;
-    var vEntrada = parseFloat(elEntrada.value) || 0;
-    var txRentAa = (parseFloat(elRent.value) || 10.5) / 100;
-    var txValAa = (parseFloat(elVal.value) || 5) / 100;
+    var vImovel = lerNumero("input-preco-compra");
+    var vAluguel = lerNumero("input-aluguel-est");
+    var vEntrada = lerNumero("input-entrada-comp");
+    var txRentAa = lerNumero("input-rendimento") / 100;
+    var txValAa = lerNumero("input-val-imovel") / 100;
+    var anosHorizonte = parseInt(elHorizonte.value, 10) || 15;
 
     var meses = anosHorizonte * 12;
     var rentAm = Math.pow(1 + txRentAa, 1/12) - 1;

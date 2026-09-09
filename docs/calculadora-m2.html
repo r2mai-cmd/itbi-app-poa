@@ -24,20 +24,21 @@
   }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column; }
-  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 16px max(4vw, 24px); background: var(--fundo-escuro-claro); }
-  .link-marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-  .barra-marca img { height: 44px; width: 44px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background: #fff; border-radius: 50%; }
-  .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
+  
+  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--fundo-escuro-claro); }
+  .link-marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; min-width: 0; }
+  .link-marca img { height: 38px; width: 38px; min-width: 38px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background-color: #ffffff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4); overflow: hidden; }
+  .nome-marca { font-weight: 800; font-size: 1.15rem; color: var(--texto-sobre-fundo); white-space: nowrap; }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .menu-nav { display: flex; align-items: center; gap: 10px; }
-  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem; padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; }
+  .menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
   .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
   .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
   .dropdown { position: relative; display: inline-block; }
-  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 270px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12); }
-  .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block; font-size: 0.82rem; font-weight: 600; transition: background 0.15s; }
+  .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px; border: 1px solid rgba(255,255,255,0.12); }
+  .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
   .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
   .dropdown:hover .dropdown-conteudo { display: block; }
 
@@ -53,13 +54,20 @@
   @media (max-width: 860px) { .grid-simulador { grid-template-columns: 1fr; } .cabecalho { height: 220px; } }
   .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
   .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
+  
   .abas-modo { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px; background: #ded9cd; padding: 4px; border-radius: 10px; }
   .btn-aba { border: none; background: transparent; padding: 10px; font-size: 0.82rem; font-weight: 700; color: var(--texto-card-sutil); cursor: pointer; border-radius: 8px; transition: all 0.2s; }
   .btn-aba.ativo { background: #fff; color: var(--texto-card); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  
   .campo { margin-bottom: 20px; }
   .campo label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px; }
-  .campo input { width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha); padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; }
-  .campo input:focus { border-bottom: 2px solid var(--laranja); }
+  
+  .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo span { font-size: 1.1rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
+  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); }
+  .input-grupo input:focus, .campo select:focus { border-bottom: none; }
+  .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
+
   .card-destaque { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--agua-turquesa); }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
   .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 800; color: var(--texto-card); margin: 0; }
@@ -72,10 +80,8 @@
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
   .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
   .box-tutorial strong { color: #fff; }
-
   .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 10px; }
   .disclaimer-box strong { color: #fff; }
-
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -119,8 +125,8 @@
         </div>
         <div id="bloco-modo-m2">
           <div class="campo">
-            <label for="input-preco-total">Valor Total do Imóvel (R$)</label>
-            <input type="number" id="input-preco-total" value="650000" step="10000">
+            <label for="input-preco-total">Valor Total do Imóvel</label>
+            <div class="input-grupo"><span>R$</span><input type="text" id="input-preco-total" value="650.000,00"></div>
           </div>
           <div class="campo">
             <label for="input-area-privativa">Área Privativa / Útil (m²)</label>
@@ -129,8 +135,8 @@
         </div>
         <div id="bloco-modo-valor" style="display:none;">
           <div class="campo">
-            <label for="input-m2-referencia">Valor Médio do m² na Região (R$/m²)</label>
-            <input type="number" id="input-m2-referencia" value="8500" step="100">
+            <label for="input-m2-referencia">Valor Médio do m² na Região</label>
+            <div class="input-grupo"><span>R$</span><input type="text" id="input-m2-referencia" value="8.500,00"></div>
           </div>
           <div class="campo">
             <label for="input-area-alvo">Área Privativa Desejada (m²)</label>
@@ -168,7 +174,6 @@
       <h2>Dicas práticas para avaliar o valor do metro quadrado</h2>
       <p><strong>1. Área privativa vs. total:</strong> Sempre utilize a metragem interna útil do apartamento. A área total inclui garagens e áreas comuns de condomínio.</p>
       <p><strong>2. Dados reais de ITBI:</strong> Consulte o buscador principal do <strong>itbidata</strong> para conferir por quanto os imóveis da mesma rua foram de fato transacionados.</p>
-      
       <div class="disclaimer-box">
         <strong>Aviso Legal Importante:</strong> Os dados e valores calculados por esta ferramenta possuem caráter estritamente estimativo e educacional, servindo apenas para planejamento inicial. Condições reais, taxas efetivas e aprovação de crédito dependem da análise individual de cada instituição financeira. Nunca tome decisões financeiras ou de compra sem consultar um especialista qualificado.
       </div>
@@ -181,13 +186,29 @@
 (function() {
   "use strict";
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+
+  function formatarMilhar(input) {
+    var v = input.value.replace(/\D/g, "");
+    if (v === "") { input.value = ""; return; }
+    input.value = Number(v).toLocaleString("pt-BR") + ",00";
+  }
+
+  function lerNumero(inputId) {
+    var val = document.getElementById(inputId).value;
+    if (!val) return 0;
+    return parseFloat(val.replace(/\./g, "").replace(",", ".")) || 0;
+  }
+
+  ["input-preco-total", "input-m2-referencia"].forEach(function(id) {
+    document.getElementById(id).addEventListener("input", function() { formatarMilhar(this); calcular(); });
+  });
+  ["input-area-privativa", "input-area-alvo"].forEach(function(id) {
+    document.getElementById(id).addEventListener("input", calcular);
+  });
+
   var modoAtual = "descobrir-m2";
   var elBlocoM2 = document.getElementById("bloco-modo-m2");
   var elBlocoValor = document.getElementById("bloco-modo-valor");
-  var elPrecoTotal = document.getElementById("input-preco-total");
-  var elAreaPrivativa = document.getElementById("input-area-privativa");
-  var elM2Ref = document.getElementById("input-m2-referencia");
-  var elAreaAlvo = document.getElementById("input-area-alvo");
 
   document.querySelectorAll(".btn-aba").forEach(function(btn) {
     btn.addEventListener("click", function() {
@@ -205,24 +226,20 @@
     });
   });
 
-  [elPrecoTotal, elAreaPrivativa, elM2Ref, elAreaAlvo].forEach(function(input) {
-    input.addEventListener("input", calcular);
-  });
-
   function calcular() {
     var precoM2 = 0, precoTotal = 0, area = 0;
     if (modoAtual === "descobrir-m2") {
-      precoTotal = parseFloat(elPrecoTotal.value) || 0;
-      area = parseFloat(elAreaPrivativa.value) || 1;
-      precoM2 = precoTotal / area;
-      document.getElementById("res-rotulo-destaque").textContent = "Preço do m² Privativo";
+      precoTotal = lerNumero("input-preco-total");
+      area = parseFloat(document.getElementById("input-area-privativa").value) || 1;
+      precoM2 = area > 0 ? precoTotal / area : 0;
+      document.getElementById("res-rotulo-destaque").textContent = "Preço por m² Privativo";
       document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(precoM2) + "/m²";
       document.getElementById("res-sub-destaque").textContent = "Baseado na área de " + area + " m²";
       document.getElementById("res-rotulo-secundario").textContent = "Valor Global Solicitado:";
       document.getElementById("res-valor-secundario").textContent = fmtMoeda.format(precoTotal);
     } else {
-      precoM2 = parseFloat(elM2Ref.value) || 0;
-      area = parseFloat(elAreaAlvo.value) || 1;
+      precoM2 = lerNumero("input-m2-referencia");
+      area = parseFloat(document.getElementById("input-area-alvo").value) || 1;
       precoTotal = precoM2 * area;
       document.getElementById("res-rotulo-destaque").textContent = "Valor Estimado do Imóvel";
       document.getElementById("res-valor-destaque").textContent = fmtMoeda.format(precoTotal);
