@@ -50,70 +50,61 @@
   .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .botoes-topo { display: flex; gap: 10px; align-items: center; }
-  .btn-topo {
+  .menu-nav { display: flex; align-items: center; gap: 10px; }
+  .btn-nav {
     color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
     padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
     transition: all 0.2s;
   }
-  .btn-topo:hover { background-color: rgba(255,255,255,0.1); }
+  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
-  .cabecalho-pagina {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 36px 24px 20px;
-    width: 100%;
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-conteudo {
+    display: none; position: absolute; right: 0; top: 100%; min-width: 270px;
+    background-color: var(--fundo-escuro-claro); border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px;
+    border: 1px solid rgba(255,255,255,0.12);
   }
-  .cabecalho-pagina h1 {
-    font-size: clamp(1.6rem, 3vw, 2.3rem);
-    font-weight: 800;
-    margin: 0 0 10px;
-    color: #fff;
+  .dropdown-conteudo a {
+    color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block;
+    font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
   }
-  .cabecalho-pagina p {
-    margin: 0;
-    font-size: 0.95rem;
-    color: var(--texto-sobre-fundo-sutil);
-    max-width: 75ch;
-    line-height: 1.5;
+  .dropdown-conteudo a:hover {
+    background-color: rgba(240, 145, 58, 0.18); color: var(--laranja);
   }
+  .dropdown:hover .dropdown-conteudo { display: block; }
+
+  .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
+  .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
+  .cabecalho-veu {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(20,26,31,0.95) 0%, rgba(20,26,31,0.7) 60%, rgba(20,26,31,0.3) 100%);
+  }
+  .cabecalho-texto {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 24px max(4vw, 24px); max-width: 1200px; margin: 0 auto;
+  }
+  .cabecalho-titulo { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; text-transform: uppercase; color: #fff; }
+  .cabecalho-subtitulo { margin: 6px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 70ch; }
 
   .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px 40px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
+    max-width: 1200px; margin: 0 auto; padding: 28px 24px 40px; width: 100%;
+    display: flex; flex-direction: column; gap: 32px;
   }
 
   .grid-simulador {
-    background: var(--pergaminho);
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    overflow: hidden;
-    color: var(--texto-card);
+    background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
   }
 
   @media (max-width: 860px) {
     .grid-simulador { grid-template-columns: 1fr; }
+    .cabecalho { height: 220px; }
   }
 
-  .col-formulario {
-    padding: 32px;
-    border-right: 1px solid var(--dourado-linha);
-  }
-
-  .col-resultados {
-    padding: 32px;
-    background: #f7f5ef;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
+  .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
 
   .campo { margin-bottom: 20px; }
   .campo label {
@@ -132,19 +123,12 @@
   .btn-seletor {
     background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 6px;
     font-size: 0.8rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center;
-    transition: all 0.15s;
   }
-  .btn-seletor.ativo {
-    background: var(--laranja); color: #fff; border-color: var(--laranja);
-  }
+  .btn-seletor.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
 
   .card-destaque {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-left: 4px solid var(--laranja);
+    background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja);
   }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
   .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.6rem; font-weight: 800; color: var(--texto-card); margin: 0; }
@@ -158,9 +142,7 @@
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
 
   .box-tutorial {
-    background: var(--fundo-escuro-claro);
-    border-radius: 16px;
-    padding: 32px;
+    background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px;
     border: 1px solid rgba(255,255,255,0.08);
   }
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
@@ -176,15 +158,29 @@
       <img src="./favicon.png" alt="itbidata" />
       <span class="nome-marca">itbi<span>data</span></span>
     </a>
-    <div class="botoes-topo">
-      <a href="index.html" class="btn-topo">Busca de ITBI</a>
-      <a href="estatisticas.html" class="btn-topo">Estatísticas</a>
+    <div class="menu-nav">
+      <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
+      <div class="dropdown">
+        <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+        <div class="dropdown-conteudo">
+          <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
+          <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
+          <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
+          <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
+          <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
+          <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <header class="cabecalho-pagina">
-    <h1>Calculadora de ITBI e Custos de Registro</h1>
-    <p>Estime com precisão os impostos municipais e emolumentos de cartório obrigatórios para transferir a escritura do imóvel para o seu nome.</p>
+  <header class="cabecalho">
+    <img src="./banner.jpg" alt="Mercado Imobiliário" />
+    <div class="cabecalho-veu"></div>
+    <div class="cabecalho-texto">
+      <h1 class="cabecalho-titulo">Calculadora de ITBI e Custos de Registro</h1>
+      <p class="cabecalho-subtitulo">Calcule o valor dos impostos municipais e emolumentos de cartório necessários para passar o imóvel para o seu nome.</p>
+    </div>
   </header>
 
   <main class="container">
@@ -223,7 +219,7 @@
 
       <div class="col-resultados">
         <div class="card-destaque">
-          <p class="card-destaque-rotulo">Total de Despesas com Escritura & ITBI</p>
+          <p class="card-destaque-rotulo">Total de Despesas de Transferência</p>
           <p class="card-destaque-valor" id="res-total-documentos">R$ 0,00</p>
           <p class="card-destaque-sub" id="res-percentual-total">0% do valor do imóvel</p>
         </div>
@@ -244,15 +240,14 @@
     </div>
 
     <section class="box-tutorial">
-      <h2>O que você precisa saber sobre o ITBI e os custos de cartório</h2>
-      <p><strong>1. O que é o ITBI?</strong> O Imposto de Transmissão de Bens Imóveis é cobrado pela prefeitura do município onde o imóvel está situado. O pagamento da guia é requisito obrigatório para registrar a transferência no cartório competente.</p>
-      <p><strong>2. Base de cálculo do imposto:</strong> A prefeitura calcula o imposto com base no valor venal de referência municipal ou no valor da transação declarado na escritura &mdash; prevalecendo sempre o maior valor.</p>
-      <p><strong>3. O benefício do Primeiro Imóvel (Lei 6.015/73):</strong> Quem adquire seu primeiro imóvel residencial financiado pelo Sistema Financeiro de Habitação (SFH) tem direito por lei a <strong>50% de desconto</strong> nas custas de escritura e emolumentos do Registro de Imóveis.</p>
+      <h2>O que você precisa saber sobre o ITBI e a Escritura</h2>
+      <p><strong>1. Obrigatoriedade do ITBI:</strong> O Imposto sobre a Transmissão de Bens Imóveis é tributo municipal obrigatório. Sem a apresentação da guia quitada, o cartório de Registro de Imóveis (RI) não pode formalizar a transferência.</p>
+      <p><strong>2. Desconto do primeiro imóvel:</strong> A Lei Federal nº 6.015/73 prevê desconto de 50% nas custas e emolumentos cartorários para quem está comprando o primeiro imóvel residencial financiado pelo SFH.</p>
     </section>
   </main>
 
   <footer class="rodape">
-    &copy; itbidata &mdash; Ferramenta de estimativa. As custas exatas de cartório dependem da tabela de emolumentos do Tribunal de Justiça de cada estado.
+    &copy; itbidata &mdash; Ferramenta de estimativa. As custas exatas dependem da tabela de emolumentos do Tribunal de Justiça local.
   </footer>
 
 <script>
@@ -286,7 +281,6 @@
     var pItbi = (parseFloat(elCidade.value) || 3) / 100;
     var pCartorio = (parseFloat(elCartorio.value) || 1.5) / 100;
 
-    // Se for primeiro imóvel, aplica desconto de 50% nas taxas de cartório/registro
     if (tipoAquisicao === "primeiro") {
       pCartorio = pCartorio * 0.5;
     }
