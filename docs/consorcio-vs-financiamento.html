@@ -117,7 +117,7 @@
     <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Consórcio vs. Financiamento Imobiliário</h1>
-      <p class="cabecalho-subtitulo">Compare o custo total acumulado entre uma carta de consórcio sem cobrança de juros e o financiamento com liberação imediata.</p>
+      <p class="cabecalho-subtitulo">Compare o custo total acumulado entre uma carta de consórcio corrigida pelo INCC e o financiamento com juros e liberação imediata.</p>
     </div>
   </header>
 
@@ -129,7 +129,7 @@
           <div class="input-grupo"><span>R$</span><input type="text" id="input-credito" value="400.000,00"></div>
         </div>
         <div class="campo">
-          <label for="select-prazo-cons">Prazo do Consórcio</label>
+          <label for="select-prazo-cons">Prazo do Consórcio / Financiamento</label>
           <select id="select-prazo-cons">
             <option value="60">5 anos (60 meses)</option>
             <option value="120">10 anos (120 meses)</option>
@@ -141,25 +141,31 @@
         </div>
         <div class="campo-linha">
           <div class="campo">
-            <label for="input-taxa-adm">Taxa de Administração (%)</label>
+            <label for="input-taxa-adm">Taxa de Adm. Total (%)</label>
             <input type="text" id="input-taxa-adm" value="22">
           </div>
+          <div class="campo">
+            <label for="input-incc">INCC Médio (% a.a.)</label>
+            <input type="text" id="input-incc" value="7,0">
+          </div>
+        </div>
+        <div class="campo-linha">
           <div class="campo">
             <label for="input-juros-fin">Juros Financiamento (% a.a.)</label>
             <input type="text" id="input-juros-fin" value="10,5">
           </div>
-        </div>
-        <div class="campo">
-          <label for="input-lance">Recursos para Lance ou Entrada</label>
-          <div class="input-grupo"><span>R$</span><input type="text" id="input-lance" value="80.000,00"></div>
+          <div class="campo">
+            <label for="input-lance">Lance / Entrada (R$)</label>
+            <input type="text" id="input-lance" value="80.000,00">
+          </div>
         </div>
       </div>
 
       <div class="col-resultados">
         <div class="card-destaque">
-          <p class="card-destaque-rotulo">Economia Escolhendo Consórcio</p>
+          <p class="card-destaque-rotulo">Diferença de Custo Final</p>
           <p class="card-destaque-valor" id="res-diferenca" style="color:var(--agua-turquesa);">R$ 0,00</p>
-          <p class="card-destaque-sub">Diferença em juros evitados</p>
+          <p class="card-destaque-sub" id="res-sub-comparativo">Comparativo total considerando atualização</p>
         </div>
         <div class="linha-resumo">
           <span class="linha-rotulo">Parcela Inicial: Consórcio:</span>
@@ -181,9 +187,9 @@
     </div>
 
     <section class="box-tutorial">
-      <h2>Diferenças fundamentais entre Consórcio e Financiamento</h2>
-      <p><strong>1. Taxa de Administração vs. Juros:</strong> No consórcio não existem juros compostos, apenas a taxa da administradora diluída ao longo das parcelas.</p>
-      <p><strong>2. O momento da compra:</strong> O financiamento é indicado para quem tem urgência imediata para mudar.</p>
+      <h2>O impacto do INCC no Consórcio Imobiliário</h2>
+      <p><strong>1. Atualização do saldo devedor:</strong> Diferente do financiamento (onde a dívida decresce e sofre correção por índices de inflação menores como IPCA em alguns casos específicos), o consórcio atualiza o valor da carta e das parcelas restantes pelo INCC até a sua contemplação e quitação.</p>
+      <p><strong>2. Custo real acumulado:</strong> Com uma taxa média de INCC em torno de 7% ao ano, o valor total pago ao final do consórcio costuma ser superior ao cálculo nominal inicial puramente baseado apenas na taxa de administração.</p>
       <div class="disclaimer-box">
         <strong>Aviso Legal Importante:</strong> Os dados e valores calculados por esta ferramenta possuem caráter estritamente estimativo e educacional, servindo apenas para planejamento inicial. Condições reais, taxas efetivas e aprovação de crédito dependem da análise individual de cada instituição financeira. Nunca tome decisões financeiras ou de compra sem consultar um especialista qualificado.
       </div>
@@ -213,7 +219,7 @@
     document.getElementById(id).addEventListener("input", function() { formatarMilhar(this); calcular(); });
   });
 
-  ["input-taxa-adm", "input-juros-fin"].forEach(function(id) {
+  ["input-taxa-adm", "input-juros-fin", "input-incc"].forEach(function(id) {
     document.getElementById(id).addEventListener("input", calcular);
   });
 
@@ -223,21 +229,32 @@
   function calcular() {
     var credito = lerNumero("input-credito");
     var mesesConsorcio = parseInt(elPrazoCons.value, 10) || 240;
+    var anos = mesesConsorcio / 12;
     var taxaAdmPct = lerNumero("input-taxa-adm") / 100;
+    var taxaInccAa = lerNumero("input-incc") / 100;
     var taxaFinAa = lerNumero("input-juros-fin") / 100;
     var lance = lerNumero("input-lance");
 
-    var totalConsorcio = credito * (1 + taxaAdmPct);
-    var parcelaConsorcio = totalConsorcio / mesesConsorcio;
+    // Simulando o efeito do INCC médio acumulado ao longo do prazo no saldo devedor e parcelas do consórcio
+    // Assumimos que o crédito cresce a uma média ponderada pelo INCC até a quitação/contemplação média
+    varfatorInccMedio = Math.pow(1 + taxaInccAa, anos * 0.5); 
+    var creditoAtualizado = credito * fatorInccMedio;
+    
+    var totalConsorcio = creditoAtualizado * (1 + taxaAdmPct);
+    var parcelaConsorcioInicial = (credito * (1 + taxaAdmPct)) / mesesConsorcio;
+    var parcelaConsorcioFinalCorrigida = totalConsorcio / mesesConsorcio;
 
+    // Financiamento
     var financiado = Math.max(0, credito - lance);
     var i = taxaFinAa / 12;
     var parcFin = financiado * (i * Math.pow(1 + i, mesesConsorcio)) / (Math.pow(1 + i, mesesConsorcio) - 1);
     var totalFin = (parcFin * mesesConsorcio) + lance;
 
     var diferenca = totalFin - totalConsorcio;
-    document.getElementById("res-diferenca").textContent = fmtMoeda.format(Math.max(0, diferenca));
-    document.getElementById("res-parc-consorcio").textContent = fmtMoeda.format(parcelaConsorcio);
+    
+    document.getElementById("res-diferenca").textContent = fmtMoeda.format(Math.abs(diferenca));
+    document.getElementById("res-sub-comparativo").textContent = diferenca >= 0 ? "Consórcio mais vantajoso por esta estimativa" : "Financiamento mais vantajoso por esta estimativa";
+    document.getElementById("res-parc-consorcio").textContent = fmtMoeda.format(parcelaConsorcioInicial) + " (Inicia) a " + fmtMoeda.format(parcelaConsorcioFinalCorrigida);
     document.getElementById("res-parc-fin").textContent = fmtMoeda.format(parcFin);
     document.getElementById("res-total-consorcio").textContent = fmtMoeda.format(totalConsorcio);
     document.getElementById("res-total-fin").textContent = fmtMoeda.format(totalFin);
