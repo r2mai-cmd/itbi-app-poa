@@ -50,32 +50,14 @@
   .nome-marca { font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo); }
   .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-  .menu-nav { display: flex; align-items: center; gap: 10px; }
-  .btn-nav {
+  .btn-topo {
     color: #fff; text-decoration: none; font-weight: 700; font-size: 0.82rem;
     padding: 8px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25);
     transition: all 0.2s;
   }
-  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
-  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
+  .btn-topo:hover { background-color: rgba(255,255,255,0.12); }
 
-  .dropdown { position: relative; display: inline-block; }
-  .dropdown-conteudo {
-    display: none; position: absolute; right: 0; top: 100%; min-width: 270px;
-    background-color: var(--fundo-escuro-claro); border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 6px;
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .dropdown-conteudo a {
-    color: var(--pergaminho); padding: 10px 18px; text-decoration: none; display: block;
-    font-size: 0.82rem; font-weight: 600; transition: background 0.15s;
-  }
-  .dropdown-conteudo a:hover {
-    background-color: rgba(240, 145, 58, 0.18); color: var(--laranja);
-  }
-  .dropdown:hover .dropdown-conteudo { display: block; }
-
-  .cabecalho { position: relative; width: 100%; height: 250px; overflow: hidden; }
+  .cabecalho { position: relative; width: 100%; height: 230px; overflow: hidden; }
   .cabecalho img { width: 100%; height: 100%; object-fit: cover; object-position: center 70%; display: block; }
   .cabecalho-veu {
     position: absolute; inset: 0;
@@ -88,25 +70,41 @@
   .cabecalho-titulo { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; text-transform: uppercase; color: #fff; }
   .cabecalho-subtitulo { margin: 6px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 70ch; }
 
+  /* Barra de atalhos entre calculadoras */
+  .barra-simuladores-nav {
+    max-width: 1200px; margin: 24px auto 0; padding: 0 24px; width: 100%;
+  }
+  .scroll-simuladores {
+    display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin;
+  }
+  .scroll-simuladores::-webkit-scrollbar { height: 4px; }
+  .scroll-simuladores::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+  .item-sim-nav {
+    white-space: nowrap; text-decoration: none; font-size: 0.82rem; font-weight: 700;
+    padding: 8px 16px; border-radius: 9999px; background: var(--fundo-escuro-claro);
+    color: var(--pergaminho); border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s;
+  }
+  .item-sim-nav:hover { background: rgba(240,145,58,0.2); color: var(--laranja); border-color: var(--laranja); }
+  .item-sim-nav.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
+
   .container {
-    max-width: 1200px; margin: 0 auto; padding: 28px 24px 40px; width: 100%;
-    display: flex; flex-direction: column; gap: 32px;
+    max-width: 1200px; margin: 0 auto; padding: 20px 24px 40px; width: 100%;
+    display: flex; flex-direction: column; gap: 28px;
   }
 
   .grid-simulador {
     background: var(--pergaminho); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     display: grid; grid-template-columns: 1.1fr 1fr; overflow: hidden; color: var(--texto-card);
   }
-
   @media (max-width: 860px) {
     .grid-simulador { grid-template-columns: 1fr; }
-    .cabecalho { height: 220px; }
+    .cabecalho { height: 200px; }
   }
 
   .col-formulario { padding: 32px; border-right: 1px solid var(--dourado-linha); }
   .col-resultados { padding: 32px; background: #f7f5ef; display: flex; flex-direction: column; justify-content: center; }
 
-  .campo { margin-bottom: 20px; }
+  .campo { margin-bottom: 18px; }
   .campo label {
     display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
@@ -158,30 +156,30 @@
       <img src="./favicon.png" alt="itbidata" />
       <span class="nome-marca">itbi<span>data</span></span>
     </a>
-    <div class="menu-nav">
-      <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
-      <div class="dropdown">
-        <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
-        <div class="dropdown-conteudo">
-          <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
-          <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
-          <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
-          <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
-          <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
-          <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
-        </div>
-      </div>
+    <div>
+      <a href="index.html" class="btn-topo">← Voltar à Busca de ITBI</a>
     </div>
   </div>
 
   <header class="cabecalho">
-    <img src="./banner.jpg" alt="Mercado Imobiliário" />
+    <img src="./banner.jpg" alt="Financiamento Imobiliário" />
     <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Simulador de Financiamento Imobiliário</h1>
-      <p class="cabecalho-subtitulo">Calcule a evolução das parcelas mensais, compare a amortização entre SAC e PRICE e veja o impacto dos juros no valor final.</p>
+      <p class="cabecalho-subtitulo">Calcule o valor da parcela mensal, compare os sistemas SAC e PRICE e veja o impacto dos juros no valor final.</p>
     </div>
   </header>
+
+  <nav class="barra-simuladores-nav">
+    <div class="scroll-simuladores">
+      <a href="simulador-financiamento.html" class="item-sim-nav ativo">&#127968; Financiamento (SAC/PRICE)</a>
+      <a href="calculadora-itbi.html" class="item-sim-nav">&#128221; Custos de ITBI</a>
+      <a href="poder-de-compra.html" class="item-sim-nav">&#128179; Poder de Compra</a>
+      <a href="comprar-ou-alugar.html" class="item-sim-nav">&#9878; Comprar vs. Alugar</a>
+      <a href="calculadora-m2.html" class="item-sim-nav">&#128207; Preço do m²</a>
+      <a href="consorcio-vs-financiamento.html" class="item-sim-nav">&#128188; Consórcio vs. Financiamento</a>
+    </div>
+  </nav>
 
   <main class="container">
     <div class="grid-simulador">
@@ -253,13 +251,13 @@
 
     <section class="box-tutorial">
       <h2>Como interpretar a sua simulação de financiamento</h2>
-      <p><strong>1. A diferença entre SAC e PRICE:</strong> No sistema SAC, você amortiza uma cota igual da dívida todos os meses, fazendo as parcelas caírem gradativamente. Na tabela PRICE, a parcela começa mais baixa que no SAC, mas fica fixa até o final, gerando um custo global de juros superior.</p>
-      <p><strong>2. Limite prudencial dos 30%:</strong> As instituições financeiras recusam propostas onde a primeira parcela ultrapasse 30% da renda mensal familiar. Se o cálculo indicar valor superior a esse percentual, compor renda com mais pessoas ou elevar a entrada ajudará na aprovação.</p>
+      <p><strong>1. A diferença entre SAC e PRICE:</strong> No sistema SAC, você abate uma quantia constante da dívida a cada mês, fazendo as parcelas caírem gradativamente ao longo dos anos. Na tabela PRICE, a prestação é constante, o que alivia a parcela inicial, mas eleva o volume total de juros pagos ao banco.</p>
+      <p><strong>2. Limite prudencial dos 30%:</strong> Por regra do Banco Central, a primeira parcela não pode ultrapassar 30% da renda bruta familiar. Caso ultrapasse, é necessário compor renda com mais pessoas ou aumentar o valor da entrada.</p>
     </section>
   </main>
 
   <footer class="rodape">
-    &copy; itbidata &mdash; Simulador para fins de planejamento financeiro. Condições reais sujeitas a análise de crédito.
+    &copy; itbidata &mdash; Simulador financeiro para fins de planejamento.
   </footer>
 
 <script>
@@ -341,7 +339,7 @@
     
     var elComp = document.getElementById("res-comprometimento");
     elComp.textContent = comprometimento.toFixed(1) + "%";
-    elComp.style.color = comprometimento > 30 ? "var(--vermelho-erro, #A3372A)" : "var(--laranja)";
+    elComp.style.color = comprometimento > 30 ? "#A3372A" : "var(--laranja)";
   }
 
   calcular();
