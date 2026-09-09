@@ -235,16 +235,13 @@
     var taxaFinAa = lerNumero("input-juros-fin") / 100;
     var lance = lerNumero("input-lance");
 
-    // Simulando o efeito do INCC médio acumulado ao longo do prazo no saldo devedor e parcelas do consórcio
-    // Assumimos que o crédito cresce a uma média ponderada pelo INCC até a quitação/contemplação média
-    varfatorInccMedio = Math.pow(1 + taxaInccAa, anos * 0.5); 
+    var fatorInccMedio = Math.pow(1 + taxaInccAa, anos * 0.5); 
     var creditoAtualizado = credito * fatorInccMedio;
     
     var totalConsorcio = creditoAtualizado * (1 + taxaAdmPct);
     var parcelaConsorcioInicial = (credito * (1 + taxaAdmPct)) / mesesConsorcio;
     var parcelaConsorcioFinalCorrigida = totalConsorcio / mesesConsorcio;
 
-    // Financiamento
     var financiado = Math.max(0, credito - lance);
     var i = taxaFinAa / 12;
     var parcFin = financiado * (i * Math.pow(1 + i, mesesConsorcio)) / (Math.pow(1 + i, mesesConsorcio) - 1);
