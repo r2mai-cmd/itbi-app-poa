@@ -79,8 +79,7 @@
     border: 1px solid rgba(255,255,255,0.25); 
     transition: all 0.2s; 
     white-space: nowrap; 
-    background-color: #388e9c; 
-    border-color: #4eb3c4;
+    background: transparent; 
     display: inline-flex; 
     align-items: center; 
   }
@@ -107,7 +106,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.45); 
     z-index: 100; 
     padding: 8px 0; 
-    margin-top: 6px; 
+    margin-top: 0px; 
     border: 1px solid rgba(255,255,255,0.12); 
   }
   .dropdown-conteudo a { 
@@ -123,7 +122,8 @@
     background-color: rgba(240, 145, 58, 0.18); 
     color: var(--laranja); 
   }
-  .dropdown:hover .dropdown-conteudo { 
+  .dropdown:hover .dropdown-conteudo,
+  .dropdown-conteudo:hover { 
     display: block; 
   }
 
