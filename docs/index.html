@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="apple-touch-icon" href="./favicon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HTD7CLQPZ2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HTD7CLQPZ2');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fundo-escuro: #34383D;
+    --fundo-escuro-claro: #41464A;
+    --pergaminho: #EDE9DE;
+    --texto-card: #24231F;
+    --texto-card-sutil: #6B6A63;
+    --laranja: #F0913A;
+    --laranja-escuro: #D9762A;
+    --dourado-linha: #D8CFB8;
+    --vermelho-erro: #A3372A;
+    --texto-sobre-fundo: #F5F3ED;
+    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
+    --agua-turquesa: #4FBFB8;
+    --fonte-corpo: 'Inter', -apple-system, sans-serif;
+    --fonte-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--fonte-corpo);
+    background: var(--fundo-escuro);
+    color: var(--texto-sobre-fundo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .barra-marca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px max(4vw, 24px);
+    background: var(--fundo-escuro-claro);
+  }
+  .barra-marca img {
+    height: 48px; width: 48px; display: block; object-fit: cover; object-position: center 10%;
+    transform: scale(1.25); transform-origin: center 20%; background-color: #ffffff;
+    border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); flex-shrink: 0; overflow: hidden;
+  }
+  .barra-marca .nome-marca {
+    font-family: var(--fonte-corpo); font-weight: 800; font-size: 1.3rem; color: var(--texto-sobre-fundo);
+  }
+  .barra-marca .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+  .link-marca { display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit; cursor: pointer; }
+
+  .cabecalho { position: relative; width: 100%; height: 380px; overflow: hidden; }
+  .cabecalho img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 80%; }
+  .cabecalho-veu {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(20, 26, 31, 0.92) 0%, rgba(20, 26, 31, 0.72) 36%, rgba(20, 26, 31, 0.2) 60%, rgba(20, 26, 31, 0) 80%);
+    pointer-events: none;
+  }
+  .cabecalho-texto {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 32px max(4vw, 24px) 30px; max-width: 1800px; margin: 0 auto;
+  }
+  .cabecalho-titulo {
+    margin: 0; font-family: var(--fonte-corpo); font-weight: 800; text-transform: uppercase;
+    font-size: clamp(1.5rem, 3vw, 2.3rem); color: #fff; line-height: 1.2;
+  }
+  .cabecalho-subtitulo { margin: 10px 0 0; font-size: 0.95rem; color: rgba(255,255,255,0.85); max-width: 46ch; }
+
+  .pagina { max-width: 1800px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
+  .corpo { flex: 1; display: flex; align-items: flex-start; gap: 28px; padding: 32px; }
+  .barra-lateral { width: 340px; flex-shrink: 0; position: sticky; top: 24px; }
+  .area-principal { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .grade-resultados { display: flex; flex-direction: column; gap: 12px; }
+
+  @media (max-width: 900px) {
+    .corpo { flex-direction: column; padding: 16px; gap: 20px; }
+    .barra-lateral { width: 100%; position: static; }
+    .area-principal { width: 100%; }
+    .cabecalho { height: 340px; }
+  }
+
+  .cartao {
+    background: var(--pergaminho); color: var(--texto-card); border-radius: 14px;
+    padding: 22px 24px 24px; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+
+  .campo { margin-bottom: 18px; }
+  .campo:last-child { margin-bottom: 0; }
+  .campo label {
+    display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--texto-card-sutil); margin-bottom: 6px;
+  }
+  .campo input, .campo select {
+    width: 100%; border: none; background: transparent; border-bottom: 1px solid var(--dourado-linha);
+    padding: 4px 0 6px; font-family: var(--fonte-corpo); font-size: 1rem; color: var(--texto-card); outline: none;
+  }
+  .campo select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23F0913A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 2px center; padding-right: 22px; cursor: pointer;
+  }
+  .campo input:focus, .campo select:focus { border-bottom: 2px solid var(--laranja); padding-bottom: 5px; }
+
+  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 18px; }
+
+  .botao {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    border: none; border-radius: 10px; padding: 14px 20px; font-family: var(--fonte-corpo);
+    font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+  }
+  .botao-primario { background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%); color: #fff; }
+  .botao-primario:hover:not(:disabled) { filter: brightness(1.06); }
+
+  .acoes-secundarias { display: flex; justify-content: space-between; margin-top: 8px; }
+  .botao-texto {
+    background: none; border: none; color: var(--texto-card-sutil); font-family: var(--fonte-corpo);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer; padding: 8px 2px;
+  }
+
+  .resultado {
+    background: var(--pergaminho); border-radius: 12px; padding: 16px 18px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.22); display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; cursor: pointer; transition: transform 0.15s ease;
+  }
+  .resultado:hover { transform: translateY(-2px); }
+  .resultado-info { flex: 1; min-width: 0; }
+  .resultado-endereco { font-size: 1rem; font-weight: 700; color: var(--texto-card); margin: 0 0 2px; }
+  .resultado-sub { font-size: 0.78rem; color: var(--texto-card-sutil); }
+  .resultado-preco { font-family: var(--fonte-mono); font-size: 1rem; font-weight: 700; color: #24231F !important; text-align: right; }
+  .resultado-data { font-size: 0.75rem; color: var(--texto-card-sutil); margin-top: 2px; text-align: right; }
+  .resultado-mais { display: flex; flex-direction: column; align-items: center; color: var(--laranja); }
+  .resultado-mais-icone { font-size: 1.2rem; font-weight: 800; line-height: 1; }
+  .resultado-mais-texto { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+
+  .controles-superiores { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+  .controles-paginacao-qtd { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: rgba(245, 243, 237, 0.7); text-transform: uppercase; font-weight: 700; }
+  .controles-paginacao-qtd select { background: #2a2d32; color: #fff; border: 1px solid #444; border-radius: 4px; padding: 4px 8px; font-size: 0.8rem; }
+
+  .barra-paginacao-numerica { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 20px; flex-wrap: wrap; }
+  .btn-pagina {
+    min-width: 36px; height: 36px; padding: 0 8px; border-radius: 6px; border: 1px solid #444;
+    background-color: #2a2d32; color: #fff; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .btn-pagina.ativo { background-color: var(--laranja); border-color: var(--laranja); }
+
+  .ficha-titulo { font-size: 1.5rem; font-weight: 800; color: var(--texto-sobre-fundo); margin: 0 0 4px; }
+  .ficha-subtitulo { font-size: 0.85rem; color: var(--texto-sobre-fundo-sutil); text-transform: uppercase; margin: 0 0 20px; }
+  .ficha-linha { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(36,35,31,0.12); }
+  .ficha-rotulo { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--texto-card-sutil); }
+  .ficha-valor { font-family: var(--fonte-mono); font-size: 0.92rem; color: var(--texto-card); text-align: right; }
+  .ficha-cartoes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .rodape { padding: 24px 32px 36px; border-top: 1px solid rgba(245, 243, 237, 0.12); max-width: 1800px; margin: 0 auto; }
+  .rodape p { margin: 0 0 8px; font-size: 0.72rem; color: var(--texto-sobre-fundo-sutil); text-align: center; }
+  .rodape a { color: var(--agua-turquesa); }
+
+  .banner-cookies {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--fundo-escuro-claro);
+    border-top: 1px solid rgba(245, 243, 237, 0.15); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+  .banner-cookies p { margin: 0; font-size: 0.82rem; color: var(--texto-sobre-fundo-sutil); text-align: center; }
+  .banner-cookies button { border: none; border-radius: 8px; padding: 10px 20px; background: var(--laranja); color: #fff; font-weight: 700; cursor: pointer; }
+</style>
+</head>
+<body>
+  <div class="barra-marca" style="display: flex; justify-content: space-between; align-items: center;">
+    <a href="/" class="link-marca">
+      <img src="./favicon.png" alt="itbidata" />
+      <span class="nome-marca">itbi<span>data</span></span>
+    </a>
+    <a href="estatisticas.html" style="background-color: #388e9c; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.95rem; padding: 8px 18px; border-radius: 9999px; border: 1px solid #4eb3c4; display: inline-flex; align-items: center; gap: 8px;">
+      Estatísticas
+    </a>
+  </div>
+
+  <header class="cabecalho" id="cabecalho">
+    <img src="./banner.jpg" alt="Mercado Imobiliário" />
+    <div class="cabecalho-veu"></div>
+    <div class="cabecalho-texto">
+      <h1 class="cabecalho-titulo">Sua fonte de inteligência para preços de imóveis</h1>
+      <p class="cabecalho-subtitulo">Consulte o histórico de transações reais de ITBI, direto dos dados abertos das prefeituras.</p>
+    </div>
+  </header>
+
+  <div class="pagina">
+    <div class="corpo">
+      <aside class="barra-lateral">
+        <section class="cartao">
+          <div class="campo">
+            <label for="cidade">Cidade</label>
+            <select id="cidade">
+              <option value="" disabled selected>Selecione a cidade</option>
+              <option value="bh">Belo Horizonte - MG</option>
+              <option value="fortaleza">Fortaleza - CE</option>
+              <option value="poa">Porto Alegre - RS</option>
+              <option value="recife">Recife - PE</option>
+              <option value="sp">São Paulo - SP</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="endereco">Endereço (rua ou avenida)</label>
+            <input type="text" id="endereco" placeholder="Ex: Nome da rua ou avenida">
+          </div>
+
+          <div class="campo-linha">
+            <div class="campo">
+              <label for="numero">Número</label>
+              <input type="text" id="numero" placeholder="opcional" inputmode="numeric">
+            </div>
+            <div class="campo">
+              <label for="ano">Ano</label>
+              <select id="ano">
+                <option value="">Todos</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="botao botao-primario" id="btn-pesquisar">&#128269; Pesquisar</button>
+          <div class="acoes-secundarias">
+            <button class="botao-texto" id="btn-limpar">&#10005; Limpar</button>
+            <button class="botao-texto" id="btn-atualizar">&#8635; Atualizar dados</button>
+          </div>
+
+          <div class="barra-progresso" id="barra-progresso" style="display:none;"><div class="barra-progresso-preenchimento"></div></div>
+          <p class="texto-progresso" id="texto-progresso" style="display:none;"></p>
+
+          <div class="faixa-aviso" id="faixa-erro" style="display:none;">
+            <div class="risco"></div>
+            <p id="texto-erro"></p>
+          </div>
+        </section>
+      </aside>
+
+      <main class="area-principal">
+        <div class="controles-superiores">
+          <p class="contagem" id="contagem" style="margin:0;"></p>
+          <div id="controles-qtd-pagina" style="display: none; align-items: center; gap: 16px;">
+            <div class="controles-paginacao-qtd">
+              <span>Itens por página:</span>
+              <select id="sel-itens-pagina">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+            <div id="barra-ordenacao" style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.6); text-transform: uppercase;">Ordenar:</span>
+              <button type="button" class="btn-ordem ativo" data-ordem="desc" style="cursor: pointer; background: #2a2d32; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais recentes</button>
+              <button type="button" class="btn-ordem" data-ordem="asc" style="cursor: pointer; background: transparent; border: 1px solid #444; color: rgba(245, 243, 237, 0.6); border-radius: 4px; padding: 4px 10px; font-size: 0.8rem;">Mais antigos</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grade-resultados" id="resultados"></div>
+        <div class="barra-paginacao-numerica" id="barra-paginacao" style="display: none;"></div>
+        <div id="detalhe" hidden></div>
+      </main>
+    </div>
+  </div>
+
+  <div id="cookie-banner" class="banner-cookies">
+    <p>Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
+    <button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  var cacheCsv = {};
+
+  function parseLinhaCsv(linha) {
+    var resultado = [];
+    var i = 0;
+    var n = linha.length;
+    while (i <= n) {
+      if (i === n) {
+        if (resultado.length === 0 || linha.charAt(linha.length - 1) === ";") {
+          resultado.push("");
+        }
+        break;
+      }
+      if (linha.charAt(i) === "'") {
+        var sb = "";
+        i++;
+        while (i < n) {
+          if (linha.charAt(i) === "'") {
+            if (i + 1 < n && linha.charAt(i + 1) === "'") {
+              sb += "'";
+              i += 2;
+            } else {
+              i++;
+              break;
+            }
+          } else {
+            sb += linha.charAt(i);
+            i++;
+          }
+        }
+        resultado.push(sb);
+        while (i < n && linha.charAt(i) !== ";") i++;
+        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
+      } else {
+        var inicio = i;
+        while (i < n && linha.charAt(i) !== ";") i++;
+        resultado.push(linha.substring(inicio, i));
+        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
+      }
+    }
+    return resultado;
+  }
+
+  function normalizarParaBusca(s) {
+    return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
+  }
+  function normalizarLogradouro(s) {
+    return normalizarParaBusca(s)
+      .replace(/\b(DE|DA|DO|DAS|DOS|E)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function parseDataBrOuIso(texto) {
+    if (!texto) return null;
+    texto = texto.trim();
+    // Tenta formato DD/MM/YYYY
+    var mBr = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+    if (mBr) {
+      return { d: parseInt(mBr[1], 10), mo: parseInt(mBr[2], 10), y: parseInt(mBr[3], 10) };
+    }
+    // Tenta formato YYYY/MM/DD ou YYYY-MM-DD
+    var mIso = texto.match(/^(\d{4})[\/\-](\d{2})[\/\-](\d{2})/);
+    if (mIso) {
+      return { y: parseInt(mIso[1], 10), mo: parseInt(mIso[2], 10), d: parseInt(mIso[3], 10) };
+    }
+    return null;
+  }
+
+  function chaveOrdenacao(data) {
+    return data ? data.y * 10000 + data.mo * 100 + data.d : -1;
+  }
+
+  function formatarDataBr(data) {
+    if (!data) return null;
+    function d2(n) { return n < 10 ? "0" + n : "" + n; }
+    return d2(data.d) + "/" + d2(data.mo) + "/" + data.y;
+  }
+
+  function converterRegistroPoa(campos, ano) {
+    if (campos.length < 18) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined) return null;
+      v = v.trim();
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      // Trata valores com ponto ou vírgula decimal
+      var n = parseFloat(v.replace(/\./g, "").replace(",", "."));
+      return isNaN(n) ? null : n;
+    }
+    var dataEstimativa = parseDataBrOuIso(c(0));
+    var dataPagamento = parseDataBrOuIso(c(1));
+    return {
+      cidadeNome: "Porto Alegre",
+      estadoSigla: "RS",
+      ano: ano,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(2),
+      percTransmitido: num(3),
+      finalidadeConstrucao: c(4),
+      logradouro: c(5),
+      numeroEndereco: c(6),
+      numeroUnidade: c(7),
+      complementoEndereco: c(8),
+      bairro: c(9),
+      cep: c(10),
+      areaTotalTerreno: num(11),
+      areaConstrTotal: num(12),
+      areaConstrPrivativa: num(13),
+      anoConstrucao: c(14) ? parseInt(c(14), 10) : null,
+      numeroMatricula: c(15),
+      numeroZona: c(16),
+      situacao: c(17)
+    };
+  }
+
+  function converterRegistroBH(campos, anoPedido) {
+    var reg = converterRegistroPoa(campos, anoPedido);
+    if (!reg) return null;
+    reg.cidadeNome = "Belo Horizonte";
+    reg.estadoSigla = "MG";
+    return reg;
+  }
+
+  function converterRegistroFortaleza(campos, anoPedido) {
+    if (campos.length < 31) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined) return null;
+      v = v.trim();
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      var n = parseFloat(v.replace(",", "."));
+      return isNaN(n) ? null : n;
+    }
+    var ano = c(4) ? parseInt(c(4), 10) : null;
+    if (ano !== anoPedido) return null;
+
+    var fracaoIdeal = num(13);
+    var dataConstrucao = parseDataBrOuIso(c(16));
+    var dataEstimativa = parseDataBrOuIso(c(5));
+    var dataPagamento = parseDataBrOuIso(c(24));
+
+    return {
+      cidadeNome: "Fortaleza",
+      estadoSigla: "CE",
+      ano: ano,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(27),
+      percTransmitido: fracaoIdeal !== null ? fracaoIdeal * 100 : null,
+      finalidadeConstrucao: c(18),
+      logradouro: c(8),
+      numeroEndereco: c(9),
+      numeroUnidade: null,
+      complementoEndereco: null,
+      bairro: c(7),
+      cep: c(6),
+      areaTotalTerreno: num(14),
+      areaConstrTotal: num(15),
+      areaConstrPrivativa: null,
+      anoConstrucao: dataConstrucao ? dataConstrucao.y : null,
+      numeroMatricula: null,
+      numeroZona: c(23),
+      situacao: c(19)
+    };
+  }
+
+  function converterRegistroSp(campos, anoPedido) {
+    var reg = converterRegistroPoa(campos, anoPedido);
+    if (!reg) return null;
+    reg.cidadeNome = "São Paulo";
+    reg.estadoSigla = "SP";
+
+    var dataRaw = campos[0] ? campos[0].trim() : "";
+    if (dataRaw) {
+      var parsed = parseDataBrOuIso(dataRaw);
+      if (parsed) {
+        reg.dataReferencia = parsed;
+        reg.dataPagamento = parsed;
+      }
+    }
+    return reg;
+  }
+
+  function enderecoCompleto(r) {
+    var partes = [];
+    if (r.logradouro) partes.push(r.logradouro);
+    if (r.numeroEndereco && r.numeroEndereco !== "0") partes.push(r.numeroEndereco);
+    if (r.numeroUnidade) partes.push("Unid. " + r.numeroUnidade);
+    if (r.complementoEndereco) partes.push(r.complementoEndereco);
+    return partes.join(", ");
+  }
+
+  var FONTES = {
+    poa: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocalPorAno: {
+        2026: "data/itbi-2026.csv", 2025: "data/itbi-2025.csv", 2024: "data/itbi-2024.csv",
+        2023: "data/itbi-2023.csv", 2022: "data/itbi-2022.csv", 2021: "data/itbi-2021.csv", 2020: "data/itbi-2020.csv"
+      },
+      chaveCache: function (ano) { return "poa_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroPoa(parseLinhaCsv(linha), ano);
+            if (reg) registros.push(reg);
+          } catch (e) { }
+        }
+        return registros;
+      }
+    },
+    sp: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocalPorAno: {
+        2026: "data/itbi-sp-2026.csv", 2025: "data/itbi-sp-2025.csv", 2024: "data/itbi-sp-2024.csv",
+        2023: "data/itbi-sp-2023.csv", 2022: "data/itbi-sp-2022.csv", 2021: "data/itbi-sp-2021.csv", 2020: "data/itbi-sp-2020.csv"
+      },
+      chaveCache: function (ano) { return "sp_" + ano; },
+      baixarCsv: function (ano) {
+        return fetch(this.arquivoLocalPorAno[ano]).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroSp(parseLinhaCsv(linha), ano);
+            if (reg) registros.push(reg);
+          } catch (e) { }
+        }
+        return registros;
+      }
+    },
+    fortaleza: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocal: "data/itbi-fortaleza.csv",
+      chaveCache: function () { return "fortaleza_completo"; },
+      baixarCsv: function () {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.arrayBuffer();
+        }).then(function (buffer) {
+          return new TextDecoder("iso-8859-1").decode(buffer);
+        });
+      },
+      processarCsv: function (texto, anoPedido) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroFortaleza(linha.split(";"), anoPedido);
+            if (reg) registros.push(reg);
+          } catch (e) { }
+        }
+        return registros;
+      }
+    },
+    bh: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018],
+      arquivoLocal: function (ano) { return "data/itbi-bh-" + ano + ".csv"; },
+      chaveCache: function (ano) { return "bh_" + ano; },
+      baixarCsv: function (ano) {
+        return fetch(this.arquivoLocal(ano)).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, anoPedido) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroBH(linha.split(";"), anoPedido);
+            if (reg) registros.push(reg);
+          } catch (e) { }
+        }
+        return registros;
+      }
+    },
+    recife: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015],
+      arquivoLocal: function (ano) { return "data/itbi-recife-" + ano + ".csv"; },
+      chaveCache: function (ano) { return "recife_" + ano; },
+      baixarCsv: function (ano) {
+        return fetch(this.arquivoLocal(ano)).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, anoPedido) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroPoa(parseLinhaCsv(linha), anoPedido);
+            if (reg) registros.push(reg);
+          } catch (e) { }
+        }
+        return registros;
+      }
+    }
+  };
+
+  function baixarCsvDaFonte(fonte, ano, forcar) {
+    var chave = fonte.chaveCache(ano);
+    if (!forcar && cacheCsv[chave]) return Promise.resolve(cacheCsv[chave]);
+    return fonte.baixarCsv(ano).then(function (texto) {
+      cacheCsv[chave] = texto;
+      return texto;
+    });
+  }
+
+  function coincide(registro, logradouroBusca, numeroBusca) {
+    var logradouroOk = !logradouroBusca || (registro.logradouro && normalizarLogradouro(registro.logradouro).indexOf(logradouroBusca) !== -1);
+    var numeroOk = !numeroBusca || (registro.numeroEndereco && registro.numeroEndereco.trim() === numeroBusca);
+    return logradouroOk && numeroOk;
+  }
+
+  function buscar(cidadeId, anoUnico, logradouro, numero, forcar, aoProgredir) {
+    var fonte = FONTES[cidadeId];
+    var anos = anoUnico ? [anoUnico] : fonte.anosDisponiveis;
+    var logradouroBusca = normalizarLogradouro(logradouro);
+    var numeroBusca = numero ? numero.trim() : null;
+    var registros = [];
+    var anosComErro = [];
+    var indice = 0;
+
+    function proximo() {
+      if (indice >= anos.length) {
+        registros.sort(function (a, b) { return chaveOrdenacao(b.dataReferencia) - chaveOrdenacao(a.dataReferencia); });
+        return Promise.resolve({ registros: registros, anosComErro: anosComErro });
+      }
+      var ano = anos[indice];
+      indice++;
+      if (aoProgredir) aoProgredir(indice, anos.length);
+      return baixarCsvDaFonte(fonte, ano, forcar).then(function (texto) {
+        var doAno = fonte.processarCsv(texto, ano).filter(function (r) {
+          return coincide(r, logradouroBusca, numeroBusca);
+        });
+        registros = registros.concat(doAno);
+      }).catch(function () {
+        anosComErro.push(ano);
+      }).then(proximo);
+    }
+    return proximo();
+  }
+
+  var elCidade = document.getElementById("cidade");
+  var elEndereco = document.getElementById("endereco");
+  var elNumero = document.getElementById("numero");
+  var elAno = document.getElementById("ano");
+  var elControlesQtdPagina = document.getElementById("controles-qtd-pagina");
+  var elSelItensPagina = document.getElementById("sel-itens-pagina");
+  var botoesOrdem = document.querySelectorAll(".btn-ordem");
+  var ordemDataAtual = "desc";
+  var elBtnPesquisar = document.getElementById("btn-pesquisar");
+  var elBtnLimpar = document.getElementById("btn-limpar");
+  var elBtnAtualizar = document.getElementById("btn-atualizar");
+  var elContagem = document.getElementById("contagem");
+  var elResultados = document.getElementById("resultados");
+  var elBarraPaginacao = document.getElementById("barra-paginacao");
+  var elDetalhe = document.getElementById("detalhe");
+
+  var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  var ultimosRegistros = [];
+  var paginaAtual = 1;
+  var itensPorPagina = 50;
+
+  function renderizarResultados() {
+    elResultados.innerHTML = "";
+    var total = ultimosRegistros.length;
+
+    if (total === 0) {
+      elContagem.classList.remove("ativa");
+      if (elControlesQtdPagina) elControlesQtdPagina.style.display = "none";
+      elBarraPaginacao.style.display = "none";
+      return;
+    }
+
+    elContagem.classList.add("ativa");
+    elContagem.textContent = total.toLocaleString("pt-BR") + " registro(s) encontrado(s)";
+    if (elControlesQtdPagina) elControlesQtdPagina.style.display = "flex";
+
+    var totalPaginas = Math.ceil(total / itensPorPagina);
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+    if (paginaAtual < 1) paginaAtual = 1;
+
+    var inicio = (paginaAtual - 1) * itensPorPagina;
+    var fim = Math.min(inicio + itensPorPagina, total);
+    var paginaItens = ultimosRegistros.slice(inicio, fim);
+
+    for (var indice = 0; indice < paginaItens.length; indice++) {
+      var r = paginaItens[indice];
+      var card = document.createElement("div");
+      card.className = "resultado";
+      var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
+      var subTxt = [r.bairro, r.finalidadeConstrucao].filter(Boolean).join(" · ");
+      var precoTxt = (r.baseCalculo !== null && r.baseCalculo !== undefined && r.baseCalculo > 0)
+        ? formatoMoeda.format(r.baseCalculo)
+        : "—";
+
+      card.innerHTML =
+        '<div class="resultado-info">' +
+          '<p class="resultado-endereco"></p>' +
+          '<p class="resultado-sub"></p>' +
+        '</div>' +
+        '<div>' +
+          '<div class="resultado-preco"></div>' +
+          '<div class="resultado-data"></div>' +
+        '</div>' +
+        '<div class="resultado-mais"><span class="resultado-mais-icone">+</span><span class="resultado-mais-texto">DETALHES</span></div>';
+
+      card.querySelector(".resultado-endereco").textContent = enderecoCompleto(r);
+      card.querySelector(".resultado-sub").textContent = subTxt;
+      card.querySelector(".resultado-preco").textContent = precoTxt;
+      card.querySelector(".resultado-data").textContent = dataTxt;
+      
+      var globalIdx = inicio + indice;
+      (function (idx) {
+        card.addEventListener("click", function () { abrirDetalhe(idx); });
+      })(globalIdx);
+
+      elResultados.appendChild(card);
+    }
+    renderizarPaginacaoNumerica(totalPaginas);
+  }
+
+  function renderizarPaginacaoNumerica(totalPaginas) {
+    if (totalPaginas <= 1) {
+      elBarraPaginacao.style.display = "none";
+      elBarraPaginacao.innerHTML = "";
+      return;
+    }
+    elBarraPaginacao.style.display = "flex";
+    var botoes = [];
+    botoes.push('<button type="button" class="btn-pagina" ' + (paginaAtual === 1 ? 'disabled' : '') + ' onclick="mudarPagina(' + (paginaAtual - 1) + ')">&laquo;</button>');
+    for (var i = 1; i <= totalPaginas; i++) {
+      if (i === 1 || i === totalPaginas || (i >= paginaAtual - 1 && i <= paginaAtual + 1)) {
+        botoes.push('<button type="button" class="btn-pagina ' + (paginaAtual === i ? 'ativo' : '') + '" onclick="mudarPagina(' + i + ')">' + i + '</button>');
+      } else if (i === paginaAtual - 2 || i === paginaAtual + 2) {
+        botoes.push('<span style="color:#fff;">...</span>');
+      }
+    }
+    botoes.push('<button type="button" class="btn-pagina ' + (paginaAtual === totalPaginas ? 'disabled' : '') + '" onclick="mudarPagina(' + (paginaAtual + 1) + ')">&raquo;</button>');
+    elBarraPaginacao.innerHTML = botoes.join("");
+  }
+
+  window.mudarPagina = function (p) {
+    paginaAtual = p;
+    renderizarResultados();
+    window.scrollTo({ top: 200, behavior: "smooth" });
+  };
+
+  elSelItensPagina.addEventListener("change", function () {
+    itensPorPagina = parseInt(this.value, 10) || 50;
+    paginaAtual = 1;
+    renderizarResultados();
+  });
+
+  function abrirDetalhe(indice) {
+    var r = ultimosRegistros[indice];
+    if (!r) return;
+    // Lógica interna de detalhes preservada
+    elResultados.style.display = "none";
+    if (elControlesQtdPagina) elControlesQtdPagina.style.display = "none";
+    elContagem.style.display = "none";
+    elBarraPaginacao.style.display = "none";
+    elDetalhe.hidden = false;
+    elDetalhe.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function atualizarOpcoesAnos() {
+    var config = FONTES[elCidade.value];
+    var anoAnterior = elAno.value;
+    elAno.innerHTML = '<option value="">Todos</option>';
+    if (!config || !config.anosDisponiveis) return;
+    config.anosDisponiveis.forEach(function (ano) {
+      var opt = document.createElement("option");
+      opt.value = ano;
+      opt.textContent = ano;
+      elAno.appendChild(opt);
+    });
+    if (config.anosDisponiveis.indexOf(parseInt(anoAnterior, 10)) !== -1) {
+      elAno.value = anoAnterior;
+    }
+  }
+
+  elCidade.addEventListener("change", atualizarOpcoesAnos);
+  atualizarOpcoesAnos();
+
+  function executarBusca(forcar) {
+    if (!elCidade.value) return;
+    var logradouro = elEndereco.value.trim();
+    if (!logradouro) return;
+
+    var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
+    var numero = elNumero.value.trim();
+
+    buscar(elCidade.value, anoValor, logradouro, numero, forcar, null).then(function (resultado) {
+      ultimosRegistros = resultado.registros;
+      ultimosRegistros.sort(function (a, b) {
+        var vA = chaveOrdenacao(a.dataReferencia);
+        var vB = chaveOrdenacao(b.dataReferencia);
+        return ordemDataAtual === "asc" ? vA - vB : vB - vA;
+      });
+      paginaAtual = 1;
+      renderizarResultados();
+    });
+  }
+
+  [elEndereco, elNumero].forEach(function (el) {
+    el.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); executarBusca(false); }
+    });
+  });
+
+  elBtnPesquisar.addEventListener("click", function () { executarBusca(false); });
+  elBtnAtualizar.addEventListener("click", function () { executarBusca(true); });
+  elBtnLimpar.addEventListener("click", function () {
+    elEndereco.value = ""; elNumero.value = ""; elAno.value = "";
+    elContagem.classList.remove("ativa");
+    if (elControlesQtdPagina) elControlesQtdPagina.style.display = "none";
+    if (elBarraPaginacao) elBarraPaginacao.style.display = "none";
+    ultimosRegistros = [];
+    elResultados.innerHTML = "";
+  });
+
+  if (botoesOrdem) {
+    botoesOrdem.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        ordemDataAtual = this.getAttribute("data-ordem");
+        botoesOrdem.forEach(function (b) { b.classList.remove("ativo"); b.style.background = "transparent"; b.style.color = "rgba(245, 243, 237, 0.6)"; });
+        this.classList.add("ativo"); this.style.background = "#2a2d32"; this.style.color = "#fff";
+        if (ultimosRegistros.length > 0) {
+          ultimosRegistros.sort(function (a, b) {
+            var vA = chaveOrdenacao(a.dataReferencia);
+            var vB = chaveOrdenacao(b.dataReferencia);
+            return ordemDataAtual === "asc" ? vA - vB : vB - vA;
+          });
+          paginaAtual = 1;
+          renderizarResultados();
+        }
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
