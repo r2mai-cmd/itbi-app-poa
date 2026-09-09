@@ -15,7 +15,7 @@
   gtag('js', new Date());
   gtag('config', 'G-HTD7CLQPZ2');
 </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/page/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -1020,7 +1020,7 @@ white-space: nowrap;
       chaveCache: function () { return "sao-paulo_completo"; },
       baixarCsv: function () {
         return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          if (!resp.ok) throw new Error("Dados de São Paulo ainda não disponíveis na pasta data/");
           return resp.text();
         });
       },
@@ -1050,7 +1050,7 @@ white-space: nowrap;
       chaveCache: function () { return "belo-horizonte_completo"; },
       baixarCsv: function () {
         return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          if (!resp.ok) throw new Error("Dados de Belo Horizonte ainda não disponíveis na pasta data/");
           return resp.text();
         });
       },
@@ -1080,7 +1080,7 @@ white-space: nowrap;
       chaveCache: function () { return "recife_completo"; },
       baixarCsv: function () {
         return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("HTTP " + resp.status);
+          if (!resp.ok) throw new Error("Dados de Recife ainda não disponíveis na pasta data/");
           return resp.text();
         });
       },
@@ -1322,7 +1322,8 @@ white-space: nowrap;
 
     var numero = r.numeroEndereco && r.numeroEndereco !== "0" ? r.numeroEndereco : null;
     var cidadeEstado = r.cidadeNome && r.estadoSigla ? r.cidadeNome + " - " + r.estadoSigla : "Brasil";
-    var enderecoMapa = r.logradouro ? [r.logradouro, numero].filter(Boolean).join(", ") + ", " + cidadeEstado + ", Brasil" : null;
+    // Ajustado para aceitar o link do StreetView mesmo se o número vier vazio/ausente
+    var enderecoMapa = r.logradouro ? r.logradouro + (numero ? ", " + numero : "") + ", " + cidadeEstado + ", Brasil" : null;
 
     var html = '<a class="link-voltar" id="link-voltar">&larr; Voltar à lista</a>';
     html += '<h2 class="ficha-titulo"></h2>';
