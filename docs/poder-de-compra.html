@@ -124,7 +124,7 @@
       <div class="col-formulario">
         <div class="campo">
           <label for="input-renda">Renda Bruta Familiar Mensal</label>
-          <div class="input-grupo"><span>R$</span><input type="tel" id="input-renda" value="20.000,00"></div>
+          <div class="input-grupo"><span>R$</span><input type="tel" id="input-renda" value="10.000,00"></div>
         </div>
         <div class="campo">
           <label for="input-poupanca">Valor Disponível para Entrada</label>
@@ -197,12 +197,11 @@
     var poupanca = lerNumero("input-poupanca");
     var anos = parseInt(document.getElementById("select-prazo").value, 10) || 30;
 
-    var parcelaMax = renda * 0.30; // Limite de 30% da renda
+    var parcelaMax = renda * 0.30;
     var n = anos * 12;
-    var taxaAnual = 0.105; // 10.5% a.a. de juros padrão
+    var taxaAnual = 0.105;
     var iMensal = taxaAnual / 12;
 
-    // Cálculo inverso do valor financiado usando a fórmula da Tabela PRICE
     var valorFinanciavél = 0;
     if (iMensal > 0 && n > 0) {
       valorFinanciavél = parcelaMax * (Math.pow(1 + iMensal, n) - 1) / (iMensal * Math.pow(1 + iMensal, n));
@@ -216,6 +215,8 @@
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
+  document.getElementById("select-prazo").addEventListener("change", calcular);
+
   document.getElementById("btn-limpar").addEventListener("click", function() {
     document.getElementById("input-renda").value = "";
     document.getElementById("input-poupanca").value = "";

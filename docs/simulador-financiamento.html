@@ -225,7 +225,6 @@
       </div>
     </div>
 
-    <!-- Seção do Gráfico Comparativo -->
     <div class="box-grafico">
       <h3>Evolução do Saldo Devedor</h3>
       <p>Acompanhe mês a mês como a dívida diminui ao longo do prazo.</p>
@@ -237,11 +236,11 @@
 
     <section class="box-tutorial">
       <h2>Modalidades de Financiamento da Caixa</h2>
-      <p><strong>1. Taxa Fixa + TR:</strong> É a modalidade tradicional mais utilizada. A taxa de juros é fixa e o saldo devedor é corrigido mensalmente pela Taxa Referencial (TR), que costuma ser baixa.</p>
-      <p><strong>2. Taxa Fixa + IPCA:</strong> Oferece taxas de juros nominais menores no início, mas o saldo devedor e as parcelas sofrem correção integral pela inflação (IPCA), havendo risco de as parcelas subirem bastante se a inflação disparar.</p>
-      <p><strong>3. Taxa Fixa + Poupança:</strong> Atrelada à remuneração da caderneta de poupança (quando a Selic está até 8,5% a.a., rende 70% da Selic; quando maior, rende TR + 6% a.a.).</p>
+      <p><strong>1. Taxa Fixa + TR:</strong> É a modalidade tradicional mais utilizada. A taxa de juros é fixa e o saldo devedor é corrigido mensalmente pela Taxa Referencial (TR).</p>
+      <p><strong>2. Taxa Fixa + IPCA:</strong> Oferece taxas nominais menores no início, mas o saldo devedor e as parcelas sofrem correção integral pela inflação (IPCA).</p>
+      <p><strong>3. Taxa Fixa + Poupança:</strong> Atrelada à remuneração da caderneta de poupança.</p>
       <div class="disclaimer-box">
-        <strong>Aviso Legal Importante:</strong> Ferramenta estritamente estimativa e educacional. Condições reais de crédito dependem da análise individual da instituição financeira.
+        <strong>Aviso Legal Importante:</strong> Ferramenta estritamente estimativa e educacional para fins de planejamento.
       </div>
     </section>
   </main>
@@ -303,6 +302,7 @@
 
   function desenharGrafico(saldos) {
     var canvas = document.getElementById("graficoSaldo");
+    if (!canvas) return;
     var ctx = canvas.getContext("2d");
     var largura = canvas.parentElement.clientWidth - 56;
     var altura = 260;
@@ -380,7 +380,6 @@
       document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinal);
       document.getElementById("res-parcela-final").style.display = "block";
     } else {
-      // PRICE
       var parcBase = saldoInicial * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
       for (var m = 1; m <= n; m++) {
         saldoAtual = saldoAtual * (1 + indMensal);
@@ -416,6 +415,7 @@
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
+  elPrazo.addEventListener("change", calcular);
 
   document.getElementById("btn-limpar").addEventListener("click", function() {
     document.getElementById("input-valor").value = "";
