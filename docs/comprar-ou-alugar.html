@@ -168,10 +168,10 @@
 
     <section class="box-tutorial">
       <h2>O Racional por Trás da Decisão: Comprar vs. Alugar</h2>
-      <p><strong>1. A Regra dos 0,5% (Yield do Aluguel):</strong> A base técnica desta análise mede o retorno que o proprietário tem com o aluguel em relação ao valor do imóvel. Se a taxa mensal do aluguel for <strong>menor que 0,5% a.m.</strong>, estatisticamente <strong>alugar e investir a entrada</strong> rende mais.</p>
+      <p><strong>1. A Regra dos 0,5% (Yield do Aluguel):</strong> A base técnica desta análise mede o retorno que o proprietário tem com o aluguel em relação ao valor do imóvel. Se a taxa mensal do aluguel for <strong>menor que 0,5% a.m.</strong>, pelo critério simplificado desta ferramenta, <strong>alugar e investir a entrada</strong> pode ser mais vantajoso.</p>
       <p><strong>2. Custo de Oportunidade:</strong> Quando você compra um imóvel à vista ou dá uma entrada pesada, você abre mão de render juros em aplicações seguras.</p>
       <div class="disclaimer-box">
-        <strong>Aviso Legal Importante:</strong> Esta ferramenta utiliza premissas matemáticas para fins de planejamento educacional.
+        <strong>Aviso Legal Importante:</strong> Esta ferramenta utiliza uma regra simplificada de yield. Não considera condomínio, IPTU, manutenção, vacância, impostos, valorização do imóvel ou rendimento alternativo do capital. Use o resultado como triagem, não como recomendação financeira.
       </div>
     </section>
   </main>
@@ -237,7 +237,8 @@
 
     if (imovel <= 0) return;
     var taxaMensal = (aluguel / imovel) * 100;
-    var taxaAnual = taxaMensal * 12;
+    var taxaAnual = Math.pow(1 + taxaMensal / 100, 12) - 1;
+    taxaAnual *= 100;
 
     var veredito = taxaMensal < 0.5 
       ? "Alugar é mais vantajoso (Aluguel abaixo de 0,5% a.m.)" 

@@ -223,11 +223,11 @@
           <span class="linha-valor" id="res-saldo">R$ 0,00</span>
         </div>
         <div class="linha-resumo">
-          <span class="linha-rotulo">Total de Juros Pagos:</span>
+          <span class="linha-rotulo">Total de Juros Pagos (sem indexador):</span>
           <span class="linha-valor" id="res-total-juros">R$ 0,00</span>
         </div>
         <div class="linha-resumo">
-          <span class="linha-rotulo">Custo Total Final:</span>
+          <span class="linha-rotulo">Custo Total Final (entrada + parcelas):</span>
           <span class="linha-valor" id="res-custo-total">R$ 0,00</span>
         </div>
         <div class="linha-resumo">
@@ -244,6 +244,10 @@
         <div class="legenda-item"><div class="legenda-cor" style="background:#F0913A;"></div><span>Saldo Devedor Projetado</span></div>
       </div>
       <canvas id="graficoSaldo"></canvas>
+    </div>
+
+    <div class="disclaimer-box" style="margin-top:16px;">
+      <strong>Como ler esta simulação:</strong> o indexador é aplicado mensalmente ao saldo e às prestações dentro de um modelo matemático simplificado. O “Total de Juros” mostra apenas juros contratuais; a correção pelo indexador já está incorporada no “Custo Total Final”. Isso não reproduz um contrato bancário específico.
     </div>
 
     <section class="box-tutorial">
@@ -388,7 +392,7 @@
     for (var ano = 0; ano <= numAnos; ano += passoAno) {
       var mesIndex = ano * 12;
       if (mesIndex >= saldos.length) mesIndex = saldos.length - 1;
-      var x = paddingX + (mesIndex / (saldos.length - 1)) * w;
+      var x = paddingX + ((saldos.length > 1 ? mesIndex / (saldos.length - 1) : 0)) * w;
       
       ctx.beginPath();
       ctx.moveTo(x, paddingY);
@@ -404,7 +408,7 @@
     ctx.lineWidth = 3;
     ctx.beginPath();
     for (var idx = 0; idx < saldos.length; idx++) {
-      var x = paddingX + (idx / (saldos.length - 1)) * w;
+      var x = paddingX + ((saldos.length > 1 ? idx / (saldos.length - 1) : 0)) * w;
       var y = paddingY + h - ((saldos[idx] - minSaldo) / (maxSaldo - minSaldo)) * h;
       if (idx === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
@@ -421,44 +425,71 @@
     var prazoAnosAtual = parseInt(elPrazo.value, 10) || 30;
 
     var saldoInicial = Math.max(0, vImovel - vEntrada);
-    var n = prazoAnosAtual * 12;
-    var iMensal = taxaAnual / 12;
-    var indMensal = Math.pow(1 + indAnual, 1 / 12) - 1;
+    var n = Math.max(1, prazoAnosAtual * 12);
+    var iMensal = Math.max(0, taxaAnual) > 0 ? Math.pow(1 + Math.max(0, taxaAnual), 1 / 12) - 1 : 0;
+    var indMensal = Math.max(0, indAnual) > 0 ? Math.pow(1 + Math.max(0, indAnual), 1 / 12) - 1 : 0;
+    var q = 1 + indMensal;
 
     var saldos = [saldoInicial];
     var saldoAtual = saldoInicial;
     var jurosTotais = 0;
+    var pagamentosTotais = 0;
     var parcInicial = 0;
     var parcFinal = 0;
 
-    if (amortizacaoAtual === "SAC") {
-      var amort = saldoInicial / n;
+    if (saldoInicial <= 0) {
+      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela";
+      document.getElementById("res-parcela-final").textContent = "Sem saldo financiado";
+      document.getElementById("res-parcela-final").style.display = "block";
+    } else if (amortizacaoAtual === "SAC") {
+      // Modelo simplificado: o indexador corrige o saldo antes do cálculo mensal.
+      // A amortização é recalculada sobre o saldo corrigido e o prazo restante,
+      // garantindo que o saldo chegue a zero no último mês.
       for (var m = 1; m <= n; m++) {
-        saldoAtual = saldoAtual * (1 + indMensal);
+        saldoAtual *= q;
         var jurosMes = saldoAtual * iMensal;
-        var prestacaoMes = amort + jurosMes;
+        var amortMes = saldoAtual / (n - m + 1);
+        var prestacaoMes = amortMes + jurosMes;
         if (m === 1) parcInicial = prestacaoMes;
         if (m === n) parcFinal = prestacaoMes;
         jurosTotais += jurosMes;
-        saldoAtual = Math.max(0, saldoAtual - amort);
+        pagamentosTotais += prestacaoMes;
+        saldoAtual = Math.max(0, saldoAtual - amortMes);
         saldos.push(saldoAtual);
       }
       document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (SAC)";
       document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinal);
       document.getElementById("res-parcela-final").style.display = "block";
     } else {
-      var parcBase = saldoInicial * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
-      for (var m = 1; m <= n; m++) {
-        saldoAtual = saldoAtual * (1 + indMensal);
-        var jurosMesP = saldoAtual * iMensal;
-        var fatorRestante = Math.pow(1 + iMensal, n - m + 1);
-        var parcMesP = saldoAtual * (iMensal * fatorRestante) / (fatorRestante - 1);
-        if (isNaN(parcMesP) || parcMesP < 0) parcMesP = saldoAtual + jurosMesP;
+      // PRICE: calcula a prestação-base sem indexador e aplica o indexador
+      // mensalmente à prestação e ao saldo. Isso mantém o financiamento
+      // amortizado integralmente até o último mês no modelo da ferramenta.
+      var pBase;
+      if (iMensal === 0) {
+        pBase = saldoInicial / n;
+      } else {
+        pBase = saldoInicial * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
+      }
 
+      for (var m = 1; m <= n; m++) {
+        saldoAtual *= q;
+        var jurosMesP = saldoAtual * iMensal;
+        var fatorIndice = Math.pow(q, m);
+        var parcMesP = pBase * fatorIndice;
+        // No último mês, liquida qualquer resíduo de arredondamento/modelagem.
+        var amortMesP = parcMesP - jurosMesP;
+        if (m === n) {
+          amortMesP = saldoAtual;
+          parcMesP = amortMesP + jurosMesP;
+        }
+        if (amortMesP < 0) {
+          amortMesP = 0;
+          parcMesP = jurosMesP;
+        }
         if (m === 1) parcInicial = parcMesP;
         if (m === n) parcFinal = parcMesP;
         jurosTotais += jurosMesP;
-        var amortMesP = parcMesP - jurosMesP;
+        pagamentosTotais += parcMesP;
         saldoAtual = Math.max(0, saldoAtual - amortMesP);
         saldos.push(saldoAtual);
       }
@@ -467,7 +498,7 @@
       document.getElementById("res-parcela-final").style.display = "block";
     }
 
-    var custoFinal = saldoInicial + jurosTotais;
+    var custoFinal = vEntrada + pagamentosTotais;
     var comprometimento = renda > 0 ? ((parcInicial / renda) * 100) : 0;
 
     document.getElementById("res-parcela-inicial").textContent = fmtMoeda.format(parcInicial);
