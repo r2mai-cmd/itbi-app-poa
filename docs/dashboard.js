@@ -9,17 +9,17 @@
     "porto-alegre": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
-      processar: processarCsvGenerico
+      processar: processarCsvPoa
     },
     "sao-paulo": {
       anos: [2026, 2025, 2024, 2023, 2022, 2020],
       getArquivo: function(ano) { return "data/itbi-sp-" + ano + ".csv"; },
-      processar: processarCsvGenerico
+      processar: processarCsvSp
     },
     "belo-horizonte": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-bh-" + ano + ".csv"; },
-      processar: processarCsvGenerico
+      processar: processarCsvBh
     },
     "fortaleza": {
       anos: [2024],
@@ -29,7 +29,7 @@
     "recife": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
-      processar: processarCsvGenerico
+      processar: processarCsvRecife
     }
   };
 
@@ -88,7 +88,7 @@
     return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
   }
 
-  function processarCsvGenerico(texto, anoPadrao) {
+  function processarCsvPoa(texto, anoPadrao) {
     var linhas = texto.split("\n");
     var registros = [];
     for (var i = 1; i < linhas.length; i++) {
@@ -117,6 +117,44 @@
     }
     return registros;
   }
+
+  // Processador específico para São Paulo (mapeia corretamente a coluna de bairro no CSV de SP)
+  function processarCsvSp(texto, anoPadrao) {
+    var linhas = texto.split("\n");
+    var registros = [];
+    for (var i = 1; i < linhas.length; i++) {
+      var linha = linhas[i].replace(/\r$/, "");
+      if (!linha.trim()) continue;
+      try {
+        var campos = parseLinhaCsv(linha);
+        if (campos.length < 18) continue;
+        var dataEst = parseDataPoa(campos[0]);
+        var dataPag = parseDataPoa(campos[1]);
+        var dataRef = dataPag || dataEst;
+        var base = parseFloat(campos[2]);
+        var areaPriv = parseFloat(campos[13]);
+        // Em SP, o índice do bairro na estrutura original costuma estar na posição 9 ou 10, validamos texto limpo
+        var bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
+        if (bairro.startsWith("ED ") || bairro.startsWith("BL ")) {
+          bairro = campos[10] ? campos[10].trim().toUpperCase() : "NÃO INFORMADO";
+        }
+
+        if (!isNaN(base) && base > 0) {
+          registros.push({
+            ano: dataRef ? dataRef.y : anoPadrao,
+            mes: dataRef ? dataRef.mo : 1,
+            baseCalculo: base,
+            areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
+            bairro: bairro
+          });
+        }
+      } catch (e) {}
+    }
+    return registros;
+  }
+
+  function processarCsvBh(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
+  function processarCsvRecife(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
 
   function processarCsvFortaleza(texto) {
     var linhas = texto.split("\n");
