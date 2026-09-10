@@ -1447,12 +1447,16 @@ white-space: nowrap;
     elResultados.style.display = "none";
     elBarraTopoResultados.style.display = "none";
     elControlesPaginacao.style.display = "none";
+    
+    // PRIMEIRO tornamos o elemento visível para que o navegador consiga calcular sua posição real na tela
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
     
-    // Faz a página rolar suavemente apenas até o topo da área de detalhes (exatamente como no print desejado)
-    var topoDetalhe = elDetalhe.getBoundingClientRect().top + window.pageYOffset - 16;
-    window.scrollTo({ top: topoDetalhe, behavior: "smooth" });
+    // DEPOIS fazemos a rolagem suave focando exatamente no topo do bloco de detalhes (onde fica o botão Voltar à lista)
+    setTimeout(function() {
+      var topoDetalhe = elDetalhe.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({ top: topoDetalhe > 0 ? topoDetalhe : 0, behavior: "smooth" });
+    }, 50);
   }
 
   function dataParaBcb(data) {
