@@ -1,0 +1,27 @@
+{
+  "porto-alegre": {
+    "nome": "Porto Alegre",
+    "tipo": "ckan",
+    "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi"
+  },
+  "sao-paulo": {
+    "nome": "São Paulo",
+    "tipo": "pagina",
+    "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501"
+  },
+  "belo-horizonte": {
+    "nome": "Belo Horizonte",
+    "tipo": "ckan",
+    "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios"
+  },
+  "fortaleza": {
+    "nome": "Fortaleza",
+    "tipo": "ckan",
+    "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias"
+  },
+  "recife": {
+    "nome": "Recife",
+    "tipo": "ckan",
+    "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi"
+  }
+}
