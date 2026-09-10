@@ -101,11 +101,9 @@ letter-spacing: -0.01em;
 .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
 .dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
 
-/* ===== Cabecalho: foto + titulo ===== */
+/* ===== Cabecalho: rola junto com a pagina ===== */
 .cabecalho {
-position: sticky;
-top: 0;
-z-index: 5;
+position: relative;
 width: 100%;
 height: 300px;
 overflow: hidden;
@@ -161,7 +159,7 @@ padding: 32px;
 width: 340px;
 flex-shrink: 0;
 position: sticky;
-top: 348px;
+top: 24px;
 }
 .area-principal {
 flex: 1;
@@ -573,7 +571,7 @@ white-space: nowrap;
     <span class="nome-marca">itbi<span>data</span></span>
   </a>
   <div class="menu-nav">
-    <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
+    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
     <div class="dropdown">
       <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
       <div class="dropdown-conteudo">
@@ -699,7 +697,7 @@ white-space: nowrap;
       </main>
     </div>
 
-    <!-- Rodapé atualizado com disclaimer, link de termos e política de privacidade -->
+    <!-- Rodapé atualizado com disclaimer, link de termos e email de contato -->
     <footer class="rodape">
       <p>
         Dados: Prefeitura Municipal de Porto Alegre &mdash;
@@ -716,7 +714,7 @@ white-space: nowrap;
       <div class="links-rodape">
         <a href="privacidade.html">Política de Privacidade</a>
         <span>&bull;</span>
-        <a href="termos.html">Termos de Uso &amp; Contato</a>
+        <a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
       </div>
     </footer>
   </div>
