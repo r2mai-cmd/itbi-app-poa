@@ -9,27 +9,27 @@
     "poa": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
-      processar: processarCsvPoa
+      processar: processarCsvGenerico
     },
     "sao-paulo": {
       anos: [2026, 2025, 2024, 2023, 2022, 2020],
       getArquivo: function(ano) { return "data/itbi-sp-" + ano + ".csv"; },
-      processar: processarCsvSp
+      processar: processarCsvGenerico
     },
     "belo-horizonte": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-bh-" + ano + ".csv"; },
-      processar: processarCsvBh
+      processar: processarCsvGenerico
     },
     "fortaleza": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      getArquivo: function(ano) { return "data/itbi-fortaleza.csv"; },
-      processar: processarCsvFortalezaUnico
+      getArquivo: function() { return "data/itbi-fortaleza.csv"; },
+      processar: processarCsvFortaleza
     },
     "recife": {
-      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      anos: [2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
-      processar: processarCsvRecife
+      processar: processarCsvGenerico
     }
   };
 
@@ -88,7 +88,7 @@
     return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
   }
 
-  function processarCsvPoa(texto, anoPadrao) {
+  function processarCsvGenerico(texto, anoPadrao) {
     var linhas = texto.split("\n");
     var registros = [];
     for (var i = 1; i < linhas.length; i++) {
@@ -104,10 +104,10 @@
         var areaPriv = parseFloat(campos[13]);
         var bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
 
-        if (!isNaN(base) && base > 0 && dataRef) {
+        if (!isNaN(base) && base > 0) {
           registros.push({
-            ano: dataRef.y || anoPadrao,
-            mes: dataRef.mo,
+            ano: dataRef ? dataRef.y : anoPadrao,
+            mes: dataRef ? dataRef.mo : 1,
             baseCalculo: base,
             areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
             bairro: bairro
@@ -118,11 +118,7 @@
     return registros;
   }
 
-  function processarCsvSp(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
-  function processarCsvBh(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
-  function processarCsvRecife(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
-
-  function processarCsvFortalezaUnico(texto) {
+  function processarCsvFortaleza(texto) {
     var linhas = texto.split("\n");
     var registros = [];
     for (var i = 1; i < linhas.length; i++) {
@@ -131,17 +127,17 @@
       try {
         var campos = linha.split(";");
         if (campos.length < 31) continue;
-        var anoCsv = campos[4] ? parseInt(campos[4], 10) : null;
+        var anoCsv = campos[4] ? parseInt(campos[4], 10) : 2024;
         var dataEst = parseDataFortaleza(campos[5]);
         var dataPag = parseDataFortaleza(campos[24]);
         var dataRef = dataPag || dataEst;
         var base = parseFloat(campos[27].replace(",", "."));
         var bairro = campos[7] ? campos[7].trim().toUpperCase() : "NÃO INFORMADO";
 
-        if (!isNaN(base) && base > 0 && dataRef) {
+        if (!isNaN(base) && base > 0) {
           registros.push({
-            ano: dataRef.y || anoCsv || 2024,
-            mes: dataRef.mo,
+            ano: dataRef ? dataRef.y : anoCsv,
+            mes: dataRef ? dataRef.mo : 1,
             baseCalculo: base,
             areaPrivativa: null,
             bairro: bairro
