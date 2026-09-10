@@ -6,7 +6,7 @@
   var graficosInstanciados = {};
 
   var configCidades = {
-    "poa": {
+    "porto-alegre": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
       processar: processarCsvGenerico
@@ -22,12 +22,12 @@
       processar: processarCsvGenerico
     },
     "fortaleza": {
-      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      anos: [2024],
       getArquivo: function() { return "data/itbi-fortaleza.csv"; },
       processar: processarCsvFortaleza
     },
     "recife": {
-      anos: [2025, 2024, 2023, 2022, 2021, 2020],
+      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
       processar: processarCsvGenerico
     }
@@ -132,6 +132,7 @@
         var dataPag = parseDataFortaleza(campos[24]);
         var dataRef = dataPag || dataEst;
         var base = parseFloat(campos[27].replace(",", "."));
+        var areaConstr = parseFloat(campos[15].replace(",", "."));
         var bairro = campos[7] ? campos[7].trim().toUpperCase() : "NÃO INFORMADO";
 
         if (!isNaN(base) && base > 0) {
@@ -139,7 +140,7 @@
             ano: dataRef ? dataRef.y : anoCsv,
             mes: dataRef ? dataRef.mo : 1,
             baseCalculo: base,
-            areaPrivativa: null,
+            areaPrivativa: !isNaN(areaConstr) && areaConstr > 0 ? areaConstr : null,
             bairro: bairro
           });
         }
@@ -428,6 +429,6 @@
   if (elAno) elAno.addEventListener("change", processarDashboard);
   if (elMes) elMes.addEventListener("change", processarDashboard);
 
-  carregarDadosCidade(elCidade ? elCidade.value : "poa");
+  carregarDadosCidade(elCidade ? elCidade.value : "porto-alegre");
 
 })();
