@@ -67,6 +67,10 @@
   .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 480px) { .campo-linha { grid-template-columns: 1fr; } }
 
+  .botoes-seletor { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
+  .btn-seletor { background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 4px; font-size: 0.82rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center; }
+  .btn-seletor.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
+
   .secao-titulo { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: var(--laranja-escuro); margin: 20px 0 10px; border-bottom: 1px dashed var(--dourado-linha); padding-bottom: 4px; letter-spacing: 0.05em; }
 
   .botao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: none; border-radius: 10px; padding: 14px 20px; font-family: var(--fonte-corpo); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; margin-top: 14px; }
@@ -166,6 +170,13 @@
 
         <div class="secao-titulo">3. Critérios do Financiamento</div>
         <div class="campo">
+          <label>Sistema de Amortização</label>
+          <div class="botoes-seletor" id="grupo-amortizacao">
+            <button type="button" class="btn-seletor ativo" data-amort="PRICE">PRICE</button>
+            <button type="button" class="btn-seletor" data-amort="SAC">SAC</button>
+          </div>
+        </div>
+        <div class="campo">
           <label for="input-entrada">Valor de Entrada (Recursos Próprios)</label>
           <div class="input-grupo"><span>R$</span><input type="tel" id="input-entrada" value="80.000,00"></div>
         </div>
@@ -189,9 +200,9 @@
         </div>
 
         <div class="card-destaque" style="border-left-color: var(--agua-turquesa);">
-          <p class="card-destaque-rotulo">Financiamento (Custo Total)</p>
+          <p class="card-destaque-rotulo" id="txt-label-fin">Financiamento (Custo Total - PRICE)</p>
           <p class="card-destaque-valor" id="res-custo-fin">R$ 0,00</p>
-          <p class="card-destaque-sub" id="res-parc-fin">1ª Parcela (PRICE): R$ 0,00</p>
+          <p class="card-destaque-sub" id="res-parc-fin">Parcela mensal: R$ 0,00</p>
         </div>
 
         <div class="linha-resumo">
@@ -203,8 +214,8 @@
 
     <section class="box-tutorial">
       <h2>Entenda as Diferenças entre Consórcio e Financiamento</h2>
-      <p><strong>1. Consórcio com Lance e INCC:</strong> A taxa de administração incide sobre o valor do crédito, mas o lance abate diretamente o saldo devedor. As parcelas sofrem reajustes anuais pelo INCC para manutenção do poder de compra da carta.</p>
-      <p><strong>2. Financiamento Bancário:</strong> Utiliza recursos da entrada para abater o saldo devedor inicial, aplicando juros compostos fixos ao longo do contrato.</p>
+      <p><strong>1. Consórcio com Lance e INCC:</strong> A taxa de administração incide sobre o valor do crédito, mas o lance abate diretamente o saldo devedor. As parcelas sofrem reajustes anuais pelo INCC.</p>
+      <p><strong>2. Financiamento Bancário (SAC ou PRICE):</strong> Utilize recursos de entrada e escolha o sistema de amortização ideal para o seu fluxo de caixa mensal.</p>
       <div class="disclaimer-box">
         <strong>Aviso Legal Importante:</strong> Esta ferramenta possui caráter estritamente estimativo e educacional.
       </div>
@@ -253,6 +264,16 @@
     }
   });
 
+  var amortizacaoFin = "PRICE";
+  document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
+      this.classList.add("ativo");
+      amortizacaoFin = this.getAttribute("data-amort");
+      calcular();
+    });
+  });
+
   function calcular() {
     var credito = lerNumero("input-credito");
     var entrada = lerNumero("input-entrada");
@@ -264,40 +285,49 @@
 
     var n = anos * 12;
 
-    // --- CÁLCULO CONSÓRCIO PRECISO ---
-    // Custo total do crédito com a taxa de administração
+    // --- CÁLCULO CONSÓRCIO ---
     var valorTaxaAdmTotal = credito * taxaAdmPercentual;
     var custoBrutoConsorcio = credito + valorTaxaAdmTotal;
-    
-    // Saldo devedor após o abatimento do lance à vista
     var saldoDevedorConsorcio = Math.max(0, custoBrutoConsorcio - lance);
-    
-    // Parcela mensal inicial (sem inflação do INCC acumulada ainda)
     var parcelaConsorcioInicial = n > 0 ? saldoDevedorConsorcio / n : 0;
     
-    // Simulação ano a ano com correção do INCC sobre o saldo e parcelas restantes
     var custoConsorcioTotal = lance;
     var parcelaAtual = parcelaConsorcioInicial;
-    var inccMensal = Math.pow(1 + inccAnual, 1 / 12) - 1;
     
     for (var m = 1; m <= n; m++) {
       if (m > 1 && (m - 1) % 12 === 0) {
-        parcelaAtual *= (1 + inccAnual); // Reajuste anual pelo INCC
+        parcelaAtual *= (1 + inccAnual);
       }
       custoConsorcioTotal += parcelaAtual;
     }
+    var parcelaConsorcioFinal = parcelaAtual;
 
-    // --- CÁLCULO FINANCIAMENTO (PRICE) ---
+    // --- CÁLCULO FINANCIAMENTO (SAC ou PRICE) ---
     var saldoDevedorFin = Math.max(0, credito - entrada);
     var iMensal = jurosAnual / 12;
-    var parcelaFinanciamento = 0;
     var custoFinanciamento = entrada;
+    var parcelaFinInici = 0;
+    var parcelaFinFinal = 0;
 
-    if (iMensal > 0 && n > 0 && saldoDevedorFin > 0) {
-      parcelaFinanciamento = saldoDevedorFin * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
-      custoFinanciamento += (parcelaFinanciamento * n);
-    } else {
-      custoFinanciamento += saldoDevedorFin;
+    if (n > 0 && saldoDevedorFin > 0) {
+      if (amortizacaoFin === "PRICE") {
+        var pPrice = saldoDevedorFin * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
+        parcelaFinInici = pPrice;
+        parcelaFinFinal = pPrice;
+        custoFinanciamento += (pPrice * n);
+      } else {
+        // SAC
+        var amortSac = saldoDevedorFin / n;
+        var saldoAux = saldoDevedorFin;
+        for (var m = 1; m <= n; m++) {
+          var jurosMes = saldoAux * iMensal;
+          var pSac = amortSac + jurosMes;
+          if (m === 1) parcelaFinInici = pSac;
+          if (m === n) parcelaFinFinal = pSac;
+          custoFinanciamento += pSac;
+          saldoAux = Math.max(0, saldoAux - amortSac);
+        }
+      }
     }
 
     var diferenca = Math.abs(custoConsorcioTotal - custoFinanciamento);
@@ -306,11 +336,17 @@
       : "Financiamento é R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " mais vantajoso";
 
     document.getElementById("res-custo-consorcio").textContent = fmtMoeda.format(custoConsorcioTotal);
-    document.getElementById("res-parc-consorcio").textContent = "Parcela mensal inicial: " + fmtMoeda.format(parcelaConsorcioInicial);
+    document.getElementById("res-parc-consorcio").textContent = "Parcela: " + fmtMoeda.format(parcelaConsorcioInicial) + (n > 12 ? " até R$ " + fmtMoeda.format(parcelaConsorcioFinal).replace("R$", "").trim() : "");
     document.getElementById("res-detalhe-consorcio").textContent = "Taxa Adm (" + document.getElementById("input-taxa-adm").value + "%): " + fmtMoeda.format(valorTaxaAdmTotal) + " sobre o crédito";
 
+    document.getElementById("txt-label-fin").textContent = "Financiamento (Custo Total - " + amortizacaoFin + ")";
     document.getElementById("res-custo-fin").textContent = fmtMoeda.format(custoFinanciamento);
-    document.getElementById("res-parc-fin").textContent = "1ª Parcela (PRICE): " + fmtMoeda.format(parcelaFinanciamento);
+    
+    if (amortizacaoFin === "PRICE") {
+      document.getElementById("res-parc-fin").textContent = "Parcela mensal fixa: " + fmtMoeda.format(parcelaFinInici);
+    } else {
+      document.getElementById("res-parc-fin").textContent = "1ª Parcela: " + fmtMoeda.format(parcelaFinInici) + " | Última: " + fmtMoeda.format(parcelaFinFinal);
+    }
 
     document.getElementById("res-diferenca").textContent = txtDiferenca;
   }
@@ -329,7 +365,7 @@
     document.getElementById("res-parc-consorcio").textContent = "Parcela mensal inicial: R$ 0,00";
     document.getElementById("res-detalhe-consorcio").textContent = "Taxa Adm sobre o crédito total";
     document.getElementById("res-custo-fin").textContent = "R$ 0,00";
-    document.getElementById("res-parc-fin").textContent = "1ª Parcela (PRICE): R$ 0,00";
+    document.getElementById("res-parc-fin").textContent = "Parcela mensal: R$ 0,00";
     document.getElementById("res-diferenca").textContent = "R$ 0,00";
   });
 
