@@ -60,16 +60,14 @@
   
   .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
   .input-grupo span { font-size: 1.1rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
-  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); }
-  .input-grupo input:focus, .campo select:focus { border-bottom: none; }
+  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo input:focus, .campo select:focus { border-bottom: 2px solid var(--laranja); }
   .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
   
   .campo select {
-    border-bottom: 1px solid var(--dourado-linha);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23F0913A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 2px center; padding-right: 22px; cursor: pointer;
   }
-  .campo select:focus { border-bottom: 2px solid var(--laranja); }
 
   .botao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: none; border-radius: 10px; padding: 14px 20px; font-family: var(--fonte-corpo); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
   .botao-primario { background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%); color: #fff; }
@@ -86,13 +84,7 @@
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
-  
-  .box-tutorial { background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); }
-  .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
-  .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
-  .box-tutorial strong { color: #fff; }
-  .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 10px; }
-  .disclaimer-box strong { color: #fff; }
+
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -132,11 +124,22 @@
       <div class="col-formulario">
         <div class="campo">
           <label for="input-renda">Renda Bruta Familiar Mensal</label>
-          <div class="input-grupo"><span>R$</span><input type="tel" id="input-renda" value="10.000,00"></div>
+          <div class="input-grupo"><span>R$</span><input type="tel" id="input-renda" value="20.000,00"></div>
         </div>
         <div class="campo">
           <label for="input-poupanca">Valor Disponível para Entrada</label>
           <div class="input-grupo"><span>R$</span><input type="tel" id="input-poupanca" value="80.000,00"></div>
+        </div>
+        <div class="campo">
+          <label for="select-prazo">Prazo do Financiamento</label>
+          <select id="select-prazo">
+            <option value="10">10 anos (120 meses)</option>
+            <option value="15">15 anos (180 meses)</option>
+            <option value="20">20 anos (240 meses)</option>
+            <option value="25">25 anos (300 meses)</option>
+            <option value="30" selected>30 anos (360 meses)</option>
+            <option value="35">35 anos (420 meses)</option>
+          </select>
         </div>
 
         <button type="button" class="botao botao-primario" id="btn-calcular">&#128295; Calcular Poder de Compra</button>
@@ -192,10 +195,19 @@
   function calcular() {
     var renda = lerNumero("input-renda");
     var poupanca = lerNumero("input-poupanca");
+    var anos = parseInt(document.getElementById("select-prazo").value, 10) || 30;
 
-    var parcelaMax = renda * 0.30;
-    // Estimativa reversa simplificada para valor financiado com base na parcela
-    var valorFinanciavél = parcelaMax * 1800; // Fator aproximado para 30 anos a ~10.5% a.a.
+    var parcelaMax = renda * 0.30; // Limite de 30% da renda
+    var n = anos * 12;
+    var taxaAnual = 0.105; // 10.5% a.a. de juros padrão
+    var iMensal = taxaAnual / 12;
+
+    // Cálculo inverso do valor financiado usando a fórmula da Tabela PRICE
+    var valorFinanciavél = 0;
+    if (iMensal > 0 && n > 0) {
+      valorFinanciavél = parcelaMax * (Math.pow(1 + iMensal, n) - 1) / (iMensal * Math.pow(1 + iMensal, n));
+    }
+
     var valorTotalImovel = valorFinanciavél + poupanca;
 
     document.getElementById("res-imovel").textContent = fmtMoeda.format(valorTotalImovel);
@@ -207,6 +219,7 @@
   document.getElementById("btn-limpar").addEventListener("click", function() {
     document.getElementById("input-renda").value = "";
     document.getElementById("input-poupanca").value = "";
+    document.getElementById("select-prazo").value = "30";
     document.getElementById("res-imovel").textContent = "R$ 0,00";
     document.getElementById("res-financiado").textContent = "R$ 0,00";
     document.getElementById("res-parcela").textContent = "R$ 0,00";
