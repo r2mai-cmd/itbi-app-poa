@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ITBIData - Estatísticas Imobiliárias</title>
+  <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="dashboard.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -38,8 +39,6 @@
     .banner-privacidade button { background: linear-gradient(180deg, #F0913A 0%, #D9762A 100%); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: inherit; }
     .banner-privacidade button:hover { filter: brightness(1.06); }
     @media (max-width: 600px) { .banner-privacidade { flex-direction: column; align-items: flex-start; } }
-    .status-estatisticas { max-width:1200px; margin:12px auto; padding:10px 14px; border-radius:8px; background:#f7f5f0; color:#34424b; font-size:.82rem; border-left:4px solid #4FBFB8; }
-    .status-estatisticas.erro { border-left-color:#D9762A; }
   </style>
 </head>
 <body class="fundo-escuro">
@@ -165,8 +164,6 @@
         </select>
       </div>
    </section>
-
-    <div id="status-estatisticas" class="status-estatisticas" style="display:none;"></div>
 
     <!-- ESPAÇO AD 1: Topo Estratégico -->
     <div class="anuncio-container">
