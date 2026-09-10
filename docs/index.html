@@ -1449,6 +1449,9 @@ white-space: nowrap;
     elControlesPaginacao.style.display = "none";
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
+    
+    // Força a tela a ir para o topo exato ao abrir o detalhe
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   function dataParaBcb(data) {
@@ -1541,6 +1544,9 @@ white-space: nowrap;
       elControlesPaginacao.style.display = "flex";
     }
     detalheEmpilhadoNoHistorico = false;
+    
+    // Força a tela a voltar para o topo exato ao retornar para a listagem
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   var detalheEmpilhadoNoHistorico = false;
