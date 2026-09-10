@@ -60,16 +60,17 @@
   
   .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
   .input-grupo span { font-size: 1.1rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
-  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); }
-  .input-grupo input:focus, .campo select:focus { border-bottom: none; }
+  .input-grupo input, .campo select, .campo input[type="text"] { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo input:focus, .campo select:focus, .campo input[type="text"]:focus { border-bottom: 2px solid var(--laranja); }
   .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
   
   .campo select {
-    border-bottom: 1px solid var(--dourado-linha);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23F0913A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 2px center; padding-right: 22px; cursor: pointer;
   }
-  .campo select:focus { border-bottom: 2px solid var(--laranja); }
+
+  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 480px) { .campo-linha { grid-template-columns: 1fr; } }
 
   .botoes-seletor { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
   .btn-seletor { background: #e4dfd2; border: 1px solid #d0c8b5; border-radius: 8px; padding: 10px 4px; font-size: 0.82rem; font-weight: 700; color: var(--texto-card); cursor: pointer; text-align: center; }
@@ -91,6 +92,15 @@
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
+  
+  .box-grafico { background: var(--pergaminho); border-radius: 16px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); color: var(--texto-card); }
+  .box-grafico h3 { font-size: 1.1rem; text-transform: uppercase; margin: 0 0 8px; color: var(--texto-card); font-weight: 800; letter-spacing: 0.05em; }
+  .box-grafico p { font-size: 0.82rem; color: var(--texto-card-sutil); margin: 0 0 20px; }
+  .legenda-grafico { display: flex; gap: 20px; font-size: 0.78rem; font-weight: 700; margin-bottom: 12px; }
+  .legenda-item { display: flex; align-items: center; gap: 6px; }
+  .legenda-cor { width: 12px; height: 12px; border-radius: 3px; }
+  canvas { width: 100% !important; height: 280px !important; display: block; }
+
   .box-tutorial { background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); }
   .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
   .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
@@ -161,9 +171,15 @@
             <option value="35">35 anos (420 meses)</option>
           </select>
         </div>
-        <div class="campo">
-          <label for="input-juros">Taxa de Juros Anual (% a.a.)</label>
-          <input type="text" id="input-juros" value="10,5" inputmode="decimal">
+        <div class="campo-linha">
+          <div class="campo">
+            <label for="input-juros">Taxa de Juros (% a.a.)</label>
+            <input type="text" id="input-juros" value="10,5" inputmode="decimal">
+          </div>
+          <div class="campo">
+            <label for="input-tr">TR Média (% a.a.)</label>
+            <input type="text" id="input-tr" value="2,0" inputmode="decimal">
+          </div>
         </div>
         <div class="campo">
           <label for="input-renda">Renda Bruta Familiar Mensal</label>
@@ -201,10 +217,21 @@
       </div>
     </div>
 
+    <!-- Seção do Gráfico Comparativo -->
+    <div class="box-grafico">
+      <h3>Evolução do Saldo Devedor (SAC x PRICE)</h3>
+      <p>Acompanhe mês a mês como a dívida diminui em cada sistema de amortização.</p>
+      <div class="legenda-grafico">
+        <div class="legenda-item"><div class="legenda-cor" style="background:#F0913A;"></div><span>Sistema SAC</span></div>
+        <div class="legenda-item"><div class="legenda-cor" style="background:#4FBFB8;"></div><span>Tabela PRICE</span></div>
+      </div>
+      <canvas id="graficoSaldo"></canvas>
+    </div>
+
     <section class="box-tutorial">
       <h2>Como interpretar a sua simulação de financiamento</h2>
       <p><strong>1. A diferença entre SAC e PRICE:</strong> No sistema SAC, você abate uma quantia constante da dívida a cada mês, fazendo as parcelas caírem gradativamente. Na tabela PRICE, a prestação é constante.</p>
-      <p><strong>2. Limite prudencial dos 30%:</strong> Por regra do Banco Central, a primeira parcela não pode ultrapassar 30% da renda bruta familiar.</p>
+      <p><strong>2. O papel da TR:</strong> A Taxa Referencial (TR) é aplicada mensalmente para atualizar o saldo devedor do financiamento, somando-se à taxa de juros contratada.</p>
       <div class="disclaimer-box">
         <strong>Aviso Legal Importante:</strong> Os dados e valores calculados por esta ferramenta possuem caráter estritamente estimativo e educacional, servindo apenas para planejamento inicial. Condições reais, taxas efetivas e aprovação de crédito dependem da análise individual de cada instituição financeira. Nunca tome decisões financeiras ou de compra sem consultar um especialista qualificado.
       </div>
@@ -236,22 +263,9 @@
 
   ["input-valor", "input-entrada", "input-renda"].forEach(function(id) {
     var el = document.getElementById(id);
-    
-    el.addEventListener("focus", function() {
-      if (this.value === "0,00") {
-        this.value = "";
-      }
-    });
-
-    el.addEventListener("blur", function() {
-      if (this.value.trim() === "") {
-        this.value = "0,00";
-      }
-    });
-
-    el.addEventListener("input", function() {
-      aplicarMascaraMoeda(this);
-    });
+    el.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
+    el.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
+    el.addEventListener("input", function() { aplicarMascaraMoeda(this); });
   });
 
   var amortizacaoAtual = "SAC";
@@ -262,60 +276,159 @@
       document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
       this.classList.add("ativo");
       amortizacaoAtual = this.getAttribute("data-amort");
+      calcular();
     });
   });
+
+  function desenharGrafico(saldosSac, saldosPrice) {
+    var canvas = document.getElementById("graficoSaldo");
+    var ctx = canvas.getContext("2d");
+    var largura = canvas.parentElement.clientWidth - 56;
+    var altura = 260;
+    canvas.width = largura;
+    canvas.height = altura;
+
+    ctx.clearRect(0, 0, largura, altura);
+    if (saldosSac.length === 0) return;
+
+    var maxSaldo = saldosSac[0];
+    var minSaldo = 0;
+    var paddingX = 40;
+    var paddingY = 20;
+    var w = largura - paddingX * 2;
+    var h = altura - paddingY * 2;
+
+    ctx.strokeStyle = "#d8cfb8";
+    ctx.lineWidth = 1;
+    ctx.fillStyle = "#6b6a63";
+    ctx.font = "10px sans-serif";
+    for (var g = 0; g <= 4; g++) {
+      var y = paddingY + (h / 4) * g;
+      var valorVal = maxSaldo * (1 - g / 4);
+      ctx.beginPath();
+      ctx.moveTo(paddingX, y);
+      ctx.lineTo(largura - paddingX, y);
+      ctx.stroke();
+      ctx.fillText("R$ " + (valorVal / 1000).toFixed(0) + " mil", 2, y + 4);
+    }
+
+    function traçarLinha(dados, cor) {
+      ctx.strokeStyle = cor;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (var idx = 0; idx < dados.length; idx++) {
+        var x = paddingX + (idx / (dados.length - 1)) * w;
+        var y = paddingY + h - ((dados[idx] - minSaldo) / (maxSaldo - minSaldo)) * h;
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    traçarLinha(saldosPrice, "#4FBFB8");
+    traçarLinha(saldosSac, "#F0913A");
+  }
 
   function calcular() {
     var vImovel = lerNumero("input-valor");
     var vEntrada = lerNumero("input-entrada");
     var taxaAnual = lerNumero("input-juros") / 100;
+    var trAnual = lerNumero("input-tr") / 100;
     var renda = lerNumero("input-renda");
     var prazoAnosAtual = parseInt(elPrazo.value, 10) || 30;
 
-    var saldo = Math.max(0, vImovel - vEntrada);
+    var saldoInicial = Math.max(0, vImovel - vEntrada);
     var n = prazoAnosAtual * 12;
-    var i = taxaAnual / 12;
+    var iMensal = taxaAnual / 12;
+    var trMensal = Math.pow(1 + trAnual, 1 / 12) - 1;
 
-    var parcInicial = 0, parcFinal = 0, jurosTotais = 0, custoFinal = 0;
+    var saldosSac = [saldoInicial];
+    var saldosPrice = [saldoInicial];
+
+    var saldoAtualSac = saldoInicial;
+    var amortSac = saldoInicial / n;
+    var jurosTotaisSac = 0;
+    var parcInicialSac = 0;
+    var parcFinalSac = 0;
+
+    for (var m = 1; m <= n; m++) {
+      saldoAtualSac = saldoAtualSac * (1 + trMensal);
+      var jurosMes = saldoAtualSac * iMensal;
+      var prestacaoMes = amortSac + jurosMes;
+      if (m === 1) parcInicialSac = prestacaoMes;
+      if (m === n) parcFinalSac = prestacaoMes;
+      jurosTotaisSac += jurosMes;
+      saldoAtualSac = Math.max(0, saldoAtualSac - amortSac);
+      saldosSac.push(saldoAtualSac);
+    }
+    var custoFinalSac = saldoInicial + jurosTotaisSac;
+
+    var saldoAtualPrice = saldoInicial;
+    var jurosTotaisPrice = 0;
+    var parcInicialPrice = 0;
+
+    for (var m = 1; m <= n; m++) {
+      saldoAtualPrice = saldoAtualPrice * (1 + trMensal);
+      var jurosMesP = saldoAtualPrice * iMensal;
+      var fatorRestante = Math.pow(1 + iMensal, n - m + 1);
+      var parcMesP = saldoAtualPrice * (iMensal * fatorRestante) / (fatorRestante - 1);
+      if (isNaN(parcMesP) || parcMesP < 0) parcMesP = saldoAtualPrice + jurosMesP;
+      
+      if (m === 1) parcInicialPrice = parcMesP;
+      jurosTotaisPrice += jurosMesP;
+      var amortMesP = parcMesP - jurosMesP;
+      saldoAtualPrice = Math.max(0, saldoAtualPrice - amortMesP);
+      saldosPrice.push(saldoAtualPrice);
+    }
+    var custoFinalPrice = saldoInicial + jurosTotaisPrice;
+
+    var parcInicial = (amortizacaoAtual === "SAC") ? parcInicialSac : parcInicialPrice;
+    var custoFinal = (amortizacaoAtual === "SAC") ? custoFinalSac : custoFinalPrice;
+    var jurosTotais = (amortizacaoAtual === "SAC") ? jurosTotaisSac : jurosTotaisPrice;
 
     if (amortizacaoAtual === "SAC") {
-      var amort = saldo / n;
-      parcInicial = amort + (saldo * i);
-      parcFinal = amort + (amort * i);
-      jurosTotais = (n + 1) * saldo * i / 2;
-      custoFinal = saldo + jurosTotais;
-      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (SAC)";
-      document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinal);
+      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (SAC + TR)";
+      document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinalSac);
       document.getElementById("res-parcela-final").style.display = "block";
     } else {
-      parcInicial = saldo * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-      custoFinal = parcInicial * n;
-      jurosTotais = custoFinal - saldo;
-      document.getElementById("txt-label-parcela").textContent = "Parcela Fixa (PRICE)";
-      document.getElementById("res-parcela-final").textContent = "Prestação constante até o final";
+      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (PRICE + TR)";
+      document.getElementById("res-parcela-final").textContent = "Variável conforme correção da TR";
     }
 
     var comprometimento = renda > 0 ? ((parcInicial / renda) * 100) : 0;
     document.getElementById("res-parcela-inicial").textContent = fmtMoeda.format(parcInicial);
-    document.getElementById("res-saldo").textContent = fmtMoeda.format(saldo);
+    document.getElementById("res-saldo").textContent = fmtMoeda.format(saldoInicial);
     document.getElementById("res-total-juros").textContent = fmtMoeda.format(jurosTotais);
     document.getElementById("res-custo-total").textContent = fmtMoeda.format(custoFinal);
     var elComp = document.getElementById("res-comprometimento");
     elComp.textContent = comprometimento.toFixed(1) + "%";
     elComp.style.color = comprometimento > 30 ? "#A3372A" : "var(--laranja)";
+
+    desenharGrafico(saldosSac, saldosPrice);
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
 
   document.getElementById("btn-limpar").addEventListener("click", function() {
-    document.getElementById("input-valor").value = "0,00";
-    document.getElementById("input-entrada").value = "0,00";
-    document.getElementById("input-renda").value = "0,00";
+    document.getElementById("input-valor").value = "";
+    document.getElementById("input-entrada").value = "";
+    document.getElementById("input-renda").value = "";
     document.getElementById("input-juros").value = "10,5";
+    document.getElementById("input-tr").value = "2,0";
     document.getElementById("select-prazo").value = "30";
-    calcular();
+    
+    document.getElementById("res-parcela-inicial").textContent = "R$ 0,00";
+    document.getElementById("res-saldo").textContent = "R$ 0,00";
+    document.getElementById("res-total-juros").textContent = "R$ 0,00";
+    document.getElementById("res-custo-total").textContent = "R$ 0,00";
+    document.getElementById("res-comprometimento").textContent = "0%";
+    
+    var canvas = document.getElementById("graficoSaldo");
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   });
 
+  window.addEventListener("resize", calcular);
   calcular();
 })();
 </script>
