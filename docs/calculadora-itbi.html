@@ -60,16 +60,16 @@
   
   .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
   .input-grupo span { font-size: 1.1rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
-  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); }
-  .input-grupo input:focus, .campo select:focus { border-bottom: none; }
+  .input-grupo input, .campo select, .campo input[type="text"] { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo input:focus, .campo select:focus, .campo input[type="text"]:focus { border-bottom: 2px solid var(--laranja); }
   .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
   
   .campo select {
-    border-bottom: 1px solid var(--dourado-linha);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23F0913A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 2px center; padding-right: 22px; cursor: pointer;
   }
-  .campo select:focus { border-bottom: 2px solid var(--laranja); }
+
+  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
   .botao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: none; border-radius: 10px; padding: 14px 20px; font-family: var(--fonte-corpo); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
   .botao-primario { background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%); color: #fff; }
@@ -86,13 +86,7 @@
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
-  
-  .box-tutorial { background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); }
-  .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
-  .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
-  .box-tutorial strong { color: #fff; }
-  .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 10px; }
-  .disclaimer-box strong { color: #fff; }
+
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -134,9 +128,26 @@
           <label for="input-valor">Valor de Aquisição do Imóvel</label>
           <div class="input-grupo"><span>R$</span><input type="tel" id="input-valor" value="400.000,00"></div>
         </div>
-        <div class="campo">
-          <label for="input-itbi-aliq">Alíquota de ITBI (%)</label>
-          <input type="text" id="input-itbi-aliq" value="3,0" inputmode="decimal" style="width:150px; border-bottom:1px solid var(--dourado-linha); padding:8px 0; font-size:1.1rem; font-weight:600; background:transparent; outline:none;">
+
+        <div class="campo-linha">
+          <div class="campo">
+            <label for="select-cidade">Cidade / Estado</label>
+            <select id="select-cidade">
+              <option value="3.0">Porto Alegre - RS (3,0%)</option>
+              <option value="2.0">São Paulo - SP (2,0%)</option>
+              <option value="3.0">Fortaleza - CE (3,0%)</option>
+              <option value="3.0">Belo Horizonte - MG (3,0%)</option>
+              <option value="3.0">Recife - PE (3,0%)</option>
+              <option value="2.0">Curitiba - PR (2,0%)</option>
+              <option value="3.0">Salvador - BA (3,0%)</option>
+              <option value="3.0">Rio de Janeiro - RJ (3,0%)</option>
+              <option value="custom">Outra / Personalizada</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="input-itbi-aliq">Alíquota ITBI (%)</label>
+            <input type="text" id="input-itbi-aliq" value="3,0" inputmode="decimal">
+          </div>
         </div>
 
         <button type="button" class="botao botao-primario" id="btn-calcular">&#128295; Calcular Custos</button>
@@ -191,13 +202,28 @@
   elValor.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
   elValor.addEventListener("input", function() { aplicarMascaraMoeda(this); });
 
+  var selectCidade = document.getElementById("select-cidade");
+  var inputAliq = document.getElementById("input-itbi-aliq");
+
+  selectCidade.addEventListener("change", function() {
+    if (this.value !== "custom") {
+      inputAliq.value = this.value.replace(".", ",");
+      calcular();
+    }
+  });
+
+  inputAliq.addEventListener("input", function() {
+    selectCidade.value = "custom";
+    calcular();
+  });
+
   function calcular() {
     var valor = lerNumero("input-valor");
-    var aliqItbi = parseFloat(document.getElementById("input-itbi-aliq").value.replace(",", ".")) || 3.0;
+    var aliqItbi = parseFloat(inputAliq.value.replace(",", ".")) || 3.0;
 
     var vItbi = valor * (aliqItbi / 100);
-    var vEscritura = valor * 0.012; // Estimativa média de tabela notarial
-    var vRegistro = valor * 0.008;  // Estimativa média cartorária
+    var vEscritura = valor * 0.012; 
+    var vRegistro = valor * 0.008;  
     var vTotal = vItbi + vEscritura + vRegistro;
 
     document.getElementById("res-total").textContent = fmtMoeda.format(vTotal);
@@ -209,7 +235,8 @@
   document.getElementById("btn-calcular").addEventListener("click", calcular);
   document.getElementById("btn-limpar").addEventListener("click", function() {
     elValor.value = "";
-    document.getElementById("input-itbi-aliq").value = "3,0";
+    selectCidade.value = "3.0";
+    inputAliq.value = "3,0";
     document.getElementById("res-total").textContent = "R$ 0,00";
     document.getElementById("res-itbi").textContent = "R$ 0,00";
     document.getElementById("res-escritura").textContent = "R$ 0,00";
