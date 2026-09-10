@@ -86,7 +86,19 @@
   .box-tutorial strong { color: #fff; }
   .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 10px; }
   .disclaimer-box strong { color: #fff; }
-  .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
+
+  .rodape { padding: 32px 24px; text-align: center; font-size: 0.78rem; color: var(--texto-sobre-fundo-sutil); border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .rodape p { margin: 0; max-width: 80ch; line-height: 1.5; }
+  .links-rodape { display: flex; gap: 16px; margin-top: 4px; align-items: center; }
+  .links-rodape a { color: var(--agua-turquesa); text-decoration: none; font-weight: 600; font-size: 0.75rem; }
+  .links-rodape a:hover { text-decoration: underline; }
+
+  .banner-privacidade { position: fixed; bottom: 0; left: 0; right: 0; background: #24231F; color: #EDE9DE; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 1000; box-shadow: 0 -4px 16px rgba(0,0,0,0.4); border-top: 2px solid var(--laranja); font-size: 0.82rem; }
+  .banner-privacidade p { margin: 0; line-height: 1.4; text-align: left; }
+  .banner-privacidade a { color: var(--agua-turquesa); text-decoration: underline; }
+  .banner-privacidade button { background: var(--laranja); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: var(--fonte-corpo); }
+  .banner-privacidade button:hover { background: var(--laranja-escuro); }
+  @media (max-width: 600px) { .banner-privacidade { flex-direction: column; align-items: flex-start; } }
 </style>
 </head>
 <body>
@@ -164,11 +176,34 @@
     </section>
   </main>
 
-  <footer class="rodape">&copy; itbidata &mdash; Simulador financeiro para fins de planejamento.</footer>
+  <footer class="rodape">
+    <p>&copy; itbidata &mdash; Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
+    <div class="links-rodape">
+      <a href="privacidade.html">Política de Privacidade</a>
+      <span>&bull;</span>
+      <a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
+    </div>
+  </footer>
+
+  <div class="banner-privacidade" id="banner-privacidade">
+    <p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
+    <button type="button" id="btn-aceitar-cookies">Entendi &amp; Aceitar</button>
+  </div>
 
 <script>
 (function() {
   "use strict";
+  var banner = document.getElementById("banner-privacidade");
+  var btnCookie = document.getElementById("btn-aceitar-cookies");
+  if (localStorage.getItem("itbidata_privacidade_aceita")) {
+    if (banner) banner.style.display = "none";
+  }
+  if (btnCookie) {
+    btnCookie.addEventListener("click", function() {
+      localStorage.setItem("itbidata_privacidade_aceita", "true");
+      if (banner) banner.style.display = "none";
+    });
+  }
 
   function lerNumero(inputId) {
     var val = document.getElementById(inputId).value;
