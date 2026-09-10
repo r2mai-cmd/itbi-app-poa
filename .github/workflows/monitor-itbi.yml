@@ -1,0 +1,46 @@
+name: Monitorar fontes de ITBI
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  monitorar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Verificar fontes oficiais
+        id: monitor
+        continue-on-error: true
+        run: python3 docs/scripts/monitor_fontes_itbi.py
+
+      - name: Abrir alerta quando houver mudança
+        if: steps.monitor.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f docs/data/monitor/alerta.md ]; then
+            gh issue create \
+              --title "🚨 Atualização detectada nas fontes de ITBI" \
+              --body-file docs/data/monitor/alerta.md
+          fi
+
+      - name: Salvar estado da última verificação
+        if: always()
+        run: |
+          git config user.name "itbidata-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/monitor/estado.json
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança no estado."
+          else
+            git commit -m "Monitorar fontes de ITBI"
+            git push
+          fi
