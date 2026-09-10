@@ -12,6 +12,7 @@
   var moeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
   var meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
   var bins = ["0-50","50-100","100-200","200-500","500+"];
+  var atualizacoes = null;
 
   function destruir(id) {
     if (graficosInstanciados[id]) {
@@ -123,7 +124,19 @@
     var ctx=document.getElementById("graficoRankingVolume").getContext("2d");graficosInstanciados.graficoRankingVolume=new Chart(ctx,{type:"bar",data:{labels:arr.map(function(x){return x.b;}),datasets:[{label:"Transações",data:arr.map(function(x){return x.v;})}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true}}}});
   }
 
+  function mostrarAtualizacao(key) {
+    var el = document.getElementById("ultima-atualizacao");
+    if (!el) return;
+    var info = atualizacoes && atualizacoes[key];
+    if (!info) {
+      el.textContent = "Última atualização da fonte: informação indisponível";
+      return;
+    }
+    el.innerHTML = "<strong>" + info.nome + "</strong> — fonte atualizada em " + info.fonte_atualizada_em;
+  }
+
   function carregarCidade(key) {
+    mostrarAtualizacao(key);
     var url="data/estatisticas-"+key+".json";
     if(cache[url]) { dadosAtuais=cache[url]; preencherFiltros(); atualizar(); return; }
     document.getElementById("kpi-m2").textContent="Carregando...";
@@ -131,7 +144,17 @@
   }
 
   function iniciar() {
-    fetch("estatisticas.json").then(function(r){return r.json();}).then(function(c){catalog=c;carregarCidade(elCidade.value||"porto-alegre");});
+    Promise.all([
+      fetch("estatisticas.json").then(function(r){return r.json();}),
+      fetch("data/atualizacoes.json").then(function(r){return r.json();})
+    ]).then(function(resultados){
+      catalog = resultados[0];
+      atualizacoes = resultados[1];
+      carregarCidade(elCidade.value||"porto-alegre");
+    }).catch(function(e){
+      console.error(e);
+      fetch("estatisticas.json").then(function(r){return r.json();}).then(function(c){catalog=c;carregarCidade(elCidade.value||"porto-alegre");});
+    });
     elCidade.addEventListener("change",function(){carregarCidade(this.value);});
     elBairro.addEventListener("change",atualizar); elAno.addEventListener("change",atualizar); elMes.addEventListener("change",atualizar);
   }

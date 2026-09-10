@@ -1,0 +1,7 @@
+{
+  "porto-alegre": {"nome": "Porto Alegre - RS", "fonte_atualizada_em": "01/07/2026", "fonte": "Portal de Dados Abertos de Porto Alegre"},
+  "sao-paulo": {"nome": "São Paulo - SP", "fonte_atualizada_em": "27/08/2026", "fonte": "Secretaria Municipal da Fazenda de São Paulo"},
+  "belo-horizonte": {"nome": "Belo Horizonte - MG", "fonte_atualizada_em": "19/08/2026", "fonte": "Portal de Dados Abertos de Belo Horizonte"},
+  "fortaleza": {"nome": "Fortaleza - CE", "fonte_atualizada_em": "17/06/2026", "fonte": "Fortaleza Dados Abertos"},
+  "recife": {"nome": "Recife - PE", "fonte_atualizada_em": "02/09/2026", "fonte": "Portal de Dados Abertos do Recife"}
+}

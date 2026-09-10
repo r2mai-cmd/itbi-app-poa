@@ -32,6 +32,8 @@
     .links-rodape { display: flex; gap: 16px; margin-top: 4px; align-items: center; }
     .links-rodape a { color: #4FBFB8; text-decoration: none; font-weight: 600; font-size: 0.75rem; }
     .links-rodape a:hover { text-decoration: underline; }
+    .ultima-atualizacao { margin: -12px 0 20px; text-align: center; font-size: 0.82rem; color: rgba(245, 243, 237, 0.78); }
+    .ultima-atualizacao strong { color: #EDE9DE; }
 
     .banner-privacidade { position: fixed; bottom: 0; left: 0; right: 0; background: #41464A; color: #EDE9DE; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 1000; box-shadow: 0 -4px 16px rgba(0,0,0,0.4); border-top: 2px solid #F0913A; font-size: 0.82rem; }
     .banner-privacidade p { margin: 0; line-height: 1.4; text-align: left; }
@@ -164,6 +166,10 @@
         </select>
       </div>
    </section>
+
+    <div class="ultima-atualizacao" id="ultima-atualizacao" aria-live="polite">
+      Última atualização da fonte: carregando...
+    </div>
 
     <!-- ESPAÇO AD 1: Topo Estratégico -->
     <div class="anuncio-container">
