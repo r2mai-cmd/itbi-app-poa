@@ -463,14 +463,20 @@ border-bottom: none;
 @media (max-width: 700px) { .ficha-cartoes { grid-template-columns: 1fr; } }
 
 .rodape {
-padding: 24px 32px 36px;
+padding: 32px 24px;
 border-top: 1px solid rgba(245, 243, 237, 0.12);
 max-width: 1800px;
 margin: 0 auto;
+display: flex;
+flex-direction: column;
+gap: 8px;
+align-items: center;
 }
-.rodape p { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); text-align: center; }
-.rodape p:last-child { margin-bottom: 0; }
+.rodape p { margin: 0; font-size: 0.72rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); text-align: center; }
 .rodape a { color: var(--agua-turquesa); text-decoration: underline; }
+.links-rodape { display: flex; gap: 16px; margin-top: 4px; align-items: center; }
+.links-rodape a { color: var(--agua-turquesa); text-decoration: none; font-weight: 600; font-size: 0.75rem; }
+.links-rodape a:hover { text-decoration: underline; }
 
 .banner-cookies {
 position: fixed;
@@ -512,6 +518,15 @@ cursor: pointer;
 white-space: nowrap;
 }
 .banner-cookies button:hover { filter: brightness(1.06); }
+
+/* Banner fixo de Privacidade / LGPD complementar */
+.banner-privacidade { position: fixed; bottom: 0; left: 0; right: 0; background: var(--fundo-escuro-claro); color: var(--texto-sobre-fundo); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 1000; box-shadow: 0 -4px 16px rgba(0,0,0,0.4); border-top: 2px solid var(--laranja); font-size: 0.82rem; }
+.banner-privacidade p { margin: 0; line-height: 1.4; text-align: left; }
+.banner-privacidade a { color: var(--agua-turquesa); text-decoration: underline; }
+.banner-privacidade button { background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: var(--fonte-corpo); }
+.banner-privacidade button:hover { filter: brightness(1.06); }
+@media (max-width: 600px) { .banner-privacidade { flex-direction: column; align-items: flex-start; } }
+
 /* Cards individuais de cada índice: sem acavalar e com fundo bege correto */
 #bloco-cdi, #bloco-ipca, #bloco-igpm {
   background-color: var(--pergaminho, #EDE9DE) !important;
@@ -558,7 +573,7 @@ white-space: nowrap;
     <span class="nome-marca">itbi<span>data</span></span>
   </a>
   <div class="menu-nav">
-    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
+    <a href="estatisticas.html" class="btn-nav">Estatísticas</a>
     <div class="dropdown">
       <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
       <div class="dropdown-conteudo">
@@ -684,35 +699,7 @@ white-space: nowrap;
       </main>
     </div>
 
-<!-- SEÇÃO EDUCATIVA (GUIA DO MERCADO & DADOS REAIS) -->
-<section class="secao-educativa" style="padding: 0 32px 24px;">
-  <div style="border-left: 4px solid #F0913A; padding-left: 0.75rem; margin-bottom: 1.5rem;">
-    <h2 style="font-size: 1rem; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Guia do Mercado &amp; Dados Reais</h2>
-    <p style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.65); margin-top: 0.25rem;">Informações técnicas sobre o ITBI e a base cartorária</p>
-  </div>
-
-  <div style="margin-bottom: 1.25rem;">
-    <h3 style="font-size: 0.875rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">1. O que é o ITBI e quem deve pagar?</h3>
-    <p style="font-size: 0.75rem; line-height: 1.6; color: rgba(245, 243, 237, 0.8); margin: 0;">
-      O Imposto sobre Transmissão de Bens Imóveis (ITBI) incide na transferência onerosa de propriedades entre vivos. O recolhimento cabe ao adquirente (comprador) e é condição indispensável para a lavratura da escritura definitiva e matrícula no Cartório de Registro de Imóveis.
-    </p>
-  </div>
-
-  <div style="margin-bottom: 1.25rem;">
-    <h3 style="font-size: 0.875rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">2. Como dados reais ajudam na avaliação?</h3>
-    <p style="font-size: 0.75rem; line-height: 1.6; color: rgba(245, 243, 237, 0.8); margin: 0;">
-      Diferente de avaliações empíricas, a base de ITBI espelha o valor real concretizado na transação. Isso permite calcular a média fidedigna de R$/m² no bairro e rua, servindo de baliza sólida contra flutuações e estimativas inflacionadas.
-    </p>
-  </div>
-
-  <div style="margin-bottom: 1.25rem;">
-    <h3 style="font-size: 0.875rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">3. Preço anunciado vs. valor registrado em cartório</h3>
-    <p style="font-size: 0.75rem; line-height: 1.6; color: rgba(245, 243, 237, 0.8); margin: 0;">
-      Portais imobiliários mostram a intenção de venda com margem de barganha embutida. O valor apurado no ITBI retrata o preço negociado final, expondo o deságio médio praticado em cada região.
-    </p>
-  </div>
-</section>
-    
+    <!-- Rodapé atualizado com disclaimer, link de termos e política de privacidade -->
     <footer class="rodape">
       <p>
         Dados: Prefeitura Municipal de Porto Alegre &mdash;
@@ -726,14 +713,19 @@ white-space: nowrap;
         oficiais nem assessoria jurídica ou financeira &mdash; confira sempre a fonte original
         antes de qualquer decisão.
       </p>
+      <div class="links-rodape">
+        <a href="privacidade.html">Política de Privacidade</a>
+        <span>&bull;</span>
+        <a href="termos.html">Termos de Uso &amp; Contato</a>
+      </div>
     </footer>
   </div>
 
   <div id="cookie-banner" class="banner-cookies">
     <p>
-      Utilizamos cookies e tecnologias semelhantes para analisar o tr\u00e1fego do site e melhorar sua experi\u00eancia.
-      Ao continuar navegando, voc\u00ea concorda com a nossa
-      <a href="privacidade.html">Pol\u00edtica de Privacidade</a>.
+      Utilizamos cookies e tecnologias semelhantes para analisar o tráfego do site e melhorar sua experiência.
+      Ao continuar navegando, você concorda com a nossa
+      <a href="privacidade.html">Política de Privacidade</a>.
     </p>
     <button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
   </div>
