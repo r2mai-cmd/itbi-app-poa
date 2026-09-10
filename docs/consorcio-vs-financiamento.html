@@ -60,9 +60,12 @@
   
   .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
   .input-grupo span { font-size: 1.1rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
-  .input-grupo input, .campo select { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
-  .input-grupo input:focus, .campo select:focus { border-bottom: 2px solid var(--laranja); }
+  .input-grupo input, .campo select, .campo input[type="text"] { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo input:focus, .campo select:focus, .campo input[type="text"]:focus { border-bottom: 2px solid var(--laranja); }
   .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
+
+  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 480px) { .campo-linha { grid-template-columns: 1fr; } }
 
   .botao { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: none; border-radius: 10px; padding: 14px 20px; font-family: var(--fonte-corpo); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; margin-top: 10px; }
   .botao-primario { background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%); color: #fff; }
@@ -72,10 +75,12 @@
   .botao-texto { background: none; border: none; color: var(--texto-card-sutil); font-family: var(--fonte-corpo); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer; padding: 8px 2px; }
   .botao-texto:hover { color: var(--texto-card); }
 
-  .card-destaque { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja); }
-  .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
-  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.4rem; font-weight: 800; color: var(--texto-card); margin: 0; }
-  .linha-resumo { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem; }
+  .card-destaque { background: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja); }
+  .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 4px; }
+  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.3rem; font-weight: 800; color: var(--texto-card); margin: 0; }
+  .card-destaque-sub { font-size: 0.75rem; color: var(--texto-card-sutil); margin-top: 2px; }
+
+  .linha-resumo { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem; }
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
@@ -116,7 +121,7 @@
     <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Consórcio vs. Financiamento</h1>
-      <p class="cabecalho-subtitulo">Compare o custo total e o planejamento entre adquirir uma carta de crédito ou optar pelo financiamento bancário.</p>
+      <p class="cabecalho-subtitulo">Compare o custo total, a parcela mensal e o planejamento entre carta de crédito e financiamento bancário.</p>
     </div>
   </header>
 
@@ -124,8 +129,32 @@
     <div class="grid-simulador">
       <div class="col-formulario">
         <div class="campo">
-          <label for="input-credito">Valor da Carta / Imóvel</label>
+          <label for="input-credito">Valor do Imóvel / Carta de Crédito</label>
           <div class="input-grupo"><span>R$</span><input type="tel" id="input-credito" value="400.000,00"></div>
+        </div>
+        <div class="campo">
+          <label for="input-entrada">Valor de Entrada / Lance (Financiamento)</label>
+          <div class="input-grupo"><span>R$</span><input type="tel" id="input-entrada" value="80.000,00"></div>
+        </div>
+        <div class="campo">
+          <label for="select-prazo">Prazo do Plano (Anos)</label>
+          <select id="select-prazo">
+            <option value="10">10 anos (120 meses)</option>
+            <option value="15">15 anos (180 meses)</option>
+            <option value="20">20 anos (240 meses)</option>
+            <option value="25">25 anos (300 meses)</option>
+            <option value="30" selected>30 anos (360 meses)</option>
+          </select>
+        </div>
+        <div class="campo-linha">
+          <div class="campo">
+            <label for="input-taxa-adm">Taxa Adm. Consórcio (%)</label>
+            <input type="text" id="input-taxa-adm" value="18,0" inputmode="decimal">
+          </div>
+          <div class="campo">
+            <label for="input-juros-fin">Juros Financiamento (% a.a.)</label>
+            <input type="text" id="input-juros-fin" value="10,5" inputmode="decimal">
+          </div>
         </div>
 
         <button type="button" class="botao botao-primario" id="btn-calcular">&#128295; Comparar Alternativas</button>
@@ -136,20 +165,28 @@
 
       <div class="col-resultados">
         <div class="card-destaque">
-          <p class="card-destaque-rotulo">Custo Consórcio (Taxa adm ~18%)</p>
-          <p class="card-destaque-valor" id="res-consorcio">R$ 0,00</p>
+          <p class="card-destaque-rotulo">Consórcio (Custo Total)</p>
+          <p class="card-destaque-valor" id="res-custo-consorcio">R$ 0,00</p>
+          <p class="card-destaque-sub" id="res-parc-consorcio">Parcela mensal: R$ 0,00</p>
         </div>
+
+        <div class="card-destaque" style="border-left-color: var(--agua-turquesa);">
+          <p class="card-destaque-rotulo">Financiamento (Custo Total)</p>
+          <p class="card-destaque-valor" id="res-custo-fin">R$ 0,00</p>
+          <p class="card-destaque-sub" id="res-parc-fin">1ª Parcela (PRICE): R$ 0,00</p>
+        </div>
+
         <div class="linha-resumo">
-          <span class="linha-rotulo">Custo Financiamento (Juros + TR):</span>
-          <span class="linha-valor" id="res-financiamento">R$ 0,00</span>
+          <span class="linha-rotulo">Diferença de Custo:</span>
+          <span class="linha-valor" id="res-diferenca">R$ 0,00</span>
         </div>
       </div>
     </div>
 
     <section class="box-tutorial">
-      <h2>Entenda as Diferenças entre Consórcio e Financiamento</h2>
-      <p><strong>1. Consórcio:</strong> Ideal para quem tem planejamento de longo prazo e não tem pressa em ocupar o imóvel. Não possui incidência de juros, mas cobra taxa de administração (geralmente em torno de 15% a 20%) e fundo de reserva, além de correção anual.</p>
-      <p><strong>2. Financiamento:</strong> Indicado para quem precisa da posse imediata do imóvel. Incide taxa de juros composta e correção monetária sobre o saldo devedor, elevando o custo final, porém garantindo o bem de imediato.</p>
+      <h2>Análise Estratégica: Consórcio vs. Financiamento</h2>
+      <p><strong>1. Consórcio:</strong> Ótimo para quem não tem urgência em morar ou investir imediatamente. Não há cobrança de juros compostos, incidindo apenas a taxa de administração total e o fundo de reserva diluídos no prazo escolhido, além da correção anual do crédito (INCC/IPCA).</p>
+      <p><strong>2. Financiamento:</strong> Recomendado para quem precisa da posse imediata do imóvel. O custo final eleva-se devido à incidência de juros compostos e correção monetária sobre o saldo devedor ao longo dos anos.</p>
       <div class="disclaimer-box">
         <strong>Aviso Legal Importante:</strong> Esta ferramenta possui caráter estritamente estimativo e educacional para fins de planejamento financeiro.
       </div>
@@ -176,33 +213,81 @@
     input.value = (numero / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  var elCredito = document.getElementById("input-credito");
-  
-  elCredito.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
-  elCredito.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
-  elCredito.addEventListener("input", function() { aplicarMascaraMoeda(this); });
-  elCredito.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      calcular();
+  ["input-credito", "input-entrada"].forEach(function(id) {
+    var el = document.getElementById(id);
+    el.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
+    el.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
+    el.addEventListener("input", function() { aplicarMascaraMoeda(this); });
+    el.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") { e.preventDefault(); calcular(); }
+    });
+  });
+
+  ["input-taxa-adm", "input-juros-fin", "select-prazo"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if(el) {
+      el.addEventListener("input", calcular);
+      el.addEventListener("change", calcular);
+      el.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") { e.preventDefault(); calcular(); }
+      });
     }
   });
 
   function calcular() {
     var credito = lerNumero("input-credito");
+    var entrada = lerNumero("input-entrada");
+    var anos = parseInt(document.getElementById("select-prazo").value, 10) || 30;
+    var taxaAdmTotal = lerNumero("input-taxa-adm") / 100;
+    var jurosAnual = lerNumero("input-juros-fin") / 100;
 
-    var custoConsorcio = credito * 1.18; 
-    var custoFinanciamento = credito * 1.85; 
+    var n = anos * 12;
 
-    document.getElementById("res-consorcio").textContent = fmtMoeda.format(custoConsorcio);
-    document.getElementById("res-financiamento").textContent = fmtMoeda.format(custoFinanciamento);
+    // --- CÁLCULO CONSÓRCIO ---
+    // O consórcio incide a taxa de administração sobre o valor total da carta de crédito
+    var custoConsorcio = credito * (1 + taxaAdmTotal);
+    var parcelaConsorcio = custoConsorcio / n;
+
+    // --- CÁLCULO FINANCIAMENTO (Tabela PRICE) ---
+    var saldoDevedor = Math.max(0, credito - entrada);
+    var iMensal = jurosAnual / 12;
+    var parcelaFinanciamento = 0;
+    var custoFinanciamento = entrada;
+
+    if (iMensal > 0 && n > 0 && saldoDevedor > 0) {
+      parcelaFinanciamento = saldoDevedor * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
+      custoFinanciamento += (parcelaFinanciamento * n);
+    } else {
+      custoFinanciamento += saldoDevedor;
+    }
+
+    var diferenca = Math.abs(custoConsorcio - custoFinanciamento);
+    var txtDiferenca = custoConsorcio < custoFinanciamento 
+      ? "Consórcio é R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " mais barato" 
+      : "Financiamento é R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " mais barato";
+
+    document.getElementById("res-custo-consorcio").textContent = fmtMoeda.format(custoConsorcio);
+    document.getElementById("res-parc-consorcio").textContent = "Parcela mensal: " + fmtMoeda.format(parcelaConsorcio);
+
+    document.getElementById("res-custo-fin").textContent = fmtMoeda.format(custoFinanciamento);
+    document.getElementById("res-parc-fin").textContent = "1ª Parcela (PRICE): " + fmtMoeda.format(parcelaFinanciamento);
+
+    document.getElementById("res-diferenca").textContent = txtDiferenca;
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
   document.getElementById("btn-limpar").addEventListener("click", function() {
-    elCredito.value = "";
-    document.getElementById("res-consorcio").textContent = "R$ 0,00";
-    document.getElementById("res-financiamento").textContent = "R$ 0,00";
+    document.getElementById("input-credito").value = "";
+    document.getElementById("input-entrada").value = "";
+    document.getElementById("select-prazo").value = "30";
+    document.getElementById("input-taxa-adm").value = "18,0";
+    document.getElementById("input-juros-fin").value = "10,5";
+
+    document.getElementById("res-custo-consorcio").textContent = "R$ 0,00";
+    document.getElementById("res-parc-consorcio").textContent = "Parcela mensal: R$ 0,00";
+    document.getElementById("res-custo-fin").textContent = "R$ 0,00";
+    document.getElementById("res-parc-fin").textContent = "1ª Parcela (PRICE): R$ 0,00";
+    document.getElementById("res-diferenca").textContent = "R$ 0,00";
   });
 
   calcular();
