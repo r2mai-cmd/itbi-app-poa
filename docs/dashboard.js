@@ -1,431 +1,178 @@
 (function () {
   "use strict";
 
-  var cacheCsv = {};
-  var dadosAtuais = [];
-  var graficosInstanciados = {};
+  var dadosCidade = null;
+  var graficos = {};
+  var cidadeAtual = null;
+  var moeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  var meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-  var configCidades = {
-    "porto-alegre": {
-      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
-      encoding: "utf-8"
-    },
-    "sao-paulo": {
-      anos: [2026, 2025, 2024, 2023, 2022, 2020],
-      getArquivo: function(ano) { return "data/itbi-sp-" + ano + ".csv"; },
-      encoding: "utf-8"
-    },
-    "belo-horizonte": {
-      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      getArquivo: function(ano) { return "data/itbi-bh-" + ano + ".csv"; },
-      encoding: "utf-8"
-    },
-    "fortaleza": {
-      anos: [2024],
-      getArquivo: function() { return "data/itbi-fortaleza.csv"; },
-      encoding: "iso-8859-1"
-    },
-    "recife": {
-      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
-      encoding: "utf-8"
-    }
+  var cidades = {
+    "porto-alegre": { nome: "Porto Alegre - RS", arquivo: "data/estatisticas-porto-alegre.json" },
+    "sao-paulo": { nome: "São Paulo - SP", arquivo: "data/estatisticas-sao-paulo.json" },
+    "belo-horizonte": { nome: "Belo Horizonte - MG", arquivo: "data/estatisticas-belo-horizonte.json" },
+    "fortaleza": { nome: "Fortaleza - CE", arquivo: "data/estatisticas-fortaleza.json" },
+    "recife": { nome: "Recife - PE", arquivo: "data/estatisticas-recife.json" }
   };
-
-  function parseLinhaCsv(linha) {
-    var resultado = [];
-    var i = 0;
-    var n = linha.length;
-    while (i <= n) {
-      if (i === n) {
-        if (resultado.length === 0 || linha.charAt(linha.length - 1) === ";") {
-          resultado.push("");
-        }
-        break;
-      }
-      if (linha.charAt(i) === "'") {
-        var sb = "";
-        i++;
-        while (i < n) {
-          if (linha.charAt(i) === "'") {
-            if (i + 1 < n && linha.charAt(i + 1) === "'") {
-              sb += "'";
-              i += 2;
-            } else {
-              i++;
-              break;
-            }
-          } else {
-            sb += linha.charAt(i);
-            i++;
-          }
-        }
-        resultado.push(sb);
-        while (i < n && linha.charAt(i) !== ";") i++;
-        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
-      } else {
-        var inicio = i;
-        while (i < n && linha.charAt(i) !== ";") i++;
-        resultado.push(linha.substring(inicio, i));
-        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
-      }
-    }
-    return resultado;
-  }
-
-  function parseDataPoa(texto) {
-    if (!texto) return null;
-    var m = texto.trim().match(/^(\d{4})\/(\d{2})\/(\d{2})/);
-    if (!m) return null;
-    return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
-  }
-
-  function parseDataFortaleza(texto) {
-    if (!texto) return null;
-    var m = texto.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})/);
-    if (!m) return null;
-    return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
-  }
-
-  function processarCsvGeral(texto, anoPadrao, ehFortaleza) {
-    var linhas = texto.split("\n");
-    var registros = [];
-    for (var i = 1; i < linhas.length; i++) {
-      var linha = linhas[i].replace(/\r$/, "");
-      if (!linha.trim()) continue;
-      try {
-        var campos = ehFortaleza ? linha.split(";") : parseLinhaCsv(linha);
-        if (campos.length < (ehFortaleza ? 31 : 18)) continue;
-
-        var dataEst, dataPag, base, areaPriv, bairro;
-
-        if (ehFortaleza) {
-          var anoCsv = campos[4] ? parseInt(campos[4], 10) : 2024;
-          dataEst = parseDataFortaleza(campos[5]);
-          dataPag = parseDataFortaleza(campos[24]);
-          base = parseFloat(campos[27].replace(",", "."));
-          var areaConstr = parseFloat(campos[15].replace(",", "."));
-          areaPriv = !isNaN(areaConstr) && areaConstr > 0 ? areaConstr : null;
-          bairro = campos[7] ? campos[7].trim().toUpperCase() : "NÃO INFORMADO";
-          var dataRef = dataPag || dataEst;
-          var anoFinal = dataRef ? dataRef.y : anoCsv;
-          var mesFinal = dataRef ? dataRef.mo : 1;
-
-          if (!isNaN(base) && base > 0) {
-            registros.push({ ano: anoFinal, mes: mesFinal, baseCalculo: base, areaPrivativa: areaPriv, bairro: bairro });
-          }
-        } else {
-          dataEst = parseDataPoa(campos[0]);
-          dataPag = parseDataPoa(campos[1]);
-          var dataRef = dataPag || dataEst;
-          base = parseFloat(campos[2]);
-          areaPriv = parseFloat(campos[13]);
-          bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
-
-          // Blindagem para evitar que nomes de edifícios ou ruas entrem no lugar do bairro
-          if (!bairro || bairro === "" || bairro.startsWith("ED ") || bairro.startsWith("BL ") || bairro.startsWith("R ") || bairro.startsWith("AV ")) {
-            bairro = "NÃO INFORMADO";
-          }
-
-          if (!isNaN(base) && base > 0) {
-            registros.push({
-              ano: dataRef ? dataRef.y : anoPadrao,
-              mes: dataRef ? dataRef.mo : 1,
-              baseCalculo: base,
-              areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
-              bairro: bairro
-            });
-          }
-        }
-      } catch (e) {}
-    }
-    return registros;
-  }
 
   var elCidade = document.getElementById("filtro-cidade");
   var elBairro = document.getElementById("filtro-bairro");
   var elAno = document.getElementById("filtro-ano");
   var elMes = document.getElementById("filtro-mes");
+  var elStatus = document.getElementById("status-estatisticas");
 
-  var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  function status(msg, erro) {
+    if (!elStatus) return;
+    elStatus.textContent = msg || "";
+    elStatus.style.display = msg ? "block" : "none";
+    elStatus.className = erro ? "status-estatisticas erro" : "status-estatisticas";
+  }
 
-  function carregarDadosCidade(cidadeKey) {
-    var cfg = configCidades[cidadeKey];
-    if (!cfg) return;
+  function destruir(id) {
+    if (graficos[id]) {
+      graficos[id].destroy();
+      delete graficos[id];
+    }
+  }
 
-    var promessas = cfg.anos.map(function (ano) {
-      var url = cfg.getArquivo(ano);
-      if (cacheCsv[url]) return Promise.resolve(cacheCsv[url]);
-      return fetch(url).then(function (resp) {
-        if (!resp.ok) return "";
-        return resp.arrayBuffer().then(function(buf){
-          return new TextDecoder(cfg.encoding).decode(buf);
-        });
-      }).then(function (texto) {
-        cacheCsv[url] = texto;
-        return texto;
-      }).catch(function () { return ""; });
+  function destruirTodos() {
+    Object.keys(graficos).forEach(destruir);
+  }
+
+  function somar(rows) {
+    var r = { transacoes: 0, soma_valor: 0, soma_m2: 0, qtd_m2: 0, area_bins: [0,0,0,0] };
+    rows.forEach(function (x) {
+      r.transacoes += Number(x.transacoes) || 0;
+      r.soma_valor += Number(x.soma_valor) || 0;
+      r.soma_m2 += Number(x.soma_m2) || 0;
+      r.qtd_m2 += Number(x.qtd_m2) || 0;
+      for (var i=0;i<4;i++) r.area_bins[i] += Number((x.area_bins || [])[i]) || 0;
     });
+    return r;
+  }
 
-    Promise.all(promessas).then(function (textos) {
-      var todosRegs = [];
-      var ehFort = (cidadeKey === "fortaleza");
-      textos.forEach(function (txt, idx) {
-        if (txt) {
-          var regs = processarCsvGeral(txt, cfg.anos[idx], ehFort);
-          todosRegs = todosRegs.concat(regs);
-        }
-      });
-      dadosAtuais = todosRegs;
-      atualizarFiltrosAnosEBairros();
-      processarDashboard();
+  function linhasFiltradas(ignoreBairro) {
+    if (!dadosCidade) return [];
+    var bairro = elBairro.value;
+    var ano = elAno.value;
+    var mes = elMes.value;
+    return dadosCidade.dados.filter(function (x) {
+      return (ignoreBairro || bairro === "todos" || x.bairro === bairro) &&
+             (ano === "todos" || String(x.ano) === ano) &&
+             (mes === "todos" || String(x.mes) === mes);
     });
   }
 
-  function atualizarFiltrosAnosEBairros() {
-    var anosSet = {};
-    var bairrosSet = {};
-
-    dadosAtuais.forEach(function (r) {
-      if (r.ano) anosSet[r.ano] = true;
-      if (r.bairro && r.bairro !== "NÃO INFORMADO") bairrosSet[r.bairro] = true;
-    });
-
-    var anosArr = Object.keys(anosSet).sort(function(a,b){ return b - a; });
+  function preencherFiltros() {
+    var anos = dadosCidade.anos_disponiveis || [];
     elAno.innerHTML = '<option value="todos">Todos os Anos</option>';
-    anosArr.forEach(function (ano) {
-      var opt = document.createElement("option");
-      opt.value = ano;
-      opt.textContent = ano;
-      elAno.appendChild(opt);
+    anos.forEach(function (a) {
+      var o=document.createElement("option"); o.value=a; o.textContent=a; elAno.appendChild(o);
     });
-    if (anosArr.length > 0) {
-      elAno.value = anosArr[0];
-    }
+    elAno.value = anos.length ? String(anos[0]) : "todos";
 
-    var bairrosArr = Object.keys(bairrosSet).sort();
+    var counts = {};
+    (dadosCidade.dados || []).forEach(function (x) {
+      if (x.bairro && x.bairro !== "NÃO INFORMADO") counts[x.bairro] = (counts[x.bairro] || 0) + (Number(x.transacoes)||0);
+    });
+    var bairros = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a] || a.localeCompare(b); });
+    // Nunca criar milhares de <option>. Em SP, o arquivo já limita aos 150 mais recorrentes.
+    bairros = bairros.slice(0, 200);
     elBairro.innerHTML = '<option value="todos">Todos os Bairros</option>';
-    bairrosArr.forEach(function (b) {
-      var opt = document.createElement("option");
-      opt.value = b;
-      opt.textContent = b;
-      elBairro.appendChild(opt);
+    bairros.forEach(function (b) {
+      var o=document.createElement("option"); o.value=b; o.textContent=b; elBairro.appendChild(o);
     });
-    elBairro.value = "todos";
+    elBairro.value="todos";
   }
 
-  function filtrarDados() {
-    var bairroSel = elBairro.value;
+  function atualizar() {
+    var rows = linhasFiltradas(false);
+    var total = somar(rows);
+    var m2 = total.qtd_m2 ? total.soma_m2 / total.qtd_m2 : 0;
+    var ticket = total.transacoes ? total.soma_valor / total.transacoes : 0;
+    document.getElementById("kpi-transacoes").textContent = total.transacoes.toLocaleString("pt-BR");
+    document.getElementById("kpi-ticket").textContent = moeda.format(ticket);
+    document.getElementById("kpi-m2").textContent = moeda.format(m2);
+    var titulo = cidadeAtual ? cidades[cidadeAtual].nome : "";
+    document.getElementById("titulo-grafico-evolucao").textContent = "Evolução Mensal do Valor do m² — " + titulo;
+    document.getElementById("titulo-grafico-historico").textContent = "Evolução Histórica Anual do m² — " + titulo;
+    desenhar(rows);
+  }
+
+  function desenhar(rows) {
+    var i;
+    destruirTodos();
+
+    // 1. Evolução mensal: se todos os anos estiverem selecionados, usa o ano mais recente.
     var anoSel = elAno.value;
-    var mesSel = elMes.value;
-
-    return dadosAtuais.filter(function (r) {
-      var matchBairro = (bairroSel === "todos" || r.bairro === bairroSel);
-      var matchAno = (anoSel === "todos" || String(r.ano) === anoSel);
-      var matchMes = (mesSel === "todos" || String(r.mes) === mesSel);
-      return matchBairro && matchAno && matchMes;
+    var anoMensal = anoSel === "todos" ? (dadosCidade.anos_disponiveis[0] || null) : Number(anoSel);
+    var mensal = dadosCidade.dados.filter(function(x){
+      return (!anoMensal || x.ano === anoMensal) &&
+             (elBairro.value === "todos" || x.bairro === elBairro.value) &&
+             (elMes.value === "todos" || x.mes === Number(elMes.value));
     });
+    var sm=[0,0,0,0,0,0,0,0,0,0,0,0], qt=[0,0,0,0,0,0,0,0,0,0,0,0];
+    mensal.forEach(function(x){ if(x.mes>=1&&x.mes<=12){sm[x.mes-1]+=Number(x.soma_m2)||0;qt[x.mes-1]+=Number(x.qtd_m2)||0;} });
+    var mensalMed=sm.map(function(v,j){return qt[j]?v/qt[j]:null;});
+    graficos.graficoEvolucao=new Chart(document.getElementById("graficoEvolucao"),{type:"line",data:{labels:meses,datasets:[{label:"R$/m²",data:mensalMed,borderColor:"#F0913A",backgroundColor:"rgba(240,145,58,.12)",fill:true,tension:.3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false}});
+
+    // 2. Ranking: sempre city-wide para continuar útil mesmo com um bairro selecionado.
+    var rankingRows=linhasFiltradas(true), byB={};
+    rankingRows.forEach(function(x){var b=x.bairro;if(b==="NÃO INFORMADO")return; if(!byB[b])byB[b]={s:0,q:0,t:0};byB[b].s+=Number(x.soma_m2)||0;byB[b].q+=Number(x.qtd_m2)||0;byB[b].t+=Number(x.transacoes)||0;});
+    var rank=Object.keys(byB).map(function(b){return {b:b,m:byB[b].q?byB[b].s/byB[b].q:0,t:byB[b].t};}).filter(function(x){return x.m>0&&x.t>=3;}).sort(function(a,b){return b.m-a.m;}).slice(0,10);
+    graficos.graficoRanking=new Chart(document.getElementById("graficoRanking"),{type:"bar",data:{labels:rank.map(function(x){return x.b;}),datasets:[{label:"R$/m²",data:rank.map(function(x){return x.m;}),backgroundColor:"#4FBFB8"}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:"y"}});
+
+    // 3. Histórico anual respeitando o bairro selecionado.
+    var histRows=linhasFiltradas(false), byY={};
+    histRows.forEach(function(x){if(!byY[x.ano])byY[x.ano]={s:0,q:0};byY[x.ano].s+=Number(x.soma_m2)||0;byY[x.ano].q+=Number(x.qtd_m2)||0;});
+    var years=Object.keys(byY).sort(function(a,b){return a-b;});
+    graficos.graficoHistorico=new Chart(document.getElementById("graficoHistorico"),{type:"bar",data:{labels:years,datasets:[{label:"R$/m²",data:years.map(function(y){return byY[y].q?byY[y].s/byY[y].q:0;}),backgroundColor:"#388e9c"}]},options:{responsive:true,maintainAspectRatio:false}});
+
+    // 4. Distribuição por metragem.
+    var total=rows.reduce(function(a,x){for(i=0;i<4;i++)a[i]+=Number((x.area_bins||[])[i])||0;return a;},[0,0,0,0]);
+    graficos.graficoMetragem=new Chart(document.getElementById("graficoMetragem"),{type:"doughnut",data:{labels:["Até 50m²","50–80m²","80–120m²","Acima de 120m²"],datasets:[{data:total,backgroundColor:["#F0913A","#4FBFB8","#388e9c","#41464A"]}]},options:{responsive:true,maintainAspectRatio:false}});
+
+    // 5. Volume mensal do período filtrado.
+    var vm=[0,0,0,0,0,0,0,0,0,0,0,0];
+    rows.forEach(function(x){if(x.mes>=1&&x.mes<=12)vm[x.mes-1]+=Number(x.transacoes)||0;});
+    graficos.graficoVolumeMes=new Chart(document.getElementById("graficoVolumeMes"),{type:"bar",data:{labels:meses,datasets:[{label:"Transações",data:vm,backgroundColor:"#D9762A"}]},options:{responsive:true,maintainAspectRatio:false}});
+
+    // 6. Ranking por volume.
+    var bv={}; rankingRows.forEach(function(x){if(x.bairro!=="NÃO INFORMADO")bv[x.bairro]=(bv[x.bairro]||0)+(Number(x.transacoes)||0);});
+    var rv=Object.keys(bv).map(function(b){return{b:b,t:bv[b]};}).sort(function(a,b){return b.t-a.t;}).slice(0,10);
+    graficos.graficoRankingVolume=new Chart(document.getElementById("graficoRankingVolume"),{type:"bar",data:{labels:rv.map(function(x){return x.b;}),datasets:[{label:"Transações",data:rv.map(function(x){return x.t;}),backgroundColor:"#4FBFB8"}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:"y"}});
   }
 
-  function processarDashboard() {
-    var filtrados = filtrarDados();
-
-    var totalTransacoes = filtrados.length;
-    var somaValor = 0;
-    var somaM2 = 0;
-    var qtdM2 = 0;
-
-    filtrados.forEach(function (r) {
-      somaValor += r.baseCalculo;
-      if (r.areaPrivativa && r.areaPrivativa > 0) {
-        somaM2 += (r.baseCalculo / r.areaPrivativa);
-        qtdM2++;
-      }
-    });
-
-    var ticketMedio = totalTransacoes > 0 ? somaValor / totalTransacoes : 0;
-    var m2Medio = qtdM2 > 0 ? somaM2 / qtdM2 : 0;
-
-    document.getElementById("kpi-transacoes").textContent = totalTransacoes.toLocaleString("pt-BR");
-    document.getElementById("kpi-ticket").textContent = formatoMoeda.format(ticketMedio);
-    document.getElementById("kpi-m2").textContent = formatoMoeda.format(m2Medio);
-
-    atualizarGraficos(filtrados);
+  function carregar(cidade) {
+    if (!cidades[cidade]) cidade="porto-alegre";
+    cidadeAtual=cidade;
+    status("Carregando estatísticas de " + cidades[cidade].nome + "…",false);
+    destruirTodos();
+    fetch(cidades[cidade].arquivo,{cache:"no-store"})
+      .then(function(resp){if(!resp.ok)throw new Error("HTTP "+resp.status);return resp.json();})
+      .then(function(json){
+        dadosCidade=json;
+        preencherFiltros();
+        atualizar();
+        status(json.observacao_bairros || "",false);
+      })
+      .catch(function(err){
+        dadosCidade=null;
+        document.getElementById("kpi-m2").textContent="R$ 0,00";
+        document.getElementById("kpi-ticket").textContent="R$ 0,00";
+        document.getElementById("kpi-transacoes").textContent="0";
+        status("Não foi possível carregar os dados estatísticos. Se estiver testando localmente, abra o site por HTTP (ex.: python -m http.server 8000), não por file://.",true);
+        console.error(err);
+      });
   }
 
-  function destruirGrafico(id) {
-    if (graficosInstanciados[id]) {
-      graficosInstanciados[id].destroy();
-      delete graficosInstanciados[id];
-    }
-  }
+  elCidade.addEventListener("change",function(){carregar(this.value);});
+  elBairro.addEventListener("change",atualizar);
+  elAno.addEventListener("change",atualizar);
+  elMes.addEventListener("change",atualizar);
 
-  function atualizarGraficos(filtrados) {
-    destruirGrafico("graficoEvolucao");
-    var mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-    var m2PorMes = new Array(12).fill(0);
-    var qtdPorMes = new Array(12).fill(0);
-
-    filtrados.forEach(function (r) {
-      if (r.mes >= 1 && r.mes <= 12 && r.areaPrivativa) {
-        m2PorMes[r.mes - 1] += (r.baseCalculo / r.areaPrivativa);
-        qtdPorMes[r.mes - 1]++;
-      }
-    });
-
-    var dadosEvolucao = m2PorMes.map(function (val, idx) {
-      return qtdPorMes[idx] > 0 ? val / qtdPorMes[idx] : 0;
-    });
-
-    var ctxEvolucao = document.getElementById("graficoEvolucao").getContext("2d");
-    graficosInstanciados["graficoEvolucao"] = new Chart(ctxEvolucao, {
-      type: 'line',
-      data: {
-        labels: mesesNomes,
-        datasets: [{
-          label: 'M² Médio (R$)',
-          data: dadosEvolucao,
-          borderColor: '#F0913A',
-          backgroundColor: 'rgba(240, 145, 58, 0.1)',
-          fill: true,
-          tension: 0.3
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-
-    destruirGrafico("graficoRanking");
-    var bairrosM2 = {};
-    filtrados.forEach(function (r) {
-      if (r.areaPrivativa && r.bairro && r.bairro !== "NÃO INFORMADO") {
-        if (!bairrosM2[r.bairro]) bairrosM2[r.bairro] = { soma: 0, qtd: 0 };
-        bairrosM2[r.bairro].soma += (r.baseCalculo / r.areaPrivativa);
-        bairrosM2[r.bairro].qtd++;
-      }
-    });
-
-    var rankingM2Arr = Object.keys(bairrosM2).map(function (b) {
-      return { bairro: b, media: bairrosM2[b].soma / bairrosM2[b].qtd };
-    }).sort(function(a,b){ return b.media - a.media; }).slice(0, 10);
-
-    var ctxRanking = document.getElementById("graficoRanking").getContext("2d");
-    graficosInstanciados["graficoRanking"] = new Chart(ctxRanking, {
-      type: 'bar',
-      data: {
-        labels: rankingM2Arr.map(function(x){ return x.bairro; }),
-        datasets: [{
-          label: 'Preço Médio m² (R$)',
-          data: rankingM2Arr.map(function(x){ return x.media; }),
-          backgroundColor: '#4FBFB8'
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
-    });
-
-    destruirGrafico("graficoHistorico");
-    var anosM2 = {};
-    dadosAtuais.forEach(function (r) {
-      if (r.ano && r.areaPrivativa) {
-        if (!anosM2[r.ano]) anosM2[r.ano] = { soma: 0, qtd: 0 };
-        anosM2[r.ano].soma += (r.baseCalculo / r.areaPrivativa);
-        anosM2[r.ano].qtd++;
-      }
-    });
-    var anosOrdenados = Object.keys(anosM2).sort(function(a,b){ return a - b; });
-    var dadosHistorico = anosOrdenados.map(function(ano){
-      return anosM2[ano].soma / anosM2[ano].qtd;
-    });
-
-    var ctxHistorico = document.getElementById("graficoHistorico").getContext("2d");
-    graficosInstanciados["graficoHistorico"] = new Chart(ctxHistorico, {
-      type: 'bar',
-      data: {
-        labels: anosOrdenados,
-        datasets: [{
-          label: 'M² Histórico (R$)',
-          data: dadosHistorico,
-          backgroundColor: '#388e9c'
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-
-    destruirGrafico("graficoMetragem");
-    var faixaEtaria = { "Até 50m²": 0, "50-80m²": 0, "80-120m²": 0, "Acima 120m²": 0 };
-    filtrados.forEach(function (r) {
-      if (r.areaPrivativa) {
-        if (r.areaPrivativa <= 50) faixaEtaria["Até 50m²"]++;
-        else if (r.areaPrivativa <= 80) faixaEtaria["50-80m²"]++;
-        else if (r.areaPrivativa <= 120) faixaEtaria["80-120m²"]++;
-        else faixaEtaria["Acima 120m²"]++;
-      }
-    });
-
-    var ctxMetragem = document.getElementById("graficoMetragem").getContext("2d");
-    graficosInstanciados["graficoMetragem"] = new Chart(ctxMetragem, {
-      type: 'doughnut',
-      data: {
-        labels: Object.keys(faixaEtaria),
-        datasets: [{
-          data: Object.values(faixaEtaria),
-          backgroundColor: ['#F0913A', '#4FBFB8', '#388e9c', '#41464A']
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-
-    destruirGrafico("graficoVolumeMes");
-    var volumeMes = new Array(12).fill(0);
-    filtrados.forEach(function (r) {
-      if (r.mes >= 1 && r.mes <= 12) volumeMes[r.mes - 1]++;
-    });
-
-    var ctxVolumeMes = document.getElementById("graficoVolumeMes").getContext("2d");
-    graficosInstanciados["graficoVolumeMes"] = new Chart(ctxVolumeMes, {
-      type: 'bar',
-      data: {
-        labels: mesesNomes,
-        datasets: [{
-          label: 'Quantidade de Transações',
-          data: volumeMes,
-          backgroundColor: '#D9762A'
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-
-    destruirGrafico("graficoRankingVolume");
-    var bairrosVol = {};
-    filtrados.forEach(function (r) {
-      if (r.bairro && r.bairro !== "NÃO INFORMADO") {
-        bairrosVol[r.bairro] = (bairrosVol[r.bairro] || 0) + 1;
-      }
-    });
-    var rankingVolArr = Object.keys(bairrosVol).map(function (b) {
-      return { bairro: b, total: bairrosVol[b] };
-    }).sort(function(a,b){ return b.total - a.total; }).slice(0, 10);
-
-    var ctxRankingVol = document.getElementById("graficoRankingVolume").getContext("2d");
-    graficosInstanciados["graficoRankingVolume"] = new Chart(ctxRankingVol, {
-      type: 'bar',
-      data: {
-        labels: rankingVolArr.map(function(x){ return x.bairro; }),
-        datasets: [{
-          label: 'Total de Vendas',
-          data: rankingVolArr.map(function(x){ return x.total; }),
-          backgroundColor: '#4FBFB8'
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
-    });
-  }
-
-  if (elCidade) elCidade.addEventListener("change", function () { carregarDadosCidade(this.value); });
-  if (elBairro) elBairro.addEventListener("change", processarDashboard);
-  if (elAno) elAno.addEventListener("change", processarDashboard);
-  if (elMes) elMes.addEventListener("change", processarDashboard);
-
-  carregarDadosCidade(elCidade ? elCidade.value : "porto-alegre");
-
+  var params=new URLSearchParams(window.location.search);
+  var inicial=params.get("cidade");
+  if(inicial && cidades[inicial]) elCidade.value=inicial;
+  carregar(elCidade.value || "porto-alegre");
 })();
