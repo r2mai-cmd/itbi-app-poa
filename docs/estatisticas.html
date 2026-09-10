@@ -26,7 +26,7 @@
     .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: #F0913A; }
     .dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
 
-    /* Estilos do rodapé e banner de cookies adicionados */
+    /* Estilos do rodapé unificados */
     .rodape { padding: 32px 24px; text-align: center; font-size: 0.78rem; color: rgba(245, 243, 237, 0.68); border-top: 1px solid rgba(245, 243, 237, 0.12); margin-top: auto; display: flex; flex-direction: column; gap: 8px; align-items: center; max-width: 1200px; margin-left: auto; margin-right: auto; width: 100%; }
     .rodape p { margin: 0; max-width: 80ch; line-height: 1.5; text-align: center; }
     .links-rodape { display: flex; gap: 16px; margin-top: 4px; align-items: center; }
@@ -122,12 +122,16 @@
   </header>
 
   <main class="container-dashboard">
-    <!-- Barra de Filtros -->
+    <!-- Barra de Filtros com todas as capitais -->
     <section class="filtros-dashboard">
       <div class="seletor-grupo">
         <label for="filtro-cidade">CIDADE</label>
         <select id="filtro-cidade">
           <option value="porto-alegre">Porto Alegre - RS</option>
+          <option value="sao-paulo">São Paulo - SP</option>
+          <option value="belo-horizonte">Belo Horizonte - MG</option>
+          <option value="fortaleza">Fortaleza - CE</option>
+          <option value="recife">Recife - PE</option>
         </select>
       </div>
 
@@ -237,11 +241,21 @@
 
   <!-- Rodapé Institucional com Disclaimer e Links -->
   <footer class="rodape">
-    <p>&copy; itbidata &mdash; Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
+    <p>
+      Dados: Portais de Dados Abertos Municipais &mdash; portais oficiais de transparência das prefeituras atendidas,
+      sob licença aberta Creative Commons (CC-BY).
+    </p>
+    <p>
+      O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura ou órgão público.
+      As informações têm caráter informativo, incluindo os valores de correção monetária
+      (calculados automaticamente a partir de índices públicos). Não substituem certidões
+      oficiais nem assessoria jurídica ou financeira &mdash; confira sempre a fonte original
+      antes de qualquer decisão.
+    </p>
     <div class="links-rodape">
       <a href="privacidade.html">Política de Privacidade</a>
       <span>&bull;</span>
-      <a href="termos.html">Termos de Uso &amp; Contato</a>
+      <a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
     </div>
   </footer>
 
