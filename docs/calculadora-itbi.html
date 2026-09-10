@@ -145,8 +145,8 @@
             <label for="select-cidade">Cidade / Estado</label>
             <select id="select-cidade">
               <option value="3.0">Porto Alegre - RS (3,0%)</option>
-              <option value="2.0">São Paulo - SP (2,0%)</option>
-              <option value="3.0">Fortaleza - CE (3,0%)</option>
+              <option value="2.0">São Paulo - SP (3,0%)</option>
+              <option value="3.0">Fortaleza - CE (4,0%)</option>
               <option value="3.0">Belo Horizonte - MG (3,0%)</option>
               <option value="3.0">Recife - PE (3,0%)</option>
               <option value="2.0">Curitiba - PR (2,0%)</option>
@@ -177,14 +177,17 @@
           <span class="linha-valor" id="res-itbi">R$ 0,00</span>
         </div>
         <div class="linha-resumo">
-          <span class="linha-rotulo">Escritura Pública (Estimada):</span>
+          <span class="linha-rotulo">Escritura Pública (estimativa simplificada):</span>
           <span class="linha-valor" id="res-escritura">R$ 0,00</span>
         </div>
         <div class="linha-resumo">
-          <span class="linha-rotulo">Registro no Cartório de Imóveis:</span>
+          <span class="linha-rotulo">Registro no Cartório de Imóveis (estimativa simplificada):</span>
           <span class="linha-valor" id="res-registro">R$ 0,00</span>
         </div>
       </div>
+    </div>
+    <div class="disclaimer-box" style="margin-top:16px;">
+      <strong>Importante:</strong> esta é uma estimativa. A alíquota do ITBI e a base de cálculo podem ter regras específicas, inclusive para financiamento e benefícios. Escritura e registro são estimados por percentuais simplificados e não substituem a tabela oficial de emolumentos. Confira os valores na prefeitura e no cartório competente.
     </div>
   </main>
 
@@ -267,8 +270,8 @@
     var aliqItbi = parseFloat(inputAliq.value.replace(",", ".")) || 3.0;
 
     var vItbi = valor * (aliqItbi / 100);
-    var vEscritura = valor * 0.012; 
-    var vRegistro = valor * 0.008;  
+    var vEscritura = valor * 0.012; // estimativa simplificada, não tabela de emolumentos
+    var vRegistro = valor * 0.008;  // estimativa simplificada, não tabela de emolumentos
     var vTotal = vItbi + vEscritura + vRegistro;
 
     document.getElementById("res-total").textContent = fmtMoeda.format(vTotal);

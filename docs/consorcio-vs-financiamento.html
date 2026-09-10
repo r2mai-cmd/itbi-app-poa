@@ -234,6 +234,10 @@
     </section>
   </main>
 
+  <div class="disclaimer-box" style="margin: 0 20px 24px;">
+    <strong>Importante:</strong> a comparação é uma simulação simplificada. No consórcio, o INCC é aplicado aqui como reajuste anual das parcelas e a taxa de administração é tratada como percentual sobre o crédito. Não são modelados fundo de reserva, seguro, contemplação, lance vencedor, reajustes contratuais adicionais ou custos específicos. No financiamento, a taxa anual é convertida para uma taxa mensal equivalente.
+  </div>
+
   <footer class="rodape">
     <p>&copy; itbidata &mdash; Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
     <div class="links-rodape">
@@ -317,7 +321,7 @@
     var anos = parseInt(document.getElementById("select-prazo").value, 10) || 30;
     var taxaAdmPercentual = lerNumero("input-taxa-adm") / 100;
     var inccAnual = lerNumero("input-incc") / 100;
-    var jurosAnual = lerNumero("input-juros-fin") / 100;
+    var jurosAnual = Math.max(0, lerNumero("input-juros-fin") / 100);
 
     var n = anos * 12;
 
@@ -340,14 +344,16 @@
 
     // --- CÁLCULO FINANCIAMENTO (SAC ou PRICE) ---
     var saldoDevedorFin = Math.max(0, credito - entrada);
-    var iMensal = jurosAnual / 12;
+    var iMensal = jurosAnual > 0 ? Math.pow(1 + jurosAnual, 1 / 12) - 1 : 0;
     var custoFinanciamento = entrada;
     var parcelaFinInici = 0;
     var parcelaFinFinal = 0;
 
     if (n > 0 && saldoDevedorFin > 0) {
       if (amortizacaoFin === "PRICE") {
-        var pPrice = saldoDevedorFin * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
+        var pPrice = iMensal > 0
+          ? saldoDevedorFin * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1)
+          : saldoDevedorFin / n;
         parcelaFinInici = pPrice;
         parcelaFinFinal = pPrice;
         custoFinanciamento += (pPrice * n);
