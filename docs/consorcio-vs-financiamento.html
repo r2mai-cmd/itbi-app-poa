@@ -177,9 +177,16 @@
   }
 
   var elCredito = document.getElementById("input-credito");
+  
   elCredito.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
   elCredito.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
   elCredito.addEventListener("input", function() { aplicarMascaraMoeda(this); });
+  elCredito.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      calcular();
+    }
+  });
 
   function calcular() {
     var credito = lerNumero("input-credito");

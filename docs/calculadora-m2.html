@@ -162,23 +162,34 @@
   }
 
   var elValor = document.getElementById("input-valor");
+  var elArea = document.getElementById("input-area");
+
+  [elValor, elArea].forEach(function(el) {
+    el.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calcular();
+      }
+    });
+  });
+
   elValor.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
   elValor.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
   elValor.addEventListener("input", function() { aplicarMascaraMoeda(this); });
 
   function calcular() {
     var valor = lerNumero("input-valor");
-    var area = parseFloat(document.getElementById("input-area").value.replace(",", ".")) || 0;
+    var area = parseFloat(elArea.value.replace(",", ".")) || 0;
 
     var precoM2 = area > 0 ? (valor / area) : 0;
     document.getElementById("res-m2").textContent = fmtMoeda.format(precoM2) + " / m²";
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
-  document.getElementById("input-area").addEventListener("input", calcular);
+  elArea.addEventListener("input", calcular);
   document.getElementById("btn-limpar").addEventListener("click", function() {
     elValor.value = "";
-    document.getElementById("input-area").value = "";
+    elArea.value = "";
     document.getElementById("res-m2").textContent = "R$ 0,00 / m²";
   });
 

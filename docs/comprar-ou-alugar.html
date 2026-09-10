@@ -188,6 +188,12 @@
     el.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
     el.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
     el.addEventListener("input", function() { aplicarMascaraMoeda(this); });
+    el.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calcular();
+      }
+    });
   });
 
   function calcular() {

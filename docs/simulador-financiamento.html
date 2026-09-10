@@ -265,11 +265,18 @@
     input.value = (numero / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  ["input-valor", "input-entrada", "input-renda"].forEach(function(id) {
+  ["input-valor", "input-entrada", "input-renda", "input-juros", "input-indice"].forEach(function(id) {
     var el = document.getElementById(id);
+    if (!el) return;
     el.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
     el.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
-    el.addEventListener("input", function() { aplicarMascaraMoeda(this); });
+    el.addEventListener("input", function() { if(this.id.includes("valor") || this.id.includes("entrada") || this.id.includes("renda")) aplicarMascaraMoeda(this); });
+    el.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calcular();
+      }
+    });
   });
 
   var amortizacaoAtual = "SAC";

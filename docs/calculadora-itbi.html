@@ -198,12 +198,22 @@
   }
 
   var elValor = document.getElementById("input-valor");
+  var inputAliq = document.getElementById("input-itbi-aliq");
+
+  [elValor, inputAliq].forEach(function(el) {
+    el.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        calcular();
+      }
+    });
+  });
+
   elValor.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
   elValor.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
   elValor.addEventListener("input", function() { aplicarMascaraMoeda(this); });
 
   var selectCidade = document.getElementById("select-cidade");
-  var inputAliq = document.getElementById("input-itbi-aliq");
 
   selectCidade.addEventListener("change", function() {
     if (this.value !== "custom") {
