@@ -9,27 +9,32 @@
     "porto-alegre": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
-      processar: processarCsvPoa
+      processar: processarCsvPoa,
+      encoding: "utf-8"
     },
     "sao-paulo": {
       anos: [2026, 2025, 2024, 2023, 2022, 2020],
       getArquivo: function(ano) { return "data/itbi-sp-" + ano + ".csv"; },
-      processar: processarCsvSp
+      processar: processarCsvSp,
+      encoding: "utf-8"
     },
     "belo-horizonte": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-bh-" + ano + ".csv"; },
-      processar: processarCsvBh
+      processar: processarCsvPoa,
+      encoding: "utf-8"
     },
     "fortaleza": {
       anos: [2024],
       getArquivo: function() { return "data/itbi-fortaleza.csv"; },
-      processar: processarCsvFortaleza
+      processar: processarCsvFortaleza,
+      encoding: "iso-8859-1"
     },
     "recife": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
-      processar: processarCsvRecife
+      processar: processarCsvPoa,
+      encoding: "utf-8"
     }
   };
 
@@ -118,7 +123,7 @@
     return registros;
   }
 
-  // Processador específico para São Paulo (mapeia corretamente a coluna de bairro no CSV de SP)
+  // Leitor exclusivo e direto para São Paulo (índice 9 fixo para o bairro, ignorando edifícios)
   function processarCsvSp(texto, anoPadrao) {
     var linhas = texto.split("\n");
     var registros = [];
@@ -133,10 +138,11 @@
         var dataRef = dataPag || dataEst;
         var base = parseFloat(campos[2]);
         var areaPriv = parseFloat(campos[13]);
-        // Em SP, o índice do bairro na estrutura original costuma estar na posição 9 ou 10, validamos texto limpo
+        
+        // Em SP a coluna 9 é o Bairro oficial
         var bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
-        if (bairro.startsWith("ED ") || bairro.startsWith("BL ")) {
-          bairro = campos[10] ? campos[10].trim().toUpperCase() : "NÃO INFORMADO";
+        if (!bairro || bairro === "" || bairro.startsWith("ED ") || bairro.startsWith("BL ")) {
+          bairro = "NÃO INFORMADO";
         }
 
         if (!isNaN(base) && base > 0) {
@@ -152,9 +158,6 @@
     }
     return registros;
   }
-
-  function processarCsvBh(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
-  function processarCsvRecife(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
 
   function processarCsvFortaleza(texto) {
     var linhas = texto.split("\n");
@@ -203,7 +206,9 @@
       if (cacheCsv[url]) return Promise.resolve(cacheCsv[url]);
       return fetch(url).then(function (resp) {
         if (!resp.ok) return "";
-        return (cidadeKey === "fortaleza") ? resp.arrayBuffer().then(function(buf){ return new TextDecoder("iso-8859-1").decode(buf); }) : resp.text();
+        return resp.arrayBuffer().then(function(buf){
+          return new TextDecoder(cfg.encoding).decode(buf);
+        });
       }).then(function (texto) {
         cacheCsv[url] = texto;
         return texto;
@@ -230,7 +235,7 @@
 
     dadosAtuais.forEach(function (r) {
       if (r.ano) anosSet[r.ano] = true;
-      if (r.bairro) bairrosSet[r.bairro] = true;
+      if (r.bairro && r.bairro !== "NÃO INFORMADO") bairrosSet[r.bairro] = true;
     });
 
     var anosArr = Object.keys(anosSet).sort(function(a,b){ return b - a; });
@@ -339,7 +344,7 @@
     destruirGrafico("graficoRanking");
     var bairrosM2 = {};
     filtrados.forEach(function (r) {
-      if (r.areaPrivativa && r.bairro) {
+      if (r.areaPrivativa && r.bairro && r.bairro !== "NÃO INFORMADO") {
         if (!bairrosM2[r.bairro]) bairrosM2[r.bairro] = { soma: 0, qtd: 0 };
         bairrosM2[r.bairro].soma += (r.baseCalculo / r.areaPrivativa);
         bairrosM2[r.bairro].qtd++;
@@ -439,7 +444,7 @@
     destruirGrafico("graficoRankingVolume");
     var bairrosVol = {};
     filtrados.forEach(function (r) {
-      if (r.bairro) {
+      if (r.bairro && r.bairro !== "NÃO INFORMADO") {
         bairrosVol[r.bairro] = (bairrosVol[r.bairro] || 0) + 1;
       }
     });
