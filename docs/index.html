@@ -1447,11 +1447,16 @@ white-space: nowrap;
     elResultados.style.display = "none";
     elBarraTopoResultados.style.display = "none";
     elControlesPaginacao.style.display = "none";
+    
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
     
-    // Força a tela a ir para o topo exato ao abrir o detalhe
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // Rola suavemente até o início do bloco de detalhes (onde aparece "Voltar à lista")
+    setTimeout(function() {
+      var rect = elDetalhe.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo({ top: rect.top + scrollTop - 10, behavior: "smooth" });
+    }, 30);
   }
 
   function dataParaBcb(data) {
@@ -1545,8 +1550,12 @@ white-space: nowrap;
     }
     detalheEmpilhadoNoHistorico = false;
     
-    // Força a tela a voltar para o topo exato ao retornar para a listagem
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // Rola suavemente até o início da lista de resultados encontrada
+    setTimeout(function() {
+      var rect = elBarraTopoResultados.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+    }, 30);
   }
 
   var detalheEmpilhadoNoHistorico = false;
@@ -1583,6 +1592,14 @@ white-space: nowrap;
       paginaAtual = 1;
       elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
       renderizarResultados(resultado.registros);
+      
+      // Rola suavemente até o topo da lista de resultados encontrada após a pesquisa
+      setTimeout(function() {
+        var rect = elBarraTopoResultados.getBoundingClientRect();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+      }, 50);
+
       if (resultado.anosComErro.length > 0) {
         elFaixaAvisoAnos.classList.add("ativa");
         elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
