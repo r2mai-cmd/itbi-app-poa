@@ -6,40 +6,30 @@
   var graficosInstanciados = {};
 
   var configCidades = {
-    "porto-alegre": {
-      nome: "Porto Alegre",
-      estado: "RS",
+    "poa": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
       processar: processarCsvPoa
     },
     "sao-paulo": {
-      nome: "São Paulo",
-      estado: "SP",
       anos: [2026, 2025, 2024, 2023, 2022, 2020],
       getArquivo: function(ano) { return "data/itbi-sp-" + ano + ".csv"; },
-      processar: processarCsvPoa
+      processar: processarCsvSp
     },
     "belo-horizonte": {
-      nome: "Belo Horizonte",
-      estado: "MG",
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-bh-" + ano + ".csv"; },
-      processar: processarCsvPoa
+      processar: processarCsvBh
     },
     "fortaleza": {
-      nome: "Fortaleza",
-      estado: "CE",
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-fortaleza.csv"; },
-      processar: processarCsvFortaleza
+      processar: processarCsvFortalezaUnico
     },
     "recife": {
-      nome: "Recife",
-      estado: "PE",
-      anos: [2025, 2024, 2023, 2022, 2021, 2020],
+      anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
-      processar: processarCsvPoa
+      processar: processarCsvRecife
     }
   };
 
@@ -98,7 +88,7 @@
     return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
   }
 
-  function processarCsvPoa(texto, ano) {
+  function processarCsvPoa(texto, anoPadrao) {
     var linhas = texto.split("\n");
     var registros = [];
     for (var i = 1; i < linhas.length; i++) {
@@ -116,7 +106,7 @@
 
         if (!isNaN(base) && base > 0 && dataRef) {
           registros.push({
-            ano: dataRef.y || ano,
+            ano: dataRef.y || anoPadrao,
             mes: dataRef.mo,
             baseCalculo: base,
             areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
@@ -128,7 +118,11 @@
     return registros;
   }
 
-  function processarCsvFortaleza(texto, anoPedido) {
+  function processarCsvSp(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
+  function processarCsvBh(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
+  function processarCsvRecife(texto, anoPadrao) { return processarCsvPoa(texto, anoPadrao); }
+
+  function processarCsvFortalezaUnico(texto) {
     var linhas = texto.split("\n");
     var registros = [];
     for (var i = 1; i < linhas.length; i++) {
@@ -137,9 +131,7 @@
       try {
         var campos = linha.split(";");
         if (campos.length < 31) continue;
-        var ano = campos[4] ? parseInt(campos[4], 10) : null;
-        if (ano !== anoPedido) continue;
-
+        var anoCsv = campos[4] ? parseInt(campos[4], 10) : null;
         var dataEst = parseDataFortaleza(campos[5]);
         var dataPag = parseDataFortaleza(campos[24]);
         var dataRef = dataPag || dataEst;
@@ -148,7 +140,7 @@
 
         if (!isNaN(base) && base > 0 && dataRef) {
           registros.push({
-            ano: dataRef.y || anoPedido,
+            ano: dataRef.y || anoCsv || 2024,
             mes: dataRef.mo,
             baseCalculo: base,
             areaPrivativa: null,
@@ -176,7 +168,7 @@
       if (cacheCsv[url]) return Promise.resolve(cacheCsv[url]);
       return fetch(url).then(function (resp) {
         if (!resp.ok) return "";
-        return resp.text();
+        return (cidadeKey === "fortaleza") ? resp.arrayBuffer().then(function(buf){ return new TextDecoder("iso-8859-1").decode(buf); }) : resp.text();
       }).then(function (texto) {
         cacheCsv[url] = texto;
         return texto;
@@ -215,7 +207,7 @@
       elAno.appendChild(opt);
     });
     if (anosArr.length > 0) {
-      elAno.value = anosArr[0]; // Seleciona o ano mais recente por padrão
+      elAno.value = anosArr[0];
     }
 
     var bairrosArr = Object.keys(bairrosSet).sort();
@@ -230,7 +222,6 @@
   }
 
   function filtrarDados() {
-    var cidadeSel = elCidade.value;
     var bairroSel = elBairro.value;
     var anoSel = elAno.value;
     var mesSel = elMes.value;
@@ -277,7 +268,6 @@
   }
 
   function atualizarGraficos(filtrados) {
-    // 1. Evolução Mensal do m²
     destruirGrafico("graficoEvolucao");
     var mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     var m2PorMes = new Array(12).fill(0);
@@ -311,7 +301,6 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 2. Top 10 Bairros Mais Valorizados (m²)
     destruirGrafico("graficoRanking");
     var bairrosM2 = {};
     filtrados.forEach(function (r) {
@@ -340,7 +329,6 @@
       options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
     });
 
-    // 3. Evolução Histórica Anual
     destruirGrafico("graficoHistorico");
     var anosM2 = {};
     dadosAtuais.forEach(function (r) {
@@ -369,7 +357,6 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 4. Distribuição por Metragem Privativa
     destruirGrafico("graficoMetragem");
     var faixaEtaria = { "Até 50m²": 0, "50-80m²": 0, "80-120m²": 0, "Acima 120m²": 0 };
     filtrados.forEach(function (r) {
@@ -394,7 +381,6 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 5. Volume de Negócios (Mês a Mês)
     destruirGrafico("graficoVolumeMes");
     var volumeMes = new Array(12).fill(0);
     filtrados.forEach(function (r) {
@@ -415,7 +401,6 @@
       options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 6. Top 10 Bairros com Mais Negócios
     destruirGrafico("graficoRankingVolume");
     var bairrosVol = {};
     filtrados.forEach(function (r) {
@@ -447,7 +432,6 @@
   if (elAno) elAno.addEventListener("change", processarDashboard);
   if (elMes) elMes.addEventListener("change", processarDashboard);
 
-  // Inicialização padrão com a primeira cidade
-  carregarDadosCidade("porto-alegre");
+  carregarDadosCidade(elCidade ? elCidade.value : "poa");
 
 })();
