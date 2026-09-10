@@ -307,7 +307,7 @@
     });
   });
 
-  function desenharGrafico(saldos) {
+  function desenharGrafico(saldos, totalAnos) {
     var canvas = document.getElementById("graficoSaldo");
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
@@ -319,27 +319,55 @@
     ctx.clearRect(0, 0, largura, altura);
     if (saldos.length === 0) return;
 
-    var maxSaldo = saldos[0];
+    // Adiciona margem superior de 15% para a curva não encostar no teto do gráfico
+    var maxSaldoReal = Math.max.apply(null, saldos);
+    var maxSaldo = maxSaldoReal * 1.15;
+    if (maxSaldo <= 0) maxSaldo = 1000;
+
     var minSaldo = 0;
-    var paddingX = 40;
-    var paddingY = 20;
-    var w = largura - paddingX * 2;
-    var h = altura - paddingY * 2;
+    var paddingX = 50;
+    var paddingY = 25;
+    var paddingBottom = 30;
+    var w = largura - paddingX - 20;
+    var h = altura - paddingY - paddingBottom;
 
     ctx.strokeStyle = "#d8cfb8";
     ctx.lineWidth = 1;
     ctx.fillStyle = "#6b6a63";
     ctx.font = "10px sans-serif";
+    
+    // Linhas horizontais e marcações de valor (Eixo Y)
     for (var g = 0; g <= 4; g++) {
       var y = paddingY + (h / 4) * g;
       var valorVal = maxSaldo * (1 - g / 4);
       ctx.beginPath();
       ctx.moveTo(paddingX, y);
-      ctx.lineTo(largura - paddingX, y);
+      ctx.lineTo(largura - 10, y);
       ctx.stroke();
       ctx.fillText("R$ " + (valorVal / 1000).toFixed(0) + " mil", 2, y + 4);
     }
 
+    // Marcações de Anos na escala inferior (Eixo X)
+    var numAnos = totalAnos;
+    var passoAno = numAnos <= 10 ? 2 : (numAnos <= 20 ? 5 : 5);
+    
+    ctx.textAlign = "center";
+    for (var ano = 0; ano <= numAnos; ano += passoAno) {
+      var mesIndex = ano * 12;
+      if (mesIndex >= saldos.length) mesIndex = saldos.length - 1;
+      var x = paddingX + (mesIndex / (saldos.length - 1)) * w;
+      
+      ctx.beginPath();
+      ctx.moveTo(x, paddingY);
+      ctx.lineTo(x, paddingY + h);
+      ctx.strokeStyle = "rgba(216, 207, 184, 0.3)";
+      ctx.stroke();
+      
+      ctx.fillStyle = "#6b6a63";
+      ctx.fillText("Ano " + ano, x, altura - 8);
+    }
+
+    // Desenha a linha da curva do saldo devedor
     ctx.strokeStyle = "#F0913A";
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -418,7 +446,7 @@
     elComp.textContent = comprometimento.toFixed(1) + "%";
     elComp.style.color = comprometimento > 30 ? "#A3372A" : "var(--laranja)";
 
-    desenharGrafico(saldos);
+    desenharGrafico(saldos, prazoAnosAtual);
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
