@@ -101,9 +101,11 @@ letter-spacing: -0.01em;
 .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
 .dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
 
-/* ===== Cabecalho: rola junto com a pagina ===== */
+/* ===== Cabecalho: foto + titulo ===== */
 .cabecalho {
-position: relative;
+position: sticky;
+top: 0;
+z-index: 5;
 width: 100%;
 height: 300px;
 overflow: hidden;
@@ -159,7 +161,7 @@ padding: 32px;
 width: 340px;
 flex-shrink: 0;
 position: sticky;
-top: 24px;
+top: 348px;
 }
 .area-principal {
 flex: 1;
@@ -697,15 +699,14 @@ white-space: nowrap;
       </main>
     </div>
 
-    <!-- Rodapé atualizado com disclaimer, link de termos e email de contato -->
+    <!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
     <footer class="rodape">
       <p>
-        Dados: Prefeitura Municipal de Porto Alegre &mdash;
-        <a href="https://dadosabertos.poa.br/dataset/itbi" target="_blank" rel="noopener">dadosabertos.poa.br</a>,
-        sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR" target="_blank" rel="noopener">Creative Commons Atribuição (CC-BY)</a>.
+        Dados: Portais de Dados Abertos Municipais &mdash; portais oficiais de transparência das prefeituras atendidas,
+        sob licença aberta Creative Commons (CC-BY).
       </p>
       <p>
-        O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura.
+        O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura ou órgão público.
         As informações têm caráter informativo, incluindo os valores de correção monetária
         (calculados automaticamente a partir de índices públicos). Não substituem certidões
         oficiais nem assessoria jurídica ou financeira &mdash; confira sempre a fonte original
