@@ -1320,10 +1320,10 @@ white-space: nowrap;
     });
   }
 
-  elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
-  elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
-  elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
-  elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); });
+  elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); } });
+  elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); } });
+  elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); });
   
   elSelectTamanhoPagina.addEventListener("change", function () {
     tamanhoPagina = parseInt(this.value, 10);
@@ -1419,7 +1419,7 @@ white-space: nowrap;
       }
     }
     document.getElementById("link-voltar").addEventListener("click", function () {
-      history.back();
+      fecharDetalhe();
     });
 
     if (r.baseCalculo != null && r.dataReferencia) {
@@ -1449,7 +1449,6 @@ white-space: nowrap;
     elControlesPaginacao.style.display = "none";
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function dataParaBcb(data) {
