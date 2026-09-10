@@ -74,12 +74,18 @@
 
   .card-destaque { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja); }
   .card-destaque-rotulo { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 6px; }
-  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.4rem; font-weight: 800; color: var(--texto-card); margin: 0; }
+  .card-destaque-valor { font-family: var(--fonte-mono); font-size: 1.3rem; font-weight: 800; color: var(--texto-card); margin: 0; }
   .linha-resumo { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.85rem; }
   .linha-resumo:last-child { border-bottom: none; }
   .linha-rotulo { color: var(--texto-card-sutil); font-weight: 600; }
   .linha-valor { font-family: var(--fonte-mono); font-weight: 700; color: var(--texto-card); }
 
+  .box-tutorial { background: var(--fundo-escuro-claro); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.08); }
+  .box-tutorial h2 { font-size: 1.3rem; margin: 0 0 16px; color: #fff; }
+  .box-tutorial p { font-size: 0.92rem; line-height: 1.6; color: var(--texto-sobre-fundo-sutil); margin: 0 0 14px; }
+  .box-tutorial strong { color: #fff; }
+  .disclaimer-box { background: rgba(0,0,0,0.2); border-left: 4px solid var(--laranja); padding: 16px 20px; border-radius: 8px; font-size: 0.82rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); margin-top: 10px; }
+  .disclaimer-box strong { color: #fff; }
   .rodape { padding: 24px; text-align: center; font-size: 0.75rem; color: var(--texto-sobre-fundo-sutil); }
 </style>
 </head>
@@ -110,7 +116,7 @@
     <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Comprar ou Alugar?</h1>
-      <p class="cabecalho-subtitulo">Analise financeiramente se vale mais a pena adquirir um imóvel ou alugar e investir a diferença.</p>
+      <p class="cabecalho-subtitulo">Analise o racional financeiro por trás da decisão comparando o aluguel e o custo de oportunidade.</p>
     </div>
   </header>
 
@@ -118,7 +124,7 @@
     <div class="grid-simulador">
       <div class="col-formulario">
         <div class="campo">
-          <label for="input-imovel">Valor do Imóvel</label>
+          <label for="input-imovel">Valor de Mercado do Imóvel</label>
           <div class="input-grupo"><span>R$</span><input type="tel" id="input-imovel" value="500.000,00"></div>
         </div>
         <div class="campo">
@@ -138,11 +144,25 @@
           <p class="card-destaque-valor" id="res-veredito">Aguardando cálculo...</p>
         </div>
         <div class="linha-resumo">
-          <span class="linha-rotulo">Rendimento Mensal do Aluguel (sobre o imóvel):</span>
+          <span class="linha-rotulo">Taxa do Aluguel (Yield):</span>
           <span class="linha-valor" id="res-taxa">0,0% a.m.</span>
+        </div>
+        <div class="linha-resumo">
+          <span class="linha-rotulo">Equivalente Anual:</span>
+          <span class="linha-valor" id="res-taxa-ano">0,0% a.a.</span>
         </div>
       </div>
     </div>
+
+    <section class="box-tutorial">
+      <h2>O Racional por Trás da Decisão: Comprar vs. Alugar</h2>
+      <p><strong>1. A Regra dos 0,5% (Yield do Aluguel):</strong> A base técnica desta análise mede o retorno que o proprietário tem com o aluguel em relação ao valor do imóvel. Se a taxa mensal do aluguel for <strong>menor que 0,5% a.m.</strong> (ou cerca de 6% ao ano), estatisticamente <strong>alugar e investir a entrada</strong> em renda fixa rende mais do que imobilizar o capital na compra.</p>
+      <p><strong>2. Custo de Oportunidade:</strong> Quando você compra um imóvel à vista ou dá uma entrada pesada, você abre mão de render juros em aplicações seguras (como Tesouro Direto ou CDBs a 100% do CDI). Esse "dinheiro que deixa de render" é o principal fator oculto na aquisição de imóveis.</p>
+      <p><strong>3. Flexibilidade e Custos Implícitos:</strong> O aluguel oferece liberdade geográfica e isenção de despesas estruturais (IPTU, condomínio extraordinário e manutenção estrutural). Por outro lado, a compra garante estabilidade habitacional de longo prazo e patrimônio físico tangível.</p>
+      <div class="disclaimer-box">
+        <strong>Aviso Legal Importante:</strong> Esta ferramenta utiliza premissas matemáticas e financeiras padronizadas para fins de planejamento educacional, não substituindo uma consultoria patrimonial individualizada.
+      </div>
+    </section>
   </main>
 
   <footer class="rodape">&copy; itbidata &mdash; Simulador financeiro para fins de planejamento.</footer>
@@ -150,7 +170,6 @@
 <script>
 (function() {
   "use strict";
-  var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
   function lerNumero(inputId) {
     var val = document.getElementById(inputId).value;
@@ -177,12 +196,16 @@
     var aluguel = lerNumero("input-aluguel");
 
     if (imovel <= 0) return;
-    var taxaAluguel = (aluguel / imovel) * 100;
+    var taxaMensal = (aluguel / imovel) * 100;
+    var taxaAnual = taxaMensal * 12;
 
-    var veredito = taxaAluguel < 0.5 ? "Alugar tende a ser mais vantajoso" : "Comprar tende a ser mais vantajoso";
+    var veredito = taxaMensal < 0.5 
+      ? "Alugar é mais vantajoso (Aluguel abaixo de 0,5% a.m.)" 
+      : "Comprar é mais vantajoso (Aluguel acima de 0,5% a.m.)";
 
     document.getElementById("res-veredito").textContent = veredito;
-    document.getElementById("res-taxa").textContent = taxaAluguel.toFixed(2) + "% a.m.";
+    document.getElementById("res-taxa").textContent = taxaMensal.toFixed(2) + "% a.m.";
+    document.getElementById("res-taxa-ano").textContent = taxaAnual.toFixed(2) + "% a.a.";
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
@@ -191,6 +214,7 @@
     document.getElementById("input-aluguel").value = "";
     document.getElementById("res-veredito").textContent = "Aguardando cálculo...";
     document.getElementById("res-taxa").textContent = "0,0% a.m.";
+    document.getElementById("res-taxa-ano").textContent = "0,0% a.a.";
   });
 
   calcular();
