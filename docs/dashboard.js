@@ -9,31 +9,26 @@
     "porto-alegre": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-" + ano + ".csv"; },
-      processar: processarCsvPoa,
       encoding: "utf-8"
     },
     "sao-paulo": {
       anos: [2026, 2025, 2024, 2023, 2022, 2020],
       getArquivo: function(ano) { return "data/itbi-sp-" + ano + ".csv"; },
-      processar: processarCsvSp,
       encoding: "utf-8"
     },
     "belo-horizonte": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-bh-" + ano + ".csv"; },
-      processar: processarCsvPoa,
       encoding: "utf-8"
     },
     "fortaleza": {
       anos: [2024],
       getArquivo: function() { return "data/itbi-fortaleza.csv"; },
-      processar: processarCsvFortaleza,
       encoding: "iso-8859-1"
     },
     "recife": {
       anos: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       getArquivo: function(ano) { return "data/itbi-recife-" + ano + ".csv"; },
-      processar: processarCsvPoa,
       encoding: "utf-8"
     }
   };
@@ -93,97 +88,55 @@
     return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
   }
 
-  function processarCsvPoa(texto, anoPadrao) {
+  function processarCsvGeral(texto, anoPadrao, ehFortaleza) {
     var linhas = texto.split("\n");
     var registros = [];
     for (var i = 1; i < linhas.length; i++) {
       var linha = linhas[i].replace(/\r$/, "");
       if (!linha.trim()) continue;
       try {
-        var campos = parseLinhaCsv(linha);
-        if (campos.length < 18) continue;
-        var dataEst = parseDataPoa(campos[0]);
-        var dataPag = parseDataPoa(campos[1]);
-        var dataRef = dataPag || dataEst;
-        var base = parseFloat(campos[2]);
-        var areaPriv = parseFloat(campos[13]);
-        var bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
+        var campos = ehFortaleza ? linha.split(";") : parseLinhaCsv(linha);
+        if (campos.length < (ehFortaleza ? 31 : 18)) continue;
 
-        if (!isNaN(base) && base > 0) {
-          registros.push({
-            ano: dataRef ? dataRef.y : anoPadrao,
-            mes: dataRef ? dataRef.mo : 1,
-            baseCalculo: base,
-            areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
-            bairro: bairro
-          });
-        }
-      } catch (e) {}
-    }
-    return registros;
-  }
+        var dataEst, dataPag, base, areaPriv, bairro;
 
-  // Leitor exclusivo e direto para São Paulo (índice 9 fixo para o bairro, ignorando edifícios)
-  function processarCsvSp(texto, anoPadrao) {
-    var linhas = texto.split("\n");
-    var registros = [];
-    for (var i = 1; i < linhas.length; i++) {
-      var linha = linhas[i].replace(/\r$/, "");
-      if (!linha.trim()) continue;
-      try {
-        var campos = parseLinhaCsv(linha);
-        if (campos.length < 18) continue;
-        var dataEst = parseDataPoa(campos[0]);
-        var dataPag = parseDataPoa(campos[1]);
-        var dataRef = dataPag || dataEst;
-        var base = parseFloat(campos[2]);
-        var areaPriv = parseFloat(campos[13]);
-        
-        // Em SP a coluna 9 é o Bairro oficial
-        var bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
-        if (!bairro || bairro === "" || bairro.startsWith("ED ") || bairro.startsWith("BL ")) {
-          bairro = "NÃO INFORMADO";
-        }
+        if (ehFortaleza) {
+          var anoCsv = campos[4] ? parseInt(campos[4], 10) : 2024;
+          dataEst = parseDataFortaleza(campos[5]);
+          dataPag = parseDataFortaleza(campos[24]);
+          base = parseFloat(campos[27].replace(",", "."));
+          var areaConstr = parseFloat(campos[15].replace(",", "."));
+          areaPriv = !isNaN(areaConstr) && areaConstr > 0 ? areaConstr : null;
+          bairro = campos[7] ? campos[7].trim().toUpperCase() : "NÃO INFORMADO";
+          var dataRef = dataPag || dataEst;
+          var anoFinal = dataRef ? dataRef.y : anoCsv;
+          var mesFinal = dataRef ? dataRef.mo : 1;
 
-        if (!isNaN(base) && base > 0) {
-          registros.push({
-            ano: dataRef ? dataRef.y : anoPadrao,
-            mes: dataRef ? dataRef.mo : 1,
-            baseCalculo: base,
-            areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
-            bairro: bairro
-          });
-        }
-      } catch (e) {}
-    }
-    return registros;
-  }
+          if (!isNaN(base) && base > 0) {
+            registros.push({ ano: anoFinal, mes: mesFinal, baseCalculo: base, areaPrivativa: areaPriv, bairro: bairro });
+          }
+        } else {
+          dataEst = parseDataPoa(campos[0]);
+          dataPag = parseDataPoa(campos[1]);
+          var dataRef = dataPag || dataEst;
+          base = parseFloat(campos[2]);
+          areaPriv = parseFloat(campos[13]);
+          bairro = campos[9] ? campos[9].trim().toUpperCase() : "NÃO INFORMADO";
 
-  function processarCsvFortaleza(texto) {
-    var linhas = texto.split("\n");
-    var registros = [];
-    for (var i = 1; i < linhas.length; i++) {
-      var linha = linhas[i].replace(/\r$/, "");
-      if (!linha.trim()) continue;
-      try {
-        var campos = linha.split(";");
-        if (campos.length < 31) continue;
-        var anoCsv = campos[4] ? parseInt(campos[4], 10) : 2024;
-        var dataEst = parseDataFortaleza(campos[5]);
-        var dataPag = parseDataFortaleza(campos[24]);
-        var dataRef = dataPag || dataEst;
-        var base = parseFloat(campos[27].replace(",", "."));
-        var areaConstr = parseFloat(campos[15].replace(",", "."));
-        var bairro = campos[7] ? campos[7].trim().toUpperCase() : "NÃO INFORMADO";
+          // Blindagem para evitar que nomes de edifícios ou ruas entrem no lugar do bairro
+          if (!bairro || bairro === "" || bairro.startsWith("ED ") || bairro.startsWith("BL ") || bairro.startsWith("R ") || bairro.startsWith("AV ")) {
+            bairro = "NÃO INFORMADO";
+          }
 
-        if (!isNaN(base) && base > 0) {
-          registros.push({
-            ano: dataRef ? dataRef.y : anoCsv,
-            mes: dataRef ? dataRef.mo : 1,
-            baseCalculo: base,
-            areaPrivativa: !isNaN(areaConstr) && areaConstr > 0 ? areaConstr : null,
-            bairro: bairro
-          });
+          if (!isNaN(base) && base > 0) {
+            registros.push({
+              ano: dataRef ? dataRef.y : anoPadrao,
+              mes: dataRef ? dataRef.mo : 1,
+              baseCalculo: base,
+              areaPrivativa: !isNaN(areaPriv) && areaPriv > 0 ? areaPriv : null,
+              bairro: bairro
+            });
+          }
         }
       } catch (e) {}
     }
@@ -217,9 +170,10 @@
 
     Promise.all(promessas).then(function (textos) {
       var todosRegs = [];
+      var ehFort = (cidadeKey === "fortaleza");
       textos.forEach(function (txt, idx) {
         if (txt) {
-          var regs = cfg.processar(txt, cfg.anos[idx]);
+          var regs = processarCsvGeral(txt, cfg.anos[idx], ehFort);
           todosRegs = todosRegs.concat(regs);
         }
       });
