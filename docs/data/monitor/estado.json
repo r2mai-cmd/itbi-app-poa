@@ -1,0 +1,568 @@
+{
+  "belo-horizonte": {
+    "fingerprint": "10c285b82971d7af51f80d3877e58145ecb737d5ab17f84a764054aa5eaa5320",
+    "nome": "Belo Horizonte",
+    "package_name": "ITBI Relatórios",
+    "recursos": [
+      {
+        "created": "2024-07-15T14:38:07.645845",
+        "format": "CSV",
+        "hash": "cc85dd3371a82da3201bff36bdb3cc47",
+        "id": "7f8955aa-0b30-4157-bbc2-7dd444941728",
+        "last_modified": "2024-07-15T14:38:07.595395",
+        "name": "01/2008 a 05/2024 - ITBI Relatórios",
+        "size": 80660705,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/7f8955aa-0b30-4157-bbc2-7dd444941728/download/pda_itbi_relatorio_200801_a_202405.csv"
+      },
+      {
+        "created": "2024-09-12T14:24:55.276507",
+        "format": "CSV",
+        "hash": "96188aa64ff5a2f4fa22335175a5354f",
+        "id": "aa948bd0-9554-4e33-87f7-eb61ef0d2903",
+        "last_modified": "2024-09-12T14:24:55.019499",
+        "name": "2024 - Agosto - ITBI Relatórios",
+        "size": 509568,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/aa948bd0-9554-4e33-87f7-eb61ef0d2903/download/pda_itbi_relatorio_202408.csv"
+      },
+      {
+        "created": "2025-01-17T15:10:45.715662",
+        "format": "CSV",
+        "hash": "321eb3b3bef6ca9071102e7ddb729f77",
+        "id": "af6d7c58-e1d2-4fab-8d9a-487dddc30a20",
+        "last_modified": "2025-01-17T15:10:45.429453",
+        "name": "2024 - Dezembro - ITBI Relatórios",
+        "size": 412690,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/af6d7c58-e1d2-4fab-8d9a-487dddc30a20/download/pda_itbi_relatorio_202412.csv"
+      },
+      {
+        "created": "2024-08-28T17:29:20.983022",
+        "format": "CSV",
+        "hash": "ac6b17eff97153172f53a94574003799",
+        "id": "1520a5dc-858a-4eca-89bd-54964c273ce7",
+        "last_modified": "2024-09-04T11:44:51.283464",
+        "name": "2024 - Julho - ITBI Relatórios",
+        "size": 417625,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/1520a5dc-858a-4eca-89bd-54964c273ce7/download/pda_itbi_relatorio_202407_corrigido.csv"
+      },
+      {
+        "created": "2024-07-22T15:03:41.949105",
+        "format": "CSV",
+        "hash": "b23bb12374c116f9a8ef923c0f6eeb73",
+        "id": "b21f9785-6b4c-43a1-bd66-dbf89e63efe7",
+        "last_modified": "2024-07-22T15:03:41.857596",
+        "name": "2024 - Junho - ITBI Relatórios",
+        "size": 348461,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/b21f9785-6b4c-43a1-bd66-dbf89e63efe7/download/pda_itbi_relatorio_202406.csv"
+      },
+      {
+        "created": "2024-12-16T14:45:07.794456",
+        "format": "CSV",
+        "hash": "70cfd1e7a7b064f9d5a5d07a2de8e118",
+        "id": "97db6e95-141a-4402-aa60-50dd06ae9340",
+        "last_modified": "2024-12-16T14:45:07.679972",
+        "name": "2024 - Novembro  -  ITBI Relatórios",
+        "size": 404129,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/97db6e95-141a-4402-aa60-50dd06ae9340/download/pda_itbi_relatorio_202411.csv"
+      },
+      {
+        "created": "2024-11-28T17:14:52.291558",
+        "format": "CSV",
+        "hash": "6f5e66725c45d4021312ec3d81da7ad5",
+        "id": "f5c13859-c3ee-4e3e-9c34-c6215f49a4a5",
+        "last_modified": "2024-11-28T17:14:51.953918",
+        "name": "2024 - Outubro - ITBI Relatórios",
+        "size": 432820,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/f5c13859-c3ee-4e3e-9c34-c6215f49a4a5/download/pda_itbi_relatorio_202410.csv"
+      },
+      {
+        "created": "2024-10-16T19:43:58.258328",
+        "format": "CSV",
+        "hash": "5813b63383e9d4210dee48256f3bfb25",
+        "id": "f582a331-9608-49a2-be3b-a5a5aa19ecff",
+        "last_modified": "2024-10-16T19:43:58.120587",
+        "name": "2024 - Setembro - ITBI Relatórios",
+        "size": 468117,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/f582a331-9608-49a2-be3b-a5a5aa19ecff/download/pda_itbi_relatorio_202409.csv"
+      },
+      {
+        "created": "2025-05-12T18:15:12.175219",
+        "format": "CSV",
+        "hash": "393ee14917b9e7c23944007e09dabfe7",
+        "id": "dad2d5af-d9c2-4e09-9766-7f01387fbd9a",
+        "last_modified": "2025-05-12T18:15:12.033786",
+        "name": "2025 - Abril - ITBI Relatórios",
+        "size": 424464,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/dad2d5af-d9c2-4e09-9766-7f01387fbd9a/download/pda_itbi_relatorio_202504.csv"
+      },
+      {
+        "created": "2025-12-03T18:08:35.096710",
+        "format": "CSV",
+        "hash": "2c4a701054613422b06a499fd14ba94a",
+        "id": "f4e60a70-3bd8-41dc-b031-42b5f3d1671a",
+        "last_modified": "2025-12-03T18:08:34.904328",
+        "name": "2025 - Agosto - ITBI Relatórios",
+        "size": 398271,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/f4e60a70-3bd8-41dc-b031-42b5f3d1671a/download/pda_itbi_relatorio_202508.csv"
+      },
+      {
+        "created": "2026-01-27T10:29:30.984964",
+        "format": "CSV",
+        "hash": "26e75d1c4e881d912efb5489aecea1d6",
+        "id": "c3dd25fd-ac34-4f3f-afcc-21589d64ce8a",
+        "last_modified": "2026-01-27T10:29:30.803018",
+        "name": "2025 - Dezembro - ITBI Relatórios",
+        "size": 416161,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/c3dd25fd-ac34-4f3f-afcc-21589d64ce8a/download/pda_itbi_relatorio_202512.csv"
+      },
+      {
+        "created": "2025-03-31T12:25:59.259836",
+        "format": "CSV",
+        "hash": "56471d19c8c42f83938623f5afa6afe3",
+        "id": "23e019f9-6537-4561-9935-ca7d19ae3b6b",
+        "last_modified": "2025-03-31T12:25:57.286695",
+        "name": "2025 - Fevereiro - ITBI Relatórios",
+        "size": 436273,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/23e019f9-6537-4561-9935-ca7d19ae3b6b/download/pda_itbi_relatorio_202502.csv"
+      },
+      {
+        "created": "2025-02-25T13:30:53.804715",
+        "format": "CSV",
+        "hash": "1980946e3788c817d42017ea5bcb490a",
+        "id": "78c33612-ebf5-4a25-af35-d3065f056579",
+        "last_modified": "2025-02-25T13:30:52.410462",
+        "name": "2025 - Janeiro - ITBI Relatórios",
+        "size": 459729,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/78c33612-ebf5-4a25-af35-d3065f056579/download/pda_itbi_relatorio_202501.csv"
+      },
+      {
+        "created": "2025-08-12T12:40:34.960504",
+        "format": "CSV",
+        "hash": "f1d9268616abca5351175a640c2cc1c8",
+        "id": "9f8b1538-5f8b-469c-8728-f4902b28456e",
+        "last_modified": "2025-08-12T12:40:34.750524",
+        "name": "2025 - Julho - ITBI Relatórios",
+        "size": 447812,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/9f8b1538-5f8b-469c-8728-f4902b28456e/download/pda_itbi_relatorio_202507.csv"
+      },
+      {
+        "created": "2025-07-11T14:59:03.556594",
+        "format": "CSV",
+        "hash": "738534d25c33b19e416b6aba09b64967",
+        "id": "6be6874d-6e20-4d68-a904-2351fc0f31f4",
+        "last_modified": "2025-07-11T14:59:03.441495",
+        "name": "2025 - Junho - ITBI Relatórios",
+        "size": 306837,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/6be6874d-6e20-4d68-a904-2351fc0f31f4/download/pda_itbi_relatorio_202506.csv"
+      },
+      {
+        "created": "2025-06-11T17:45:00.330547",
+        "format": "CSV",
+        "hash": "99d9f2e9380e64e3b1832250e0f9a3c5",
+        "id": "0e353102-585d-4dfb-ab15-84550b550c61",
+        "last_modified": "2025-06-11T17:45:00.214361",
+        "name": "2025 - Maio - ITBI Relatórios",
+        "size": 407297,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/0e353102-585d-4dfb-ab15-84550b550c61/download/pda_itbi_relatorio_202505.csv"
+      },
+      {
+        "created": "2025-04-09T17:52:44.113272",
+        "format": "CSV",
+        "hash": "51ce3b2874919ae790ece1460f22b573",
+        "id": "df8c42ee-166f-4e5d-9eb3-69fc00f3ae57",
+        "last_modified": "2025-04-09T17:52:43.639346",
+        "name": "2025 - Março - ITBI Relatórios",
+        "size": 382893,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/df8c42ee-166f-4e5d-9eb3-69fc00f3ae57/download/pda_itbi_relatorio_202503.csv"
+      },
+      {
+        "created": "2025-12-11T14:46:12.904307",
+        "format": "CSV",
+        "hash": "b9a20ca68ece2e1ae501aad6ab14d27d",
+        "id": "9bd075e2-2abe-42d7-a1e2-b68a18245172",
+        "last_modified": "2025-12-11T14:46:12.744583",
+        "name": "2025 - Novembro - ITBI Relatórios",
+        "size": 403678,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/9bd075e2-2abe-42d7-a1e2-b68a18245172/download/pda_itbi_relatorio_202511.csv"
+      },
+      {
+        "created": "2025-12-03T18:12:37.964559",
+        "format": "CSV",
+        "hash": "6026abddd600a23df5133d61f75cc72e",
+        "id": "fbd1fe60-f838-4392-92c2-98cc09dfc81c",
+        "last_modified": "2025-12-03T18:12:37.836087",
+        "name": "2025 - Outubro - ITBI Relatórios",
+        "size": 483212,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/fbd1fe60-f838-4392-92c2-98cc09dfc81c/download/pda_itbi_relatorio_202510.csv"
+      },
+      {
+        "created": "2025-12-03T18:10:43.732638",
+        "format": "CSV",
+        "hash": "f39d4a52b2a1deac2e1e16d29ef1c04d",
+        "id": "cbdea14d-77de-4c32-a7db-3e327e09257c",
+        "last_modified": "2025-12-03T18:10:43.551858",
+        "name": "2025 - Setembro - ITBI Relatórios",
+        "size": 455273,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/cbdea14d-77de-4c32-a7db-3e327e09257c/download/pda_itbi_relatorio_202509.csv"
+      },
+      {
+        "created": "2026-05-08T17:40:32.185465",
+        "format": "CSV",
+        "hash": "1fe592d5ed862672d9ac9ae15762b0f2",
+        "id": "9739d3c2-0f38-4aff-9c68-877df748f2ae",
+        "last_modified": "2026-05-08T17:40:31.901381",
+        "name": "2026 - Abril - ITBI Relatórios",
+        "size": 417226,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/9739d3c2-0f38-4aff-9c68-877df748f2ae/download/pda_itbi_relatorio_202604.csv"
+      },
+      {
+        "created": "2026-03-23T10:49:27.932323",
+        "format": "CSV",
+        "hash": "a469619a9a6ea808b105e714d83d31fe",
+        "id": "453b3f6d-ec7f-415c-af5e-c23d1f488e2a",
+        "last_modified": "2026-03-23T10:49:27.751083",
+        "name": "2026 - Fevereiro - ITBI Relatórios",
+        "size": 360257,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/453b3f6d-ec7f-415c-af5e-c23d1f488e2a/download/pda_itbi_relatorio_202602.csv"
+      },
+      {
+        "created": "2026-02-25T11:04:17.859671",
+        "format": "CSV",
+        "hash": "aa66dbf3f96b4f9431432628dcfd2981",
+        "id": "2deb4632-f226-40a7-b8ac-89c6d9f8aff9",
+        "last_modified": "2026-02-25T11:04:17.714302",
+        "name": "2026 - Janeiro - ITBI Relatórios",
+        "size": 350316,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/2deb4632-f226-40a7-b8ac-89c6d9f8aff9/download/pda_itbi_relatorio_202601.csv"
+      },
+      {
+        "created": "2026-09-08T12:23:25.244719",
+        "format": "CSV",
+        "hash": "f51cff550f1fe53f2a65b5a08519888c",
+        "id": "39f518a9-c027-41af-868d-0befa2d8f783",
+        "last_modified": "2026-09-08T12:23:24.781482",
+        "name": "2026 - Julho - ITBI Relatórios",
+        "size": 517694,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/39f518a9-c027-41af-868d-0befa2d8f783/download/pda_itbi_relatorio_202607.csv"
+      },
+      {
+        "created": "2026-07-10T17:47:54.658564",
+        "format": "CSV",
+        "hash": "e883f15f04739d7f40a4ae4f5246bfe6",
+        "id": "0207f55f-6733-4612-bd6a-cd9035381cd0",
+        "last_modified": "2026-09-08T17:51:04.431668",
+        "name": "2026 - Junho - ITBI Relatórios",
+        "size": 457662,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/0207f55f-6733-4612-bd6a-cd9035381cd0/download/pda_itbi_relatorio_202606.csv"
+      },
+      {
+        "created": "2026-06-16T10:26:47.801024",
+        "format": "CSV",
+        "hash": "791d7144a08e55fe47fa04dd020f3f90",
+        "id": "5abcaa09-f12c-4235-8298-b575ab008ace",
+        "last_modified": "2026-06-16T10:26:47.549550",
+        "name": "2026 - Maio - ITBI Relatórios",
+        "size": 391493,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/5abcaa09-f12c-4235-8298-b575ab008ace/download/pda_itbi_relatorio_202605.csv"
+      },
+      {
+        "created": "2026-04-09T17:07:52.705694",
+        "format": "CSV",
+        "hash": "9fd29e0af7bd83c334d7aeb4de5cfc5d",
+        "id": "0773a6b9-b107-4692-9b85-760221ec3abb",
+        "last_modified": "2026-04-09T17:07:52.544789",
+        "name": "2026 - Março -  ITBI Relatórios",
+        "size": 482680,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/0773a6b9-b107-4692-9b85-760221ec3abb/download/pda_itbi_relatorio_202603.csv"
+      },
+      {
+        "created": "2024-07-15T14:33:28.824017",
+        "format": "PDF",
+        "hash": "",
+        "id": "f925acff-c470-41f0-b4aa-a0e6bece5f20",
+        "last_modified": "2024-07-15T14:33:28.773796",
+        "name": "Dicionário de Dados ITBI Relatórios",
+        "size": 405905,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/f925acff-c470-41f0-b4aa-a0e6bece5f20/download/dicionario_de_dados_atualizado_2024_05.pdf"
+      },
+      {
+        "created": "2025-01-09T14:44:22.692329",
+        "format": "PDF",
+        "hash": "",
+        "id": "2e0419d2-068b-43a7-8b3b-ad3b4f3fefd9",
+        "last_modified": "2025-01-09T14:44:22.592662",
+        "name": "Dicionário de Dados ITBI Relatórios atualizado em 01/2025",
+        "size": 511833,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/2e0419d2-068b-43a7-8b3b-ad3b4f3fefd9/download/dicionario_de_dados_atualizado_2025_01.pdf"
+      },
+      {
+        "created": "2024-08-30T17:25:19.496787",
+        "format": "PDF",
+        "hash": "",
+        "id": "139e6fa9-b2d1-4eec-b1e8-bf5e966211bd",
+        "last_modified": "2024-08-30T17:25:19.366878",
+        "name": "Dicionário de Dados ITBI Relatórios atualizado em 08/2024",
+        "size": 413020,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/139e6fa9-b2d1-4eec-b1e8-bf5e966211bd/download/dicionario_de_dados_itbi_relatorios_atualizado_2024_08.pdf"
+      }
+    ],
+    "tipo": "ckan",
+    "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
+    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+  },
+  "fortaleza": {
+    "fingerprint": "ed7d9391deb824837ca0193f5684c4c5aab399c752fa47fc31c96a1184784d2d",
+    "nome": "Fortaleza",
+    "package_name": "Imposto sobre Transmissão de Bens Imóveis (ITBI)",
+    "recursos": [
+      {
+        "created": "2024-02-15T19:27:29.727954",
+        "format": "CSV",
+        "hash": "",
+        "id": "46324d49-9809-4d32-8e5c-b4b570f067ce",
+        "last_modified": "2026-02-12T16:08:17.420254",
+        "name": "Imposto sobre Transmissão de Bens Imóveis (ITBI)",
+        "size": 26779235,
+        "url": "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv"
+      }
+    ],
+    "tipo": "ckan",
+    "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
+    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+  },
+  "porto-alegre": {
+    "fingerprint": "dba15e58a25718640e10de2cbc4c579b5fef4d3543853ddc81da3f3a6d0f0115",
+    "nome": "Porto Alegre",
+    "package_name": "ITBI",
+    "recursos": [
+      {
+        "created": "2025-11-21T18:59:38.546881",
+        "format": "PDF",
+        "hash": "",
+        "id": "b0fe9643-82bb-4b91-be26-b6292b7aeac7",
+        "last_modified": "2026-01-23T15:39:46.981164",
+        "name": "Dicionário de Dados",
+        "size": 368786,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b0fe9643-82bb-4b91-be26-b6292b7aeac7/download/dicionario-de-dados-itbi_v3.pdf"
+      },
+      {
+        "created": "2025-11-21T19:08:41.786082",
+        "format": "CSV",
+        "hash": "",
+        "id": "60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b",
+        "last_modified": "2026-01-23T18:20:22.753956",
+        "name": "ITBI 2020",
+        "size": 8045620,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv"
+      },
+      {
+        "created": "2025-11-21T19:17:37.735968",
+        "format": "CSV",
+        "hash": "",
+        "id": "150848b4-0d01-4ffb-96e0-f5f2a276f5ef",
+        "last_modified": "2026-01-23T18:26:30.557976",
+        "name": "ITBI 2021",
+        "size": 10119974,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv"
+      },
+      {
+        "created": "2025-11-21T19:18:29.027975",
+        "format": "CSV",
+        "hash": "",
+        "id": "102520c0-3edc-4f85-947f-6a98b96ed160",
+        "last_modified": "2026-01-23T18:31:33.847402",
+        "name": "ITBI 2022",
+        "size": 10691957,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/102520c0-3edc-4f85-947f-6a98b96ed160/download/itbi-2022.csv"
+      },
+      {
+        "created": "2025-11-21T19:21:43.472503",
+        "format": "CSV",
+        "hash": "",
+        "id": "2a4b0aee-7126-4323-936d-5f82fd04aeef",
+        "last_modified": "2026-01-23T18:38:50.395141",
+        "name": "ITBI 2023",
+        "size": 10299556,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/2a4b0aee-7126-4323-936d-5f82fd04aeef/download/itbi-2023.csv"
+      },
+      {
+        "created": "2025-11-21T19:22:31.643866",
+        "format": "CSV",
+        "hash": "",
+        "id": "4947bed6-6be6-40e6-a120-42957e745da5",
+        "last_modified": "2026-01-23T18:45:10.957210",
+        "name": "ITBI 2024",
+        "size": 9948873,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/4947bed6-6be6-40e6-a120-42957e745da5/download/itbi-2024.csv"
+      },
+      {
+        "created": "2025-11-21T19:23:33.323702",
+        "format": "CSV",
+        "hash": "",
+        "id": "e46f56f3-ac8a-4513-b155-5d3038a275b2",
+        "last_modified": "2026-01-23T18:51:14.014721",
+        "name": "ITBI 2025",
+        "size": 10960395,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv"
+      },
+      {
+        "created": "2026-05-13T19:30:31.424922",
+        "format": "CSV",
+        "hash": "",
+        "id": "b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c",
+        "last_modified": "2026-07-01T11:26:42.702892",
+        "name": "ITBI 2026",
+        "size": 5106914,
+        "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
+      }
+    ],
+    "tipo": "ckan",
+    "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
+    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+  },
+  "recife": {
+    "fingerprint": "19253846b2b324654b4c1456a1aca41c7b524f9ffae775b0576e1d2e13cb366f",
+    "nome": "Recife",
+    "package_name": "Imposto sobre Transmissão de Bens Imóveis (ITBI)",
+    "recursos": [
+      {
+        "created": "2026-03-02T15:13:27.109617",
+        "format": "JSON",
+        "hash": "",
+        "id": "e829c92b-a1b1-47f9-af69-91f584bdc98f",
+        "last_modified": "2026-03-02T15:13:26.979595",
+        "name": "Dicionário de dados - ITBI",
+        "size": 5284,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/e829c92b-a1b1-47f9-af69-91f584bdc98f/download/dicionario-de-dados-itbi.json"
+      },
+      {
+        "created": "2026-03-02T15:16:34.623560",
+        "format": "CSV",
+        "hash": "",
+        "id": "87caf0ce-5f05-4952-abe5-83fa46eece4c",
+        "last_modified": "2026-03-02T15:16:34.573192",
+        "name": "ITBI 2015 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3020565,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/87caf0ce-5f05-4952-abe5-83fa46eece4c/download/itbi-2015-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:16:17.827440",
+        "format": "CSV",
+        "hash": "",
+        "id": "210db9b0-4ea5-49cb-8084-135ebfca848d",
+        "last_modified": "2026-03-02T15:16:17.773549",
+        "name": "ITBI 2016 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3108463,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/210db9b0-4ea5-49cb-8084-135ebfca848d/download/itbi-2016-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:15:54.014300",
+        "format": "CSV",
+        "hash": "",
+        "id": "53617998-09e8-420c-9399-75d859c8528e",
+        "last_modified": "2026-03-02T15:15:53.963001",
+        "name": "ITBI 2017 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 2599846,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/53617998-09e8-420c-9399-75d859c8528e/download/itbi-2017-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:15:37.559856",
+        "format": "CSV",
+        "hash": "",
+        "id": "ae29c630-77b8-4109-8e1b-02292069f4d5",
+        "last_modified": "2026-03-02T15:15:37.514613",
+        "name": "ITBI 2018 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3035609,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/ae29c630-77b8-4109-8e1b-02292069f4d5/download/itbi-2018-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:15:11.763955",
+        "format": "CSV",
+        "hash": "",
+        "id": "6a8a8f7e-8d3d-4729-aaf9-fcc43ae2827a",
+        "last_modified": "2026-03-02T15:15:11.716439",
+        "name": "ITBI 2019 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3304037,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/6a8a8f7e-8d3d-4729-aaf9-fcc43ae2827a/download/itbi-2019-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:14:56.131388",
+        "format": "CSV",
+        "hash": "",
+        "id": "6f79d820-b764-4cde-939f-83d80e728c53",
+        "last_modified": "2026-03-02T15:14:56.073399",
+        "name": "ITBI 2020 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 2866332,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/6f79d820-b764-4cde-939f-83d80e728c53/download/itbi-2020-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:14:28.662131",
+        "format": "CSV",
+        "hash": "",
+        "id": "f3a083a1-aa48-416d-b3aa-c022192219e6",
+        "last_modified": "2026-03-02T15:14:28.589594",
+        "name": "ITBI 2021 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3637852,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/f3a083a1-aa48-416d-b3aa-c022192219e6/download/itbi-2021-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:14:17.087217",
+        "format": "CSV",
+        "hash": "",
+        "id": "5226cf6f-ed06-4956-b133-a0c788a5d494",
+        "last_modified": "2026-03-02T15:14:17.013807",
+        "name": "ITBI 2022 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3855383,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/5226cf6f-ed06-4956-b133-a0c788a5d494/download/itbi-2022-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:14:13.035415",
+        "format": "CSV",
+        "hash": "",
+        "id": "47dfea23-81ec-455e-83a0-3e451e5b5ca6",
+        "last_modified": "2026-03-02T15:14:12.965386",
+        "name": "ITBI 2023 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3298079,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/47dfea23-81ec-455e-83a0-3e451e5b5ca6/download/itbi-2023-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:13:51.886093",
+        "format": "CSV",
+        "hash": "",
+        "id": "756d9a7e-33aa-4fdd-a541-0f5dc97c7502",
+        "last_modified": "2026-03-02T15:13:51.830944",
+        "name": "ITBI 2024 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 3941355,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/756d9a7e-33aa-4fdd-a541-0f5dc97c7502/download/itbi-2024-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-02T15:13:48.030485",
+        "format": "CSV",
+        "hash": "",
+        "id": "1d705d4a-f67a-4914-971f-01f9b1685d1b",
+        "last_modified": "2026-03-02T15:13:47.973430",
+        "name": "ITBI 2025 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 4157286,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/1d705d4a-f67a-4914-971f-01f9b1685d1b/download/itbi-2025-imposto-sobre-a-transmissao-de-bens-imoveis.csv"
+      },
+      {
+        "created": "2026-03-04T12:18:25.340648",
+        "format": "CSV",
+        "hash": "",
+        "id": "fc95e204-a121-4b7a-94b2-e4420539c0d1",
+        "last_modified": "2026-09-03T02:05:45.674846",
+        "name": "ITBI 2026 - Imposto sobre a Transmissão de Bens Imóveis",
+        "size": 2617405,
+        "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/fc95e204-a121-4b7a-94b2-e4420539c0d1/download/itbi_2026.csv"
+      }
+    ],
+    "tipo": "ckan",
+    "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi",
+    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+  },
+  "sao-paulo": {
+    "erro": "HTTP Error 403: Forbidden",
+    "nome": "São Paulo",
+    "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
+    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+  }
+}
