@@ -69,7 +69,7 @@
     background-repeat: no-repeat; background-position: right 2px center; padding-right: 22px; cursor: pointer;
   }
 
-  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 480px) { .campo-linha { grid-template-columns: 1fr; } }
 
   .botoes-seletor { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
@@ -137,7 +137,7 @@
     <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Simulador de Financiamento Imobiliário</h1>
-      <p class="cabecalho-subtitulo">Calcule o valor da parcela mensal, compare os sistemas SAC e PRICE e veja o impacto dos juros no valor final.</p>
+      <p class="cabecalho-subtitulo">Calcule a parcela mensal, compare SAC x PRICE e escolha os indexadores (TR, IPCA ou Poupança).</p>
     </div>
   </header>
 
@@ -160,6 +160,14 @@
           </div>
         </div>
         <div class="campo">
+          <label for="select-modalidade">Modalidade / Indexador (Caixa)</label>
+          <select id="select-modalidade">
+            <option value="TR" selected>Taxa Fixa + TR (Padrão)</option>
+            <option value="IPCA">Taxa Fixa + IPCA (Inflação)</option>
+            <option value="POUPANCA">Taxa Fixa + Rendimento da Poupança</option>
+          </select>
+        </div>
+        <div class="campo">
           <label for="select-prazo">Prazo do Contrato</label>
           <select id="select-prazo">
             <option value="5">5 anos (60 meses)</option>
@@ -177,8 +185,8 @@
             <input type="text" id="input-juros" value="10,5" inputmode="decimal">
           </div>
           <div class="campo">
-            <label for="input-tr">TR Média (% a.a.)</label>
-            <input type="text" id="input-tr" value="2,0" inputmode="decimal">
+            <label for="input-indice">Indexador (% a.a.)</label>
+            <input type="text" id="input-indice" value="2,0" inputmode="decimal">
           </div>
         </div>
         <div class="campo">
@@ -194,7 +202,7 @@
 
       <div class="col-resultados">
         <div class="card-destaque">
-          <p class="card-destaque-rotulo" id="txt-label-parcela">Primeira Parcela (SAC)</p>
+          <p class="card-destaque-rotulo" id="txt-label-parcela">Primeira Parcela</p>
           <p class="card-destaque-valor" id="res-parcela-inicial">R$ 0,00</p>
           <p class="card-destaque-sub" id="res-parcela-final">Última parcela: R$ 0,00</p>
         </div>
@@ -219,21 +227,21 @@
 
     <!-- Seção do Gráfico Comparativo -->
     <div class="box-grafico">
-      <h3>Evolução do Saldo Devedor (SAC x PRICE)</h3>
-      <p>Acompanhe mês a mês como a dívida diminui em cada sistema de amortização.</p>
+      <h3>Evolução do Saldo Devedor</h3>
+      <p>Acompanhe mês a mês como a dívida diminui ao longo do prazo.</p>
       <div class="legenda-grafico">
-        <div class="legenda-item"><div class="legenda-cor" style="background:#F0913A;"></div><span>Sistema SAC</span></div>
-        <div class="legenda-item"><div class="legenda-cor" style="background:#4FBFB8;"></div><span>Tabela PRICE</span></div>
+        <div class="legenda-item"><div class="legenda-cor" style="background:#F0913A;"></div><span>Saldo Devedor Projetado</span></div>
       </div>
       <canvas id="graficoSaldo"></canvas>
     </div>
 
     <section class="box-tutorial">
-      <h2>Como interpretar a sua simulação de financiamento</h2>
-      <p><strong>1. A diferença entre SAC e PRICE:</strong> No sistema SAC, você abate uma quantia constante da dívida a cada mês, fazendo as parcelas caírem gradativamente. Na tabela PRICE, a prestação é constante.</p>
-      <p><strong>2. O papel da TR:</strong> A Taxa Referencial (TR) é aplicada mensalmente para atualizar o saldo devedor do financiamento, somando-se à taxa de juros contratada.</p>
+      <h2>Modalidades de Financiamento da Caixa</h2>
+      <p><strong>1. Taxa Fixa + TR:</strong> É a modalidade tradicional mais utilizada. A taxa de juros é fixa e o saldo devedor é corrigido mensalmente pela Taxa Referencial (TR), que costuma ser baixa.</p>
+      <p><strong>2. Taxa Fixa + IPCA:</strong> Oferece taxas de juros nominais menores no início, mas o saldo devedor e as parcelas sofrem correção integral pela inflação (IPCA), havendo risco de as parcelas subirem bastante se a inflação disparar.</p>
+      <p><strong>3. Taxa Fixa + Poupança:</strong> Atrelada à remuneração da caderneta de poupança (quando a Selic está até 8,5% a.a., rende 70% da Selic; quando maior, rende TR + 6% a.a.).</p>
       <div class="disclaimer-box">
-        <strong>Aviso Legal Importante:</strong> Os dados e valores calculados por esta ferramenta possuem caráter estritamente estimativo e educacional, servindo apenas para planejamento inicial. Condições reais, taxas efetivas e aprovação de crédito dependem da análise individual de cada instituição financeira. Nunca tome decisões financeiras ou de compra sem consultar um especialista qualificado.
+        <strong>Aviso Legal Importante:</strong> Ferramenta estritamente estimativa e educacional. Condições reais de crédito dependem da análise individual da instituição financeira.
       </div>
     </section>
   </main>
@@ -253,10 +261,7 @@
 
   function aplicarMascaraMoeda(input) {
     var apenasDigitos = input.value.replace(/\D/g, "");
-    if (apenasDigitos === "") {
-      input.value = "";
-      return;
-    }
+    if (apenasDigitos === "") { input.value = ""; return; }
     var numero = parseInt(apenasDigitos, 10);
     input.value = (numero / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
@@ -270,6 +275,22 @@
 
   var amortizacaoAtual = "SAC";
   var elPrazo = document.getElementById("select-prazo");
+  var selectModalidade = document.getElementById("select-modalidade");
+  var labelIndice = document.querySelector('label[for="input-indice"]');
+
+  selectModalidade.addEventListener("change", function() {
+    if (this.value === "TR") {
+      labelIndice.textContent = "TR Média (% a.a.)";
+      document.getElementById("input-indice").value = "2,0";
+    } else if (this.value === "IPCA") {
+      labelIndice.textContent = "IPCA / Inflação (% a.a.)";
+      document.getElementById("input-indice").value = "4,5";
+    } else if (this.value === "POUPANCA") {
+      labelIndice.textContent = "Rend. Poupança (% a.a.)";
+      document.getElementById("input-indice").value = "6,17";
+    }
+    calcular();
+  });
 
   document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(btn) {
     btn.addEventListener("click", function() {
@@ -280,7 +301,7 @@
     });
   });
 
-  function desenharGrafico(saldosSac, saldosPrice) {
+  function desenharGrafico(saldos) {
     var canvas = document.getElementById("graficoSaldo");
     var ctx = canvas.getContext("2d");
     var largura = canvas.parentElement.clientWidth - 56;
@@ -289,9 +310,9 @@
     canvas.height = altura;
 
     ctx.clearRect(0, 0, largura, altura);
-    if (saldosSac.length === 0) return;
+    if (saldos.length === 0) return;
 
-    var maxSaldo = saldosSac[0];
+    var maxSaldo = saldos[0];
     var minSaldo = 0;
     var paddingX = 40;
     var paddingY = 20;
@@ -312,90 +333,77 @@
       ctx.fillText("R$ " + (valorVal / 1000).toFixed(0) + " mil", 2, y + 4);
     }
 
-    function traçarLinha(dados, cor) {
-      ctx.strokeStyle = cor;
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      for (var idx = 0; idx < dados.length; idx++) {
-        var x = paddingX + (idx / (dados.length - 1)) * w;
-        var y = paddingY + h - ((dados[idx] - minSaldo) / (maxSaldo - minSaldo)) * h;
-        if (idx === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
+    ctx.strokeStyle = "#F0913A";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (var idx = 0; idx < saldos.length; idx++) {
+      var x = paddingX + (idx / (saldos.length - 1)) * w;
+      var y = paddingY + h - ((saldos[idx] - minSaldo) / (maxSaldo - minSaldo)) * h;
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
     }
-
-    traçarLinha(saldosPrice, "#4FBFB8");
-    traçarLinha(saldosSac, "#F0913A");
+    ctx.stroke();
   }
 
   function calcular() {
     var vImovel = lerNumero("input-valor");
     var vEntrada = lerNumero("input-entrada");
     var taxaAnual = lerNumero("input-juros") / 100;
-    var trAnual = lerNumero("input-tr") / 100;
+    var indAnual = lerNumero("input-indice") / 100;
     var renda = lerNumero("input-renda");
     var prazoAnosAtual = parseInt(elPrazo.value, 10) || 30;
 
     var saldoInicial = Math.max(0, vImovel - vEntrada);
     var n = prazoAnosAtual * 12;
     var iMensal = taxaAnual / 12;
-    var trMensal = Math.pow(1 + trAnual, 1 / 12) - 1;
+    var indMensal = Math.pow(1 + indAnual, 1 / 12) - 1;
 
-    var saldosSac = [saldoInicial];
-    var saldosPrice = [saldoInicial];
-
-    var saldoAtualSac = saldoInicial;
-    var amortSac = saldoInicial / n;
-    var jurosTotaisSac = 0;
-    var parcInicialSac = 0;
-    var parcFinalSac = 0;
-
-    for (var m = 1; m <= n; m++) {
-      saldoAtualSac = saldoAtualSac * (1 + trMensal);
-      var jurosMes = saldoAtualSac * iMensal;
-      var prestacaoMes = amortSac + jurosMes;
-      if (m === 1) parcInicialSac = prestacaoMes;
-      if (m === n) parcFinalSac = prestacaoMes;
-      jurosTotaisSac += jurosMes;
-      saldoAtualSac = Math.max(0, saldoAtualSac - amortSac);
-      saldosSac.push(saldoAtualSac);
-    }
-    var custoFinalSac = saldoInicial + jurosTotaisSac;
-
-    var saldoAtualPrice = saldoInicial;
-    var jurosTotaisPrice = 0;
-    var parcInicialPrice = 0;
-
-    for (var m = 1; m <= n; m++) {
-      saldoAtualPrice = saldoAtualPrice * (1 + trMensal);
-      var jurosMesP = saldoAtualPrice * iMensal;
-      var fatorRestante = Math.pow(1 + iMensal, n - m + 1);
-      var parcMesP = saldoAtualPrice * (iMensal * fatorRestante) / (fatorRestante - 1);
-      if (isNaN(parcMesP) || parcMesP < 0) parcMesP = saldoAtualPrice + jurosMesP;
-      
-      if (m === 1) parcInicialPrice = parcMesP;
-      jurosTotaisPrice += jurosMesP;
-      var amortMesP = parcMesP - jurosMesP;
-      saldoAtualPrice = Math.max(0, saldoAtualPrice - amortMesP);
-      saldosPrice.push(saldoAtualPrice);
-    }
-    var custoFinalPrice = saldoInicial + jurosTotaisPrice;
-
-    var parcInicial = (amortizacaoAtual === "SAC") ? parcInicialSac : parcInicialPrice;
-    var custoFinal = (amortizacaoAtual === "SAC") ? custoFinalSac : custoFinalPrice;
-    var jurosTotais = (amortizacaoAtual === "SAC") ? jurosTotaisSac : jurosTotaisPrice;
+    var saldos = [saldoInicial];
+    var saldoAtual = saldoInicial;
+    var jurosTotais = 0;
+    var parcInicial = 0;
+    var parcFinal = 0;
 
     if (amortizacaoAtual === "SAC") {
-      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (SAC + TR)";
-      document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinalSac);
+      var amort = saldoInicial / n;
+      for (var m = 1; m <= n; m++) {
+        saldoAtual = saldoAtual * (1 + indMensal);
+        var jurosMes = saldoAtual * iMensal;
+        var prestacaoMes = amort + jurosMes;
+        if (m === 1) parcInicial = prestacaoMes;
+        if (m === n) parcFinal = prestacaoMes;
+        jurosTotais += jurosMes;
+        saldoAtual = Math.max(0, saldoAtual - amort);
+        saldos.push(saldoAtual);
+      }
+      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (SAC)";
+      document.getElementById("res-parcela-final").textContent = "Última parcela: " + fmtMoeda.format(parcFinal);
       document.getElementById("res-parcela-final").style.display = "block";
     } else {
-      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (PRICE + TR)";
-      document.getElementById("res-parcela-final").textContent = "Variável conforme correção da TR";
+      // PRICE
+      var parcBase = saldoInicial * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1);
+      for (var m = 1; m <= n; m++) {
+        saldoAtual = saldoAtual * (1 + indMensal);
+        var jurosMesP = saldoAtual * iMensal;
+        var fatorRestante = Math.pow(1 + iMensal, n - m + 1);
+        var parcMesP = saldoAtual * (iMensal * fatorRestante) / (fatorRestante - 1);
+        if (isNaN(parcMesP) || parcMesP < 0) parcMesP = saldoAtual + jurosMesP;
+
+        if (m === 1) parcInicial = parcMesP;
+        if (m === n) parcFinal = parcMesP;
+        jurosTotais += jurosMesP;
+        var amortMesP = parcMesP - jurosMesP;
+        saldoAtual = Math.max(0, saldoAtual - amortMesP);
+        saldos.push(saldoAtual);
+      }
+      document.getElementById("txt-label-parcela").textContent = "Primeira Parcela (PRICE)";
+      document.getElementById("res-parcela-final").textContent = "Última parcela estimada: " + fmtMoeda.format(parcFinal);
+      document.getElementById("res-parcela-final").style.display = "block";
     }
 
+    var custoFinal = saldoInicial + jurosTotais;
     var comprometimento = renda > 0 ? ((parcInicial / renda) * 100) : 0;
+
     document.getElementById("res-parcela-inicial").textContent = fmtMoeda.format(parcInicial);
     document.getElementById("res-saldo").textContent = fmtMoeda.format(saldoInicial);
     document.getElementById("res-total-juros").textContent = fmtMoeda.format(jurosTotais);
@@ -404,7 +412,7 @@
     elComp.textContent = comprometimento.toFixed(1) + "%";
     elComp.style.color = comprometimento > 30 ? "#A3372A" : "var(--laranja)";
 
-    desenharGrafico(saldosSac, saldosPrice);
+    desenharGrafico(saldos);
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
@@ -414,8 +422,10 @@
     document.getElementById("input-entrada").value = "";
     document.getElementById("input-renda").value = "";
     document.getElementById("input-juros").value = "10,5";
-    document.getElementById("input-tr").value = "2,0";
+    document.getElementById("input-indice").value = "2,0";
     document.getElementById("select-prazo").value = "30";
+    selectModalidade.value = "TR";
+    labelIndice.textContent = "TR Média (% a.a.)";
     
     document.getElementById("res-parcela-inicial").textContent = "R$ 0,00";
     document.getElementById("res-saldo").textContent = "R$ 0,00";
