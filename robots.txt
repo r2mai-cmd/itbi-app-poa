@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itbidata.com.br/sitemap.xml
