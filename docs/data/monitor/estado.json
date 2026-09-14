@@ -307,7 +307,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
-    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
   },
   "fortaleza": {
     "fingerprint": "ed7d9391deb824837ca0193f5684c4c5aab399c752fa47fc31c96a1184784d2d",
@@ -327,7 +327,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
-    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
   },
   "porto-alegre": {
     "fingerprint": "dba15e58a25718640e10de2cbc4c579b5fef4d3543853ddc81da3f3a6d0f0115",
@@ -417,7 +417,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
-    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
   },
   "recife": {
     "fingerprint": "19253846b2b324654b4c1456a1aca41c7b524f9ffae775b0576e1d2e13cb366f",
@@ -557,12 +557,16 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi",
-    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
   },
   "sao-paulo": {
-    "erro": "HTTP Error 403: Forbidden",
+    "content_length": 189771,
+    "fingerprint": "74fa2747a5b1605c67b3a9e4d113eb4bce67fbace73cf6b1dce75991abb0c895",
+    "last_modified_http": null,
     "nome": "São Paulo",
+    "tipo": "pagina",
+    "titulo": "<!DOCTYPE html> <html class=\"ltr\" dir=\"ltr\" lang=\"pt-BR\"> <head> <title>Dados das Transações I",
     "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
-    "verificado_em": "2026-09-10T22:33:04.313159+00:00"
+    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
   }
 }
