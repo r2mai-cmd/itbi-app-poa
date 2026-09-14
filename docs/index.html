@@ -802,9 +802,16 @@ white-space: nowrap;
 
   function parseDataPoa(texto) {
     if (!texto) return null;
-    var m = texto.trim().match(/^(\d{4})\/(\d{2})\/(\d{2})/);
-    if (!m) return null;
-    return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    var t = texto.trim();
+    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
+    if (m) {
+      return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    }
+    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (m) {
+      return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
+    }
+    return null;
   }
   function chaveOrdenacao(data) {
     return data ? data.y * 10000 + data.mo * 100 + data.d : -1;
