@@ -6,7 +6,7 @@
 <title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
 <link rel="icon" type="image/png" href="./favicon.png">
 <link rel="apple-touch-icon" href="./favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HTD7CLQPZ2"></script>
 <script>
@@ -15,7 +15,7 @@
   gtag('js', new Date());
   gtag('config', 'G-HTD7CLQPZ2');
 </script>
-<script async src="https://pagead2.googlesyndication.com/page/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -46,6 +46,7 @@ color: var(--texto-sobre-fundo);
 min-height: 100vh;
 display: flex;
 flex-direction: column;
+overflow-x: hidden;
 }
 
 /* ===== Barra de marca (logo e menu unificado) ===== */
@@ -53,8 +54,9 @@ flex-direction: column;
 display: flex;
 align-items: center;
 justify-content: space-between;
-padding: 14px max(4vw, 24px);
+padding: 14px 20px;
 background: var(--fundo-escuro-claro);
+width: 100%;
 }
 .link-marca {
   display: flex;
@@ -101,14 +103,13 @@ letter-spacing: -0.01em;
 .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
 .dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
 
-/* ===== Cabecalho: foto + titulo ===== */
+/* ===== Cabecalho: foto + titulo expandido 100% ===== */
 .cabecalho {
-position: sticky;
-top: 0;
-z-index: 5;
+position: relative;
 width: 100%;
 height: 300px;
 overflow: hidden;
+margin: 0;
 }
 .cabecalho img {
 display: block;
@@ -120,32 +121,34 @@ object-position: center 55%;
 .cabecalho-veu {
   position: absolute;
   inset: 0;
-background: linear-gradient(90deg, rgba(20, 26, 31, 0.92) 0%, rgba(20, 26, 31, 0.72) 36%, rgba(20, 26, 31, 0.2) 60%, rgba(20, 26, 31, 0) 80%);  pointer-events: none;
+  background: linear-gradient(90deg, rgba(20, 26, 31, 0.95) 0%, rgba(20, 26, 31, 0.75) 45%, rgba(20, 26, 31, 0.3) 75%, rgba(20, 26, 31, 0.1) 100%);
+  pointer-events: none;
 }
 .cabecalho-texto {
 position: absolute;
 left: 0;
 right: 0;
 bottom: 0;
-padding: 32px max(4vw, 24px) 30px;
+padding: 28px 20px;
 max-width: 1800px;
 margin: 0 auto;
+width: 100%;
 }
 .cabecalho-titulo {
 margin: 0;
 font-family: var(--fonte-corpo);
 font-weight: 800;
 text-transform: uppercase;
-font-size: clamp(1.5rem, 3vw, 2.3rem);
+font-size: clamp(1.4rem, 2.8vw, 2.3rem);
 color: #fff;
 letter-spacing: 0.01em;
 line-height: 1.2;
 }
 .cabecalho-subtitulo {
-margin: 10px 0 0;
-font-size: 0.95rem;
+margin: 8px 0 0;
+font-size: 0.9rem;
 color: rgba(255,255,255,0.85);
-max-width: 46ch;
+max-width: 50ch;
 }
 
 /* ===== Corpo: barra lateral fixa + area principal ===== */
@@ -155,13 +158,14 @@ flex: 1;
 display: flex;
 align-items: flex-start;
 gap: 28px;
-padding: 32px;
+padding: 24px 20px;
+width: 100%;
 }
 .barra-lateral {
-width: 340px;
+width: 360px;
 flex-shrink: 0;
 position: sticky;
-top: 348px;
+top: 24px;
 }
 .area-principal {
 flex: 1;
@@ -169,21 +173,83 @@ min-width: 0;
 display: flex;
 flex-direction: column;
 gap: 12px;
+width: 100%;
 }
-.grade-resultados { display: flex; flex-direction: column; gap: 12px; }
+.grade-resultados { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 
 @media (max-width: 900px) {
-.corpo { flex-direction: column; padding: 20px; gap: 20px; }
+.corpo { flex-direction: column; padding: 16px; gap: 20px; }
 .barra-lateral { width: 100%; position: static; }
-.cabecalho { height: 200px; }
+.cabecalho { height: 220px; }
 }
 
+/* ===== Cartão de Pesquisa e Resultados unificados na largura ===== */
 .cartao {
 background: var(--pergaminho);
 color: var(--texto-card);
 border-radius: 14px;
 padding: 22px 24px 24px;
 box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+width: 100%;
+}
+
+.resultado {
+background: var(--pergaminho);
+border-radius: 14px;
+padding: 22px 24px 24px;
+box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+cursor: pointer;
+transition: transform 0.15s ease, box-shadow 0.15s ease;
+width: 100%;
+box-sizing: border-box;
+}
+.resultado:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+.resultado-info { flex: 1; min-width: 0; }
+.resultado-endereco {
+font-family: var(--fonte-corpo);
+font-size: 1rem;
+font-weight: 700;
+color: var(--texto-card);
+margin: 0 0 2px;
+}
+.resultado-sub { font-size: 0.78rem; color: var(--texto-card-sutil); }
+.resultado-valores { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.resultado-preco {
+  font-family: var(--fonte-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #24231F !important;
+}
+.resultado-data { font-size: 0.75rem; color: var(--texto-card-sutil); margin-top: 2px; }
+.resultado-mais {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--laranja);
+  text-decoration: none;
+  gap: 2px;
+}
+
+.resultado-mais-icone {
+  font-family: var(--fonte-corpo);
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.resultado-mais-texto {
+  font-family: var(--fonte-corpo);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 /* ===== Barra de Controles de Listagem (Topo) ===== */
@@ -197,6 +263,7 @@ box-shadow: 0 4px 14px rgba(0,0,0,0.25);
   padding: 10px 16px;
   border-radius: 10px;
   margin-bottom: 4px;
+  width: 100%;
 }
 .contagem {
   font-size: 0.78rem;
@@ -346,6 +413,7 @@ margin-bottom: 16px;
   padding: 12px 18px;
   border-radius: 12px;
   margin-top: 8px;
+  width: 100%;
 }
 .paginacao-info { font-size: 0.8rem; color: var(--texto-sobre-fundo-sutil); font-weight: 500; }
 .paginacao-botoes { display: flex; align-items: center; gap: 6px; }
@@ -382,63 +450,6 @@ animation: deslizar 1.1s ease-in-out infinite;
 .faixa-aviso p { margin: 0; color: var(--vermelho-erro); }
 .faixa-aviso.aviso-suave p { color: var(--laranja-escuro); }
 
-/* ===== Card de resultado ===== */
-.resultado {
-background: var(--pergaminho);
-border-radius: 12px;
-padding: 16px 18px;
-box-shadow: 0 3px 10px rgba(0,0,0,0.22);
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 12px;
-cursor: pointer;
-transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.resultado:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
-.resultado-info { flex: 1; min-width: 0; }
-.resultado-endereco {
-font-family: var(--fonte-corpo);
-font-size: 1rem;
-font-weight: 700;
-color: var(--texto-card);
-margin: 0 0 2px;
-}
-.resultado-sub { font-size: 0.78rem; color: var(--texto-card-sutil); }
-.resultado-preco {
-  font-family: var(--fonte-mono);
-  font-size: 1rem;
-  font-weight: 700;
-  color: #24231F !important;
-}
-.resultado-data { font-size: 0.75rem; color: var(--texto-card-sutil); margin-top: 2px; }
-.resultado-mais {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--laranja);
-  text-decoration: none;
-  gap: 2px;
-}
-
-.resultado-mais-icone {
-  font-family: var(--fonte-corpo);
-  font-size: 1.2rem;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.resultado-mais-texto {
-  font-family: var(--fonte-corpo);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
 /* ===== Ficha de detalhe ===== */
 .ficha-titulo { font-family: var(--fonte-corpo); font-size: 1.5rem; font-weight: 800; color: var(--texto-sobre-fundo); margin: 0 0 4px; }
 .ficha-subtitulo { font-size: 0.85rem; color: var(--texto-sobre-fundo-sutil); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 20px; }
@@ -459,18 +470,25 @@ border-bottom: none;
 .ficha-rotulo { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--texto-card-sutil); }
 .ficha-valor { font-family: var(--fonte-mono); font-size: 0.92rem; color: var(--texto-card); text-align: right; }
 .ficha-secao-titulo { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--texto-card-sutil); margin: 0 0 12px; }
-.ficha-cartoes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.ficha-cartoes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; width: 100%; }
 @media (max-width: 700px) { .ficha-cartoes { grid-template-columns: 1fr; } }
 
 .rodape {
-padding: 24px 32px 36px;
+padding: 32px 24px;
 border-top: 1px solid rgba(245, 243, 237, 0.12);
 max-width: 1800px;
 margin: 0 auto;
+display: flex;
+flex-direction: column;
+gap: 8px;
+align-items: center;
+width: 100%;
 }
-.rodape p { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); text-align: center; }
-.rodape p:last-child { margin-bottom: 0; }
+.rodape p { margin: 0; font-size: 0.72rem; line-height: 1.5; color: var(--texto-sobre-fundo-sutil); text-align: center; }
 .rodape a { color: var(--agua-turquesa); text-decoration: underline; }
+.links-rodape { display: flex; gap: 16px; margin-top: 4px; align-items: center; }
+.links-rodape a { color: var(--agua-turquesa); text-decoration: none; font-weight: 600; font-size: 0.75rem; }
+.links-rodape a:hover { text-decoration: underline; }
 
 .banner-cookies {
 position: fixed;
@@ -512,15 +530,25 @@ cursor: pointer;
 white-space: nowrap;
 }
 .banner-cookies button:hover { filter: brightness(1.06); }
+
+/* Banner fixo de Privacidade / LGPD complementar */
+.banner-privacidade { position: fixed; bottom: 0; left: 0; right: 0; background: var(--fundo-escuro-claro); color: var(--texto-sobre-fundo); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; z-index: 1000; box-shadow: 0 -4px 16px rgba(0,0,0,0.4); border-top: 2px solid var(--laranja); font-size: 0.82rem; }
+.banner-privacidade p { margin: 0; line-height: 1.4; text-align: left; }
+.banner-privacidade a { color: var(--agua-turquesa); text-decoration: underline; }
+.banner-privacidade button { background: linear-gradient(180deg, var(--laranja) 0%, var(--laranja-escuro) 100%); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: var(--fonte-corpo); }
+.banner-privacidade button:hover { filter: brightness(1.06); }
+@media (max-width: 600px) { .banner-privacidade { flex-direction: column; align-items: flex-start; } }
+
 /* Cards individuais de cada índice: sem acavalar e com fundo bege correto */
 #bloco-cdi, #bloco-ipca, #bloco-igpm {
   background-color: var(--pergaminho, #EDE9DE) !important;
-  border-radius: 12px !important;
+  border-radius: 14px !important;
   margin-top: 14px !important;
   margin-bottom: 0 !important;
-  padding: 16px 20px !important;
+  padding: 22px 24px 24px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   border: none !important;
+  width: 100% !important;
 }
 
 /* Título de cada índice */
@@ -574,7 +602,8 @@ white-space: nowrap;
 </div>
 
   <header class="cabecalho" id="cabecalho">
-<img src="./banner.jpg" alt="Mercado Imobiliário" />    <div class="cabecalho-veu"></div>
+    <img src="./banner.jpg" alt="Mercado Imobiliário" />
+    <div class="cabecalho-veu"></div>
     <div class="cabecalho-texto">
       <h1 class="cabecalho-titulo">Sua fonte de inteligência para preços de imóveis</h1>
       <p class="cabecalho-subtitulo">Consulte o histórico de transações reais de ITBI, direto dos dados abertos das prefeituras.</p>
@@ -684,56 +713,32 @@ white-space: nowrap;
       </main>
     </div>
 
-<!-- SEÇÃO EDUCATIVA (GUIA DO MERCADO & DADOS REAIS) -->
-<section class="secao-educativa" style="padding: 0 32px 24px;">
-  <div style="border-left: 4px solid #F0913A; padding-left: 0.75rem; margin-bottom: 1.5rem;">
-    <h2 style="font-size: 1rem; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Guia do Mercado &amp; Dados Reais</h2>
-    <p style="font-size: 0.75rem; color: rgba(245, 243, 237, 0.65); margin-top: 0.25rem;">Informações técnicas sobre o ITBI e a base cartorária</p>
-  </div>
-
-  <div style="margin-bottom: 1.25rem;">
-    <h3 style="font-size: 0.875rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">1. O que é o ITBI e quem deve pagar?</h3>
-    <p style="font-size: 0.75rem; line-height: 1.6; color: rgba(245, 243, 237, 0.8); margin: 0;">
-      O Imposto sobre Transmissão de Bens Imóveis (ITBI) incide na transferência onerosa de propriedades entre vivos. O recolhimento cabe ao adquirente (comprador) e é condição indispensável para a lavratura da escritura definitiva e matrícula no Cartório de Registro de Imóveis.
-    </p>
-  </div>
-
-  <div style="margin-bottom: 1.25rem;">
-    <h3 style="font-size: 0.875rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">2. Como dados reais ajudam na avaliação?</h3>
-    <p style="font-size: 0.75rem; line-height: 1.6; color: rgba(245, 243, 237, 0.8); margin: 0;">
-      Diferente de avaliações empíricas, a base de ITBI espelha o valor real concretizado na transação. Isso permite calcular a média fidedigna de R$/m² no bairro e rua, servindo de baliza sólida contra flutuações e estimativas inflacionadas.
-    </p>
-  </div>
-
-  <div style="margin-bottom: 1.25rem;">
-    <h3 style="font-size: 0.875rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">3. Preço anunciado vs. valor registrado em cartório</h3>
-    <p style="font-size: 0.75rem; line-height: 1.6; color: rgba(245, 243, 237, 0.8); margin: 0;">
-      Portais imobiliários mostram a intenção de venda com margem de barganha embutida. O valor apurado no ITBI retrata o preço negociado final, expondo o deságio médio praticado em cada região.
-    </p>
-  </div>
-</section>
-    
+    <!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
     <footer class="rodape">
       <p>
-        Dados: Prefeitura Municipal de Porto Alegre &mdash;
-        <a href="https://dadosabertos.poa.br/dataset/itbi" target="_blank" rel="noopener">dadosabertos.poa.br</a>,
-        sob licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR" target="_blank" rel="noopener">Creative Commons Atribuição (CC-BY)</a>.
+        Dados: Portais de Dados Abertos Municipais &mdash; portais oficiais de transparência das prefeituras atendidas,
+        sob licença aberta Creative Commons (CC-BY).
       </p>
       <p>
-        O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura.
+        O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura ou órgão público.
         As informações têm caráter informativo, incluindo os valores de correção monetária
         (calculados automaticamente a partir de índices públicos). Não substituem certidões
         oficiais nem assessoria jurídica ou financeira &mdash; confira sempre a fonte original
         antes de qualquer decisão.
       </p>
+      <div class="links-rodape">
+        <a href="privacidade.html">Política de Privacidade</a>
+        <span>&bull;</span>
+        <a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
+      </div>
     </footer>
   </div>
 
   <div id="cookie-banner" class="banner-cookies">
     <p>
-      Utilizamos cookies e tecnologias semelhantes para analisar o tr\u00e1fego do site e melhorar sua experi\u00eancia.
-      Ao continuar navegando, voc\u00ea concorda com a nossa
-      <a href="privacidade.html">Pol\u00edtica de Privacidade</a>.
+      Utilizamos cookies e tecnologias semelhantes para analisar o tráfego do site e melhorar sua experiência.
+      Ao continuar navegando, você concorda com a nossa
+      <a href="privacidade.html">Política de Privacidade</a>.
     </p>
     <button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
   </div>
@@ -958,26 +963,22 @@ white-space: nowrap;
   var FONTES = {
     poa: {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      urlPorAno: {
-        2020: BASE_POA + "/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.csv",
-        2021: BASE_POA + "/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.csv",
-        2022: BASE_POA + "/102520c0-3edc-4f85-947f-6a98b96ed160/download/itbi-2022.csv",
-        2023: BASE_POA + "/2a4b0aee-7126-4323-936d-5f82fd04aeef/download/itbi-2023.csv",
-        2024: BASE_POA + "/4947bed6-6be6-40e6-a120-42957e745da5/download/itbi-2024.csv",
-        2025: BASE_POA + "/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv",
-        2026: BASE_POA + "/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
+      arquivoLocalPorAno: { 
+        2020: "data/itbi-2020.csv", 
+        2021: "data/itbi-2021.csv", 
+        2022: "data/itbi-2022.csv", 
+        2023: "data/itbi-2023.csv", 
+        2024: "data/itbi-2024.csv", 
+        2025: "data/itbi-2025.csv", 
+        2026: "data/itbi-2026.csv" 
       },
-      arquivoLocalPorAno: { 2025: "data/itbi-2025.csv", 2026: "data/itbi-2026.csv" },
       chaveCache: function (ano) { return "poa_" + ano; },
       baixarCsv: function (ano) {
         var arquivoLocal = this.arquivoLocalPorAno[ano];
-        if (arquivoLocal) {
-          return fetch(arquivoLocal).then(function (resp) {
-            if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
-            return resp.text();
-          });
-        }
-        return baixarTexto(this.urlPorAno[ano]);
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
+          return resp.text();
+        });
       },
       processarCsv: function (texto, ano) {
         var linhas = texto.split("\n");
@@ -1023,15 +1024,26 @@ white-space: nowrap;
 
     "sao-paulo": {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      arquivoLocal: "data/itbi-sao-paulo.csv",
-      chaveCache: function () { return "sao-paulo_completo"; },
-      baixarCsv: function () {
-        return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("Dados de São Paulo ainda não disponíveis na pasta data/");
+      arquivoLocalPorAno: {
+        2020: "data/itbi-sp-2020.csv",
+        2021: "data/itbi-sp-2021.csv",
+        2022: "data/itbi-sp-2022.csv",
+        2023: "data/itbi-sp-2023.csv",
+        2024: "data/itbi-sp-2024.csv",
+        2025: "data/itbi-sp-2025.csv",
+        2026: "data/itbi-sp-2026.csv"
+      },
+      chaveCache: function (ano) { return "sao-paulo_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (!arquivoLocal) return Promise.resolve("");
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
           return resp.text();
         });
       },
       processarCsv: function (texto, ano) {
+        if (!texto) return [];
         var linhas = texto.split("\n");
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
@@ -1043,9 +1055,7 @@ white-space: nowrap;
             if (reg) {
               reg.cidadeNome = "São Paulo";
               reg.estadoSigla = "SP";
-              // A base histórica de SP usa PERC em escalas diferentes:
-              // 10000 representa 100%; 20 representa 20%; 100 representa 100%.
-              // Normaliza apenas valores acima de 100, preservando percentuais reais.
+              // Na base de SP, alguns registros antigos usam 10000 para representar 100%.
               if (reg.percTransmitido !== null && reg.percTransmitido > 100) {
                 reg.percTransmitido = reg.percTransmitido / 100;
               }
@@ -1059,15 +1069,26 @@ white-space: nowrap;
 
     "belo-horizonte": {
       anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      arquivoLocal: "data/itbi-belo-horizonte.csv",
-      chaveCache: function () { return "belo-horizonte_completo"; },
-      baixarCsv: function () {
-        return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("Dados de Belo Horizonte ainda não disponíveis na pasta data/");
+      arquivoLocalPorAno: {
+        2020: "data/itbi-bh-2020.csv",
+        2021: "data/itbi-bh-2021.csv",
+        2022: "data/itbi-bh-2022.csv",
+        2023: "data/itbi-bh-2023.csv",
+        2024: "data/itbi-bh-2024.csv",
+        2025: "data/itbi-bh-2025.csv",
+        2026: "data/itbi-bh-2026.csv"
+      },
+      chaveCache: function (ano) { return "belo-horizonte_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (!arquivoLocal) return Promise.resolve("");
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
           return resp.text();
         });
       },
       processarCsv: function (texto, ano) {
+        if (!texto) return [];
         var linhas = texto.split("\n");
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
@@ -1088,16 +1109,26 @@ white-space: nowrap;
     },
 
     recife: {
-      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
-      arquivoLocal: "data/itbi-recife.csv",
-      chaveCache: function () { return "recife_completo"; },
-      baixarCsv: function () {
-        return fetch(this.arquivoLocal).then(function (resp) {
-          if (!resp.ok) throw new Error("Dados de Recife ainda não disponíveis na pasta data/");
+      anosDisponiveis: [2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocalPorAno: {
+        2020: "data/itbi-recife-2020.csv",
+        2021: "data/itbi-recife-2021.csv",
+        2022: "data/itbi-recife-2022.csv",
+        2023: "data/itbi-recife-2023.csv",
+        2024: "data/itbi-recife-2024.csv",
+        2025: "data/itbi-recife-2025.csv"
+      },
+      chaveCache: function (ano) { return "recife_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (!arquivoLocal) return Promise.resolve("");
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
           return resp.text();
         });
       },
       processarCsv: function (texto, ano) {
+        if (!texto) return [];
         var linhas = texto.split("\n");
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
@@ -1301,10 +1332,10 @@ white-space: nowrap;
     });
   }
 
-  elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
-  elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
-  elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); } });
-  elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); });
+  elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); } });
+  elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); } });
+  elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); });
   
   elSelectTamanhoPagina.addEventListener("change", function () {
     tamanhoPagina = parseInt(this.value, 10);
@@ -1335,7 +1366,6 @@ white-space: nowrap;
 
     var numero = r.numeroEndereco && r.numeroEndereco !== "0" ? r.numeroEndereco : null;
     var cidadeEstado = r.cidadeNome && r.estadoSigla ? r.cidadeNome + " - " + r.estadoSigla : "Brasil";
-    // Ajustado para aceitar o link do StreetView mesmo se o número vier vazio/ausente
     var enderecoMapa = r.logradouro ? r.logradouro + (numero ? ", " + numero : "") + ", " + cidadeEstado + ", Brasil" : null;
 
     var html = '<a class="link-voltar" id="link-voltar">&larr; Voltar à lista</a>';
@@ -1401,7 +1431,7 @@ white-space: nowrap;
       }
     }
     document.getElementById("link-voltar").addEventListener("click", function () {
-      history.back();
+      fecharDetalhe();
     });
 
     if (r.baseCalculo != null && r.dataReferencia) {
@@ -1429,9 +1459,16 @@ white-space: nowrap;
     elResultados.style.display = "none";
     elBarraTopoResultados.style.display = "none";
     elControlesPaginacao.style.display = "none";
+    
     elDetalhe.hidden = false;
     elDetalhe.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
+    // Rola suavemente até o início do bloco de detalhes (onde aparece "Voltar à lista")
+    setTimeout(function() {
+      var rect = elDetalhe.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo({ top: rect.top + scrollTop - 10, behavior: "smooth" });
+    }, 30);
   }
 
   function dataParaBcb(data) {
@@ -1524,6 +1561,13 @@ white-space: nowrap;
       elControlesPaginacao.style.display = "flex";
     }
     detalheEmpilhadoNoHistorico = false;
+    
+    // Rola suavemente até o início da lista de resultados encontrada
+    setTimeout(function() {
+      var rect = elBarraTopoResultados.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+    }, 30);
   }
 
   var detalheEmpilhadoNoHistorico = false;
@@ -1560,6 +1604,14 @@ white-space: nowrap;
       paginaAtual = 1;
       elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
       renderizarResultados(resultado.registros);
+      
+      // Rola suavemente até o topo da lista de resultados encontrada após a pesquisa
+      setTimeout(function() {
+        var rect = elBarraTopoResultados.getBoundingClientRect();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+      }, 50);
+
       if (resultado.anosComErro.length > 0) {
         elFaixaAvisoAnos.classList.add("ativa");
         elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
