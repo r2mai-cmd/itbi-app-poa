@@ -1,23 +1,24 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
-<link rel="icon" type="image/png" href="./favicon.png">
-<link rel="apple-touch-icon" href="./favicon.png">
-<link rel="apple-touch-icon" href="favicon.png">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>itbidata — Dados de ITBI e transações imobiliárias</title>
+<link href="./favicon.png" rel="icon" type="image/png"/>
+<link href="./favicon.png" rel="apple-touch-icon"/>
+<link href="favicon.png" rel="apple-touch-icon"/>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HTD7CLQPZ2"></script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-HTD7CLQPZ2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-HTD7CLQPZ2');
 </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4809506430686227" crossorigin="anonymous"></script>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4809506430686227"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
   :root {
     --fundo-escuro: #34383D;
@@ -101,7 +102,7 @@ letter-spacing: -0.01em;
 .dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
 .dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
 .dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
-.dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
+.dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover, .dropdown.aberto .dropdown-conteudo { display: block; }
 
 /* ===== Cabecalho: foto + titulo expandido 100% ===== */
 .cabecalho {
@@ -577,177 +578,282 @@ white-space: nowrap;
   color: #6B6A63 !important;
   margin: 0 !important;
 }
+
+/* ===== Conteúdo editorial / educativo ===== */
+.secao-educativa {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 10px 32px 34px;
+}
+.secao-educativa-cabecalho {
+  border-left: 4px solid var(--laranja);
+  padding-left: 14px;
+  margin-bottom: 22px;
+}
+.secao-educativa-cabecalho h2 {
+  margin: 0 0 4px;
+  color: var(--texto-sobre-fundo);
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+.secao-educativa-cabecalho p {
+  margin: 0;
+  color: var(--texto-sobre-fundo-sutil);
+  font-size: 0.82rem;
+}
+.educativa-grade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.educativa-bloco {
+  background: var(--fundo-escuro-claro);
+  border: 1px solid rgba(245, 243, 237, 0.10);
+  border-radius: 12px;
+  padding: 20px;
+}
+.educativa-bloco h3 {
+  margin: 0 0 8px;
+  color: var(--texto-sobre-fundo);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.educativa-bloco p {
+  margin: 0;
+  color: var(--texto-sobre-fundo-sutil);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+.educativa-nota {
+  grid-column: 1 / -1;
+  border-left: 4px solid var(--agua-turquesa);
+}
+@media (max-width: 700px) {
+  .secao-educativa { padding: 8px 16px 28px; }
+  .educativa-grade { grid-template-columns: 1fr; }
+  .educativa-nota { grid-column: auto; }
+}
+
+@media (max-width: 700px) {
+  .barra-marca { padding: 12px 12px; }
+  .menu-nav { gap: 4px; }
+  .btn-nav { padding: 7px 9px; font-size: 0.74rem; }
+  .dropdown-conteudo { min-width: 245px; max-width: calc(100vw - 24px); }
+}
+
 </style>
-</head>
+<meta content="Consulte dados públicos de transações imobiliárias e ITBI por cidade, endereço e ano. O itbidata organiza informações de Porto Alegre, São Paulo, Belo Horizonte, Fortaleza e Recife." name="description"/><link href="https://www.itbidata.com.br/" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="itbidata — Dados de ITBI e transações imobiliárias" property="og:title"/><meta content="Consulte dados públicos de transações imobiliárias e ITBI por cidade, endereço e ano. O itbidata organiza informações de Porto Alegre, São Paulo, Belo Horizonte, Fortaleza e Recife." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/" property="og:url"/></head>
 <body>
 <div class="barra-marca">
-  <a href="index.html" class="link-marca">
-    <img src="./favicon.png" alt="itbidata" />
-    <span class="nome-marca">itbi<span>data</span></span>
-  </a>
-  <div class="menu-nav">
-    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
-    <div class="dropdown">
-      <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
-      <div class="dropdown-conteudo">
-        <a href="simulador-financiamento.html">&#127968; Financiamento (SAC x PRICE)</a>
-        <a href="calculadora-itbi.html">&#128221; Custos de ITBI e Registro</a>
-        <a href="poder-de-compra.html">&#128179; Poder de Compra & Renda</a>
-        <a href="comprar-ou-alugar.html">&#9878; Comprar ou Alugar?</a>
-        <a href="calculadora-m2.html">&#128207; Preço do Metro Quadrado (m²)</a>
-        <a href="consorcio-vs-financiamento.html">&#128188; Consórcio vs. Financiamento</a>
-      </div>
-    </div>
-  </div>
+<a class="link-marca" href="index.html">
+<img alt="itbidata" src="./favicon.png"/>
+<span class="nome-marca">itbi<span>data</span></span>
+</a>
+<div class="menu-nav">
+<a class="btn-nav btn-destaque" href="estatisticas.html">Estatísticas</a>
+<div class="dropdown">
+<button aria-expanded="false" aria-haspopup="true" class="btn-nav btn-destaque btn-simuladores" type="button">Simuladores ▾</button>
+<div class="dropdown-conteudo">
+<a href="simulador-financiamento.html">🏠 Financiamento (SAC x PRICE)</a>
+<a href="calculadora-itbi.html">📝 Custos de ITBI e Registro</a>
+<a href="poder-de-compra.html">💳 Poder de Compra &amp; Renda</a>
+<a href="comprar-ou-alugar.html">⚖ Comprar ou Alugar?</a>
+<a href="calculadora-m2.html">📏 Preço do Metro Quadrado (m²)</a>
+<a href="consorcio-vs-financiamento.html">💼 Consórcio vs. Financiamento</a>
 </div>
-
-  <header class="cabecalho" id="cabecalho">
-    <img src="./banner.jpg" alt="Mercado Imobiliário" />
-    <div class="cabecalho-veu"></div>
-    <div class="cabecalho-texto">
-      <h1 class="cabecalho-titulo">Sua fonte de inteligência para preços de imóveis</h1>
-      <p class="cabecalho-subtitulo">Consulte o histórico de transações reais de ITBI, direto dos dados abertos das prefeituras.</p>
-    </div>
-  </header>
-
-  <div class="pagina">
-    <div class="corpo">
-      <aside class="barra-lateral">
-        <section class="cartao">
-          <div class="campo">
-            <label for="cidade">Cidade</label>
-            <select id="cidade">
-              <option value="poa">Porto Alegre - RS</option>
-              <option value="fortaleza">Fortaleza - CE</option>
-              <option value="sao-paulo">São Paulo - SP</option>
-              <option value="belo-horizonte">Belo Horizonte - MG</option>
-              <option value="recife">Recife - PE</option>
-            </select>
-          </div>
-
-          <div class="campo">
-            <label for="endereco">Endereço (rua ou avenida)</label>
-            <input type="text" id="endereco" placeholder="Ex: Nome da rua ou avenida">
-          </div>
-
-          <div class="campo-linha">
-            <div class="campo">
-              <label for="numero">Número</label>
-              <input type="text" id="numero" placeholder="opcional" inputmode="numeric">
-            </div>
-            <div class="campo">
-              <label for="ano">Ano</label>
-              <select id="ano">
-                <option value="">Todos</option>
-                <option value="2026" selected>2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-              </select>
-            </div>
-          </div>
-
-          <button class="botao botao-primario" id="btn-pesquisar">&#128269; Pesquisar</button>
-          <div class="acoes-secundarias">
-            <button class="botao-texto" id="btn-limpar">&#10005; Limpar</button>
-            <button class="botao-texto" id="btn-atualizar">&#8635; Atualizar dados</button>
-          </div>
-
-          <div class="barra-progresso" id="barra-progresso"><div class="barra-progresso-preenchimento"></div></div>
-          <p class="texto-progresso" id="texto-progresso" style="display:none;"></p>
-
-          <div class="faixa-aviso" id="faixa-erro">
-            <div class="risco"></div>
-            <p id="texto-erro"></p>
-          </div>
-          <div class="faixa-aviso aviso-suave" id="faixa-aviso-anos">
-            <div class="risco"></div>
-            <p id="texto-aviso-anos"></p>
-          </div>
-        </section>
-      </aside>
-
-      <main class="area-principal">
-        <div class="barra-topo-resultados" id="barra-topo-resultados" style="display:none;">
-          <p class="contagem" id="contagem"></p>
-          <div class="controles-topo-direita">
-            <div class="tamanho-pagina-grupo">
-              <label for="select-tamanho-pagina">Por página:</label>
-              <select id="select-tamanho-pagina">
-                <option value="5">5</option>
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-            </div>
-            <div class="ordenacao-grupo">
-              <label for="select-ordenacao">Ordenar:</label>
-              <select id="select-ordenacao">
-                <option value="recente" selected>Mais recentes</option>
-                <option value="antigo">Mais antigos</option>
-                <option value="maior-valor">Maior valor</option>
-                <option value="menor-valor">Menor valor</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="grade-resultados" id="resultados"></div>
-
-        <div class="controles-paginacao" id="controles-paginacao" style="display:none;">
-          <div class="paginacao-info" id="paginacao-info">Mostrando 0 a 0 de 0 registros</div>
-          <div class="paginacao-botoes">
-            <button class="btn-pagina" id="btn-primeira">&laquo; Primeira</button>
-            <button class="btn-pagina" id="btn-anterior">&lsaquo; Anterior</button>
-            <span id="paginacao-numeros" style="font-size:0.8rem; font-weight:700; margin:0 6px; color:#fff;">Pág. 1 de 1</span>
-            <button class="btn-pagina" id="btn-proxima">Próxima &rsaquo;</button>
-            <button class="btn-pagina" id="btn-ultima">&raquo; Última</button>
-          </div>
-        </div>
-
-        <div id="detalhe" hidden></div>
-      </main>
-    </div>
-
-    <!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
-    <footer class="rodape">
-      <p>
-        Dados: Portais de Dados Abertos Municipais &mdash; portais oficiais de transparência das prefeituras atendidas,
+</div>
+</div>
+</div>
+<header class="cabecalho" id="cabecalho">
+<img alt="Mercado Imobiliário" src="./banner.jpg"/>
+<div class="cabecalho-veu"></div>
+<div class="cabecalho-texto">
+<h1 class="cabecalho-titulo">Sua fonte de inteligência para preços de imóveis</h1>
+<p class="cabecalho-subtitulo">Consulte o histórico de transações reais de ITBI, direto dos dados abertos das prefeituras.</p>
+</div>
+</header>
+<div class="pagina">
+<div class="corpo">
+<aside class="barra-lateral">
+<section class="cartao">
+<div class="campo">
+<label for="cidade">Cidade</label>
+<select id="cidade">
+<option value="poa">Porto Alegre - RS</option>
+<option value="fortaleza">Fortaleza - CE</option>
+<option value="sao-paulo">São Paulo - SP</option>
+<option value="belo-horizonte">Belo Horizonte - MG</option>
+<option value="recife">Recife - PE</option>
+</select>
+</div>
+<div class="campo">
+<label for="endereco">Endereço (rua ou avenida)</label>
+<input id="endereco" placeholder="Ex: Nome da rua ou avenida" type="text"/>
+</div>
+<div class="campo-linha">
+<div class="campo">
+<label for="numero">Número</label>
+<input id="numero" inputmode="numeric" placeholder="opcional" type="text"/>
+</div>
+<div class="campo">
+<label for="ano">Ano</label>
+<select id="ano">
+<option value="">Todos</option>
+<option selected="" value="2026">2026</option>
+<option value="2025">2025</option>
+<option value="2024">2024</option>
+<option value="2023">2023</option>
+<option value="2022">2022</option>
+<option value="2021">2021</option>
+<option value="2020">2020</option>
+</select>
+</div>
+</div>
+<button class="botao botao-primario" id="btn-pesquisar" type="button">🔍 Pesquisar</button>
+<div class="acoes-secundarias">
+<button class="botao-texto" id="btn-limpar" type="button">✕ Limpar</button>
+<button class="botao-texto" id="btn-atualizar" type="button">↻ Atualizar dados</button>
+</div>
+<div class="barra-progresso" id="barra-progresso"><div class="barra-progresso-preenchimento"></div></div>
+<p class="texto-progresso" id="texto-progresso" style="display:none;"></p>
+<div class="faixa-aviso" id="faixa-erro">
+<div class="risco"></div>
+<p id="texto-erro"></p>
+</div>
+<div class="faixa-aviso aviso-suave" id="faixa-aviso-anos">
+<div class="risco"></div>
+<p id="texto-aviso-anos"></p>
+</div>
+</section>
+</aside>
+<main class="area-principal">
+<div class="barra-topo-resultados" id="barra-topo-resultados" style="display:none;">
+<p class="contagem" id="contagem"></p>
+<div class="controles-topo-direita">
+<div class="tamanho-pagina-grupo">
+<label for="select-tamanho-pagina">Por página:</label>
+<select id="select-tamanho-pagina">
+<option value="5">5</option>
+<option selected="" value="10">10</option>
+<option value="20">20</option>
+<option value="50">50</option>
+<option value="100">100</option>
+</select>
+</div>
+<div class="ordenacao-grupo">
+<label for="select-ordenacao">Ordenar:</label>
+<select id="select-ordenacao">
+<option selected="" value="recente">Mais recentes</option>
+<option value="antigo">Mais antigos</option>
+<option value="maior-valor">Maior valor</option>
+<option value="menor-valor">Menor valor</option>
+</select>
+</div>
+</div>
+</div>
+<div class="grade-resultados" id="resultados"></div>
+<div class="controles-paginacao" id="controles-paginacao" style="display:none;">
+<div class="paginacao-info" id="paginacao-info">Mostrando 0 a 0 de 0 registros</div>
+<div class="paginacao-botoes">
+<button class="btn-pagina" id="btn-primeira">« Primeira</button>
+<button class="btn-pagina" id="btn-anterior">‹ Anterior</button>
+<span id="paginacao-numeros" style="font-size:0.8rem; font-weight:700; margin:0 6px; color:#fff;">Pág. 1 de 1</span>
+<button class="btn-pagina" id="btn-proxima">Próxima ›</button>
+<button class="btn-pagina" id="btn-ultima">» Última</button>
+</div>
+</div>
+<div hidden="" id="detalhe"></div>
+</main>
+</div>
+<section aria-labelledby="titulo-guia" class="secao-educativa">
+<div class="secao-educativa-cabecalho">
+<h2 id="titulo-guia">Entenda os dados de transações imobiliárias</h2>
+<p>Um guia rápido para interpretar as informações apresentadas pelo itbidata.</p>
+</div>
+<div class="educativa-grade">
+<article class="educativa-bloco">
+<h3>O que é o ITBI?</h3>
+<p>
+            ITBI é o Imposto sobre a Transmissão de Bens Imóveis, relacionado a
+            transmissões onerosas de imóveis entre vivos. As bases utilizadas pelo
+            itbidata são informações públicas disponibilizadas pelos municípios.
+          </p>
+</article>
+<article class="educativa-bloco">
+<h3>O que significa o valor de uma transação?</h3>
+<p>
+            O valor exibido corresponde a uma informação presente na base pública
+            utilizada para aquela cidade e período. Ele não é uma avaliação feita
+            pelo itbidata e não representa, por si só, o preço atual de mercado
+            de um imóvel.
+          </p>
+</article>
+<article class="educativa-bloco">
+<h3>Como interpretar o R$/m²?</h3>
+<p>
+            O valor por metro quadrado é uma medida de comparação entre registros
+            quando existem dados compatíveis de valor e área. Imóveis de uma mesma
+            rua ou bairro podem ter R$/m² diferentes por causa de área, localização,
+            características, conservação, data e condições da negociação.
+          </p>
+</article>
+<article class="educativa-bloco">
+<h3>Por que os resultados podem variar?</h3>
+<p>
+            Cada prefeitura possui sua própria base, estrutura, cobertura e critérios
+            de publicação. Além disso, os imóveis presentes em uma amostra não são
+            necessariamente iguais. Por isso, médias e comparações devem ser
+            interpretadas dentro do contexto do período e da cidade pesquisados.
+          </p>
+</article>
+<article class="educativa-bloco educativa-nota">
+<h3>Use os dados como referência</h3>
+<p>
+            O itbidata organiza dados públicos para facilitar pesquisa e comparação.
+            Para decisões de compra, venda, financiamento, investimento ou questões
+            jurídicas, confira a informação diretamente na fonte oficial do município
+            e, quando necessário, utilize documentos ou certidões oficiais.
+          </p>
+</article>
+</div>
+</section>
+<!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
+<footer class="rodape">
+<p>
+        Dados: Portais de Dados Abertos Municipais — portais oficiais de transparência das prefeituras atendidas,
         sob licença aberta Creative Commons (CC-BY).
       </p>
-      <p>
+<p>
         O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura ou órgão público.
         As informações têm caráter informativo, incluindo os valores de correção monetária
         (calculados automaticamente a partir de índices públicos). Não substituem certidões
-        oficiais nem assessoria jurídica ou financeira &mdash; confira sempre a fonte original
+        oficiais nem assessoria jurídica ou financeira — confira sempre a fonte original
         antes de qualquer decisão.
       </p>
-      <div class="links-rodape">
-        <a href="privacidade.html">Política de Privacidade</a>
-        <span>&bull;</span>
-        <a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
-      </div>
-    </footer>
-  </div>
-
-  <div id="cookie-banner" class="banner-cookies">
-    <p>
+<div class="links-rodape">
+<a href="metodologia.html">Metodologia e Fontes</a>
+<span>•</span>
+<a href="privacidade.html">Política de Privacidade</a>
+<span>•</span>
+<a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
+</div>
+</footer>
+</div>
+<div class="banner-cookies" id="cookie-banner">
+<p>
       Utilizamos cookies e tecnologias semelhantes para analisar o tráfego do site e melhorar sua experiência.
       Ao continuar navegando, você concorda com a nossa
       <a href="privacidade.html">Política de Privacidade</a>.
     </p>
-    <button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
-  </div>
-
+<button id="btn-aceitar-cookies" type="button">Concordar e fechar</button>
+</div>
 <script>
 (function () {
   "use strict";
 
   var cacheCsv = {};
+  var cacheCsvQuando = {};
+  var CACHE_CSV_TTL_MS = 5 * 60 * 1000;
 
   function parseLinhaCsv(linha) {
     var resultado = [];
@@ -794,24 +900,105 @@ white-space: nowrap;
     return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
   }
   function normalizarLogradouro(s) {
-    return normalizarParaBusca(s)
+    var texto = normalizarParaBusca(s)
+      .replace(/[.,;:/\\-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Padroniza abreviações comuns de logradouros e títulos.
+    // Assim, por exemplo, "Av.", "Av" e "Avenida" passam a ser comparados
+    // como "AVENIDA"; o mesmo vale para "Prof.", "Professor", etc.
+    var abreviacoes = {
+      "AV": "AVENIDA",
+      "AVENIDA": "AVENIDA",
+      "R": "RUA",
+      "RUA": "RUA",
+      "AL": "ALAMEDA",
+      "ALAMEDA": "ALAMEDA",
+      "PCA": "PRACA",
+      "PC": "PRACA",
+      "PRACA": "PRACA",
+      "PR": "PRACA",
+      "TRV": "TRAVESSA",
+      "TV": "TRAVESSA",
+      "TRAV": "TRAVESSA",
+      "TRAVESSA": "TRAVESSA",
+      "ROD": "RODOVIA",
+      "RODOVIA": "RODOVIA",
+      "EST": "ESTRADA",
+      "ESTRADA": "ESTRADA",
+      "PROF": "PROFESSOR",
+      "PROFESSOR": "PROFESSOR",
+      "PROFA": "PROFESSORA",
+      "PROFESSORA": "PROFESSORA",
+      "PRES": "PRESIDENTE",
+      "PRESIDENTE": "PRESIDENTE",
+      "DR": "DOUTOR",
+      "DOUTOR": "DOUTOR",
+      "DRA": "DOUTORA",
+      "DOUTORA": "DOUTORA",
+      "DEP": "DEPUTADO",
+      "DEPUTADO": "DEPUTADO",
+      "DEPA": "DEPUTADA",
+      "DEPUTADA": "DEPUTADA",
+      "CEL": "CORONEL",
+      "CORONEL": "CORONEL",
+      "GEN": "GENERAL",
+      "GENERAL": "GENERAL",
+      "ENG": "ENGENHEIRO",
+      "ENGENHEIRO": "ENGENHEIRO",
+      "BRIG": "BRIGADEIRO",
+      "BRIGADEIRO": "BRIGADEIRO"
+    };
+
+    texto = texto.split(" ").map(function (palavra) {
+      return abreviacoes[palavra] || palavra;
+    }).join(" ");
+
+    // Títulos e tratamentos que aparecem em algumas bases podem existir
+    // no nome oficial do logradouro, mas ser omitidos pelo usuário na busca.
+    // Removemos esses termos dos dois lados para que, por exemplo,
+    // "Avenida Oscar Pereira" encontre "Avenida PROF Oscar Pereira" e
+    // "Rua Mario Totta" encontre "Rua DR Mario Totta".
+    var titulosOpcionais = {
+      "PROFESSOR": true,
+      "PROFESSORA": true,
+      "PRESIDENTE": true,
+      "DOUTOR": true,
+      "DOUTORA": true,
+      "DEPUTADO": true,
+      "DEPUTADA": true,
+      "CORONEL": true,
+      "GENERAL": true,
+      "ENGENHEIRO": true,
+      "ENGENHEIRA": true,
+      "BRIGADEIRO": true,
+      "SENADOR": true,
+      "SENADORA": true,
+      "MAJOR": true,
+      "CAPITAO": true,
+      "CAPITA": true,
+      "COMENDADOR": true,
+      "DESEMBARGADOR": true,
+      "DESEMBARGADORA": true,
+      "MINISTRO": true,
+      "MINISTRA": true
+    };
+
+    return texto
       .replace(/\b(DE|DA|DO|DAS|DOS|E)\b/g, " ")
+      .split(/\s+/)
+      .filter(function (palavra) { return palavra && !titulosOpcionais[palavra]; })
+      .join(" ")
       .replace(/\s+/g, " ")
       .trim();
   }
 
   function parseDataPoa(texto) {
     if (!texto) return null;
-    var t = texto.trim();
-    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
-    if (m) {
-      return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
-    }
-    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
-    if (m) {
-      return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
-    }
-    return null;
+    var m = texto.trim().match(/^(\d{4})\/(\d{2})\/(\d{2})/);
+    if (!m) return null;
+    return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
   }
   function chaveOrdenacao(data) {
     return data ? data.y * 10000 + data.mo * 100 + data.d : -1;
@@ -1023,10 +1210,9 @@ white-space: nowrap;
     },
 
     "sao-paulo": {
-      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2020],
       arquivoLocalPorAno: {
         2020: "data/itbi-sp-2020.csv",
-        2021: "data/itbi-sp-2021.csv",
         2022: "data/itbi-sp-2022.csv",
         2023: "data/itbi-sp-2023.csv",
         2024: "data/itbi-sp-2024.csv",
@@ -1055,10 +1241,6 @@ white-space: nowrap;
             if (reg) {
               reg.cidadeNome = "São Paulo";
               reg.estadoSigla = "SP";
-              // Na base de SP, alguns registros antigos usam 10000 para representar 100%.
-              if (reg.percTransmitido !== null && reg.percTransmitido > 100) {
-                reg.percTransmitido = reg.percTransmitido / 100;
-              }
               registros.push(reg);
             }
           } catch (e) {}
@@ -1151,18 +1333,42 @@ white-space: nowrap;
 
   function baixarCsvDaFonte(fonte, ano, forcarAtualizacao) {
     var chave = fonte.chaveCache(ano);
-    if (!forcarAtualizacao && cacheCsv[chave]) {
+    var agora = Date.now();
+    if (!forcarAtualizacao && cacheCsv[chave] && cacheCsvQuando[chave] && (agora - cacheCsvQuando[chave] < CACHE_CSV_TTL_MS)) {
       return Promise.resolve(cacheCsv[chave]);
     }
     return fonte.baixarCsv(ano).then(function (texto) {
       cacheCsv[chave] = texto;
+      cacheCsvQuando[chave] = Date.now();
       return texto;
     });
   }
 
   function coincide(registro, logradouroBusca, numeroBusca) {
-    var logradouroOk = !logradouroBusca ||
-      (registro.logradouro && normalizarLogradouro(registro.logradouro).indexOf(logradouroBusca) !== -1);
+    var logradouroOk = true;
+    if (logradouroBusca) {
+      var logradouroRegistro = registro.logradouro ? normalizarLogradouro(registro.logradouro) : "";
+      if (!logradouroRegistro) {
+        logradouroOk = false;
+      } else if (logradouroRegistro.indexOf(logradouroBusca) !== -1) {
+        logradouroOk = true;
+      } else {
+        // Permite palavras extras no cadastro, como:
+        // busca "AVENIDA OSCAR PEREIRA" -> cadastro "AVENIDA PROF OSCAR PEREIRA".
+        // Mantemos a ordem das palavras para evitar correspondências excessivamente amplas.
+        var palavrasBusca = logradouroBusca.split(" ").filter(function (p) { return p.length > 0; });
+        var palavrasRegistro = logradouroRegistro.split(" ").filter(function (p) { return p.length > 0; });
+        var j = 0;
+        for (var i = 0; i < palavrasBusca.length; i++) {
+          while (j < palavrasRegistro.length && palavrasRegistro[j] !== palavrasBusca[i]) j++;
+          if (j >= palavrasRegistro.length) {
+            logradouroOk = false;
+            break;
+          }
+          j++;
+        }
+      }
+    }
     var numeroOk = !numeroBusca ||
       (registro.numeroEndereco && registro.numeroEndereco.trim() === numeroBusca);
     return logradouroOk && numeroOk;
@@ -1269,6 +1475,7 @@ white-space: nowrap;
 
   function definirCarregando(carregando) {
     elBtnPesquisar.disabled = carregando;
+    elBtnPesquisar.textContent = carregando ? "⏳ Consultando..." : "🔍 Pesquisar";
     elBtnLimpar.disabled = carregando;
     elBtnAtualizar.disabled = carregando;
     elBarraProgresso.classList.toggle("ativa", carregando);
@@ -1657,6 +1864,32 @@ white-space: nowrap;
       try { localStorage.setItem("cookies_aceitos", "sim"); } catch (e) { /* ignora */ }
     });
   })();
+})();
+</script>
+<script>
+(function () {
+  const dropdown = document.querySelector('.dropdown');
+  const toggle = document.querySelector('.btn-simuladores');
+  if (!dropdown || !toggle) return;
+
+  function fecharDropdown() {
+    dropdown.classList.remove('aberto');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', function (event) {
+    event.preventDefault();
+    const aberto = dropdown.classList.toggle('aberto');
+    toggle.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+  });
+
+  document.addEventListener('click', function (event) {
+    if (!dropdown.contains(event.target)) fecharDropdown();
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') fecharDropdown();
+  });
 })();
 </script>
 </body>

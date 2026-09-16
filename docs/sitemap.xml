@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.itbidata.com.br/</loc>
-  </url>
+  <url><loc>https://www.itbidata.com.br/</loc></url>
+  <url><loc>https://www.itbidata.com.br/estatisticas.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/metodologia.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/privacidade.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/termos.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/calculadora-itbi.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/calculadora-m2.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/comprar-ou-alugar.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/consorcio-vs-financiamento.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/poder-de-compra.html</loc></url>
+  <url><loc>https://www.itbidata.com.br/simulador-financiamento.html</loc></url>
 </urlset>

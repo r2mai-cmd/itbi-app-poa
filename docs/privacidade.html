@@ -1,90 +1,172 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Política de Privacidade &mdash; itbidata</title>
-<link rel="icon" type="image/png" href="./favicon.png">
-<link rel="apple-touch-icon" href="./favicon.png">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Política de privacidade do itbidata, com informações sobre dados, cookies, armazenamento local, Google Analytics e uso das informações públicas." name="description"/>
+<title>Política de Privacidade — itbidata</title>
+<link href="./favicon.png" rel="icon" type="image/png"/>
+<link href="./favicon.png" rel="apple-touch-icon"/>
 <style>
-  :root {
-    --fundo-escuro: #34383D;
-    --fundo-escuro-claro: #41464A;
-    --pergaminho: #EDE9DE;
-    --texto-card: #24231F;
-    --texto-card-sutil: #6B6A63;
-    --laranja: #F0913A;
-    --laranja-escuro: #D9762A;
-    --dourado-linha: #D8CFB8;
-    --texto-sobre-fundo: #F5F3ED;
-    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
-    --agua-turquesa: #4FBFB8;
-    --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column; }
-  
-  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--fundo-escuro-claro); }
-  .link-marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; min-width: 0; }
-  .link-marca img { height: 38px; width: 38px; min-width: 38px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background-color: #ffffff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4); overflow: hidden; }
-  .nome-marca { font-weight: 800; font-size: 1.15rem; color: var(--texto-sobre-fundo); white-space: nowrap; }
-  .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
-
-  .menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
-  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
-  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
-
-  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; width: 100%; }
-  .cartao-conteudo { background: var(--pergaminho); border-radius: 16px; padding: 40px; color: var(--texto-card); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  h1 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; margin-top: 0; color: var(--texto-card); border-bottom: 2px solid var(--dourado-linha); padding-bottom: 12px; }
-  h2 { font-size: 1.1rem; font-weight: 700; color: var(--laranja-escuro); margin-top: 28px; text-transform: uppercase; letter-spacing: 0.05em; }
-  p, li { font-size: 0.95rem; line-height: 1.6; color: var(--texto-card-sutil); }
-  ul { padding-left: 20px; }
-  
-  .rodape { padding: 32px 24px; text-align: center; font-size: 0.78rem; color: var(--texto-sobre-fundo-sutil); border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; }
+:root {
+  --fundo-escuro: #34383D;
+  --fundo-escuro-claro: #41464A;
+  --pergaminho: #EDE9DE;
+  --texto-card: #24231F;
+  --texto-card-sutil: #6B6A63;
+  --laranja: #F0913A;
+  --laranja-escuro: #D9762A;
+  --dourado-linha: #D8CFB8;
+  --texto-sobre-fundo: #F5F3ED;
+  --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.72);
+  --agua-turquesa: #4FBFB8;
+  --fonte: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--fonte);
+  background: var(--fundo-escuro);
+  color: var(--texto-sobre-fundo);
+  line-height: 1.65;
+}
+.topo {
+  background: var(--fundo-escuro-claro);
+  border-bottom: 1px solid rgba(245,243,237,.12);
+  padding: 14px 20px;
+}
+.topo-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+.marca {
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.marca-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+}
+.marca-texto span { color: var(--agua-turquesa); font-weight: 400; }
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 36px 20px 56px;
+}
+.voltar-wrap { margin-bottom: 18px; }
+.voltar {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  font-size: .8rem;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 999px;
+  padding: 7px 12px;
+}
+.voltar:hover { background: rgba(255,255,255,.1); }
+h1 { margin: 0 0 10px; font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.2; }
+.lead { color: var(--texto-sobre-fundo-sutil); margin: 0 0 30px; max-width: 75ch; }
+.card {
+  background: var(--pergaminho);
+  color: var(--texto-card);
+  border-radius: 14px;
+  padding: 24px 26px;
+  margin: 0 0 18px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.22);
+}
+h2 { margin: 0 0 10px; font-size: 1.15rem; color: var(--laranja-escuro); }
+p { margin: 0 0 12px; color: var(--texto-card-sutil); }
+p:last-child { margin-bottom: 0; }
+a { color: #268f91; }
+.nota {
+  border-left: 4px solid var(--laranja);
+  padding: 4px 0 4px 14px;
+}
+.rodape {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  color: var(--texto-sobre-fundo-sutil);
+  font-size: .78rem;
+  text-align: center;
+}
+.rodape a { color: var(--agua-turquesa); }
+@media (max-width: 600px) {
+  main { padding: 28px 16px 44px; }
+  .card { padding: 20px; }
+  .topo-inner { align-items: flex-start; }
+}
 </style>
-</head>
+<link href="https://www.itbidata.com.br/privacidade.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Política de Privacidade — itbidata" property="og:title"/><meta content="Política de privacidade do itbidata, com informações sobre dados, cookies, armazenamento local, Google Analytics e uso das informações públicas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/privacidade.html" property="og:url"/></head>
 <body>
-  <div class="barra-marca">
-    <a href="index.html" class="link-marca">
-      <img src="./favicon.png" alt="itbidata" />
-      <span class="nome-marca">itbi<span>data</span></span>
-    </a>
-    <div class="menu-nav">
-      <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
-      <a href="index.html" class="btn-nav">Início</a>
-    </div>
-  </div>
-
-  <main class="container">
-    <div class="cartao-conteudo">
-      <h1>Política de Privacidade</h1>
-      <p>A sua privacidade é de extrema importância para nós do <strong>itbidata</strong>. Esta Política de Privacidade descreve de forma transparente como coletamos, usamos, armazenamos e protegemos as suas informações ao utilizar o nosso portal e ferramentas de simulação financeira.</p>
-
-      <h2>1. Coleta de Dados e Navegação</h2>
-      <p>O itbidata opera essencialmente com simuladores executados localmente no navegador do usuário (client-side). Os valores numéricos inseridos nos campos de cálculo (como renda, valores de imóveis e prazos) não são armazenados em bancos de dados externos vinculados à sua identidade pessoal.</p>
-
-      <h2>2. Uso de Cookies e Anúncios (Google AdSense)</h2>
-      <p>Utilizamos cookies de terceiros, incluindo o Google AdSense, para exibir anúncios relevantes baseados em suas visitas anteriores a este ou a outros sites na internet.</p>
-      <ul>
-        <p>O uso de cookies de publicidade pelo Google permite que ele e seus parceiros exibam anúncios para os usuários com base nas visitas feitas aos seus sites e/ou a outros sites na Internet.</p>
-        <p>Os usuários podem desativar a publicidade personalizada acessando as <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" style="color:var(--laranja-escuro); font-weight:700;">Configurações de anúncios</a>.</p>
-      </ul>
-
-      <h2>3. Direitos dos Usuários (LGPD)</h2>
-      <p>Em conformidade com a Lei Geral de Proteção de Dados (LGPD), você tem o direito de solicitar esclarecimentos sobre o tratamento de dados, bem como gerenciar ou bloquear o uso de cookies diretamente nas configurações do seu navegador de preferência.</p>
-
-      <h2>4. Alterações nesta Política</h2>
-      <p>Esta Política de Privacidade pode ser atualizada periodicamente para refletir melhorias tecnológicas ou exigências legais. Recomendamos a consulta regular desta página.</p>
-
-      <h2>5. Contato</h2>
-      <p>Em caso de dúvidas sobre esta política, entre em contato conosco através do e-mail institucional disponível em nossa página de suporte ou termos de uso.</p>
-    </div>
-  </main>
-
-  <footer class="rodape">
-    <p>&copy; itbidata &mdash; Plataforma independente de simulação e análise imobiliária.</p>
-  </footer>
+<header class="topo">
+<div class="topo-inner">
+<a class="marca" href="index.html">
+<img alt="itbidata" class="marca-logo" src="./favicon.png"/>
+<span class="marca-texto">itbi<span>data</span></span>
+</a>
+</div>
+</header>
+<main>
+<div class="voltar-wrap">
+<a class="voltar" href="index.html">← Voltar à busca</a>
+</div>
+<h1>Política de Privacidade</h1>
+<p class="lead">Informações sobre dados, cookies, armazenamento local e as fontes utilizadas pelo itbidata.</p>
+<section class="card">
+<h2>1. O que fazemos com seus dados</h2>
+<p>
+      O itbidata é uma ferramenta de consulta pública de dados abertos de transações de ITBI,
+      divulgados pelas prefeituras participantes. Não pedimos login, não coletamos nome, e-mail
+      ou qualquer dado pessoal seu para usar a busca do site.
+    </p>
+</section>
+<section class="card">
+<h2>2. Cookies e armazenamento local</h2>
+<p>
+      Usamos um pequeno armazenamento local no seu navegador (localStorage) apenas para lembrar
+      que você já viu o aviso de cookies, evitando mostrá-lo novamente. Nenhuma informação pessoal
+      é salva nesse processo.
+    </p>
+<p>
+      Usamos o Google Analytics para entender de forma agregada e anônima como o site é usado —
+      por exemplo, quantas pessoas visitam, de qual região, e quais páginas são mais acessadas.
+      Essa ferramenta usa cookies próprios e pode coletar informações como endereço IP (de forma
+      anonimizada) e tipo de navegador. Ela não identifica você pessoalmente. Saiba mais na
+      <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">política de privacidade do Google</a>.
+    </p>
+</section>
+<section class="card">
+<h2>3. Dados exibidos na busca</h2>
+<p>
+      As informações de imóveis e transações mostradas na busca vêm diretamente dos portais de
+      dados abertos das prefeituras (ex.: <a href="https://dadosabertos.poa.br/dataset/itbi" rel="noopener" target="_blank">dadosabertos.poa.br</a>),
+      sob licença Creative Commons Atribuição (CC-BY). O itbidata não modifica esses dados, apenas
+      os organiza para facilitar a consulta.
+    </p>
+</section>
+<section class="card">
+<h2>4. Contato</h2>
+<p>
+      Dúvidas sobre esta política podem ser enviadas através do repositório do projeto.
+    </p>
+</section>
+</main>
+<div class="rodape">
+<p>itbidata — organização e consulta de dados públicos de transações imobiliárias.</p>
+<p><a href="metodologia.html">Metodologia e Fontes</a> · <a href="termos.html">Termos de Uso</a></p>
+</div>
 </body>
 </html>
