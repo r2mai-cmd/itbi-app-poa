@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Política de privacidade do itbidata, com informações sobre dados, cookies, armazenamento local, Google Analytics e uso das informações públicas." name="description"/>
-<title>Política de Privacidade — itbidata</title>
-<link href="./favicon.png" rel="icon" type="image/png"/>
-<link href="./favicon.png" rel="apple-touch-icon"/>
-<style>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Política de Privacidade — itbidata</title><meta name="description" content="Política de privacidade do itbidata sobre cookies, analytics, publicidade e dados públicos."><meta name="robots" content="index,follow"><link rel="icon" type="image/png" href="./favicon.png"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root {
   --fundo-escuro: #34383D;
   --fundo-escuro-claro: #41464A;
@@ -18,155 +8,212 @@
   --laranja: #F0913A;
   --laranja-escuro: #D9762A;
   --dourado-linha: #D8CFB8;
-  --texto-sobre-fundo: #F5F3ED;
-  --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.72);
   --agua-turquesa: #4FBFB8;
-  --fonte: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --texto-sobre-fundo: #F5F3ED;
+  --fonte-corpo: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 * { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
 body {
-  margin: 0;
-  font-family: var(--fonte);
+  font-family: var(--fonte-corpo);
   background: var(--fundo-escuro);
   color: var(--texto-sobre-fundo);
-  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
-.topo {
-  background: var(--fundo-escuro-claro);
-  border-bottom: 1px solid rgba(245,243,237,.12);
-  padding: 14px 20px;
+/* ===== Barra de marca (logo e menu unificado) ===== */
+.barra-marca {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 20px;
+background: var(--fundo-escuro-claro);
+width: 100%;
 }
-.topo-inner {
-  max-width: 980px;
-  margin: 0 auto;
+.link-marca {
   display: flex;
   align-items: center;
-}
-.marca {
-  color: #fff;
+  gap: 12px;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-weight: 800;
-  font-size: 1.1rem;
+  color: inherit;
+  cursor: pointer;
+  min-width: 0;
 }
-.marca-logo {
-  width: 38px;
+.barra-marca img {
   height: 38px;
-  object-fit: contain;
+  width: 38px;
+  min-width: 38px;
+  display: block;
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.2);
+  background-color: #ffffff;
   border-radius: 50%;
-  background: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  overflow: hidden;
 }
-.marca-texto span { color: var(--agua-turquesa); font-weight: 400; }
-main {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 36px 20px 56px;
+.barra-marca .nome-marca {
+font-family: var(--fonte-corpo);
+font-weight: 800;
+font-size: 1.15rem;
+color: var(--texto-sobre-fundo);
+white-space: nowrap;
+letter-spacing: -0.01em;
 }
-.voltar-wrap { margin-bottom: 18px; }
-.voltar {
-  display: inline-block;
-  color: #fff;
-  text-decoration: none;
-  font-size: .8rem;
-  font-weight: 700;
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 999px;
-  padding: 7px 12px;
+.barra-marca .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+
+.menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
+.btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+.btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
+
+.dropdown { position: relative; display: inline-block; }
+.dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
+.dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
+.dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+.dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
+
+/* ===== Cabecalho: foto + titulo expandido 100% ===== */
+.cabecalho {
+position: relative;
+width: 100%;
+height: 300px;
+overflow: visible;
+margin: 0;
 }
-.voltar:hover { background: rgba(255,255,255,.1); }
-h1 { margin: 0 0 10px; font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.2; }
-.lead { color: var(--texto-sobre-fundo-sutil); margin: 0 0 30px; max-width: 75ch; }
-.card {
-  background: var(--pergaminho);
-  color: var(--texto-card);
-  border-radius: 14px;
-  padding: 24px 26px;
-  margin: 0 0 18px;
-  box-shadow: 0 4px 14px rgba(0,0,0,.22);
+.cabecalho img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center 55%;
 }
-h2 { margin: 0 0 10px; font-size: 1.15rem; color: var(--laranja-escuro); }
-p { margin: 0 0 12px; color: var(--texto-card-sutil); }
-p:last-child { margin-bottom: 0; }
-a { color: #268f91; }
-.nota {
-  border-left: 4px solid var(--laranja);
-  padding: 4px 0 4px 14px;
+.cabecalho-veu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 26, 31, 0.95) 0%, rgba(20, 26, 31, 0.75) 45%, rgba(20, 26, 31, 0.3) 75%, rgba(20, 26, 31, 0.1) 100%);
+  pointer-events: none;
 }
-.rodape {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 20px 40px;
-  color: var(--texto-sobre-fundo-sutil);
-  font-size: .78rem;
-  text-align: center;
+.cabecalho-texto {
+position: absolute;
+left: 0;
+right: 0;
+bottom: 0;
+padding: 28px 20px;
+max-width: 1800px;
+margin: 0 auto;
+width: 100%;
 }
-.rodape a { color: var(--agua-turquesa); }
-@media (max-width: 600px) {
-  main { padding: 28px 16px 44px; }
-  .card { padding: 20px; }
-  .topo-inner { align-items: flex-start; }
+.cabecalho-titulo {
+margin: 0;
+font-family: var(--fonte-corpo);
+font-weight: 800;
+text-transform: uppercase;
+font-size: clamp(1.4rem, 2.8vw, 2.3rem);
+color: #fff;
+letter-spacing: 0.01em;
+line-height: 1.2;
 }
-</style>
-<link href="https://www.itbidata.com.br/privacidade.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Política de Privacidade — itbidata" property="og:title"/><meta content="Política de privacidade do itbidata, com informações sobre dados, cookies, armazenamento local, Google Analytics e uso das informações públicas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/privacidade.html" property="og:url"/></head>
-<body>
-<header class="topo">
-<div class="topo-inner">
-<a class="marca" href="index.html">
-<img alt="itbidata" class="marca-logo" src="./favicon.png"/>
-<span class="marca-texto">itbi<span>data</span></span>
-</a>
+.cabecalho-subtitulo {
+margin: 8px 0 0;
+font-size: 0.9rem;
+color: rgba(255,255,255,0.85);
+max-width: 50ch;
+}
+
+
+/* Botão de retorno das páginas institucionais */
+.btn-voltar-busca {
+  position:absolute;
+  right:20px;
+  bottom:-30px;
+  z-index:50;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:.78rem;
+  padding:7px 12px;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,.25);
+  transition:all .2s;
+  white-space:nowrap;
+  background:var(--fundo-escuro-claro);
+  display:inline-flex;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.22);
+}
+.btn-voltar-busca:hover { background-color:#4b5055; }
+@media (max-width:650px) { .btn-voltar-busca { right:12px; bottom:-27px; font-size:.65rem; padding:6px 9px; } }
+.conteudo-pagina { position:relative; z-index:1; max-width:920px; width:100%; margin:0 auto; padding:26px 14px 44px; flex:1; }
+.card-pagina { background:var(--pergaminho); color:var(--texto-card); border-radius:10px; padding:18px 20px; margin:0 auto 10px; box-shadow:0 4px 14px rgba(0,0,0,.22); max-width:760px; }
+.card-pagina h2 { margin:0 0 7px; font-size:.84rem; line-height:1.25; }
+.card-pagina h3 { margin:15px 0 5px; font-size:.75rem; }
+.card-pagina p, .card-pagina li { font-size:.68rem; line-height:1.55; }
+.card-pagina p { margin:0 0 8px; }
+.card-pagina ul { margin:4px 0 8px; padding-left:18px; }
+.card-pagina a { color:#7A4318; font-weight:800; }
+.contact-box { background:#fff; border-radius:7px; border-left:3px solid var(--laranja); padding:10px; margin-top:8px; font-size:.68rem; }
+.pagina-nota { border-left:3px solid var(--laranja); padding-left:9px; }
+.pill-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px; }
+.pill { background:#f4f1e8; border:1px solid rgba(36,35,31,.10); border-radius:6px; padding:8px; font-size:.65rem; font-weight:800; }
+.rodape-pagina { border-top:1px solid rgba(245,243,237,.10); text-align:center; padding:18px 12px 26px; color:rgba(245,243,237,.58); font-size:.62rem; }
+.rodape-pagina p { margin:0 0 5px; }
+.rodape-pagina a { color:var(--agua-turquesa); text-decoration:none; font-weight:700; margin:0 4px; }
+@media(max-width:900px){ .cabecalho{height:220px;} }
+@media(max-width:650px){
+  .barra-marca{padding:12px 12px; min-height:58px;}
+  .barra-marca img{height:34px;width:34px;min-width:34px;}
+  .barra-marca .nome-marca{font-size:1rem;}
+  .btn-nav{font-size:.65rem;padding:6px 9px;}
+  .cabecalho{height:190px;}
+  .cabecalho-texto{padding:18px 14px;}
+  .cabecalho-titulo{font-size:1.25rem;}
+  .cabecalho-subtitulo{font-size:.72rem;}
+  .conteudo-pagina{padding-top:18px;}
+  .card-pagina{padding:16px;}
+  .pill-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style></head><body>
+<div class="barra-marca">
+  <a href="index.html" class="link-marca">
+    <img src="./favicon.png" alt="itbidata" />
+    <span class="nome-marca">itbi<span>data</span></span>
+  </a>
+  <div class="menu-nav">
+    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
+    <div class="dropdown">
+      <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+      <div class="dropdown-conteudo">
+        <a href="simulador-financiamento.html">🏠 Financiamento (SAC x PRICE)</a>
+        <a href="calculadora-itbi.html">📝 Custos de ITBI e Registro</a>
+        <a href="poder-de-compra.html">💰 Poder de Compra &amp; Renda</a>
+        <a href="comprar-ou-alugar.html">⚖ Comprar ou Alugar?</a>
+        <a href="calculadora-m2.html">📏 Preço do Metro Quadrado (m²)</a>
+        <a href="consorcio-vs-financiamento.html">💼 Consórcio vs. Financiamento</a>
+      </div>
+    </div>
+  </div>
 </div>
+<header class="cabecalho">
+  <img src="./banner.jpg" alt="Mercado imobiliário" />
+  <div class="cabecalho-veu"></div>
+  <a href="index.html" class="btn-voltar-busca">← Voltar à busca</a>
+  <div class="cabecalho-texto">
+    <h1 class="cabecalho-titulo">POLÍTICA DE PRIVACIDADE</h1>
+    <p class="cabecalho-subtitulo">Como o itbidata trata informações de navegação, cookies e tecnologias utilizadas no site.</p>
+  </div>
 </header>
-<main>
-<div class="voltar-wrap">
-<a class="voltar" href="index.html">← Voltar à busca</a>
-</div>
-<h1>Política de Privacidade</h1>
-<p class="lead">Informações sobre dados, cookies, armazenamento local e as fontes utilizadas pelo itbidata.</p>
-<section class="card">
-<h2>1. O que fazemos com seus dados</h2>
-<p>
-      O itbidata é uma ferramenta de consulta pública de dados abertos de transações de ITBI,
-      divulgados pelas prefeituras participantes. Não pedimos login, não coletamos nome, e-mail
-      ou qualquer dado pessoal seu para usar a busca do site.
-    </p>
-</section>
-<section class="card">
-<h2>2. Cookies e armazenamento local</h2>
-<p>
-      Usamos um pequeno armazenamento local no seu navegador (localStorage) apenas para lembrar
-      que você já viu o aviso de cookies, evitando mostrá-lo novamente. Nenhuma informação pessoal
-      é salva nesse processo.
-    </p>
-<p>
-      Usamos o Google Analytics para entender de forma agregada e anônima como o site é usado —
-      por exemplo, quantas pessoas visitam, de qual região, e quais páginas são mais acessadas.
-      Essa ferramenta usa cookies próprios e pode coletar informações como endereço IP (de forma
-      anonimizada) e tipo de navegador. Ela não identifica você pessoalmente. Saiba mais na
-      <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">política de privacidade do Google</a>.
-    </p>
-</section>
-<section class="card">
-<h2>3. Dados exibidos na busca</h2>
-<p>
-      As informações de imóveis e transações mostradas na busca vêm diretamente dos portais de
-      dados abertos das prefeituras (ex.: <a href="https://dadosabertos.poa.br/dataset/itbi" rel="noopener" target="_blank">dadosabertos.poa.br</a>),
-      sob licença Creative Commons Atribuição (CC-BY). O itbidata não modifica esses dados, apenas
-      os organiza para facilitar a consulta.
-    </p>
-</section>
-<section class="card">
-<h2>4. Contato</h2>
-<p>
-      Dúvidas sobre esta política podem ser enviadas através do repositório do projeto.
-    </p>
-</section>
-</main>
-<div class="rodape">
-<p>itbidata — organização e consulta de dados públicos de transações imobiliárias.</p>
-<p><a href="metodologia.html">Metodologia e Fontes</a> · <a href="termos.html">Termos de Uso</a></p>
-</div>
-</body>
-</html>
+<main class="conteudo-pagina"><section class="card-pagina"><h2>1. Sobre esta política</h2><p>O itbidata é uma plataforma independente. Esta política descreve, de forma geral, o tratamento de informações associado ao uso do site e de seus recursos.</p></section>
+<section class="card-pagina"><h2>2. Cookies e armazenamento local</h2><p>O site pode utilizar cookies e armazenamento local do navegador para manter preferências, registrar a aceitação do aviso de cookies e apoiar o funcionamento da plataforma.</p></section>
+<section class="card-pagina"><h2>3. Analytics e publicidade</h2><p>Podemos utilizar serviços de análise de audiência e publicidade, incluindo Google Analytics e Google AdSense. Esses serviços podem utilizar tecnologias de medição, cookies ou identificadores conforme suas próprias políticas e configurações aplicáveis.</p><p>Quando exigido pela legislação ou pelas regras das plataformas utilizadas, mecanismos de consentimento podem ser apresentados antes de determinadas finalidades de tratamento.</p></section>
+<section class="card-pagina"><h2>4. Dados públicos consultados</h2><p>Os registros imobiliários apresentados pelo itbidata são obtidos de bases públicas municipais. A plataforma organiza e apresenta esses dados para facilitar a consulta, sem alterar a finalidade pública original das informações.</p></section>
+<section class="card-pagina"><h2>5. Segurança e terceiros</h2><p>Adotamos medidas razoáveis para manter o site e seus recursos disponíveis e reduzir riscos de acesso indevido. Serviços de terceiros utilizados pelo site podem tratar dados segundo suas próprias políticas.</p></section>
+<section class="card-pagina"><h2>6. Direitos e contato</h2><p>Solicitações relacionadas à privacidade podem ser encaminhadas para <a href="mailto:itbidata9@gmail.com">itbidata9@gmail.com</a>. A política poderá ser atualizada quando houver mudanças relevantes no site, nos serviços utilizados ou nas obrigações aplicáveis.</p></section></main>
+<footer class="rodape-pagina">
+  <p>itbidata é uma plataforma independente de consulta e análise de dados públicos imobiliários.</p>
+  <p><a href="metodologia.html">Metodologia e Fontes</a> · <a href="privacidade.html">Política de Privacidade</a> · <a href="termos.html">Termos de Uso &amp; Contato</a></p>
+</footer></body></html>

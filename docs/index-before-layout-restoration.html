@@ -888,50 +888,47 @@ white-space: nowrap;
   }
 
   function normalizarParaBusca(s) {
-    return String(s || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toUpperCase()
-      .trim();
+    return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
   }
-
-  // Compara o nome do logradouro sem depender de abreviações de tipo
-  // e títulos que aparecem antes do nome: AV., AV, AVENIDA, PROF.,
-  // PROFESSOR, DR., DOUTOR, PRES., PRESIDENTE etc.
-  // Exemplos: "Av. Prof. Oscar" = "Avenida Professor Oscar".
   function normalizarLogradouro(s) {
-    var texto = normalizarParaBusca(s)
-      .replace(/[^A-Z0-9]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    var texto = normalizarParaBusca(s);
 
-    // Removemos uma cadeia de prefixos no início. Isso cobre combinações
-    // como "AV PROF OSCAR", "AVENIDA PROFESSOR OSCAR",
-    // "AV DR PROF OSCAR" e equivalentes.
-    var prefixos = [
-      "AVENIDA", "AV", "RUA", "R", "ALAMEDA", "AL", "TRAVESSA", "TRAV", "TV",
-      "ESTRADA", "EST", "RODOVIA", "ROD", "PRACA", "PCA", "PC", "LARGO", "LG",
-      "PARQUE", "PQ", "BECO", "BC", "VIELA", "VL", "SERVIDAO", "SER",
-      "PROFESSOR", "PROF", "DOUTOR", "DR", "PRESIDENTE", "PRES", "GOVERNADOR", "GOV",
-      "SENADOR", "SEN", "DESEMBARGADOR", "DES", "CORONEL", "CEL", "MARECHAL", "MAL",
-      "GENERAL", "GEN", "ALMIRANTE", "ALM", "PADRE", "PE", "FREI", "FR"
+    // Padroniza abreviações e nomes por extenso para que formas como
+    // "Av. Ipiranga", "Av Ipiranga" e "Avenida Ipiranga" sejam equivalentes.
+    var equivalencias = [
+      [/\b(?:AV|AVENIDA)\.?(?=\s|$)/g, " AVENIDA "],
+      [/\b(?:R|RUA)\.?(?=\s|$)/g, " RUA "],
+      [/\b(?:AL|ALAMEDA)\.?(?=\s|$)/g, " ALAMEDA "],
+      [/\b(?:TRAV|TV|TRAVESSA)\.?(?=\s|$)/g, " TRAVESSA "],
+      [/\b(?:EST|ESTRADA)\.?(?=\s|$)/g, " ESTRADA "],
+      [/\b(?:ROD|RODOVIA)\.?(?=\s|$)/g, " RODOVIA "],
+      [/\b(?:PCA|PC|PRACA)\.?(?=\s|$)/g, " PRACA "],
+      [/\b(?:LG|LARGO)\.?(?=\s|$)/g, " LARGO "],
+      [/\b(?:PQ|PARQUE)\.?(?=\s|$)/g, " PARQUE "],
+      [/\b(?:BC|BECO)\.?(?=\s|$)/g, " BECO "],
+      [/\b(?:VL|VIELA)\.?(?=\s|$)/g, " VIELA "],
+      [/\b(?:SER|SERVIDAO)\.?(?=\s|$)/g, " SERVIDAO "],
+      [/\b(?:PROF|PROFESSOR)\.?(?=\s|$)/g, " PROFESSOR "],
+      [/\b(?:DR|DOUTOR)\.?(?=\s|$)/g, " DOUTOR "],
+      [/\b(?:PRES|PRESIDENTE)\.?(?=\s|$)/g, " PRESIDENTE "],
+      [/\b(?:GOV|GOVERNADOR)\.?(?=\s|$)/g, " GOVERNADOR "],
+      [/\b(?:SEN|SENADOR)\.?(?=\s|$)/g, " SENADOR "],
+      [/\b(?:DES|DESEMBARGADOR)\.?(?=\s|$)/g, " DESEMBARGADOR "],
+      [/\b(?:CEL|CORONEL)\.?(?=\s|$)/g, " CORONEL "],
+      [/\b(?:MAL|MARECHAL)\.?(?=\s|$)/g, " MARECHAL "],
+      [/\b(?:GEN|GENERAL)\.?(?=\s|$)/g, " GENERAL "],
+      [/\b(?:ALM|ALMIRANTE)\.?(?=\s|$)/g, " ALMIRANTE "],
+      [/\b(?:PE|PADRE)\.?(?=\s|$)/g, " PADRE "],
+      [/\b(?:FR|FREI)\.?(?=\s|$)/g, " FREI "]
     ];
 
-    var alterou = true;
-    while (alterou && texto) {
-      alterou = false;
-      for (var i = 0; i < prefixos.length; i++) {
-        var re = new RegExp("^" + prefixos[i] + "(?:\\s+|$)");
-        if (re.test(texto)) {
-          texto = texto.replace(re, "").trim();
-          alterou = true;
-          break;
-        }
-      }
-    }
+    equivalencias.forEach(function (item) {
+      texto = texto.replace(item[0], item[1]);
+    });
 
     return texto
       .replace(/\b(DE|DA|DO|DAS|DOS|E)\b/g, " ")
+      .replace(/[^A-Z0-9]+/g, " ")
       .replace(/\s+/g, " ")
       .trim();
   }
@@ -1312,15 +1309,8 @@ white-space: nowrap;
   }
 
   function coincide(registro, logradouroBusca, numeroBusca) {
-    var logradouroOk = true;
-    if (logradouroBusca) {
-      var logradouroRegistro = normalizarLogradouro(registro.logradouro || "");
-      logradouroOk = !!logradouroRegistro && (
-        logradouroRegistro === logradouroBusca ||
-        logradouroRegistro.indexOf(logradouroBusca) !== -1 ||
-        logradouroBusca.indexOf(logradouroRegistro) !== -1
-      );
-    }
+    var logradouroOk = !logradouroBusca ||
+      (registro.logradouro && normalizarLogradouro(registro.logradouro).indexOf(logradouroBusca) !== -1);
     var numeroOk = !numeroBusca ||
       (registro.numeroEndereco && registro.numeroEndereco.trim() === numeroBusca);
     return logradouroOk && numeroOk;

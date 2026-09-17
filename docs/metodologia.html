@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Entenda como o itbidata organiza dados públicos de transações imobiliárias e ITBI, quais são as fontes utilizadas e os limites de interpretação dos indicadores." name="description"/>
-<title>Metodologia e Fontes dos Dados — itbidata</title>
-<link href="./favicon.png" rel="icon" type="image/png"/>
-<link href="./favicon.png" rel="apple-touch-icon"/>
-<style>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Metodologia e fontes — itbidata</title><meta name="description" content="Metodologia e fontes dos dados públicos de ITBI utilizados pelo itbidata."><meta name="robots" content="index,follow"><link rel="icon" type="image/png" href="./favicon.png"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root {
   --fundo-escuro: #34383D;
   --fundo-escuro-claro: #41464A;
@@ -17,239 +7,213 @@
   --texto-card-sutil: #6B6A63;
   --laranja: #F0913A;
   --laranja-escuro: #D9762A;
+  --dourado-linha: #D8CFB8;
   --agua-turquesa: #4FBFB8;
   --texto-sobre-fundo: #F5F3ED;
-  --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.72);
-  --fonte: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --fonte-corpo: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 * { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
 body {
-  margin: 0;
-  font-family: var(--fonte);
+  font-family: var(--fonte-corpo);
   background: var(--fundo-escuro);
   color: var(--texto-sobre-fundo);
-  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
-.topo {
-  background: var(--fundo-escuro-claro);
-  border-bottom: 1px solid rgba(245,243,237,.12);
-  padding: 14px 20px;
+/* ===== Barra de marca (logo e menu unificado) ===== */
+.barra-marca {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 20px;
+background: var(--fundo-escuro-claro);
+width: 100%;
 }
-.topo-inner {
-  width: 100%;
-  margin: 0;
+.link-marca {
   display: flex;
   align-items: center;
-}
-.marca {
-  color: #fff;
+  gap: 12px;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-weight: 800;
-  font-size: 1.1rem;
+  color: inherit;
+  cursor: pointer;
+  min-width: 0;
 }
-.marca-logo {
-  width: 38px;
+.barra-marca img {
   height: 38px;
-  object-fit: contain;
+  width: 38px;
+  min-width: 38px;
+  display: block;
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.2);
+  background-color: #ffffff;
   border-radius: 50%;
-  background: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  overflow: hidden;
 }
-.marca-texto span { color: var(--agua-turquesa); font-weight: 400; }
-.voltar-wrap {
-  margin-bottom: 18px;
+.barra-marca .nome-marca {
+font-family: var(--fonte-corpo);
+font-weight: 800;
+font-size: 1.15rem;
+color: var(--texto-sobre-fundo);
+white-space: nowrap;
+letter-spacing: -0.01em;
 }
-.voltar {
-  display: inline-block;
-  color: #fff;
-  text-decoration: none;
-  font-size: .8rem;
-  font-weight: 700;
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 999px;
-  padding: 7px 12px;
+.barra-marca .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+
+.menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
+.btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+.btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
+
+.dropdown { position: relative; display: inline-block; }
+.dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
+.dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
+.dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+.dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
+
+/* ===== Cabecalho: foto + titulo expandido 100% ===== */
+.cabecalho {
+position: relative;
+width: 100%;
+height: 300px;
+overflow: visible;
+margin: 0;
 }
-.voltar:hover { background: rgba(255,255,255,.1); }
-main {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 36px 20px 56px;
+.cabecalho img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center 55%;
 }
-h1 { margin: 0 0 10px; font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.2; }
-.lead { color: var(--texto-sobre-fundo-sutil); margin: 0 0 30px; max-width: 75ch; }
-.card {
-  background: var(--pergaminho);
-  color: var(--texto-card);
-  border-radius: 14px;
-  padding: 24px 26px;
-  margin: 0 0 18px;
-  box-shadow: 0 4px 14px rgba(0,0,0,.22);
+.cabecalho-veu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 26, 31, 0.95) 0%, rgba(20, 26, 31, 0.75) 45%, rgba(20, 26, 31, 0.3) 75%, rgba(20, 26, 31, 0.1) 100%);
+  pointer-events: none;
 }
-h2 { margin: 0 0 10px; font-size: 1.15rem; }
-h3 { margin: 20px 0 6px; font-size: .98rem; }
-p { margin: 0 0 12px; }
-p:last-child { margin-bottom: 0; }
-ul { margin: 8px 0 0; padding-left: 22px; }
-li { margin-bottom: 7px; }
-.nota {
-  border-left: 4px solid var(--laranja);
-  padding: 4px 0 4px 14px;
+.cabecalho-texto {
+position: absolute;
+left: 0;
+right: 0;
+bottom: 0;
+padding: 28px 20px;
+max-width: 1800px;
+margin: 0 auto;
+width: 100%;
 }
-.cidades {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-  margin-top: 14px;
+.cabecalho-titulo {
+margin: 0;
+font-family: var(--fonte-corpo);
+font-weight: 800;
+text-transform: uppercase;
+font-size: clamp(1.4rem, 2.8vw, 2.3rem);
+color: #fff;
+letter-spacing: 0.01em;
+line-height: 1.2;
 }
-.cidade {
-  border: 1px solid rgba(36,35,31,.12);
-  border-radius: 9px;
-  padding: 11px 13px;
-  background: rgba(255,255,255,.28);
-  font-weight: 700;
+.cabecalho-subtitulo {
+margin: 8px 0 0;
+font-size: 0.9rem;
+color: rgba(255,255,255,0.85);
+max-width: 50ch;
 }
-.rodape {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 20px 40px;
-  color: var(--texto-sobre-fundo-sutil);
-  font-size: .78rem;
-  text-align: center;
+
+
+/* Botão de retorno das páginas institucionais */
+.btn-voltar-busca {
+  position:absolute;
+  right:20px;
+  bottom:-30px;
+  z-index:50;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:.78rem;
+  padding:7px 12px;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,.25);
+  transition:all .2s;
+  white-space:nowrap;
+  background:var(--fundo-escuro-claro);
+  display:inline-flex;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.22);
 }
-.rodape a { color: var(--agua-turquesa); }
-@media (max-width: 600px) {
-  main { padding: 28px 16px 44px; }
-  .card { padding: 20px; }
-  .topo-inner { align-items: flex-start; }
+.btn-voltar-busca:hover { background-color:#4b5055; }
+@media (max-width:650px) { .btn-voltar-busca { right:12px; bottom:-27px; font-size:.65rem; padding:6px 9px; } }
+.conteudo-pagina { position:relative; z-index:1; max-width:920px; width:100%; margin:0 auto; padding:26px 14px 44px; flex:1; }
+.card-pagina { background:var(--pergaminho); color:var(--texto-card); border-radius:10px; padding:18px 20px; margin:0 auto 10px; box-shadow:0 4px 14px rgba(0,0,0,.22); max-width:760px; }
+.card-pagina h2 { margin:0 0 7px; font-size:.84rem; line-height:1.25; }
+.card-pagina h3 { margin:15px 0 5px; font-size:.75rem; }
+.card-pagina p, .card-pagina li { font-size:.68rem; line-height:1.55; }
+.card-pagina p { margin:0 0 8px; }
+.card-pagina ul { margin:4px 0 8px; padding-left:18px; }
+.card-pagina a { color:#7A4318; font-weight:800; }
+.contact-box { background:#fff; border-radius:7px; border-left:3px solid var(--laranja); padding:10px; margin-top:8px; font-size:.68rem; }
+.pagina-nota { border-left:3px solid var(--laranja); padding-left:9px; }
+.pill-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px; }
+.pill { background:#f4f1e8; border:1px solid rgba(36,35,31,.10); border-radius:6px; padding:8px; font-size:.65rem; font-weight:800; }
+.rodape-pagina { border-top:1px solid rgba(245,243,237,.10); text-align:center; padding:18px 12px 26px; color:rgba(245,243,237,.58); font-size:.62rem; }
+.rodape-pagina p { margin:0 0 5px; }
+.rodape-pagina a { color:var(--agua-turquesa); text-decoration:none; font-weight:700; margin:0 4px; }
+@media(max-width:900px){ .cabecalho{height:220px;} }
+@media(max-width:650px){
+  .barra-marca{padding:12px 12px; min-height:58px;}
+  .barra-marca img{height:34px;width:34px;min-width:34px;}
+  .barra-marca .nome-marca{font-size:1rem;}
+  .btn-nav{font-size:.65rem;padding:6px 9px;}
+  .cabecalho{height:190px;}
+  .cabecalho-texto{padding:18px 14px;}
+  .cabecalho-titulo{font-size:1.25rem;}
+  .cabecalho-subtitulo{font-size:.72rem;}
+  .conteudo-pagina{padding-top:18px;}
+  .card-pagina{padding:16px;}
+  .pill-grid{grid-template-columns:repeat(2,1fr);}
 }
-</style>
-<link href="https://www.itbidata.com.br/metodologia.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Metodologia e Fontes dos Dados — itbidata" property="og:title"/><meta content="Entenda como o itbidata organiza dados públicos de transações imobiliárias e ITBI, quais são as fontes utilizadas e os limites de interpretação dos indicadores." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/metodologia.html" property="og:url"/></head>
-<body>
-<header class="topo">
-<div class="topo-inner">
-<a class="marca" href="index.html">
-<img alt="itbidata" class="marca-logo" src="./favicon.png"/>
-<span class="marca-texto">itbi<span>data</span></span>
-</a>
-</div>
-</header>
-<main>
-<div class="voltar-wrap">
-<a class="voltar" href="index.html">← Voltar à busca</a>
-</div>
-<h1>Metodologia e fontes dos dados</h1>
-<p class="lead">
-    Esta página explica como o itbidata organiza e apresenta informações públicas
-    relacionadas a transações imobiliárias e ITBI. O objetivo é tornar a consulta
-    mais simples e deixar claros os limites de interpretação dos dados.
-  </p>
-<section class="card">
-<h2>1. De onde vêm os dados?</h2>
-<p>
-      O itbidata utiliza bases de dados públicas disponibilizadas por prefeituras
-      municipais em seus portais oficiais de dados abertos e transparência.
-      A plataforma não cria os registros das transações: ela organiza informações
-      que já foram publicadas pelos municípios.
-    </p>
-<p>
-      Atualmente, a plataforma disponibiliza consultas para:
-    </p>
-<div class="cidades">
-<div class="cidade">Porto Alegre — RS</div>
-<div class="cidade">São Paulo — SP</div>
-<div class="cidade">Belo Horizonte — MG</div>
-<div class="cidade">Fortaleza — CE</div>
-<div class="cidade">Recife — PE</div>
-</div>
-</section>
-<section class="card">
-<h2>2. Como os dados são organizados?</h2>
-<p>
-      As prefeituras podem publicar os dados em formatos e estruturas diferentes.
-      O itbidata faz a leitura desses arquivos e transforma os campos disponíveis
-      em uma estrutura comum para permitir pesquisas por cidade, endereço, número
-      e ano, quando essas informações estão disponíveis na respectiva base.
-    </p>
-<p>
-      Os períodos disponíveis também podem variar entre os municípios. A ausência
-      de determinado ano ou campo não significa que a informação não exista na
-      prefeitura; significa que ela não está disponível na base utilizada pela
-      plataforma para aquela consulta.
-    </p>
-</section>
-<section class="card">
-<h2>3. O que significa um valor registrado?</h2>
-<p>
-      Os valores exibidos devem ser entendidos como informações presentes nos
-      registros públicos utilizados pelo itbidata. Eles não constituem uma
-      avaliação independente do imóvel e não devem ser tratados como garantia do
-      preço atual de mercado.
-    </p>
-<p>
-      Imóveis diferentes podem apresentar valores muito diferentes mesmo quando
-      estão na mesma rua ou bairro. Área, características da unidade, localização,
-      estado de conservação, data da operação e condições específicas da negociação
-      são alguns dos fatores que podem influenciar uma comparação.
-    </p>
-</section>
-<section class="card">
-<h2>4. Valor por metro quadrado</h2>
-<p>
-      Quando existem informações de valor e área compatíveis, o itbidata pode
-      apresentar o valor por metro quadrado como uma medida de comparação entre
-      registros.
-    </p>
-<div class="nota">
-<strong>Atenção:</strong> R$/m² é um indicador de comparação, não uma
-      avaliação automática do imóvel. Médias podem esconder diferenças importantes
-      entre os imóveis que compõem uma amostra.
+</style></head><body>
+<div class="barra-marca">
+  <a href="index.html" class="link-marca">
+    <img src="./favicon.png" alt="itbidata" />
+    <span class="nome-marca">itbi<span>data</span></span>
+  </a>
+  <div class="menu-nav">
+    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
+    <div class="dropdown">
+      <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+      <div class="dropdown-conteudo">
+        <a href="simulador-financiamento.html">🏠 Financiamento (SAC x PRICE)</a>
+        <a href="calculadora-itbi.html">📝 Custos de ITBI e Registro</a>
+        <a href="poder-de-compra.html">💰 Poder de Compra &amp; Renda</a>
+        <a href="comprar-ou-alugar.html">⚖ Comprar ou Alugar?</a>
+        <a href="calculadora-m2.html">📏 Preço do Metro Quadrado (m²)</a>
+        <a href="consorcio-vs-financiamento.html">💼 Consórcio vs. Financiamento</a>
+      </div>
     </div>
-</section>
-<section class="card">
-<h2>5. Estatísticas e agregações</h2>
-<p>
-      A página de Estatísticas apresenta indicadores agregados a partir dos dados
-      disponibilizados para cada município. Dependendo da cidade e do indicador,
-      podem ser utilizados valores, áreas, quantidade de registros e períodos
-      diferentes.
-    </p>
-<p>
-      Por esse motivo, resultados de cidades diferentes não devem ser comparados
-      sem considerar as características e a cobertura de cada base municipal.
-    </p>
-</section>
-<section class="card">
-<h2>6. Atualização e limitações</h2>
-<p>
-      As bases municipais podem ser atualizadas, corrigidas ou substituídas pelas
-      respectivas prefeituras. O itbidata acompanha as fontes utilizadas e atualiza
-      seus arquivos quando novos dados são incorporados à plataforma.
-    </p>
-<p>
-      Podem existir diferenças de nomenclatura, campos ausentes, registros
-      incompletos, alterações de formato e outras características próprias de cada
-      fonte. Por isso, o resultado apresentado no site deve ser interpretado dentro
-      do contexto da base municipal correspondente.
-    </p>
-</section>
-<section class="card">
-<h2>7. Fonte oficial e uso das informações</h2>
-<p>
-      O itbidata é um projeto independente e não possui vínculo institucional com
-      as prefeituras cujos dados são consultados.
-    </p>
-<p>
-      Para decisões de compra, venda, financiamento, investimento ou questões
-      jurídicas, recomendamos conferir a informação diretamente no portal oficial
-      do município e, quando necessário, utilizar documentos ou certidões oficiais.
-    </p>
-</section>
-</main>
-<div class="rodape">
-<p>itbidata — organização e consulta de dados públicos de transações imobiliárias.</p>
-<p><a href="privacidade.html">Política de Privacidade</a> · <a href="termos.html">Termos de Uso</a></p>
+  </div>
 </div>
-</body>
-</html>
+<header class="cabecalho">
+  <img src="./banner.jpg" alt="Mercado imobiliário" />
+  <div class="cabecalho-veu"></div>
+  <a href="index.html" class="btn-voltar-busca">← Voltar à busca</a>
+  <div class="cabecalho-texto">
+    <h1 class="cabecalho-titulo">METODOLOGIA E FONTES DOS DADOS</h1>
+    <p class="cabecalho-subtitulo">Como os dados públicos de transações imobiliárias são organizados e apresentados pelo itbidata.</p>
+  </div>
+</header>
+<main class="conteudo-pagina"><section class="card-pagina"><h2>1. De onde vêm os dados?</h2><p>O itbidata utiliza bases de dados públicas disponibilizadas por prefeituras municipais em seus portais oficiais de dados abertos e transparência. A plataforma não cria os registros das transações: ela organiza informações que já foram publicadas pelos municípios.</p><p>Atualmente, a plataforma disponibiliza consultas para:</p><div class="pill-grid"><div class="pill">Porto Alegre — RS</div><div class="pill">São Paulo — SP</div><div class="pill">Belo Horizonte — MG</div><div class="pill">Fortaleza — CE</div><div class="pill">Recife — PE</div></div></section>
+<section class="card-pagina"><h2>2. Como os dados são organizados?</h2><p>As prefeituras podem publicar os dados em formatos e estruturas diferentes. O itbidata faz a leitura desses arquivos e transforma os campos disponíveis em uma estrutura comum para permitir pesquisas por cidade, endereço, número e ano, quando essas informações estão presentes na respectiva base.</p><p>Os períodos disponíveis também podem variar entre os municípios. A ausência de determinado ano ou campo não significa que a informação não exista na prefeitura; significa que ela não está disponível na plataforma para aquela consulta.</p></section>
+<section class="card-pagina"><h2>3. O que significa um valor registrado?</h2><p>Os valores exibidos devem ser entendidos como informações presentes nos registros públicos utilizados pelo itbidata. Eles não constituem uma avaliação independente do imóvel e não devem ser tratados como garantia do preço atual de mercado.</p><p>Imóveis diferentes podem apresentar valores muito diferentes mesmo quando estão na mesma rua ou bairro. Área, características da unidade, localização, estado de conservação, data da operação e condições específicas da negociação são alguns dos fatores que podem influenciar uma comparação.</p></section>
+<section class="card-pagina"><h2>4. Valor por metro quadrado</h2><p>Quando existem informações de valor e área compatíveis, o itbidata pode apresentar o valor por metro quadrado como uma medida de comparação entre registros.</p><p class="note"><strong>Atenção:</strong> R$/m² é um indicador de comparação, não uma avaliação automática do imóvel. Médias podem esconder diferenças importantes entre os imóveis que compõem uma amostra.</p></section>
+<section class="card-pagina"><h2>5. Estatísticas e agregações</h2><p>A página de Estatísticas apresenta indicadores agregados a partir dos dados disponibilizados para cada município. Dependendo da cidade e do indicador, podem ser utilizados valores, áreas, quantidade de registros e períodos diferentes.</p></section>
+<section class="card-pagina"><h2>6. Limitações e fonte oficial</h2><p>Bases municipais podem ser atualizadas, corrigidas ou alteradas depois da publicação. Também podem existir campos ausentes, diferenças de estrutura e critérios específicos entre municípios.</p><p>Em caso de divergência ou necessidade de confirmação documental, a fonte oficial do município deve prevalecer. O itbidata é independente e não possui vínculo com as prefeituras ou órgãos públicos que disponibilizam os dados.</p></section></main>
+<footer class="rodape-pagina">
+  <p>itbidata é uma plataforma independente de consulta e análise de dados públicos imobiliários.</p>
+  <p><a href="metodologia.html">Metodologia e Fontes</a> · <a href="privacidade.html">Política de Privacidade</a> · <a href="termos.html">Termos de Uso &amp; Contato</a></p>
+</footer></body></html>

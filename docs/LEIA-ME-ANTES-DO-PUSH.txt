@@ -1,0 +1,11 @@
+ITBIDATA — HOMOLOGAÇÃO V4
+
+Alterações desta versão:
+- Cabeçalho da home replicado nas páginas Metodologia e Fontes, Política de Privacidade e Termos de Uso & Contato.
+- Banner principal e identidade visual do cabeçalho mantidos no mesmo padrão da home.
+- Rodapé reduzido aos três links institucionais solicitados.
+- Pesquisa de logradouro normalizada para aceitar abreviações e nomes por extenso (Av./Av/Avenida, Prof./Prof/Professor, R./Rua, Pres./Presidente etc.).
+- Lógica de carregamento/parsing dos dados não foi alterada.
+- index-before-layout-restoration.html contém a versão anterior para rollback.
+
+Teste primeiro no clone/homologação.

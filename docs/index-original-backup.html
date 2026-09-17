@@ -3,14 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>itbidata — Dados e histórico de transações imobiliárias</title>
-<meta name="description" content="Consulte dados públicos de transações imobiliárias de ITBI por cidade, endereço e período. Veja valores, datas, áreas, bairros e histórico de negociações disponíveis nas fontes municipais.">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<meta name="author" content="itbidata">
-<meta property="og:type" content="website">
-<meta property="og:title" content="itbidata — Dados e histórico de transações imobiliárias">
-<meta property="og:description" content="Consulta e análise de dados públicos de transações imobiliárias de ITBI.">
-<meta property="og:locale" content="pt_BR">
+<title>itbidata &mdash; Inteligência de Mercado Imobiliário</title>
 <link rel="icon" type="image/png" href="./favicon.png">
 <link rel="apple-touch-icon" href="./favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
@@ -584,67 +577,6 @@ white-space: nowrap;
   color: #6B6A63 !important;
   margin: 0 !important;
 }
-
-/* ===== Conteúdo editorial / confiança / SEO ===== */
-.conteudo-editorial {
-  max-width: 920px;
-  margin: 10px auto 28px;
-  background: transparent;
-  color: var(--texto-sobre-fundo);
-  padding: 0 20px;
-}
-.conteudo-editorial h2 {
-  margin: 0 0 3px;
-  padding-left: 10px;
-  border-left: 3px solid var(--laranja);
-  font-size: 0.95rem;
-  line-height: 1.2;
-  font-weight: 800;
-}
-.conteudo-editorial .editorial-subtitulo {
-  margin: 0 0 10px 13px;
-  font-size: 0.68rem;
-  color: var(--texto-sobre-fundo-sutil);
-}
-.conteudo-editorial p {
-  margin: 0 0 8px;
-  line-height: 1.5;
-  font-size: 0.72rem;
-}
-.bloco-editorial-grade {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-.bloco-editorial-grade > div {
-  background: var(--fundo-escuro-claro);
-  border: 1px solid rgba(245,243,237,0.10);
-  border-radius: 8px;
-  padding: 10px;
-  min-height: 0;
-}
-.bloco-editorial-grade > div:last-child {
-  grid-column: 1 / -1;
-  border-left: 3px solid var(--agua-turquesa);
-}
-.conteudo-editorial h3 {
-  margin: 0 0 4px;
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-.conteudo-editorial ul, .conteudo-editorial ol {
-  margin: 4px 0 0 14px;
-  padding: 0;
-  line-height: 1.45;
-  font-size: 0.68rem;
-}
-.conteudo-editorial a { color: var(--agua-turquesa); font-weight: 700; }
-@media (max-width: 650px) {
-  .conteudo-editorial { padding: 0 14px; }
-  .bloco-editorial-grade { grid-template-columns: 1fr; }
-  .bloco-editorial-grade > div:last-child { grid-column: auto; }
-}
-
 </style>
 </head>
 <body>
@@ -781,33 +713,6 @@ white-space: nowrap;
       </main>
     </div>
 
-    <section class="conteudo-editorial" aria-labelledby="sobre-itbidata">
-      <h2 id="sobre-itbidata">Entenda os dados de transações imobiliárias</h2>
-      <p class="editorial-subtitulo">Um guia rápido para interpretar as informações apresentadas pelo itbidata.</p>
-      <div class="bloco-editorial-grade">
-        <div>
-          <h3>O que é o ITBI?</h3>
-          <p>ITBI é o Imposto sobre a Transmissão de Bens Imóveis, relacionado a transações onerosas de imóveis entre vivos. As bases utilizadas pelo itbidata são informações públicas disponibilizadas pelos municípios.</p>
-        </div>
-        <div>
-          <h3>O que significa o valor de uma transação?</h3>
-          <p>O valor exibido corresponde a uma informação presente na base pública utilizada para aquela cidade e período. Ele não é uma avaliação feita pelo itbidata e não representa, por si só, o preço atual de mercado de um imóvel.</p>
-        </div>
-        <div>
-          <h3>Como interpretar os R$/m²?</h3>
-          <p>O valor por metro quadrado é uma medida de comparação entre registros quando existem dados compatíveis de valor e área. Imóveis de uma mesma rua ou bairro podem ter R$/m² diferentes por causa de área, localização, características, conservação, data e condições de negociação.</p>
-        </div>
-        <div>
-          <h3>Por que os resultados podem variar?</h3>
-          <p>Cada prefeitura possui sua própria base, estrutura, cobertura e critérios de publicação. Além disso, os imóveis presentes em uma amostra não são necessariamente iguais. Por isso, médias e comparações devem ser interpretadas dentro do contexto do período e da cidade pesquisados.</p>
-        </div>
-        <div>
-          <h3>Use os dados como referência</h3>
-          <p>O itbidata organiza dados públicos para facilitar pesquisa e comparação. Para decisões de compra, venda, financiamento, investimento ou questões jurídicas, confira a informação diretamente na fonte oficial do município e, quando necessário, utilize documentos e orientação profissional.</p>
-        </div>
-      </div>
-    </section>
-
     <!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
     <footer class="rodape">
       <p>
@@ -822,11 +727,9 @@ white-space: nowrap;
         antes de qualquer decisão.
       </p>
       <div class="links-rodape">
-        <a href="metodologia.html">Metodologia e Fontes</a>
-        <span>&bull;</span>
         <a href="privacidade.html">Política de Privacidade</a>
         <span>&bull;</span>
-        <a href="termos.html">Termos de Uso &amp; Contato</a>
+        <a href="termos.html">Termos de Uso &amp; Contato (itbidata9@gmail.com)</a>
       </div>
     </footer>
   </div>
@@ -888,49 +791,10 @@ white-space: nowrap;
   }
 
   function normalizarParaBusca(s) {
-    return String(s || "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toUpperCase()
-      .trim();
+    return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim();
   }
-
-  // Compara o nome do logradouro sem depender de abreviações de tipo
-  // e títulos que aparecem antes do nome: AV., AV, AVENIDA, PROF.,
-  // PROFESSOR, DR., DOUTOR, PRES., PRESIDENTE etc.
-  // Exemplos: "Av. Prof. Oscar" = "Avenida Professor Oscar".
   function normalizarLogradouro(s) {
-    var texto = normalizarParaBusca(s)
-      .replace(/[^A-Z0-9]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    // Removemos uma cadeia de prefixos no início. Isso cobre combinações
-    // como "AV PROF OSCAR", "AVENIDA PROFESSOR OSCAR",
-    // "AV DR PROF OSCAR" e equivalentes.
-    var prefixos = [
-      "AVENIDA", "AV", "RUA", "R", "ALAMEDA", "AL", "TRAVESSA", "TRAV", "TV",
-      "ESTRADA", "EST", "RODOVIA", "ROD", "PRACA", "PCA", "PC", "LARGO", "LG",
-      "PARQUE", "PQ", "BECO", "BC", "VIELA", "VL", "SERVIDAO", "SER",
-      "PROFESSOR", "PROF", "DOUTOR", "DR", "PRESIDENTE", "PRES", "GOVERNADOR", "GOV",
-      "SENADOR", "SEN", "DESEMBARGADOR", "DES", "CORONEL", "CEL", "MARECHAL", "MAL",
-      "GENERAL", "GEN", "ALMIRANTE", "ALM", "PADRE", "PE", "FREI", "FR"
-    ];
-
-    var alterou = true;
-    while (alterou && texto) {
-      alterou = false;
-      for (var i = 0; i < prefixos.length; i++) {
-        var re = new RegExp("^" + prefixos[i] + "(?:\\s+|$)");
-        if (re.test(texto)) {
-          texto = texto.replace(re, "").trim();
-          alterou = true;
-          break;
-        }
-      }
-    }
-
-    return texto
+    return normalizarParaBusca(s)
       .replace(/\b(DE|DA|DO|DAS|DOS|E)\b/g, " ")
       .replace(/\s+/g, " ")
       .trim();
@@ -1312,15 +1176,8 @@ white-space: nowrap;
   }
 
   function coincide(registro, logradouroBusca, numeroBusca) {
-    var logradouroOk = true;
-    if (logradouroBusca) {
-      var logradouroRegistro = normalizarLogradouro(registro.logradouro || "");
-      logradouroOk = !!logradouroRegistro && (
-        logradouroRegistro === logradouroBusca ||
-        logradouroRegistro.indexOf(logradouroBusca) !== -1 ||
-        logradouroBusca.indexOf(logradouroRegistro) !== -1
-      );
-    }
+    var logradouroOk = !logradouroBusca ||
+      (registro.logradouro && normalizarLogradouro(registro.logradouro).indexOf(logradouroBusca) !== -1);
     var numeroOk = !numeroBusca ||
       (registro.numeroEndereco && registro.numeroEndereco.trim() === numeroBusca);
     return logradouroOk && numeroOk;

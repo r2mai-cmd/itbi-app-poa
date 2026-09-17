@@ -1,86 +1,214 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Termos de Uso & Contato — itbidata</title><meta name="description" content="Termos de uso, limitações e canal de contato do itbidata."><meta name="robots" content="index,follow"><link rel="icon" type="image/png" href="./favicon.png"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root {
+  --fundo-escuro: #34383D;
+  --fundo-escuro-claro: #41464A;
+  --pergaminho: #EDE9DE;
+  --texto-card: #24231F;
+  --texto-card-sutil: #6B6A63;
+  --laranja: #F0913A;
+  --laranja-escuro: #D9762A;
+  --dourado-linha: #D8CFB8;
+  --agua-turquesa: #4FBFB8;
+  --texto-sobre-fundo: #F5F3ED;
+  --fonte-corpo: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--fonte-corpo);
+  background: var(--fundo-escuro);
+  color: var(--texto-sobre-fundo);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+/* ===== Barra de marca (logo e menu unificado) ===== */
+.barra-marca {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 20px;
+background: var(--fundo-escuro-claro);
+width: 100%;
+}
+.link-marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+.barra-marca img {
+  height: 38px;
+  width: 38px;
+  min-width: 38px;
+  display: block;
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.2);
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.barra-marca .nome-marca {
+font-family: var(--fonte-corpo);
+font-weight: 800;
+font-size: 1.15rem;
+color: var(--texto-sobre-fundo);
+white-space: nowrap;
+letter-spacing: -0.01em;
+}
+.barra-marca .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
 
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Termos de Uso e Contato — itbidata</title>
-<link href="./favicon.png" rel="icon" type="image/png"/>
-<link href="./favicon.png" rel="apple-touch-icon"/>
-<style>
-  :root {
-    --fundo-escuro: #34383D;
-    --fundo-escuro-claro: #41464A;
-    --pergaminho: #EDE9DE;
-    --texto-card: #24231F;
-    --texto-card-sutil: #6B6A63;
-    --laranja: #F0913A;
-    --laranja-escuro: #D9762A;
-    --dourado-linha: #D8CFB8;
-    --texto-sobre-fundo: #F5F3ED;
-    --texto-sobre-fundo-sutil: rgba(245, 243, 237, 0.68);
-    --agua-turquesa: #4FBFB8;
-    --fonte-corpo: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--fonte-corpo); background: var(--fundo-escuro); color: var(--texto-sobre-fundo); min-height: 100vh; display: flex; flex-direction: column; }
-  
-  .barra-marca { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: var(--fundo-escuro-claro); }
-  .link-marca { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; min-width: 0; }
-  .link-marca img { height: 38px; width: 38px; min-width: 38px; object-fit: cover; object-position: center 10%; transform: scale(1.2); background-color: #ffffff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4); overflow: hidden; }
-  .nome-marca { font-weight: 800; font-size: 1.15rem; color: var(--texto-sobre-fundo); white-space: nowrap; }
-  .nome-marca span { font-weight: 400; color: var(--agua-turquesa); }
+.menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
+.btn-nav:hover { background-color: rgba(255,255,255,0.12); }
+.btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
 
-  .menu-nav { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .btn-nav { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.78rem; padding: 7px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; white-space: nowrap; background: transparent; display: inline-flex; align-items: center; }
-  .btn-nav:hover { background-color: rgba(255,255,255,0.12); }
-  .btn-destaque { background-color: #388e9c; border-color: #4eb3c4; }
+.dropdown { position: relative; display: inline-block; }
+.dropdown-conteudo { display: none; position: absolute; right: 0; top: 100%; min-width: 260px; background-color: var(--fundo-escuro-claro); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.45); z-index: 100; padding: 8px 0; margin-top: 0px; border: 1px solid rgba(255,255,255,0.12); }
+.dropdown-conteudo a { color: var(--pergaminho); padding: 10px 16px; text-decoration: none; display: block; font-size: 0.8rem; font-weight: 600; transition: background 0.15s, color 0.15s; }
+.dropdown-conteudo a:hover { background-color: rgba(240, 145, 58, 0.18); color: var(--laranja); }
+.dropdown:hover .dropdown-conteudo, .dropdown-conteudo:hover { display: block; }
 
-  .voltar-wrap { margin-bottom: 18px; }
-  .voltar { display: inline-block; color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.25); border-radius: 999px; padding: 7px 12px; }
-  .voltar:hover { background: rgba(255,255,255,0.1); }
-  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; width: 100%; }
-  .cartao-conteudo { background: var(--pergaminho); border-radius: 16px; padding: 40px; color: var(--texto-card); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  h1 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; margin-top: 0; color: var(--texto-card); border-bottom: 2px solid var(--dourado-linha); padding-bottom: 12px; }
-  h2 { font-size: 1.1rem; font-weight: 700; color: var(--laranja-escuro); margin-top: 28px; text-transform: uppercase; letter-spacing: 0.05em; }
-  p, li { font-size: 0.95rem; line-height: 1.6; color: var(--texto-card-sutil); }
-  
-  .bloco-contato { background: #fff; padding: 20px; border-radius: 10px; border-left: 4px solid var(--laranja); margin-top: 16px; }
-  .bloco-contato p { margin: 4px 0; color: var(--texto-card); font-weight: 600; }
+/* ===== Cabecalho: foto + titulo expandido 100% ===== */
+.cabecalho {
+position: relative;
+width: 100%;
+height: 300px;
+overflow: visible;
+margin: 0;
+}
+.cabecalho img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+object-position: center 55%;
+}
+.cabecalho-veu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 26, 31, 0.95) 0%, rgba(20, 26, 31, 0.75) 45%, rgba(20, 26, 31, 0.3) 75%, rgba(20, 26, 31, 0.1) 100%);
+  pointer-events: none;
+}
+.cabecalho-texto {
+position: absolute;
+left: 0;
+right: 0;
+bottom: 0;
+padding: 28px 20px;
+max-width: 1800px;
+margin: 0 auto;
+width: 100%;
+}
+.cabecalho-titulo {
+margin: 0;
+font-family: var(--fonte-corpo);
+font-weight: 800;
+text-transform: uppercase;
+font-size: clamp(1.4rem, 2.8vw, 2.3rem);
+color: #fff;
+letter-spacing: 0.01em;
+line-height: 1.2;
+}
+.cabecalho-subtitulo {
+margin: 8px 0 0;
+font-size: 0.9rem;
+color: rgba(255,255,255,0.85);
+max-width: 50ch;
+}
 
-  .rodape { padding: 32px 24px; text-align: center; font-size: 0.78rem; color: var(--texto-sobre-fundo-sutil); border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; }
-</style>
-<meta content="Termos de uso do itbidata, finalidade das ferramentas, limitações das estimativas e informações de contato." name="description"/><link href="https://www.itbidata.com.br/termos.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Termos de Uso e Contato — itbidata" property="og:title"/><meta content="Termos de uso do itbidata, finalidade das ferramentas, limitações das estimativas e informações de contato." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/termos.html" property="og:url"/></head>
-<body>
+
+/* Botão de retorno das páginas institucionais */
+.btn-voltar-busca {
+  position:absolute;
+  right:20px;
+  bottom:-30px;
+  z-index:50;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:.78rem;
+  padding:7px 12px;
+  border-radius:9999px;
+  border:1px solid rgba(255,255,255,.25);
+  transition:all .2s;
+  white-space:nowrap;
+  background:var(--fundo-escuro-claro);
+  display:inline-flex;
+  align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.22);
+}
+.btn-voltar-busca:hover { background-color:#4b5055; }
+@media (max-width:650px) { .btn-voltar-busca { right:12px; bottom:-27px; font-size:.65rem; padding:6px 9px; } }
+.conteudo-pagina { position:relative; z-index:1; max-width:920px; width:100%; margin:0 auto; padding:26px 14px 44px; flex:1; }
+.card-pagina { background:var(--pergaminho); color:var(--texto-card); border-radius:10px; padding:18px 20px; margin:0 auto 10px; box-shadow:0 4px 14px rgba(0,0,0,.22); max-width:760px; }
+.card-pagina h2 { margin:0 0 7px; font-size:.84rem; line-height:1.25; }
+.card-pagina h3 { margin:15px 0 5px; font-size:.75rem; }
+.card-pagina p, .card-pagina li { font-size:.68rem; line-height:1.55; }
+.card-pagina p { margin:0 0 8px; }
+.card-pagina ul { margin:4px 0 8px; padding-left:18px; }
+.card-pagina a { color:#7A4318; font-weight:800; }
+.contact-box { background:#fff; border-radius:7px; border-left:3px solid var(--laranja); padding:10px; margin-top:8px; font-size:.68rem; }
+.pagina-nota { border-left:3px solid var(--laranja); padding-left:9px; }
+.pill-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px; }
+.pill { background:#f4f1e8; border:1px solid rgba(36,35,31,.10); border-radius:6px; padding:8px; font-size:.65rem; font-weight:800; }
+.rodape-pagina { border-top:1px solid rgba(245,243,237,.10); text-align:center; padding:18px 12px 26px; color:rgba(245,243,237,.58); font-size:.62rem; }
+.rodape-pagina p { margin:0 0 5px; }
+.rodape-pagina a { color:var(--agua-turquesa); text-decoration:none; font-weight:700; margin:0 4px; }
+@media(max-width:900px){ .cabecalho{height:220px;} }
+@media(max-width:650px){
+  .barra-marca{padding:12px 12px; min-height:58px;}
+  .barra-marca img{height:34px;width:34px;min-width:34px;}
+  .barra-marca .nome-marca{font-size:1rem;}
+  .btn-nav{font-size:.65rem;padding:6px 9px;}
+  .cabecalho{height:190px;}
+  .cabecalho-texto{padding:18px 14px;}
+  .cabecalho-titulo{font-size:1.25rem;}
+  .cabecalho-subtitulo{font-size:.72rem;}
+  .conteudo-pagina{padding-top:18px;}
+  .card-pagina{padding:16px;}
+  .pill-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style></head><body>
 <div class="barra-marca">
-<a class="link-marca" href="index.html">
-<img alt="itbidata" src="./favicon.png"/>
-<span class="nome-marca">itbi<span>data</span></span>
-</a>
+  <a href="index.html" class="link-marca">
+    <img src="./favicon.png" alt="itbidata" />
+    <span class="nome-marca">itbi<span>data</span></span>
+  </a>
+  <div class="menu-nav">
+    <a href="estatisticas.html" class="btn-nav btn-destaque">Estatísticas</a>
+    <div class="dropdown">
+      <a href="#" class="btn-nav btn-destaque">Simuladores ▾</a>
+      <div class="dropdown-conteudo">
+        <a href="simulador-financiamento.html">🏠 Financiamento (SAC x PRICE)</a>
+        <a href="calculadora-itbi.html">📝 Custos de ITBI e Registro</a>
+        <a href="poder-de-compra.html">💰 Poder de Compra &amp; Renda</a>
+        <a href="comprar-ou-alugar.html">⚖ Comprar ou Alugar?</a>
+        <a href="calculadora-m2.html">📏 Preço do Metro Quadrado (m²)</a>
+        <a href="consorcio-vs-financiamento.html">💼 Consórcio vs. Financiamento</a>
+      </div>
+    </div>
+  </div>
 </div>
-<main class="container">
-<div class="voltar-wrap">
-<a class="voltar" href="index.html">← Voltar à busca</a>
-</div>
-<div class="cartao-conteudo">
-<h1>Termos de Uso &amp; Contato</h1>
-<p>Bem-vindo ao <strong>itbidata</strong>. Ao acessar e utilizar as nossas calculadoras, simuladores e conteúdos estatísticos, você concorda expressamente com os termos descritos abaixo.</p>
-<h2>1. Finalidade Educacional e Estimativa</h2>
-<p>Todas as ferramentas disponibilizadas no itbidata possuem caráter estritamente estimativo, matemático e educacional para fins de planejamento imobiliário. Os resultados calculados (como custos de ITBI, poder de compra, financiamentos SAC/PRICE e comparações de consórcio) não constituem propostas comerciais, ofertas de crédito, garantias contratuais ou consultoria financeira oficial.</p>
-<h2>2. Isenção de Responsabilidade</h2>
-<p>O itbidata é um portal independente. As taxas, alíquotas e índices utilizados buscam refletir as práticas usuais de mercado e de instituições financeiras (como a Caixa Econômica Federal), porém podem sofrer variações sem aviso prévio. Recomendamos veementemente a consulta às fontes oficiais e aos órgãos competentes antes de qualquer tomada de decisão de compra ou contratação de crédito.</p>
-<h2>3. Propriedade Intelectual</h2>
-<p>A identidade visual, o design, os códigos de programação dos simuladores e os textos estruturados do itbidata são protegidos por leis de propriedade intelectual. É proibida a reprodução comercial não autorizada do conteúdo.</p>
-<h2>4. Canal de Contato</h2>
-<p>Dúvidas, sugestões, reporte de inconsistências matemáticas ou solicitações de parceria podem ser encaminhadas diretamente para a nossa equipe através do canal oficial abaixo:</p>
-<div class="bloco-contato">
-<p>E-mail de Suporte: <strong>itbidata9@gmail.com</strong></p>
-<p>Prazo médio de resposta: Até 48 horas úteis.</p>
-</div>
-</div>
-</main>
-<footer class="rodape">
-<p>© itbidata — Plataforma independente de simulação e análise imobiliária.</p>
-</footer>
-</body>
-</html>
+<header class="cabecalho">
+  <img src="./banner.jpg" alt="Mercado imobiliário" />
+  <div class="cabecalho-veu"></div>
+  <a href="index.html" class="btn-voltar-busca">← Voltar à busca</a>
+  <div class="cabecalho-texto">
+    <h1 class="cabecalho-titulo">TERMOS DE USO & CONTATO</h1>
+    <p class="cabecalho-subtitulo">Informações sobre o uso da plataforma, limitações dos resultados e canal de contato.</p>
+  </div>
+</header>
+<main class="conteudo-pagina"><section class="card-pagina"><p>Bem-vindo ao itbidata. Ao acessar e utilizar as nossas calculadoras, simuladores e conteúdos estatísticos, você concorda expressamente com os termos descritos abaixo.</p><h2 style="color:#B76728">1. FINALIDADE EDUCACIONAL E ESTIMATIVA</h2><p>Todas as ferramentas disponibilizadas no itbidata possuem caráter estritamente estimativo, matemático e educacional para fins de planejamento imobiliário. Os resultados calculados (como custos de ITBI, poder de compra, financiamentos SAC/PRICE e comparações de consórcio) não constituem propostas comerciais, ofertas de crédito, garantias contratuais ou consultoria financeira oficial.</p><h2 style="color:#B76728">2. ISENÇÃO DE RESPONSABILIDADE</h2><p>O itbidata é um portal independente. As taxas, alíquotas e índices utilizados buscam refletir as práticas usuais de mercado e instituições financeiras, porém podem sofrer variações sem aviso prévio. Recomendamos veementemente a consulta às fontes oficiais e aos órgãos competentes antes de qualquer tomada de decisão de compra ou contratação de crédito.</p><h2 style="color:#B76728">3. PROPRIEDADE INTELECTUAL</h2><p>A identidade visual, o design, os códigos de programação dos simuladores e os textos estruturados do itbidata são protegidos pelas regras aplicáveis de propriedade intelectual. É proibida a reprodução comercial não autorizada.</p><h2 style="color:#B76728">4. CANAL DE CONTATO</h2><p>Dúvidas, sugestões, relatos de inconsistências matemáticas ou solicitações de parceria podem ser encaminhadas diretamente à nossa equipe.</p><div class="contact-box"><strong>E-mail de contato: itbidata9@gmail.com</strong><br>Prazo estimado de resposta: até 48 horas úteis.</div></section></main>
+<footer class="rodape-pagina">
+  <p>itbidata é uma plataforma independente de consulta e análise de dados públicos imobiliários.</p>
+  <p><a href="metodologia.html">Metodologia e Fontes</a> · <a href="privacidade.html">Política de Privacidade</a> · <a href="termos.html">Termos de Uso &amp; Contato</a></p>
+</footer></body></html>
