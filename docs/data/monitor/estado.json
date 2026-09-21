@@ -1,6 +1,6 @@
 {
   "belo-horizonte": {
-    "fingerprint": "10c285b82971d7af51f80d3877e58145ecb737d5ab17f84a764054aa5eaa5320",
+    "fingerprint": "aa96d153bd09a7172907e361c73ce5f95b876aeeba927efd255b4f8e241cedc7",
     "nome": "Belo Horizonte",
     "package_name": "ITBI Relatórios",
     "recursos": [
@@ -215,6 +215,16 @@
         "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/9739d3c2-0f38-4aff-9c68-877df748f2ae/download/pda_itbi_relatorio_202604.csv"
       },
       {
+        "created": "2026-09-17T21:10:06.214775",
+        "format": "CSV",
+        "hash": "4207bc78a73ceb147aa6a780956c363f",
+        "id": "17dc691a-fcc8-4932-aadb-cf02bd2f52bb",
+        "last_modified": "2026-09-17T21:10:05.893800",
+        "name": "2026 - Agosto - ITBI Relatórios",
+        "size": 446682,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/17dc691a-fcc8-4932-aadb-cf02bd2f52bb/download/pda_itbi_relatorio_202608.csv"
+      },
+      {
         "created": "2026-03-23T10:49:27.932323",
         "format": "CSV",
         "hash": "a469619a9a6ea808b105e714d83d31fe",
@@ -307,7 +317,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
-    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
+    "verificado_em": "2026-09-21T14:53:30.730003+00:00"
   },
   "fortaleza": {
     "fingerprint": "ed7d9391deb824837ca0193f5684c4c5aab399c752fa47fc31c96a1184784d2d",
@@ -327,7 +337,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
-    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
+    "verificado_em": "2026-09-21T14:53:30.730003+00:00"
   },
   "porto-alegre": {
     "fingerprint": "dba15e58a25718640e10de2cbc4c579b5fef4d3543853ddc81da3f3a6d0f0115",
@@ -417,7 +427,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
-    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
+    "verificado_em": "2026-09-21T14:53:30.730003+00:00"
   },
   "recife": {
     "fingerprint": "19253846b2b324654b4c1456a1aca41c7b524f9ffae775b0576e1d2e13cb366f",
@@ -557,16 +567,16 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi",
-    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
+    "verificado_em": "2026-09-21T14:53:30.730003+00:00"
   },
   "sao-paulo": {
-    "content_length": 189771,
-    "fingerprint": "74fa2747a5b1605c67b3a9e4d113eb4bce67fbace73cf6b1dce75991abb0c895",
+    "content_length": 188679,
+    "fingerprint": "8d0fbecccd133524e5bcfb775abbcb7752386db205a09e9bd40ab21508148317",
     "last_modified_http": null,
     "nome": "São Paulo",
     "tipo": "pagina",
     "titulo": "<!DOCTYPE html> <html class=\"ltr\" dir=\"ltr\" lang=\"pt-BR\"> <head> <title>Dados das Transações I",
     "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
-    "verificado_em": "2026-09-14T14:46:37.524796+00:00"
+    "verificado_em": "2026-09-21T14:53:30.730003+00:00"
   }
 }
