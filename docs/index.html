@@ -185,9 +185,52 @@ width: 100%;
 .grade-resultados { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 
 @media (max-width: 900px) {
-.corpo { flex-direction: column; padding: 16px; gap: 20px; }
+.corpo { flex-direction: column; padding: 16px 14px 24px; gap: 20px; }
 .barra-lateral { width: 100%; position: static; }
+.area-principal { width: 100%; min-width: 0; }
 .cabecalho { height: 220px; }
+}
+
+@media (max-width: 600px) {
+  .barra-marca { padding: 10px 14px; gap: 8px; }
+  .barra-marca img { height: 36px; width: 36px; min-width: 36px; }
+  .barra-marca .nome-marca { font-size: 1rem; }
+  .menu-nav { gap: 4px; }
+  .btn-nav { font-size: 0.68rem; padding: 7px 9px; }
+
+  .cabecalho { height: 220px; }
+  .cabecalho-texto { padding: 24px 18px; }
+  .cabecalho-titulo { font-size: clamp(1.25rem, 5.5vw, 1.65rem); line-height: 1.16; }
+  .cabecalho-subtitulo { font-size: 0.82rem; line-height: 1.35; max-width: 42ch; }
+
+  .corpo { padding: 16px 14px 24px; gap: 18px; }
+  .cartao { padding: 18px 20px 20px; border-radius: 14px; }
+  .campo-linha { gap: 16px; }
+
+  .acoes-detalhe { gap: 8px; margin-bottom: 10px; }
+  .link-voltar { font-size: 0.76rem; margin-bottom: 0; }
+  .ficha-titulo { font-size: 1.3rem; line-height: 1.18; margin-bottom: 2px; overflow-wrap: anywhere; }
+  .ficha-subtitulo {
+    gap: 5px;
+    flex-wrap: nowrap;
+    margin-bottom: 14px;
+    min-height: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .ficha-subtitulo .link-streetview { font-size: 0.68rem; }
+  .ficha-subtitulo .botao-compartilhar {
+    padding: 5px 7px;
+    font-size: 0.58rem;
+    letter-spacing: 0.035em;
+    margin-left: auto;
+    gap: 3px;
+  }
+  .ficha-linha { gap: 12px; padding: 9px 0; }
+  .ficha-rotulo { font-size: 0.68rem; }
+  .ficha-valor { font-size: 0.82rem; max-width: 58%; overflow-wrap: anywhere; }
+  .ficha-linha.destaque-m2 .ficha-valor { font-size: 0.92rem; }
+  .ficha-cartoes { gap: 12px; margin-bottom: 12px; }
 }
 
 /* ===== Cartão de Pesquisa e Resultados unificados na largura ===== */
@@ -348,11 +391,17 @@ cursor: pointer;
 
 .campo-linha {
 display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 20px;
+grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+gap: 16px;
+align-items: start;
 margin-bottom: 18px;
 }
-.campo-linha .campo { margin-bottom: 0; }
+.campo-linha .campo { margin-bottom: 0; min-width: 0; }
+.campo-linha .campo label {
+  white-space: nowrap;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
 
 /* ===== Botoes ===== */
 .botao {
@@ -409,6 +458,57 @@ margin-bottom: 16px;
 }
 .link-voltar:hover { color: var(--agua-turquesa); }
 
+.acoes-detalhe {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.acoes-detalhe .link-voltar { margin-bottom: 0; }
+.botao-compartilhar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(79,191,184,0.65);
+  background: transparent;
+  color: var(--agua-turquesa);
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-family: var(--fonte-corpo);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.botao-compartilhar:hover {
+  background: rgba(79,191,184,0.10);
+}
+.menu-compartilhar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 16px auto;
+  padding: 8px;
+  background: var(--fundo-escuro-claro);
+  border-radius: 10px;
+  width: fit-content;
+}
+.menu-compartilhar.ativo { display: flex; }
+.menu-compartilhar button {
+  border: 0;
+  background: var(--pergaminho);
+  color: var(--texto-card);
+  border-radius: 7px;
+  padding: 7px 10px;
+  font-family: var(--fonte-corpo);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 /* ===== Controles de Paginação (Rodapé da Lista) ===== */
 .controles-paginacao {
   display: flex;
@@ -459,7 +559,28 @@ animation: deslizar 1.1s ease-in-out infinite;
 
 /* ===== Ficha de detalhe ===== */
 .ficha-titulo { font-family: var(--fonte-corpo); font-size: 1.5rem; font-weight: 800; color: var(--texto-sobre-fundo); margin: 0 0 4px; }
-.ficha-subtitulo { font-size: 0.85rem; color: var(--texto-sobre-fundo-sutil); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 20px; }
+.ficha-subtitulo {
+display: flex;
+align-items: center;
+gap: 10px;
+font-size: 0.85rem;
+color: var(--texto-sobre-fundo-sutil);
+text-transform: uppercase;
+letter-spacing: 0.08em;
+margin: 0 0 20px;
+min-height: 34px;
+}
+.ficha-subtitulo .link-streetview {
+  color: var(--agua-turquesa);
+  text-decoration: underline;
+  white-space: nowrap;
+}
+.ficha-subtitulo .botao-compartilhar {
+  margin-left: auto;
+  flex-shrink: 0;
+  position: relative;
+  top: 0;
+}
 .ficha-linha {
 display: flex; justify-content: space-between; gap: 16px;
 padding: 10px 0; border-bottom: 1px solid rgba(36,35,31,0.12);
@@ -477,8 +598,7 @@ border-bottom: none;
 .ficha-rotulo { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--texto-card-sutil); }
 .ficha-valor { font-family: var(--fonte-mono); font-size: 0.92rem; color: var(--texto-card); text-align: right; }
 .ficha-secao-titulo { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--texto-card-sutil); margin: 0 0 12px; }
-.ficha-cartoes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; width: 100%; }
-@media (max-width: 700px) { .ficha-cartoes { grid-template-columns: 1fr; } }
+.ficha-cartoes { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; width: 100%; }
 
 .rodape {
 padding: 32px 24px;
@@ -704,8 +824,14 @@ white-space: nowrap;
               <input type="text" id="numero" placeholder="opcional" inputmode="numeric">
             </div>
             <div class="campo">
-              <label for="ano">Ano</label>
-              <select id="ano">
+              <label for="unidade">Unidade / complemento</label>
+              <input type="text" id="unidade" placeholder="Ex.: 91, Apto 91">
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="ano">Ano</label>
+            <select id="ano">
                 <option value="">Todos</option>
                 <option value="2026" selected>2026</option>
                 <option value="2025">2025</option>
@@ -716,7 +842,6 @@ white-space: nowrap;
                 <option value="2020">2020</option>
               </select>
             </div>
-          </div>
 
           <button class="botao botao-primario" id="btn-pesquisar">&#128269; Pesquisar</button>
           <div class="acoes-secundarias">
@@ -1316,6 +1441,30 @@ white-space: nowrap;
       (registro.numeroEndereco && registro.numeroEndereco.trim() === numeroBusca);
   }
 
+  function unidadeCoincide(registro, unidadeBusca) {
+    if (!unidadeBusca) return true;
+
+    var busca = normalizarParaBusca(unidadeBusca).replace(/[.,#\-]+/g, " ").replace(/\s+/g, " ").trim();
+    if (!busca) return true;
+
+    var unidade = registro.numeroUnidade ? String(registro.numeroUnidade).trim() : "";
+    if (unidade && normalizarParaBusca(unidade).replace(/[.,#\-]+/g, " ").replace(/\s+/g, " ").trim() === busca) {
+      return true;
+    }
+
+    var complemento = registro.complementoEndereco ? normalizarParaBusca(registro.complementoEndereco).replace(/[.,#\-]+/g, " ").replace(/\s+/g, " ").trim() : "";
+    if (complemento && complemento === busca) return true;
+
+    // Permite pesquisar apenas pelo número da unidade quando a fonte o traz
+    // dentro do complemento, por exemplo: "APTO 91".
+    if (/^\d+$/.test(busca) && complemento) {
+      var m = complemento.match(/\b(?:APTO|APARTAMENTO|UNID|UNIDADE|SALA|LOJA|CASA|BOX)\s*0*(\d+)\b/);
+      if (m && String(parseInt(m[1], 10)) === String(parseInt(busca, 10))) return true;
+    }
+
+    return false;
+  }
+
   // Retorna o grau de correspondência do logradouro:
   // 2 = nome exato; 1 = busca parcial; 0 = não corresponde.
   // O tipo do logradouro (Rua/Av./Avenida etc.) e títulos (Prof./Dr./Pres. etc.)
@@ -1330,9 +1479,10 @@ white-space: nowrap;
     return 0;
   }
 
-  function coincide(registro, logradouroBusca, numeroBusca) {
+  function coincide(registro, logradouroBusca, numeroBusca, unidadeBusca) {
     return grauCorrespondenciaLogradouro(registro, logradouroBusca) > 0 &&
-      numeroCoincide(registro, numeroBusca);
+      numeroCoincide(registro, numeroBusca) &&
+      unidadeCoincide(registro, unidadeBusca);
   }
 
   function ordenarRegistros(lista, criterio) {
@@ -1356,11 +1506,12 @@ white-space: nowrap;
     return copia;
   }
 
-  function buscar(cidadeId, anoUnico, logradouro, numero, forcarAtualizacao, aoProgredir) {
+  function buscar(cidadeId, anoUnico, logradouro, numero, unidade, forcarAtualizacao, aoProgredir) {
     var fonte = FONTES[cidadeId];
     var anos = anoUnico ? [anoUnico] : fonte.anosDisponiveis;
     var logradouroBusca = normalizarLogradouro(logradouro);
     var numeroBusca = numero ? numero.trim() : null;
+    var unidadeBusca = unidade ? unidade.trim() : null;
     var registros = [];
     var anosComErro = [];
     var ultimoErro = null;
@@ -1381,7 +1532,8 @@ white-space: nowrap;
         if (logradouroBusca) {
           var exatos = registros.filter(function (r) {
             return grauCorrespondenciaLogradouro(r, logradouroBusca) === 2 &&
-              numeroCoincide(r, numeroBusca);
+              numeroCoincide(r, numeroBusca) &&
+              unidadeCoincide(r, unidadeBusca);
           });
           if (exatos.length > 0) registros = exatos;
         }
@@ -1395,7 +1547,7 @@ white-space: nowrap;
       if (aoProgredir) aoProgredir(indice, anos.length);
       return baixarCsvDaFonte(fonte, ano, forcarAtualizacao).then(function (texto) {
         var doAno = fonte.processarCsv(texto, ano).filter(function (r) {
-          return coincide(r, logradouroBusca, numeroBusca);
+          return coincide(r, logradouroBusca, numeroBusca, unidadeBusca);
         });
         registros = registros.concat(doAno);
       }).catch(function (erro) {
@@ -1410,6 +1562,7 @@ white-space: nowrap;
   var elCidade = document.getElementById("cidade");
   var elEndereco = document.getElementById("endereco");
   var elNumero = document.getElementById("numero");
+  var elUnidade = document.getElementById("unidade");
   var elAno = document.getElementById("ano");
   var elBtnPesquisar = document.getElementById("btn-pesquisar");
   var elBtnLimpar = document.getElementById("btn-limpar");
@@ -1536,6 +1689,68 @@ white-space: nowrap;
       '</div><div class="ficha-valor">' + valor + '</div></div>';
   }
 
+  function construirUrlDetalhe(r) {
+    var params = new URLSearchParams();
+    var cidade = elCidade.value || "";
+    var ano = r.ano || (elAno.value || "");
+    var logradouro = r.logradouro || elEndereco.value || "";
+    var numero = r.numeroEndereco || elNumero.value || "";
+    var unidade = r.numeroUnidade || r.complementoEndereco || elUnidade.value || "";
+
+    if (cidade) params.set("cidade", cidade);
+    if (ano) params.set("ano", String(ano));
+    if (logradouro) params.set("logradouro", logradouro);
+    if (numero) params.set("numero", numero);
+    if (unidade) params.set("unidade", unidade);
+
+    return window.location.origin + window.location.pathname + "?" + params.toString();
+  }
+
+  function abrirWhatsAppCompartilhar() {
+    if (!urlDetalheAtual) return;
+    var texto = "Confira este registro no itbidata: " + urlDetalheAtual;
+    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank", "noopener");
+  }
+
+  function abrirEmailCompartilhar() {
+    if (!urlDetalheAtual) return;
+    var assunto = "Registro de imóvel no itbidata";
+    var corpo = "Confira este registro no itbidata:\n\n" + urlDetalheAtual;
+    window.location.href = "mailto:?subject=" + encodeURIComponent(assunto) + "&body=" + encodeURIComponent(corpo);
+  }
+
+  function copiarLinkCompartilhar() {
+    if (!urlDetalheAtual) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(urlDetalheAtual).then(function () {
+        var btn = document.getElementById("btn-copiar-link");
+        if (btn) {
+          var textoOriginal = btn.textContent;
+          btn.textContent = "Link copiado!";
+          setTimeout(function () { btn.textContent = textoOriginal; }, 1400);
+        }
+      }).catch(function () {
+        window.prompt("Copie o link abaixo:", urlDetalheAtual);
+      });
+    } else {
+      window.prompt("Copie o link abaixo:", urlDetalheAtual);
+    }
+  }
+
+  function compartilharDetalhe() {
+    if (!urlDetalheAtual) return;
+    var titulo = "itbidata — registro imobiliário";
+    var texto = "Confira este registro no itbidata.";
+
+    if (navigator.share) {
+      navigator.share({ title: titulo, text: texto, url: urlDetalheAtual }).catch(function () {});
+      return;
+    }
+
+    var menu = document.getElementById("menu-compartilhar");
+    if (menu) menu.classList.toggle("ativo");
+  }
+
   function abrirDetalhe(indice) {
     var r = ultimosRegistros[indice];
     if (!r) return;
@@ -1549,9 +1764,18 @@ white-space: nowrap;
     var cidadeEstado = r.cidadeNome && r.estadoSigla ? r.cidadeNome + " - " + r.estadoSigla : "Brasil";
     var enderecoMapa = r.logradouro ? r.logradouro + (numero ? ", " + numero : "") + ", " + cidadeEstado + ", Brasil" : null;
 
-    var html = '<a class="link-voltar" id="link-voltar">&larr; Voltar à lista</a>';
+    urlDetalheAtual = construirUrlDetalhe(r);
+
+    var html = '<div class="acoes-detalhe">';
+    html += '<a class="link-voltar" id="link-voltar">&larr; Voltar à lista</a>';
+    html += '</div>';
     html += '<h2 class="ficha-titulo"></h2>';
     html += '<p class="ficha-subtitulo" id="ficha-bairro"></p>';
+    html += '<div class="menu-compartilhar" id="menu-compartilhar">';
+    html += '<button id="btn-whatsapp" type="button">WhatsApp</button>';
+    html += '<button id="btn-email" type="button">E-mail</button>';
+    html += '<button id="btn-copiar-link" type="button">Copiar link</button>';
+    html += '</div>';
 
     html += '<div class="ficha-cartoes">';
     html += '<div class="cartao"><p class="ficha-secao-titulo">Dados da negociação</p>';
@@ -1605,15 +1829,24 @@ white-space: nowrap;
         link.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(enderecoMapa) + "&layer=c";
         link.target = "_blank";
         link.rel = "noopener";
-        link.style.marginLeft = "10px";
-        link.style.color = "var(--agua-turquesa)";
+        link.className = "link-streetview";
         link.textContent = "VER NO STREETVIEW";
         bairroEl.appendChild(link);
       }
     }
+    var btnCompartilhar = document.createElement("button");
+    btnCompartilhar.id = "btn-compartilhar";
+    btnCompartilhar.type = "button";
+    btnCompartilhar.className = "botao-compartilhar";
+    btnCompartilhar.innerHTML = "&#8599; Compartilhar";
+    bairroEl.appendChild(btnCompartilhar);
     document.getElementById("link-voltar").addEventListener("click", function () {
       fecharDetalhe();
     });
+    document.getElementById("btn-compartilhar").addEventListener("click", compartilharDetalhe);
+    document.getElementById("btn-whatsapp").addEventListener("click", abrirWhatsAppCompartilhar);
+    document.getElementById("btn-email").addEventListener("click", abrirEmailCompartilhar);
+    document.getElementById("btn-copiar-link").addEventListener("click", copiarLinkCompartilhar);
 
     if (r.baseCalculo != null && r.dataReferencia) {
       var btnRecalcular = document.getElementById("btn-recalcular");
@@ -1633,8 +1866,10 @@ white-space: nowrap;
     }
 
     if (!detalheEmpilhadoNoHistorico) {
-      history.pushState({ itbidataDetalhe: true }, "");
+      history.pushState({ itbidataDetalhe: true }, "", urlDetalheAtual);
       detalheEmpilhadoNoHistorico = true;
+    } else {
+      history.replaceState({ itbidataDetalhe: true }, "", urlDetalheAtual);
     }
 
     elResultados.style.display = "none";
@@ -1733,6 +1968,10 @@ white-space: nowrap;
   }
 
   function fecharDetalhe() {
+    if (detalheEmpilhadoNoHistorico) {
+      history.back();
+      return;
+    }
     elDetalhe.hidden = true;
     elDetalhe.style.display = "none";
     elResultados.style.display = "";
@@ -1750,13 +1989,27 @@ white-space: nowrap;
   }
 
   var detalheEmpilhadoNoHistorico = false;
+  var urlDetalheAtual = "";
   window.addEventListener("popstate", function () {
     if (!elDetalhe.hidden) {
-      fecharDetalhe();
+      elDetalhe.hidden = true;
+      elDetalhe.style.display = "none";
+      elResultados.style.display = "";
+      if (ultimosRegistros.length > 0) {
+        elBarraTopoResultados.style.display = "flex";
+        elControlesPaginacao.style.display = "flex";
+      }
+      detalheEmpilhadoNoHistorico = false;
+      urlDetalheAtual = "";
+      setTimeout(function() {
+        var rect = elBarraTopoResultados.getBoundingClientRect();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+      }, 30);
     }
   });
 
-  function executarBusca(forcarAtualizacao) {
+  function executarBusca(forcarAtualizacao, abrirDetalheAutomaticamente) {
     var logradouro = elEndereco.value.trim();
     if (!logradouro) {
       elFaixaErro.classList.add("ativa");
@@ -1771,8 +2024,9 @@ white-space: nowrap;
 
     var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
     var numero = elNumero.value.trim();
+    var unidade = elUnidade.value.trim();
 
-    buscar(elCidade.value, anoValor, logradouro, numero, forcarAtualizacao, function (feito, total) {
+    buscar(elCidade.value, anoValor, logradouro, numero, unidade, forcarAtualizacao, function (feito, total) {
       if (total > 1) {
         elTextoProgresso.style.display = "block";
         elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
@@ -1783,6 +2037,10 @@ white-space: nowrap;
       paginaAtual = 1;
       elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
       renderizarResultados(resultado.registros);
+
+      if (abrirDetalheAutomaticamente && resultado.registros.length > 0) {
+        setTimeout(function () { abrirDetalhe(0); }, 50);
+      }
       
       setTimeout(function() {
         var rect = elBarraTopoResultados.getBoundingClientRect();
@@ -1801,7 +2059,7 @@ white-space: nowrap;
     });
   }
 
-  [elEndereco, elNumero].forEach(function (el) {
+  [elEndereco, elNumero, elUnidade].forEach(function (el) {
     el.addEventListener("keydown", function (ev) {
       if (ev.key === "Enter") { ev.preventDefault(); executarBusca(false); }
     });
@@ -1812,6 +2070,7 @@ white-space: nowrap;
   elBtnLimpar.addEventListener("click", function () {
     elEndereco.value = "";
     elNumero.value = "";
+    elUnidade.value = "";
     elAno.value = "2026";
     elBarraTopoResultados.style.display = "none";
     elControlesPaginacao.style.display = "none";
@@ -1819,6 +2078,31 @@ white-space: nowrap;
     ultimosRegistros = [];
     fecharDetalhe();
   });
+
+  function carregarDetalheDaUrl() {
+    var params = new URLSearchParams(window.location.search);
+    var cidade = params.get("cidade");
+    var ano = params.get("ano");
+    var logradouro = params.get("logradouro");
+    var numero = params.get("numero") || "";
+    var unidade = params.get("unidade") || "";
+
+    if (!cidade || !logradouro) return;
+    if (!FONTES[cidade]) return;
+
+    elCidade.value = cidade;
+    elEndereco.value = logradouro;
+    elNumero.value = numero;
+    elUnidade.value = unidade;
+    if (ano) elAno.value = ano;
+
+    // Troca a entrada atual pela página de busca limpa. A abertura da ficha
+    // fará um pushState com a URL específica do registro.
+    history.replaceState({ itbidataBusca: true }, "", window.location.pathname);
+    executarBusca(false, true);
+  }
+
+  carregarDetalheDaUrl();
 
   // ===== Banner de cookies =====
   (function () {
