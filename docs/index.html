@@ -1063,9 +1063,17 @@ white-space: nowrap;
 
   function parseDataPoa(texto) {
     if (!texto) return null;
-    var m = texto.trim().match(/^(\d{4})\/(\d{2})\/(\d{2})/);
-    if (!m) return null;
-    return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    var t = String(texto).trim();
+    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
+    if (m) {
+      return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    }
+    // São Paulo publica a data da transação no formato DD/MM/AAAA.
+    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (m) {
+      return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
+    }
+    return null;
   }
   function chaveOrdenacao(data) {
     return data ? data.y * 10000 + data.mo * 100 + data.d : -1;
@@ -1385,14 +1393,15 @@ white-space: nowrap;
     },
 
     recife: {
-      anosDisponiveis: [2025, 2024, 2023, 2022, 2021, 2020],
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
       arquivoLocalPorAno: {
         2020: "data/itbi-recife-2020.csv",
         2021: "data/itbi-recife-2021.csv",
         2022: "data/itbi-recife-2022.csv",
         2023: "data/itbi-recife-2023.csv",
         2024: "data/itbi-recife-2024.csv",
-        2025: "data/itbi-recife-2025.csv"
+        2025: "data/itbi-recife-2025.csv",
+        2026: "data/itbi-recife-2026.csv"
       },
       chaveCache: function (ano) { return "recife_" + ano; },
       baixarCsv: function (ano) {
