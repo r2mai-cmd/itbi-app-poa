@@ -103,6 +103,40 @@
   .voltar-busca { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid rgba(245,243,237,0.32); border-radius: 999px; color: var(--texto-sobre-fundo); text-decoration: none; font-size: 0.76rem; font-weight: 700; background: transparent; transition: background 0.15s, border-color 0.15s; }
   .voltar-busca:hover { background: rgba(245,243,237,0.08); border-color: rgba(245,243,237,0.55); }
   @media (max-width: 600px) { .voltar-busca-wrap { padding: 12px 16px 0; } }
+  .input-grupo input::placeholder { color: #9a978e; font-weight: 500; font-size: 0.85rem; }
+  .campo-taxas { margin-top: -4px; }
+  .taxas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .taxa-item { background: rgba(0,0,0,0.025); border: 1px solid var(--dourado-linha); border-radius: 8px; padding: 8px 10px 6px; }
+  .taxa-legenda { display: block; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--texto-card-sutil); margin-bottom: 2px; }
+  .taxa-input { display: flex; align-items: center; gap: 3px; }
+  .taxa-input input { width: 100%; border: none; background: transparent; padding: 3px 0; font-size: 0.92rem; color: var(--texto-card); outline: none; font-weight: 700; font-family: var(--fonte-corpo); }
+  .taxa-input span { font-size: 0.8rem; font-weight: 700; color: var(--laranja); }
+  .taxa-ajuda { display: block; margin-top: 5px; font-size: 0.68rem; color: var(--texto-card-sutil); }
+  @media (max-width: 420px) { .taxas-grid { gap: 8px; } .taxa-item { padding-left: 8px; padding-right: 8px; } }
+
+.nota-orientacao {
+  margin: 0 0 10px 2px;
+  color: #6b6f73;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.nota-orientacao sup {
+  color: #f28a2b;
+  font-weight: 800;
+  font-size: 14px;
+}
+.campo-ajuda {
+  display: block;
+  margin-top: 6px;
+  color: #77736b;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.input-grupo input::placeholder {
+  color: #aaa69d;
+  opacity: 1;
+}
 </style>
 <meta content="Estime o poder de compra imobiliário a partir da renda, entrada e condições de financiamento informadas." name="description"/><link href="https://www.itbidata.com.br/poder-de-compra.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Calculadora de Poder de Compra e Renda — itbidata" property="og:title"/><meta content="Estime o poder de compra imobiliário a partir da renda, entrada e condições de financiamento informadas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/poder-de-compra.html" property="og:url"/></head>
 <body>
@@ -134,7 +168,7 @@
 <div class="cabecalho-veu"></div>
 <div class="cabecalho-texto">
 <h1 class="cabecalho-titulo">Calculadora de Poder de Compra &amp; Renda</h1>
-<p class="cabecalho-subtitulo">Descubra qual valor de imóvel você consegue financiar com base na sua renda familiar mensal.</p>
+<p class="cabecalho-subtitulo">Informe dois dos três valores e descubra o terceiro: renda, entrada ou valor do imóvel.</p>
 </div>
 </header>
 <main class="container">
@@ -142,11 +176,16 @@
 <div class="col-formulario">
 <div class="campo">
 <label for="input-renda">Renda Bruta Familiar Mensal</label>
-<div class="input-grupo"><span>R$</span><input id="input-renda" type="tel" value="10.000,00"/></div>
+<div class="input-grupo"><span>R$</span><input id="input-renda" type="tel" value="10.000,00" placeholder="Deixe em branco para descobrir"/></div>
 </div>
 <div class="campo">
 <label for="input-poupanca">Valor Disponível para Entrada</label>
-<div class="input-grupo"><span>R$</span><input id="input-poupanca" type="tel" value="80.000,00"/></div>
+<div class="input-grupo"><span>R$</span><input id="input-poupanca" type="tel" value="80.000,00" placeholder="Deixe em branco para descobrir"/></div>
+<small class="campo-ajuda">* A simulação considera entrada mínima de 20% do valor do imóvel.</small>
+</div>
+<div class="campo">
+<label for="input-imovel">Valor do Imóvel Desejado</label>
+<div class="input-grupo"><span>R$</span><input id="input-imovel" type="tel" value="" placeholder="Deixe em branco para descobrir"/></div>
 </div>
 <div class="campo">
 <label for="select-prazo">Prazo do Financiamento</label>
@@ -159,28 +198,43 @@
 <option value="35">35 anos (420 meses)</option>
 </select>
 </div>
+<div class="campo campo-taxas">
+  <label>Condições da simulação</label>
+  <div class="taxas-grid">
+    <div class="taxa-item">
+      <span class="taxa-legenda">Taxa de juros a.a.</span>
+      <div class="taxa-input"><input id="input-taxa" type="text" inputmode="decimal" value="10,5" aria-label="Taxa de juros anual"/><span>%</span></div>
+    </div>
+    <div class="taxa-item">
+      <span class="taxa-legenda">TR a.a.</span>
+      <div class="taxa-input"><input id="input-tr" type="text" inputmode="decimal" value="2,0" aria-label="TR anual"/><span>%</span></div>
+    </div>
+  </div>
+  <small class="taxa-ajuda">Sugestão de TR: 2,0% a.a. Você pode alterar os dois valores.</small>
+</div>
 <button class="botao botao-primario" id="btn-calcular" type="button">🔧 Calcular Poder de Compra</button>
 <div class="acoes-secundarias">
 <button class="botao-texto" id="btn-limpar" type="button">✕ Limpar campos</button>
 </div>
 </div>
 <div class="col-resultados">
+<p class="nota-orientacao"><sup>*</sup> Preencha 2 dos 3 campos (renda, entrada e imóvel) e deixe 1 em branco para descobrir o terceiro.</p>
 <div class="card-destaque">
-<p class="card-destaque-rotulo">Valor Máximo do Imóvel</p>
+<p class="card-destaque-rotulo" id="res-rotulo">Valor Máximo do Imóvel</p>
 <p class="card-destaque-valor" id="res-imovel">R$ 0,00</p>
 </div>
 <div class="linha-resumo">
-<span class="linha-rotulo">Valor Máximo Financiável:</span>
+<span class="linha-rotulo" id="res-financiado-rotulo">Valor Máximo Financiável:</span>
 <span class="linha-valor" id="res-financiado">R$ 0,00</span>
 </div>
 <div class="linha-resumo">
-<span class="linha-rotulo">Valor da Parcela (30% da Renda):</span>
+<span class="linha-rotulo" id="res-parcela-rotulo">Valor da Parcela (30% da Renda):</span>
 <span class="linha-valor" id="res-parcela">R$ 0,00</span>
 </div>
 </div>
 </div>
 <div class="disclaimer-box" style="margin-top:16px;">
-<strong>Premissa da simulação:</strong> parcela máxima de 30% da renda e taxa nominal anual de 10,5%. A taxa mensal equivalente é calculada matematicamente a partir da taxa anual. Não considera seguros, tarifas, TR/IPCA, entrada mínima exigida pelo banco ou regras de crédito.
+<strong>Premissa da simulação:</strong> parcela máxima de 30% da renda. A taxa de juros e a TR são informadas pelo usuário e combinadas para estimar a taxa mensal equivalente. Informe <strong>dois</strong> dos três valores — renda, entrada e valor do imóvel — e deixe em branco aquele que deseja descobrir. Considera entrada mínima de 20% do valor do imóvel. Não considera seguros, tarifas adicionais ou outras regras específicas de crédito.
     </div>
 </main>
 <footer class="rodape">
@@ -213,23 +267,46 @@
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
   function lerNumero(inputId) {
-    var val = document.getElementById(inputId).value;
+    var el = document.getElementById(inputId);
+    if (!el) return 0;
+    var val = el.value;
     if (!val || val === "0,00") return 0;
     return parseFloat(val.replace(/\./g, "").replace(",", ".")) || 0;
   }
 
-  function aplicarMascaraMoeda(input) {
-    var apenasDigitos = input.value.replace(/\D/g, "");
-    if (apenasDigitos === "") { input.value = ""; return; }
-    var numero = parseInt(apenasDigitos, 10);
-    input.value = (numero / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function campoPreenchido(inputId) {
+    var el = document.getElementById(inputId);
+    return !!(el && el.value && el.value.trim() !== "" && lerNumero(inputId) > 0);
   }
 
-  ["input-renda", "input-poupanca"].forEach(function(id) {
+  function aplicarMascaraMoeda(input) {
+    var apenasDigitos = String(input.value || "").replace(/\D/g, "");
+    if (!apenasDigitos) {
+      input.value = "";
+      return;
+    }
+    var numero = parseInt(apenasDigitos, 10) / 100;
+    input.value = numero.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    try {
+      input.setSelectionRange(input.value.length, input.value.length);
+    } catch (e) {}
+  }
+
+  ["input-renda", "input-poupanca", "input-imovel"].forEach(function(id) {
     var el = document.getElementById(id);
-    el.addEventListener("focus", function() { if (this.value === "0,00") this.value = ""; });
-    el.addEventListener("blur", function() { if (this.value.trim() === "") this.value = "0,00"; });
-    el.addEventListener("input", function() { aplicarMascaraMoeda(this); });
+    el.addEventListener("focus", function() {
+      if (this.value === "0,00") this.value = "";
+      else this.select();
+    });
+    el.addEventListener("input", function() {
+      aplicarMascaraMoeda(this);
+    });
+    el.addEventListener("blur", function() {
+      if (this.value.trim() !== "") aplicarMascaraMoeda(this);
+    });
     el.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -238,30 +315,129 @@
     });
   });
 
+  ["input-taxa", "input-tr"].forEach(function(id) {
+    var el = document.getElementById(id);
+    el.addEventListener("input", function() {
+      this.value = this.value.replace(/[^0-9,.-]/g, "");
+    });
+    el.addEventListener("blur", function() {
+      var valor = parseFloat(this.value.replace(".", "").replace(",", "."));
+      if (isNaN(valor) || valor < 0) valor = 0;
+      this.value = valor.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+    });
+  });
+
   function calcular() {
+    var temRenda = campoPreenchido("input-renda");
+    var temEntrada = campoPreenchido("input-poupanca");
+    var temImovel = campoPreenchido("input-imovel");
+
     var renda = lerNumero("input-renda");
-    var poupanca = lerNumero("input-poupanca");
+    var entrada = lerNumero("input-poupanca");
+    var imovel = lerNumero("input-imovel");
     var anos = parseInt(document.getElementById("select-prazo").value, 10) || 30;
 
-    var parcelaMax = renda * 0.30;
-    var n = anos * 12;
-    var taxaAnual = 0.105;
-    var iMensal = Math.pow(1 + taxaAnual, 1 / 12) - 1;
+    var quantidade = (temRenda ? 1 : 0) + (temEntrada ? 1 : 0) + (temImovel ? 1 : 0);
 
-    var valorFinanciavél = 0;
+    var resRotulo = document.getElementById("res-rotulo");
+    var resFinanciadoRotulo = document.getElementById("res-financiado-rotulo");
+    var resParcelaRotulo = document.getElementById("res-parcela-rotulo");
+    var resImovel = document.getElementById("res-imovel");
+    var resFinanciado = document.getElementById("res-financiado");
+    var resParcela = document.getElementById("res-parcela");
+
+    if (quantidade !== 2) {
+      resRotulo.textContent = "Resultado da Simulação";
+      resFinanciadoRotulo.textContent = "Valor Financiável:";
+      resParcelaRotulo.textContent = "Parcela máxima:";
+      resImovel.textContent = "Informe 2 valores";
+      resFinanciado.textContent = "Deixe 1 campo em branco";
+      resParcela.textContent = "para descobrir o terceiro";
+      return;
+    }
+
+    var taxaJuros = parseFloat(document.getElementById("input-taxa").value.replace(".", "").replace(",", ".")) || 0;
+    var trAnual = parseFloat(document.getElementById("input-tr").value.replace(".", "").replace(",", ".")) || 0;
+    var taxaAnual = (1 + taxaJuros / 100) * (1 + trAnual / 100) - 1;
+    var iMensal = Math.pow(1 + taxaAnual, 1 / 12) - 1;
+    var n = anos * 12;
+    var fatorFinanciamento = 0;
+
     if (n > 0) {
       if (iMensal > 0) {
-        valorFinanciavél = parcelaMax * (Math.pow(1 + iMensal, n) - 1) / (iMensal * Math.pow(1 + iMensal, n));
+        fatorFinanciamento = (Math.pow(1 + iMensal, n) - 1) / (iMensal * Math.pow(1 + iMensal, n));
       } else {
-        valorFinanciavél = parcelaMax * n;
+        fatorFinanciamento = n;
       }
     }
 
-    var valorTotalImovel = valorFinanciavél + poupanca;
+    if (temRenda && temEntrada && !temImovel) {
+      var parcelaMax = renda * 0.30;
+      var capacidadeFinanciamento = parcelaMax * fatorFinanciamento;
 
-    document.getElementById("res-imovel").textContent = fmtMoeda.format(valorTotalImovel);
-    document.getElementById("res-financiado").textContent = fmtMoeda.format(valorFinanciavél);
-    document.getElementById("res-parcela").textContent = fmtMoeda.format(parcelaMax);
+      // A entrada precisa representar pelo menos 20% do valor do imóvel.
+      var limitePelaEntrada = entrada / 0.20;
+      var valorMaxImovel = Math.min(capacidadeFinanciamento + entrada, limitePelaEntrada);
+      var financiavel = Math.max(0, valorMaxImovel - entrada);
+
+      resRotulo.textContent = "Valor Máximo do Imóvel";
+      resImovel.textContent = fmtMoeda.format(valorMaxImovel);
+      resFinanciadoRotulo.textContent = "Valor Máximo Financiável:";
+      resFinanciado.textContent = fmtMoeda.format(financiavel);
+      resParcelaRotulo.textContent = "Valor da Parcela (30% da Renda):";
+      resParcela.textContent = fmtMoeda.format(parcelaMax);
+      return;
+    }
+
+    if (temRenda && temImovel && !temEntrada) {
+      var parcelaMax2 = renda * 0.30;
+      var capacidadeFinanciamento2 = parcelaMax2 * fatorFinanciamento;
+
+      // A entrada necessária é o maior valor entre o que falta pela renda
+      // e os 20% mínimos do imóvel.
+      var entradaMinima20 = imovel * 0.20;
+      var entradaPorRenda = Math.max(0, imovel - capacidadeFinanciamento2);
+      var entradaNecessaria = Math.max(entradaMinima20, entradaPorRenda);
+      var percentualEntrada = imovel > 0 ? (entradaNecessaria / imovel) * 100 : 0;
+
+      resRotulo.textContent = "Entrada Necessária";
+      resImovel.textContent = fmtMoeda.format(entradaNecessaria);
+      resFinanciadoRotulo.textContent = "Valor do Imóvel:";
+      resFinanciado.textContent = fmtMoeda.format(imovel);
+      resParcelaRotulo.textContent = "Parcela (30% da Renda):";
+      resParcela.textContent = fmtMoeda.format(parcelaMax2) + " · " + percentualEntrada.toLocaleString("pt-BR", {maximumFractionDigits: 1}) + "% de entrada";
+      return;
+    }
+
+    if (temEntrada && temImovel && !temRenda) {
+      var entradaMinima3 = imovel * 0.20;
+
+      if (entrada < entradaMinima3) {
+        var faltaEntrada = entradaMinima3 - entrada;
+        var financiamentoMaximo3 = imovel - entradaMinima3;
+        var parcelaNecessaria3 = fatorFinanciamento > 0 ? financiamentoMaximo3 / fatorFinanciamento : 0;
+        var rendaNecessaria3 = parcelaNecessaria3 / 0.30;
+
+        resRotulo.textContent = "Entrada Insuficiente";
+        resImovel.textContent = fmtMoeda.format(faltaEntrada);
+        resFinanciadoRotulo.textContent = "Falta para atingir 20% de entrada:";
+        resFinanciado.textContent = fmtMoeda.format(faltaEntrada);
+        resParcelaRotulo.textContent = "Com 20% de entrada, renda estimada:";
+        resParcela.textContent = fmtMoeda.format(rendaNecessaria3);
+        return;
+      }
+
+      var valorFinanciadoNecessario = Math.max(0, imovel - entrada);
+      var parcelaNecessaria = fatorFinanciamento > 0 ? valorFinanciadoNecessario / fatorFinanciamento : 0;
+      var rendaNecessaria = parcelaNecessaria / 0.30;
+
+      resRotulo.textContent = "Renda Bruta Familiar Necessária";
+      resImovel.textContent = fmtMoeda.format(rendaNecessaria);
+      resFinanciadoRotulo.textContent = "Valor a Financiar:";
+      resFinanciado.textContent = fmtMoeda.format(valorFinanciadoNecessario);
+      resParcelaRotulo.textContent = "Parcela Necessária (30% da Renda):";
+      resParcela.textContent = fmtMoeda.format(parcelaNecessaria);
+    }
   }
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
@@ -270,10 +446,16 @@
   document.getElementById("btn-limpar").addEventListener("click", function() {
     document.getElementById("input-renda").value = "";
     document.getElementById("input-poupanca").value = "";
+    document.getElementById("input-imovel").value = "";
+    document.getElementById("input-taxa").value = "10,5";
+    document.getElementById("input-tr").value = "2,0";
     document.getElementById("select-prazo").value = "30";
+    document.getElementById("res-rotulo").textContent = "Resultado da Simulação";
     document.getElementById("res-imovel").textContent = "R$ 0,00";
     document.getElementById("res-financiado").textContent = "R$ 0,00";
     document.getElementById("res-parcela").textContent = "R$ 0,00";
+    document.getElementById("res-financiado-rotulo").textContent = "Valor Financiável:";
+    document.getElementById("res-parcela-rotulo").textContent = "Parcela máxima:";
   });
 
   calcular();
