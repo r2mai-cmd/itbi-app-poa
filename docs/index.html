@@ -714,26 +714,26 @@ white-space: nowrap;
   padding: 0 20px;
 }
 .conteudo-editorial h2 {
-  margin: 0 0 3px;
+  margin: 0 0 6px;
   padding-left: 10px;
   border-left: 3px solid var(--laranja);
-  font-size: 0.95rem;
-  line-height: 1.2;
+  font-size: 1.15rem;
+  line-height: 1.3;
   font-weight: 800;
 }
 .conteudo-editorial .editorial-subtitulo {
-  margin: 0 0 10px 13px;
-  font-size: 0.68rem;
+  margin: 0 0 14px 13px;
+  font-size: 0.8rem;
   color: var(--texto-sobre-fundo-sutil);
 }
 .conteudo-editorial p {
-  margin: 0 0 8px;
-  line-height: 1.5;
-  font-size: 0.72rem;
+  margin: 0 0 10px;
+  line-height: 1.6;
+  font-size: 0.82rem;
 }
 .bloco-editorial-grade {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 8px;
 }
 .bloco-editorial-grade > div {
@@ -744,19 +744,19 @@ white-space: nowrap;
   min-height: 0;
 }
 .bloco-editorial-grade > div:last-child {
-  grid-column: 1 / -1;
   border-left: 3px solid var(--agua-turquesa);
 }
 .conteudo-editorial h3 {
-  margin: 0 0 4px;
-  font-size: 0.72rem;
+  margin: 0 0 6px;
+  font-size: 0.86rem;
+  line-height: 1.35;
   font-weight: 800;
 }
 .conteudo-editorial ul, .conteudo-editorial ol {
-  margin: 4px 0 0 14px;
+  margin: 6px 0 0 18px;
   padding: 0;
-  line-height: 1.45;
-  font-size: 0.68rem;
+  line-height: 1.55;
+  font-size: 0.78rem;
 }
 .conteudo-editorial a { color: var(--agua-turquesa); font-weight: 700; }
 @media (max-width: 650px) {
@@ -929,6 +929,53 @@ white-space: nowrap;
         <div>
           <h3>Use os dados como referência</h3>
           <p>O itbidata organiza dados públicos para facilitar pesquisa e comparação. Para decisões de compra, venda, financiamento, investimento ou questões jurídicas, confira a informação diretamente na fonte oficial do município e, quando necessário, utilize documentos e orientação profissional.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="conteudo-editorial" aria-labelledby="como-usar-itbidata">
+      <h2 id="como-usar-itbidata">O que você pode fazer no itbidata?</h2>
+      <p class="editorial-subtitulo">A plataforma reúne consulta de transações, estatísticas e ferramentas de planejamento imobiliário em um único lugar.</p>
+      <div class="bloco-editorial-grade">
+        <div>
+          <h3>Pesquisar transações imobiliárias</h3>
+          <p>Consulte registros públicos por cidade, endereço, número, unidade ou complemento e período. Quando houver dados disponíveis, a ficha do registro apresenta as informações encontradas na base utilizada para aquela pesquisa.</p>
+          <p><a href="#cabecalho">Voltar ao formulário de pesquisa</a></p>
+        </div>
+        <div>
+          <h3>Analisar estatísticas do mercado</h3>
+          <p>A página de <a href="estatisticas.html">Estatísticas</a> reúne indicadores derivados das bases disponíveis, como valores médios, quantidade de transações, evolução ao longo do tempo e recortes por localização.</p>
+        </div>
+        <div>
+          <h3>Usar ferramentas de planejamento</h3>
+          <p>Os <a href="simulador-financiamento.html">simuladores</a> ajudam a explorar cenários de financiamento, custos de ITBI, poder de compra, compra ou aluguel, preço por metro quadrado e comparação entre consórcio e financiamento.</p>
+        </div>
+        <div>
+          <h3>Consultar a origem e a metodologia</h3>
+          <p>O itbidata é um projeto independente que organiza informações públicas. A <a href="metodologia.html">metodologia</a> explica as fontes utilizadas, a organização dos dados, os critérios de tratamento e as limitações que devem ser consideradas na interpretação dos resultados.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="conteudo-editorial" aria-labelledby="cobertura-itbidata">
+      <h2 id="cobertura-itbidata">Cobertura e atualização dos dados</h2>
+      <p class="editorial-subtitulo">A cobertura depende da disponibilidade e das características das bases públicas de cada município.</p>
+      <div class="bloco-editorial-grade">
+        <div>
+          <h3>Cidades atendidas</h3>
+          <p>Atualmente, a busca disponibiliza dados para <strong>Porto Alegre, Fortaleza, São Paulo, Belo Horizonte e Recife</strong>. A quantidade de anos e registros disponíveis pode variar conforme a fonte municipal.</p>
+        </div>
+        <div>
+          <h3>Por que os dados podem mudar?</h3>
+          <p>Portais municipais podem publicar novas informações, corrigir registros ou apresentar períodos com cobertura diferente. Por isso, uma consulta deve ser interpretada de acordo com a cidade, o período e a fonte correspondente.</p>
+        </div>
+        <div>
+          <h3>Dados públicos não são avaliação imobiliária</h3>
+          <p>Os registros ajudam em pesquisa e comparação, mas não substituem avaliação profissional, documentos oficiais ou análise das características específicas de um imóvel.</p>
+        </div>
+        <div>
+          <h3>Fonte e transparência</h3>
+          <p>Sempre que necessário, consulte a <a href="metodologia.html">metodologia</a> e a fonte municipal indicada para entender a origem e as limitações da informação apresentada.</p>
         </div>
       </div>
     </section>
@@ -2022,22 +2069,14 @@ white-space: nowrap;
     fecharDetalhe();
     definirCarregando(true);
 
-    // Mostra imediatamente que a busca começou.
-    elTextoProgresso.style.display = "block";
-    elTextoProgresso.textContent = "Consultando dados...";
-
     var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
     var numero = elNumero.value.trim();
     var unidade = elUnidade.value.trim();
 
-    setTimeout(function () {
-      buscar(elCidade.value, anoValor, logradouro, numero, unidade, forcarAtualizacao, function (feito, total) {
+    buscar(elCidade.value, anoValor, logradouro, numero, unidade, forcarAtualizacao, function (feito, total) {
       if (total > 1) {
         elTextoProgresso.style.display = "block";
         elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
-      } else {
-        elTextoProgresso.style.display = "block";
-        elTextoProgresso.textContent = "Consultando dados...";
       }
     }).then(function (resultado) {
       definirCarregando(false);
@@ -2064,8 +2103,7 @@ white-space: nowrap;
       definirCarregando(false);
       elFaixaErro.classList.add("ativa");
       elTextoErro.textContent = erro.message || "Não foi possível concluir a busca. Tente novamente.";
-      });
-    }, 50);
+    });
   }
 
   [elEndereco, elNumero, elUnidade].forEach(function (el) {

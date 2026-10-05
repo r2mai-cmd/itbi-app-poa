@@ -123,15 +123,130 @@
     var ctx=document.getElementById("graficoRankingVolume").getContext("2d");graficosInstanciados.graficoRankingVolume=new Chart(ctx,{type:"bar",data:{labels:arr.map(function(x){return x.b;}),datasets:[{label:"Transações",data:arr.map(function(x){return x.v;})}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true}}}});
   }
 
+  function formatarDataAtualizacao(valor) {
+    if (valor === null || valor === undefined || valor === "") return null;
+
+    if (typeof valor === "number") {
+      var dNum = new Date(valor < 10000000000 ? valor * 1000 : valor);
+      return isNaN(dNum.getTime()) ? null : dNum.toLocaleDateString("pt-BR");
+    }
+
+    var s = String(valor).trim();
+    if (!s) return null;
+
+    var m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/);
+    if (m) return m[3] + "/" + m[2] + "/" + m[1];
+
+    m = s.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})$/);
+    if (m) return m[1] + "/" + m[2] + "/" + m[3];
+
+    var d = new Date(s);
+    return isNaN(d.getTime()) ? null : d.toLocaleDateString("pt-BR");
+  }
+
+  function procurarDataAtualizacao(obj, cidade, nivel) {
+    if (!obj || nivel > 8) return null;
+
+    var chaves = [
+      "ultima_atualizacao", "ultimaAtualizacao", "data_atualizacao",
+      "dataAtualizacao", "atualizado_em", "atualizadoEm",
+      "updated_at", "updatedAt", "update_date", "updateDate",
+      "gerado_em", "geradoEm", "generated_at", "generatedAt",
+      "data_fonte", "dataFonte", "data_publicacao", "dataPublicacao"
+    ];
+
+    if (Array.isArray(obj)) {
+      for (var i = 0; i < obj.length; i++) {
+        var a = procurarDataAtualizacao(obj[i], cidade, nivel + 1);
+        if (a) return a;
+      }
+      return null;
+    }
+
+    if (typeof obj !== "object") return null;
+
+    // Primeiro: chaves explícitas de atualização.
+    for (var p = 0; p < chaves.length; p++) {
+      if (Object.prototype.hasOwnProperty.call(obj, chaves[p])) {
+        var d1 = formatarDataAtualizacao(obj[chaves[p]]);
+        if (d1) return d1;
+      }
+    }
+
+    var keys = Object.keys(obj);
+
+    // Segundo: chaves cujo nome indica atualização/fonte.
+    for (var k = 0; k < keys.length; k++) {
+      if (/(atual|update|updated|gerad|generated|publica|fonte)/i.test(keys[k])) {
+        var d2 = formatarDataAtualizacao(obj[keys[k]]);
+        if (d2) return d2;
+      }
+    }
+
+    // Terceiro: procura especificamente pelo identificador da cidade.
+    if (cidade) {
+      var alvo = String(cidade).toLowerCase();
+      for (var c = 0; c < keys.length; c++) {
+        if (String(keys[c]).toLowerCase() === alvo) {
+          var d3 = procurarDataAtualizacao(obj[keys[c]], cidade, nivel + 1);
+          if (d3) return d3;
+        }
+      }
+    }
+
+    // Quarto: percorre estruturas aninhadas.
+    for (var j = 0; j < keys.length; j++) {
+      var d4 = procurarDataAtualizacao(obj[keys[j]], cidade, nivel + 1);
+      if (d4) return d4;
+    }
+
+    return null;
+  }
+
+  function atualizarTextoUltimaAtualizacao(cidade, dadosCidade) {
+    var el = document.getElementById("ultima-atualizacao");
+    if (!el) return;
+
+    var data = procurarDataAtualizacao(catalog, cidade, 0) ||
+               procurarDataAtualizacao(dadosCidade, cidade, 0);
+
+    if (data) {
+      el.innerHTML = "Última atualização da fonte: <strong>" + data + "</strong>";
+      return;
+    }
+
+    // Se não houver metadado de atualização, não inventa uma data.
+    // Usa o último período efetivamente existente na base como fallback.
+    var ano = null, mes = null;
+    if (dadosCidade && Array.isArray(dadosCidade.historico_mensal)) {
+      dadosCidade.historico_mensal.forEach(function (x) {
+        var y = Number(x.ano), m = Number(x.mes);
+        if (!isFinite(y) || !isFinite(m)) return;
+        if (ano === null || y > ano || (y === ano && m > mes)) {
+          ano = y; mes = m;
+        }
+      });
+    }
+
+    if (ano !== null && mes !== null) {
+      var nomesMeses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+        "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+      el.textContent = "Último período disponível na fonte: " +
+        nomesMeses[mes - 1] + "/" + ano;
+    } else {
+      el.textContent = "Última atualização da fonte: informação não informada";
+    }
+  }
+
   function carregarCidade(key) {
     var url="data/estatisticas-"+key+".json";
-    if(cache[url]) { dadosAtuais=cache[url]; preencherFiltros(); atualizar(); return; }
+    if(cache[url]) { dadosAtuais=cache[url]; atualizarTextoUltimaAtualizacao(key, dadosAtuais); preencherFiltros(); atualizar(); return; }
     document.getElementById("kpi-m2").textContent="Carregando...";
-    fetch(url).then(function(r){if(!r.ok)throw new Error("Arquivo de estatísticas não encontrado");return r.json();}).then(function(d){cache[url]=d;dadosAtuais=d;preencherFiltros();atualizar();}).catch(function(e){console.error(e);document.getElementById("kpi-m2").textContent="Erro";document.getElementById("kpi-ticket").textContent="Erro";document.getElementById("kpi-transacoes").textContent="Erro";});
+    fetch(url).then(function(r){if(!r.ok)throw new Error("Arquivo de estatísticas não encontrado");return r.json();}).then(function(d){cache[url]=d;dadosAtuais=d;atualizarTextoUltimaAtualizacao(key, dadosAtuais);preencherFiltros();atualizar();}).catch(function(e){console.error(e);document.getElementById("kpi-m2").textContent="Erro";document.getElementById("kpi-ticket").textContent="Erro";document.getElementById("kpi-transacoes").textContent="Erro";});
   }
 
   function iniciar() {
-    fetch("estatisticas.json").then(function(r){return r.json();}).then(function(c){catalog=c;carregarCidade(elCidade.value||"porto-alegre");});
+    fetch("estatisticas.json").then(function(r){if(!r.ok)throw new Error("Catálogo de estatísticas não encontrado");return r.json();}).then(function(c){catalog=c;carregarCidade(elCidade.value||"porto-alegre");}).catch(function(e){console.error(e);carregarCidade(elCidade.value||"porto-alegre");});
     elCidade.addEventListener("change",function(){carregarCidade(this.value);});
     elBairro.addEventListener("change",atualizar); elAno.addEventListener("change",atualizar); elMes.addEventListener("change",atualizar);
   }
