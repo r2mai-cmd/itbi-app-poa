@@ -317,7 +317,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
-    "verificado_em": "2026-09-28T16:30:39.806479+00:00"
+    "verificado_em": "2026-10-05T16:51:22.524379+00:00"
   },
   "fortaleza": {
     "fingerprint": "ed7d9391deb824837ca0193f5684c4c5aab399c752fa47fc31c96a1184784d2d",
@@ -337,7 +337,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
-    "verificado_em": "2026-09-28T16:30:39.806479+00:00"
+    "verificado_em": "2026-10-05T16:51:22.524379+00:00"
   },
   "porto-alegre": {
     "fingerprint": "dba15e58a25718640e10de2cbc4c579b5fef4d3543853ddc81da3f3a6d0f0115",
@@ -427,10 +427,10 @@
     ],
     "tipo": "ckan",
     "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
-    "verificado_em": "2026-09-28T16:30:39.806479+00:00"
+    "verificado_em": "2026-10-05T16:51:22.524379+00:00"
   },
   "recife": {
-    "fingerprint": "19253846b2b324654b4c1456a1aca41c7b524f9ffae775b0576e1d2e13cb366f",
+    "fingerprint": "84abd427966006927546e80f72b65a9102c3167e1fa97baf307b1997e6000e55",
     "nome": "Recife",
     "package_name": "Imposto sobre Transmissão de Bens Imóveis (ITBI)",
     "recursos": [
@@ -559,24 +559,24 @@
         "format": "CSV",
         "hash": "",
         "id": "fc95e204-a121-4b7a-94b2-e4420539c0d1",
-        "last_modified": "2026-09-03T02:05:45.674846",
+        "last_modified": "2026-10-03T02:06:11.462192",
         "name": "ITBI 2026 - Imposto sobre a Transmissão de Bens Imóveis",
-        "size": 2617405,
+        "size": 2947186,
         "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/fc95e204-a121-4b7a-94b2-e4420539c0d1/download/itbi_2026.csv"
       }
     ],
     "tipo": "ckan",
     "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi",
-    "verificado_em": "2026-09-28T16:30:39.806479+00:00"
+    "verificado_em": "2026-10-05T16:51:22.524379+00:00"
   },
   "sao-paulo": {
-    "content_length": 188679,
-    "fingerprint": "8d0fbecccd133524e5bcfb775abbcb7752386db205a09e9bd40ab21508148317",
+    "content_length": 189589,
+    "fingerprint": "6c8ba139ef0801aef938652aaf893fb40cd761d1e105645f459da3a49ea4bb60",
     "last_modified_http": null,
     "nome": "São Paulo",
     "tipo": "pagina",
     "titulo": "<!DOCTYPE html> <html class=\"ltr\" dir=\"ltr\" lang=\"pt-BR\"> <head> <title>Dados das Transações I",
     "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
-    "verificado_em": "2026-09-21T14:53:30.730003+00:00"
+    "verificado_em": "2026-10-05T16:51:22.524379+00:00"
   }
 }
