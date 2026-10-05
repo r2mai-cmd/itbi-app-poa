@@ -94,6 +94,15 @@
   .voltar-busca { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid rgba(245,243,237,0.32); border-radius: 999px; color: var(--texto-sobre-fundo); text-decoration: none; font-size: 0.76rem; font-weight: 700; background: transparent; transition: background 0.15s, border-color 0.15s; }
   .voltar-busca:hover { background: rgba(245,243,237,0.08); border-color: rgba(245,243,237,0.55); }
   @media (max-width: 600px) { .voltar-busca-wrap { padding: 12px 16px 0; } }
+
+  .conteudo-editorial { background: var(--pergaminho); color: var(--texto-card); border-radius: 16px; padding: 32px; box-shadow: 0 8px 24px rgba(0,0,0,0.22); }
+  .conteudo-editorial h2 { margin: 0 0 12px; font-size: 1.35rem; }
+  .conteudo-editorial h3 { margin: 26px 0 8px; font-size: 1rem; }
+  .conteudo-editorial p { margin: 0 0 12px; line-height: 1.7; color: #45433d; max-width: 82ch; }
+  .conteudo-editorial ul { margin: 8px 0 14px 20px; padding: 0; color: #45433d; line-height: 1.7; }
+  .conteudo-editorial li { margin-bottom: 6px; }
+  .conteudo-editorial .nota { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--dourado-linha); font-size: 0.86rem; color: var(--texto-card-sutil); }
+  @media (max-width: 600px) { .conteudo-editorial { padding: 24px 20px; } }
 </style>
 <meta content="Calcule e compare o preço por metro quadrado de um imóvel a partir do valor e da área informados." name="description"/><link href="https://www.itbidata.com.br/calculadora-m2.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Calculadora de Preço do Metro Quadrado — itbidata" property="og:title"/><meta content="Calcule e compare o preço por metro quadrado de um imóvel a partir do valor e da área informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/calculadora-m2.html" property="og:url"/></head>
 <body>
@@ -151,6 +160,33 @@
 </div>
 </div>
 </div>
+
+  <section class="conteudo-editorial" aria-labelledby="sobre-m2">
+    <h2 id="sobre-m2">Como interpretar o preço do metro quadrado?</h2>
+    <p>O preço por metro quadrado (R$/m²) é um indicador simples para relacionar o valor de um imóvel à sua área privativa. Ele ajuda a colocar imóveis de tamanhos diferentes em uma mesma base de comparação.</p>
+
+    <h3>Como o cálculo é feito?</h3>
+    <p>O cálculo é direto: divide-se o valor total do imóvel pela área privativa informada. Por exemplo, um imóvel de R$ 450.000 com 75 m² resulta em R$ 6.000 por m².</p>
+
+    <h3>Para que esse indicador serve?</h3>
+    <p>O R$/m² pode ser útil para comparar imóveis semelhantes, acompanhar diferenças de preço entre regiões e avaliar se um imóvel está acima ou abaixo de uma referência. A comparação fica mais útil quando os imóveis têm características parecidas.</p>
+
+    <h3>O que o R$/m² não mostra sozinho?</h3>
+    <p>O indicador não explica todas as diferenças de preço. Localização, estado de conservação, padrão construtivo, andar, posição solar, vagas de garagem, área externa e outras características podem influenciar o valor de um imóvel.</p>
+
+    <h3>Por que dois imóveis na mesma rua podem ter preços diferentes?</h3>
+    <p>Mesmo em uma mesma localização, imóveis podem apresentar valores por metro quadrado diferentes por causa de suas características individuais e das condições de cada negociação. Por isso, o R$/m² deve ser usado como referência, e não como uma avaliação definitiva.</p>
+
+    <h3>Como usar esta calculadora</h3>
+    <ul>
+      <li>Informe o valor total do imóvel.</li>
+      <li>Informe a área privativa em metros quadrados.</li>
+      <li>Clique em <strong>Calcular Preço do m²</strong> ou altere a área para atualizar o resultado.</li>
+    </ul>
+
+    <p class="nota">Esta calculadora apresenta um cálculo matemático do valor unitário informado pelo usuário. O resultado não substitui uma avaliação imobiliária profissional e não considera, por si só, as características específicas do imóvel ou as condições da negociação.</p>
+  </section>
+
 </main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>

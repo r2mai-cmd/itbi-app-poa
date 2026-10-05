@@ -105,6 +105,53 @@
   .voltar-busca { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid rgba(245,243,237,0.32); border-radius: 999px; color: var(--texto-sobre-fundo); text-decoration: none; font-size: 0.76rem; font-weight: 700; background: transparent; transition: background 0.15s, border-color 0.15s; }
   .voltar-busca:hover { background: rgba(245,243,237,0.08); border-color: rgba(245,243,237,0.55); }
   @media (max-width: 600px) { .voltar-busca-wrap { padding: 12px 16px 0; } }
+
+  .conteudo-editorial {
+    background: var(--pergaminho);
+    color: var(--texto-card);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .conteudo-editorial h2 {
+    font-size: 1.3rem;
+    margin: 0 0 16px;
+    font-weight: 800;
+  }
+  .conteudo-editorial h3 {
+    font-size: 1rem;
+    margin: 22px 0 8px;
+    font-weight: 800;
+  }
+  .conteudo-editorial p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0 0 14px;
+    color: var(--texto-card);
+  }
+  .conteudo-editorial ul {
+    margin: 8px 0 16px 20px;
+    padding: 0;
+  }
+  .conteudo-editorial li {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 7px;
+  }
+  .conteudo-editorial .nota-editorial {
+    margin-top: 20px;
+    padding: 14px 18px;
+    border-left: 4px solid var(--laranja);
+    background: rgba(240,145,58,0.08);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--texto-card-sutil);
+  }
+  @media (max-width: 600px) {
+    .conteudo-editorial { padding: 24px 20px; }
+  }
+
 </style>
 <meta content="Compare, de forma simplificada, cenários de compra e aluguel de imóvel considerando valores, aluguel e custos informados." name="description"/><link href="https://www.itbidata.com.br/comprar-ou-alugar.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Comprar ou Alugar? Calculadora Imobiliária — itbidata" property="og:title"/><meta content="Compare, de forma simplificada, cenários de compra e aluguel de imóvel considerando valores, aluguel e custos informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/comprar-ou-alugar.html" property="og:url"/></head>
 <body>
@@ -178,6 +225,37 @@
 <strong>Aviso Legal Importante:</strong> Esta ferramenta utiliza uma regra simplificada de yield. Não considera condomínio, IPTU, manutenção, vacância, impostos, valorização do imóvel ou rendimento alternativo do capital. Use o resultado como triagem, não como recomendação financeira.
       </div>
 </section>
+
+<section class="conteudo-editorial">
+  <h2>Como interpretar a decisão entre comprar e alugar?</h2>
+
+  <p>Comprar ou alugar um imóvel envolve mais do que comparar o valor da prestação com o aluguel mensal. A relação entre o preço do imóvel e o aluguel ajuda a criar uma primeira referência sobre o retorno implícito do aluguel e pode ser útil para organizar a análise.</p>
+
+  <h3>O que é o yield do aluguel?</h3>
+  <p>O yield do aluguel é a relação entre o aluguel mensal e o valor de mercado do imóvel. Nesta calculadora, essa relação é apresentada como uma taxa mensal e também como uma taxa anualizada por capitalização.</p>
+
+  <h3>Como a calculadora chega ao resultado?</h3>
+  <p>O cálculo divide o aluguel mensal pelo valor do imóvel e transforma essa relação em percentual. Como referência simplificada, a ferramenta utiliza o limite de <strong>0,5% ao mês</strong> para apresentar o comparativo entre comprar e alugar.</p>
+
+  <h3>Por que 0,5% não deve ser tratado como uma regra absoluta?</h3>
+  <p>O percentual é apenas um critério de triagem. A decisão real pode mudar quando entram na conta outros fatores, como condomínio, IPTU, manutenção, custos de compra e venda, impostos, vacância, valorização ou desvalorização do imóvel e o rendimento que o comprador poderia obter mantendo o capital investido.</p>
+
+  <h3>O custo de oportunidade importa</h3>
+  <p>Ao comprar um imóvel, parte do patrimônio fica concentrada naquele bem. Esse capital deixa de estar disponível para outras alternativas de investimento. Por isso, uma comparação mais completa deve considerar não apenas o aluguel, mas também o retorno que esse capital poderia gerar em outra aplicação.</p>
+
+  <h3>Como usar esta calculadora</h3>
+  <ul>
+    <li>Informe o <strong>valor de mercado do imóvel</strong> que está sendo analisado.</li>
+    <li>Informe o <strong>valor do aluguel mensal</strong> de um imóvel equivalente.</li>
+    <li>Clique em <strong>Analisar Comparativo</strong> para visualizar o yield e o resultado da regra simplificada.</li>
+    <li>Use o resultado como ponto de partida para uma análise mais completa, e não como recomendação financeira definitiva.</li>
+  </ul>
+
+  <div class="nota-editorial">
+    <strong>Importante:</strong> esta calculadora foi criada para fins educacionais e de planejamento. O resultado representa uma análise simplificada baseada nos valores informados pelo usuário e não substitui uma avaliação financeira completa.
+  </div>
+</section>
+
 </main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>

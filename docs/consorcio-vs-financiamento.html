@@ -118,6 +118,53 @@
   .voltar-busca { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid rgba(245,243,237,0.32); border-radius: 999px; color: var(--texto-sobre-fundo); text-decoration: none; font-size: 0.76rem; font-weight: 700; background: transparent; transition: background 0.15s, border-color 0.15s; }
   .voltar-busca:hover { background: rgba(245,243,237,0.08); border-color: rgba(245,243,237,0.55); }
   @media (max-width: 600px) { .voltar-busca-wrap { padding: 12px 16px 0; } }
+
+  .conteudo-editorial {
+    background: var(--pergaminho);
+    color: var(--texto-card);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .conteudo-editorial h2 {
+    font-size: 1.3rem;
+    margin: 0 0 16px;
+    font-weight: 800;
+  }
+  .conteudo-editorial h3 {
+    font-size: 1rem;
+    margin: 22px 0 8px;
+    font-weight: 800;
+  }
+  .conteudo-editorial p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0 0 14px;
+    color: var(--texto-card);
+  }
+  .conteudo-editorial ul {
+    margin: 8px 0 16px 20px;
+    padding: 0;
+  }
+  .conteudo-editorial li {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 7px;
+  }
+  .conteudo-editorial .nota-editorial {
+    margin-top: 20px;
+    padding: 14px 18px;
+    border-left: 4px solid var(--laranja);
+    background: rgba(240,145,58,0.08);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--texto-card-sutil);
+  }
+  @media (max-width: 600px) {
+    .conteudo-editorial { padding: 24px 20px; }
+  }
+
 </style>
 <meta content="Compare de forma simplificada consórcio e financiamento imobiliário usando os valores e taxas informados." name="description"/><link href="https://www.itbidata.com.br/consorcio-vs-financiamento.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Consórcio vs. Financiamento — itbidata" property="og:title"/><meta content="Compare de forma simplificada consórcio e financiamento imobiliário usando os valores e taxas informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/consorcio-vs-financiamento.html" property="og:url"/></head>
 <body>
@@ -232,6 +279,38 @@
 <strong>Aviso Legal Importante:</strong> Esta ferramenta possui caráter estritamente estimativo e educacional.
       </div>
 </section>
+
+<section class="conteudo-editorial">
+  <h2>Como comparar consórcio e financiamento imobiliário?</h2>
+
+  <p>Consórcio e financiamento são formas diferentes de planejar a aquisição de um imóvel. A comparação depende do prazo, dos recursos próprios disponíveis, do custo da modalidade escolhida e, no caso do consórcio, das condições de contemplação e dos reajustes previstos no contrato.</p>
+
+  <h3>Como funciona a comparação nesta ferramenta?</h3>
+  <p>A calculadora coloca as duas alternativas em um horizonte de prazo equivalente e estima o custo total a partir dos valores informados. No consórcio, são considerados o crédito, a taxa de administração, o lance e o reajuste anual pelo INCC configurado na ferramenta. No financiamento, são considerados a entrada, a taxa de juros e o sistema de amortização escolhido.</p>
+
+  <h3>Consórcio: o que observar</h3>
+  <p>No modelo usado pela ferramenta, a taxa de administração é aplicada sobre o valor do crédito e o lance reduz o saldo utilizado na simulação. As parcelas são reajustadas anualmente pelo percentual de INCC informado. Na prática, as condições de cada grupo e contrato devem ser verificadas antes da contratação.</p>
+
+  <h3>Financiamento: o que observar</h3>
+  <p>O financiamento considera uma entrada inicial e o saldo restante é amortizado ao longo do prazo. O simulador permite comparar os sistemas <strong>PRICE</strong> e <strong>SAC</strong>. No PRICE, a prestação calculada tende a permanecer estável no modelo; no SAC, a amortização é constante e as prestações tendem a diminuir ao longo do tempo.</p>
+
+  <h3>Por que o custo total não é o único critério?</h3>
+  <p>Uma alternativa pode apresentar menor custo estimado e, ainda assim, não ser adequada ao perfil do comprador. O prazo para ter acesso ao crédito, a necessidade de contemplação, o valor disponível para entrada ou lance e a capacidade de manter as parcelas dentro do orçamento também fazem parte da decisão.</p>
+
+  <h3>Como usar esta calculadora</h3>
+  <ul>
+    <li>Informe o <strong>valor do imóvel ou crédito desejado</strong> e escolha o prazo de comparação.</li>
+    <li>Preencha os critérios do <strong>consórcio</strong>, incluindo taxa de administração, lance e INCC.</li>
+    <li>Informe os critérios do <strong>financiamento</strong>, como entrada, juros e sistema SAC ou PRICE.</li>
+    <li>Clique em <strong>Comparar Alternativas</strong> e observe os custos totais e as parcelas estimadas.</li>
+    <li>Use o resultado como referência inicial e confira as condições oficiais antes de tomar uma decisão.</li>
+  </ul>
+
+  <div class="nota-editorial">
+    <strong>Importante:</strong> esta é uma comparação matemática simplificada. Os resultados não representam uma proposta de consórcio ou financiamento e não substituem a análise do contrato, das tarifas, seguros, tributos, regras de contemplação e demais custos aplicáveis a cada operação.
+  </div>
+</section>
+
 </main>
 <div class="disclaimer-box" style="margin: 0 20px 24px;">
 <strong>Importante:</strong> a comparação é uma simulação simplificada. No consórcio, o INCC é aplicado aqui como reajuste anual das parcelas e a taxa de administração é tratada como percentual sobre o crédito. Não são modelados fundo de reserva, seguro, contemplação, lance vencedor, reajustes contratuais adicionais ou custos específicos. No financiamento, a taxa anual é convertida para uma taxa mensal equivalente.
