@@ -733,7 +733,7 @@ white-space: nowrap;
 }
 .bloco-editorial-grade {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 .bloco-editorial-grade > div {
@@ -744,6 +744,7 @@ white-space: nowrap;
   min-height: 0;
 }
 .bloco-editorial-grade > div:last-child {
+  grid-column: 1 / -1;
   border-left: 3px solid var(--agua-turquesa);
 }
 .conteudo-editorial h3 {
@@ -1110,9 +1111,16 @@ white-space: nowrap;
 
   function parseDataPoa(texto) {
     if (!texto) return null;
-    var m = texto.trim().match(/^(\d{4})\/(\d{2})\/(\d{2})/);
-    if (!m) return null;
-    return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    var t = String(texto).trim();
+    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
+    if (m) {
+      return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    }
+    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (m) {
+      return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
+    }
+    return null;
   }
   function chaveOrdenacao(data) {
     return data ? data.y * 10000 + data.mo * 100 + data.d : -1;
@@ -1122,6 +1130,79 @@ white-space: nowrap;
     function d2(n) { return n < 10 ? "0" + n : "" + n; }
     return d2(data.d) + "/" + d2(data.mo) + "/" + d2(data.y);
   }
+
+  // Conversor específico da base de ITBI de São Paulo.
+  function parseDataGenerica(texto) {
+    if (!texto) return null;
+    var t = String(texto).trim().replace(/^['"]+|['"]+$/g, "");
+    if (!t) return null;
+
+    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
+    if (m) return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+
+    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (m) return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
+
+    return null;
+  }
+
+  function parseNumeroGenerico(texto) {
+    if (texto === null || texto === undefined) return null;
+    var t = String(texto).trim().replace(/^['\"]+|['\"]+$/g, "");
+    if (!t) return null;
+    if (t.indexOf(",") !== -1 && t.indexOf(".") !== -1) {
+      t = t.replace(/\./g, "").replace(",", ".");
+    } else if (t.indexOf(",") !== -1) {
+      t = t.replace(",", ".");
+    }
+    var n = parseFloat(t);
+    return isNaN(n) ? null : n;
+  }
+
+
+  function converterRegistroSp(campos, anoPedido) {
+    if (campos.length < 18) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined || v === null) return null;
+      v = String(v).trim().replace(/^['"]+|['"]+$/g, "");
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      return parseNumeroGenerico(v);
+    }
+    var dataEstimativa = parseDataGenerica(c(0));
+    var dataPagamento = parseDataGenerica(c(1));
+    var perc = num(3);
+    if (perc !== null && perc > 100) perc = perc / 100;
+    return {
+      cidadeNome: "São Paulo",
+      estadoSigla: "SP",
+      ano: anoPedido,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(2),
+      percTransmitido: perc,
+      finalidadeConstrucao: c(4),
+      logradouro: c(5),
+      numeroEndereco: c(6),
+      numeroUnidade: c(7),
+      complementoEndereco: c(8),
+      bairro: c(9),
+      cep: c(10),
+      areaTotalTerreno: num(11),
+      areaConstrTotal: num(12),
+      areaConstrPrivativa: num(13),
+      anoConstrucao: c(14) ? parseInt(c(14), 10) : null,
+      numeroMatricula: c(15),
+      numeroZona: c(16),
+      situacao: c(17)
+    };
+  }
+
 
   function converterRegistroPoa(campos, ano) {
     if (campos.length < 18) return null;
@@ -1378,12 +1459,8 @@ white-space: nowrap;
           if (!linha.trim()) continue;
           try {
             var campos = parseLinhaCsv(linha);
-            var reg = converterRegistroPoa(campos, ano);
-            if (reg) {
-              reg.cidadeNome = "São Paulo";
-              reg.estadoSigla = "SP";
-              registros.push(reg);
-            }
+            var reg = converterRegistroSp(campos, ano);
+            if (reg) registros.push(reg);
           } catch (e) {}
         }
         return registros;
