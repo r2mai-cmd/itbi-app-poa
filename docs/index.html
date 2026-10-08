@@ -1598,9 +1598,134 @@ white-space: nowrap;
     var logradouroRegistro = normalizarLogradouro(registro.logradouro || "");
     if (!logradouroRegistro) return 0;
     if (logradouroRegistro === logradouroBusca) return 2;
-    if (logradouroRegistro.indexOf(logradouroBusca) !== -1 ||
-        logradouroBusca.indexOf(logradouroRegistro) !== -1) return 1;
+    // Busca parcial somente no sentido: o nome pesquisado precisa estar
+    // contido no logradouro do registro. Não usamos o sentido inverso,
+    // pois isso gera falsos positivos com nomes curtos. Ex.: pesquisar
+    // "25 de março" não deve trazer "R do Mar" só porque "MAR"
+    // aparece dentro de "25 MARCO" após a normalização.
+    if (logradouroRegistro.indexOf(logradouroBusca) !== -1) return 1;
     return 0;
+  }
+
+  // Comparação específica para São Paulo. Mantemos palavras como DE/DO/DA
+  // no nome da via, mas usamos os termos relevantes para evitar falsos
+  // positivos. Ex.: "25 de março" deve encontrar "R 25 DE MARÇO",
+  // e também "vinte e cinco de março".
+  function normalizarNumerosExtensoSp(texto) {
+    var unidades = {
+      "ZERO": 0, "UM": 1, "UMA": 1, "DOIS": 2, "DUAS": 2, "TRES": 3,
+      "QUATRO": 4, "CINCO": 5, "SEIS": 6, "SETE": 7, "OITO": 8, "NOVE": 9,
+      "DEZ": 10, "ONZE": 11, "DOZE": 12, "TREZE": 13, "QUATORZE": 14,
+      "QUINZE": 15, "DEZESSEIS": 16, "DEZESSETE": 17, "DEZOITO": 18, "DEZENOVE": 19
+    };
+    var dezenas = {
+      "VINTE": 20, "TRINTA": 30, "QUARENTA": 40, "CINQUENTA": 50,
+      "SESSENTA": 60, "SETENTA": 70, "OITENTA": 80, "NOVENTA": 90
+    };
+    var tokens = texto.split(/\s+/).filter(Boolean);
+    var saida = [];
+
+    for (var i = 0; i < tokens.length; i++) {
+      var atual = tokens[i];
+
+      if (dezenas[atual] !== undefined) {
+        var valor = dezenas[atual];
+        var j = i + 1;
+        if (tokens[j] === "E") j++;
+        if (unidades[tokens[j]] !== undefined && unidades[tokens[j]] > 0) {
+          valor += unidades[tokens[j]];
+          i = j;
+        }
+        saida.push(String(valor));
+        continue;
+      }
+
+      if (unidades[atual] !== undefined) {
+        saida.push(String(unidades[atual]));
+        continue;
+      }
+
+      saida.push(atual);
+    }
+
+    return saida.join(" ");
+  }
+
+  function normalizarLogradouroSp(s) {
+    var texto = normalizarParaBusca(s)
+      .replace(/[^A-Z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Equivalência entre números em algarismos e por extenso:
+    // "25 DE MARCO" e "VINTE E CINCO DE MARCO" passam a ter a mesma base.
+    texto = normalizarNumerosExtensoSp(texto);
+
+    var prefixos = [
+      "AVENIDA", "AV", "RUA", "R", "ALAMEDA", "AL", "TRAVESSA", "TRAV", "TV",
+      "ESTRADA", "EST", "RODOVIA", "ROD", "PRACA", "PCA", "PC", "LARGO", "LG",
+      "PARQUE", "PQ", "BECO", "BC", "VIELA", "VL", "SERVIDAO", "SER",
+      "PROFESSOR", "PROF", "DOUTOR", "DR", "PRESIDENTE", "PRES", "GOVERNADOR", "GOV",
+      "SENADOR", "SEN", "DESEMBARGADOR", "DES", "CORONEL", "CEL", "MARECHAL", "MAL",
+      "GENERAL", "GEN", "ALMIRANTE", "ALM", "PADRE", "PE", "FREI", "FR"
+    ];
+
+    var alterou = true;
+    while (alterou && texto) {
+      alterou = false;
+      for (var i = 0; i < prefixos.length; i++) {
+        var re = new RegExp("^" + prefixos[i] + "(?:\\s+|$)");
+        if (re.test(texto)) {
+          texto = texto.replace(re, "").trim();
+          alterou = true;
+          break;
+        }
+      }
+    }
+    return texto;
+  }
+
+  function tokensRelevantesSp(texto) {
+    return normalizarLogradouroSp(texto)
+      .split(/\s+/)
+      .filter(function (t) {
+        return t && t !== "DE" && t !== "DA" && t !== "DO" && t !== "DAS" && t !== "DOS" && t !== "E";
+      });
+  }
+
+  function grauCorrespondenciaLogradouroSp(registro, logradouroBusca) {
+    var nomeRegistro = normalizarLogradouroSp(registro.logradouro || "");
+    var nomeBusca = normalizarLogradouroSp(logradouroBusca || "");
+    if (!nomeRegistro || !nomeBusca) return 0;
+    if (nomeRegistro === nomeBusca) return 2;
+
+    var busca = tokensRelevantesSp(nomeBusca);
+    var registro = tokensRelevantesSp(nomeRegistro);
+    if (!busca.length || !registro.length) return 0;
+
+    // Cada termo relevante pesquisado precisa aparecer no logradouro do
+    // registro, na mesma ordem. Aceitamos prefixo do último termo para
+    // permitir buscas parciais como "25 mar" -> "25 MARÇO".
+    var pos = 0;
+    for (var i = 0; i < busca.length; i++) {
+      var termo = busca[i];
+      var encontrado = false;
+      for (; pos < registro.length; pos++) {
+        if (registro[pos] === termo || registro[pos].indexOf(termo) === 0) {
+          encontrado = true;
+          pos++;
+          break;
+        }
+      }
+      if (!encontrado) return 0;
+    }
+    return 1;
+  }
+
+  function coincideSaoPaulo(registro, logradouroBusca, numeroBusca, unidadeBusca) {
+    return grauCorrespondenciaLogradouroSp(registro, logradouroBusca) > 0 &&
+      numeroCoincide(registro, numeroBusca) &&
+      unidadeCoincide(registro, unidadeBusca);
   }
 
   function coincide(registro, logradouroBusca, numeroBusca, unidadeBusca) {
@@ -1655,7 +1780,7 @@ white-space: nowrap;
         // participa dessa decisão para não esconder um endereço válido.
         if (logradouroBusca) {
           var exatos = registros.filter(function (r) {
-            return grauCorrespondenciaLogradouro(r, logradouroBusca) === 2 &&
+            return (cidadeId === "sao-paulo" ? grauCorrespondenciaLogradouroSp(r, logradouroBusca) === 2 : grauCorrespondenciaLogradouro(r, logradouroBusca) === 2) &&
               numeroCoincide(r, numeroBusca) &&
               unidadeCoincide(r, unidadeBusca);
           });
@@ -1670,8 +1795,9 @@ white-space: nowrap;
       indice++;
       if (aoProgredir) aoProgredir(indice, anos.length);
       return baixarCsvDaFonte(fonte, ano, forcarAtualizacao).then(function (texto) {
+        var funcaoCoincidencia = cidadeId === "sao-paulo" ? coincideSaoPaulo : coincide;
         var doAno = fonte.processarCsv(texto, ano).filter(function (r) {
-          return coincide(r, logradouroBusca, numeroBusca, unidadeBusca);
+          return funcaoCoincidencia(r, logradouroBusca, numeroBusca, unidadeBusca);
         });
         registros = registros.concat(doAno);
       }).catch(function (erro) {
@@ -2146,16 +2272,25 @@ white-space: nowrap;
     fecharDetalhe();
     definirCarregando(true);
 
+    // Mostra imediatamente que uma nova busca começou. O pequeno atraso
+    // permite ao navegador pintar a mensagem antes de iniciar a leitura dos CSVs.
+    elTextoProgresso.style.display = "block";
+    elTextoProgresso.textContent = "Consultando dados...";
+
     var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
     var numero = elNumero.value.trim();
     var unidade = elUnidade.value.trim();
 
-    buscar(elCidade.value, anoValor, logradouro, numero, unidade, forcarAtualizacao, function (feito, total) {
-      if (total > 1) {
-        elTextoProgresso.style.display = "block";
-        elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
-      }
-    }).then(function (resultado) {
+    setTimeout(function () {
+      buscar(elCidade.value, anoValor, logradouro, numero, unidade, forcarAtualizacao, function (feito, total) {
+        if (total > 1) {
+          elTextoProgresso.style.display = "block";
+          elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
+        } else {
+          elTextoProgresso.style.display = "block";
+          elTextoProgresso.textContent = "Consultando dados...";
+        }
+      }).then(function (resultado) {
       definirCarregando(false);
       ultimosRegistros = resultado.registros;
       paginaAtual = 1;
@@ -2176,11 +2311,12 @@ white-space: nowrap;
         elFaixaAvisoAnos.classList.add("ativa");
         elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
       }
-    }).catch(function (erro) {
-      definirCarregando(false);
-      elFaixaErro.classList.add("ativa");
-      elTextoErro.textContent = erro.message || "Não foi possível concluir a busca. Tente novamente.";
-    });
+      }).catch(function (erro) {
+        definirCarregando(false);
+        elFaixaErro.classList.add("ativa");
+        elTextoErro.textContent = erro.message || "Não foi possível concluir a busca. Tente novamente.";
+      });
+    }, 50);
   }
 
   [elEndereco, elNumero, elUnidade].forEach(function (el) {
