@@ -240,6 +240,14 @@
 </div>
 <p id="aviso-lance-percentual" class="texto-apoio-prazo">Informe o lance em reais ou em percentual da carta; o outro campo será atualizado automaticamente.</p>
 <div class="campo">
+<label>Como o lance será amortizado?</label>
+<div class="botoes-seletor" id="grupo-amortizacao-lance">
+<button class="btn-seletor ativo" data-lance-amort="parcela" type="button">Reduzir parcelas</button>
+<button class="btn-seletor" data-lance-amort="prazo" type="button">Reduzir prazo</button>
+</div>
+<p class="texto-apoio-prazo">A regra real depende do contrato do grupo. Escolha uma hipótese para estimar o efeito do lance.</p>
+</div>
+<div class="campo">
 <label for="input-incc">Correção INCC Médio (% a.a.)</label>
 <input id="input-incc" inputmode="decimal" type="text" value="7,0"/>
 </div>
@@ -277,9 +285,10 @@
 <p class="card-destaque-sub" id="res-parc-fin">Parcela mensal: R$ 0,00</p>
 </div>
 <div class="linha-resumo">
-<span class="linha-rotulo">Análise Comparativa:</span>
+<span class="linha-rotulo">Diferença estimada:</span>
 <span class="linha-valor" id="res-diferenca" style="color:var(--laranja);">R$ 0,00</span>
 </div>
+<p class="texto-apoio-prazo">*Menor desembolso nominal estimado, sem descontar o custo de oportunidade do lance/entrada. Não equivale, isoladamente, a dizer qual alternativa é financeiramente melhor.</p>
 </div>
 </div>
 <section class="box-tutorial">
@@ -324,7 +333,7 @@
 
 </main>
 <div class="disclaimer-box" style="margin: 0 20px 24px;">
-<strong>Importante:</strong> a comparação é uma simulação simplificada. No consórcio, o INCC é aplicado aqui como reajuste anual das parcelas e a taxa de administração é tratada como percentual sobre o crédito. Não são modelados fundo de reserva, seguro, contemplação, lance vencedor, reajustes contratuais adicionais ou custos específicos. No financiamento, a taxa anual é convertida para uma taxa mensal equivalente.
+<strong>Importante:</strong> a comparação é uma simulação simplificada e nominal, sem custo de oportunidade do dinheiro pago antecipadamente. No consórcio, a taxa de administração é calculada sobre o crédito e não diminui quando o lance aumenta. O lance é tratado como amortização antecipada; a opção escolhida simula redução do valor das parcelas ou do prazo, com reajuste anual simplificado pelo INCC. A regra efetiva, a base de reajuste e a forma de amortização dependem do contrato do grupo. Não são modelados fundo de reserva, seguro, contemplação, lance vencedor nem custos específicos. No financiamento, a taxa anual é convertida para uma taxa mensal equivalente.
   </div>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
@@ -458,6 +467,15 @@
   });
 
   var amortizacaoFin = "PRICE";
+  var amortizacaoLance = "parcela";
+  document.querySelectorAll("#grupo-amortizacao-lance .btn-seletor").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll("#grupo-amortizacao-lance .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
+      this.classList.add("ativo");
+      amortizacaoLance = this.getAttribute("data-lance-amort");
+      calcular();
+    });
+  });
   document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(btn) {
     btn.addEventListener("click", function() {
       document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(b) { b.classList.remove("ativo"); });
@@ -485,19 +503,33 @@
     // --- CÁLCULO CONSÓRCIO ---
     var valorTaxaAdmTotal = credito * taxaAdmPercentual;
     var custoBrutoConsorcio = credito + valorTaxaAdmTotal;
-    var saldoDevedorConsorcio = Math.max(0, custoBrutoConsorcio - lance);
-    var parcelaConsorcioInicial = n > 0 ? saldoDevedorConsorcio / n : 0;
-    
-    var custoConsorcioTotal = lance;
+    // O lance é um pagamento antecipado destinado à amortização, não um desconto na taxa de administração.
+    // O modelo limita o lance ao saldo simulado e mantém explícito que INCC e amortização variam por contrato.
+    var lanceAplicado = Math.min(Math.max(0, lance), custoBrutoConsorcio);
+    var saldoDevedorConsorcio = Math.max(0, custoBrutoConsorcio - lanceAplicado);
+    var parcelaConsorcioInicial = n > 0 ? (amortizacaoLance === "parcela" ? saldoDevedorConsorcio / n : custoBrutoConsorcio / n) : 0;
+    var custoConsorcioTotal = lanceAplicado;
     var parcelaAtual = parcelaConsorcioInicial;
-    
-    for (var m = 1; m <= n; m++) {
+    var parcelaConsorcioFinal = 0;
+    var mesesConsorcioEstimados = 0;
+    var saldoSimulado = saldoDevedorConsorcio;
+    var limiteMesesSimulacao = amortizacaoLance === "prazo" ? n : n;
+    for (var m = 1; m <= limiteMesesSimulacao && saldoSimulado > 0.005; m++) {
       if (m > 1 && (m - 1) % 12 === 0) {
         parcelaAtual *= (1 + inccAnual);
+        saldoSimulado *= (1 + inccAnual);
       }
-      custoConsorcioTotal += parcelaAtual;
+      var pagamentoMes = Math.min(parcelaAtual, saldoSimulado);
+      custoConsorcioTotal += pagamentoMes;
+      saldoSimulado = Math.max(0, saldoSimulado - pagamentoMes);
+      parcelaConsorcioFinal = pagamentoMes;
+      mesesConsorcioEstimados = m;
     }
-    var parcelaConsorcioFinal = parcelaAtual;
+    // Com redução de prazo, o valor-base da parcela é mantido e o lance diminui a quantidade estimada de pagamentos.
+    // Com redução de parcela, o saldo amortizado é distribuído pelo prazo informado.
+    if (amortizacaoLance === "prazo" && saldoSimulado > 0.005) {
+      mesesConsorcioEstimados = n;
+    }
 
     // --- CÁLCULO FINANCIAMENTO (SAC ou PRICE) ---
     var saldoDevedorFin = Math.max(0, credito - entrada);
@@ -531,12 +563,12 @@
 
     var diferenca = Math.abs(custoConsorcioTotal - custoFinanciamento);
     var txtDiferenca = custoConsorcioTotal < custoFinanciamento 
-      ? "Consórcio é R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " mais vantajoso" 
-      : "Financiamento é R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " mais vantajoso";
+      ? "Consórcio: R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " menor desembolso nominal*" 
+      : "Financiamento: R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " menor desembolso nominal*";
 
     document.getElementById("res-custo-consorcio").textContent = fmtMoeda.format(custoConsorcioTotal);
-    document.getElementById("res-parc-consorcio").textContent = "Parcela: " + fmtMoeda.format(parcelaConsorcioInicial) + (n > 12 ? " até R$ " + fmtMoeda.format(parcelaConsorcioFinal).replace("R$", "").trim() : "");
-    document.getElementById("res-detalhe-consorcio").textContent = "Taxa Adm (" + document.getElementById("input-taxa-adm").value + "%): " + fmtMoeda.format(valorTaxaAdmTotal) + " sobre o crédito";
+    document.getElementById("res-parc-consorcio").textContent = "Parcela inicial estimada: " + fmtMoeda.format(parcelaConsorcioInicial) + (n > 1 ? " | última: " + fmtMoeda.format(parcelaConsorcioFinal) : "") + (amortizacaoLance === "prazo" ? " | prazo estimado: " + mesesConsorcioEstimados + " meses" : "");
+    document.getElementById("res-detalhe-consorcio").textContent = "Taxa Adm fixa no modelo (" + document.getElementById("input-taxa-adm").value + "% da carta): " + fmtMoeda.format(valorTaxaAdmTotal) + ". Lance aplicado: " + fmtMoeda.format(lanceAplicado) + ".";
 
     document.getElementById("txt-label-fin").textContent = "Financiamento (Custo Total - " + amortizacaoFin + ")";
     document.getElementById("res-custo-fin").textContent = fmtMoeda.format(custoFinanciamento);
@@ -560,6 +592,8 @@
     document.getElementById("input-prazo-meses").value = "360";
     document.getElementById("input-taxa-adm").value = "25,0";
     document.getElementById("input-incc").value = "7,0";
+    amortizacaoLance = "parcela";
+    document.querySelectorAll("#grupo-amortizacao-lance .btn-seletor").forEach(function(b) { b.classList.toggle("ativo", b.getAttribute("data-lance-amort") === "parcela"); });
     document.getElementById("input-juros-fin").value = "10,5";
 
     document.getElementById("res-custo-consorcio").textContent = "R$ 0,00";
