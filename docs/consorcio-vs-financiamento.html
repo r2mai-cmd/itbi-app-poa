@@ -61,11 +61,13 @@
   
   .input-grupo { display: flex; align-items: center; border-bottom: 1px solid var(--dourado-linha); }
   .input-grupo span { font-size: 1.1rem; font-weight: 700; color: var(--laranja); margin-right: 6px; }
-  .input-grupo input, .campo select, .campo input[type="text"] { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
-  .input-grupo input:focus, .campo select:focus, .campo input[type="text"]:focus { border-bottom: 2px solid var(--laranja); }
+  .input-grupo input, .campo select, .campo input[type="text"], .campo input[type="number"] { width: 100%; border: none; background: transparent; padding: 8px 0; font-size: 1.1rem; color: var(--texto-card); outline: none; font-weight: 600; font-family: var(--fonte-corpo); border-bottom: 1px solid var(--dourado-linha); }
+  .input-grupo input:focus, .campo select:focus, .campo input[type="text"]:focus, .campo input[type="number"]:focus { border-bottom: 2px solid var(--laranja); }
+  .texto-apoio-prazo { margin: 6px 0 0; color: #66645e; font-size: .75rem; line-height: 1.45; }
   .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
 
   .campo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .prazo-linha { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 480px) { .campo-linha { grid-template-columns: 1fr; } }
 
   .botoes-seletor { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 6px; }
@@ -208,26 +210,35 @@
 <div class="input-grupo"><span>R$</span><input id="input-credito" type="tel" value="400.000,00"/></div>
 </div>
 <div class="campo">
-<label for="select-prazo">Prazo Equalizado (Anos)</label>
-<select id="select-prazo">
-<option value="10">10 anos (120 meses)</option>
-<option selected="" value="15">15 anos (180 meses)</option>
-<option value="20">20 anos (240 meses)</option>
-<option value="25">25 anos (300 meses)</option>
-<option value="30">30 anos (360 meses)</option>
-</select>
+<label>Prazo desejado para comparação</label>
+<div class="prazo-linha">
+  <div>
+    <label for="input-prazo" style="letter-spacing:0; text-transform:none;">Anos</label>
+    <input id="input-prazo" type="number" inputmode="decimal" min="0.08" max="50" step="0.01" value="30" aria-describedby="aviso-prazo-consorcio"/>
+  </div>
+  <div>
+    <label for="input-prazo-meses" style="letter-spacing:0; text-transform:none;">Meses</label>
+    <input id="input-prazo-meses" type="number" inputmode="numeric" min="1" max="600" step="1" value="360"/>
+  </div>
+</div>
+<p id="aviso-prazo-consorcio" class="texto-apoio-prazo">Digite em anos ou meses; o outro campo será atualizado automaticamente. É um horizonte de comparação: no consórcio, o prazo real depende das regras e do andamento do grupo.</p>
 </div>
 <div class="secao-titulo">2. Critérios do Consórcio</div>
-<div class="campo-linha">
 <div class="campo">
 <label for="input-taxa-adm">Taxa Adm. Total (%)</label>
 <input id="input-taxa-adm" inputmode="decimal" type="text" value="25,0"/>
 </div>
+<div class="campo-linha">
 <div class="campo">
 <label for="input-lance">Valor do Lance</label>
 <div class="input-grupo"><span>R$</span><input id="input-lance" type="tel" value="250.000,00"/></div>
 </div>
+<div class="campo">
+<label for="input-lance-percentual">Lance (% da carta)</label>
+<div class="input-grupo"><input id="input-lance-percentual" type="text" inputmode="decimal" value="62,50" aria-describedby="aviso-lance-percentual"/><span>%</span></div>
 </div>
+</div>
+<p id="aviso-lance-percentual" class="texto-apoio-prazo">Informe o lance em reais ou em percentual da carta; o outro campo será atualizado automaticamente.</p>
 <div class="campo">
 <label for="input-incc">Correção INCC Médio (% a.a.)</label>
 <input id="input-incc" inputmode="decimal" type="text" value="7,0"/>
@@ -368,7 +379,47 @@
     });
   });
 
-  ["input-taxa-adm", "input-juros-fin", "input-incc", "select-prazo"].forEach(function(id) {
+  var campoCredito = document.getElementById("input-credito");
+  var campoLance = document.getElementById("input-lance");
+  var campoLancePercentual = document.getElementById("input-lance-percentual");
+
+  function lerPercentualBR(valor) {
+    if (!valor || !valor.trim()) return 0;
+    var limpo = valor.trim().replace(/\s/g, "").replace(/\./g, "").replace(",", ".");
+    var numero = parseFloat(limpo);
+    return Number.isFinite(numero) ? numero : 0;
+  }
+
+  function atualizarPercentualDoLance() {
+    var credito = lerNumero("input-credito");
+    var lance = lerNumero("input-lance");
+    campoLancePercentual.value = credito > 0 ? (lance / credito * 100).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2}) : "";
+  }
+
+  function atualizarValorDoLance() {
+    var credito = lerNumero("input-credito");
+    var percentual = lerPercentualBR(campoLancePercentual.value);
+    if (campoLancePercentual.value.trim() === "" || credito <= 0) {
+      campoLance.value = "";
+      return;
+    }
+    campoLance.value = (credito * percentual / 100).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+
+  campoLance.addEventListener("input", atualizarPercentualDoLance);
+  campoLancePercentual.addEventListener("input", function() {
+    atualizarValorDoLance();
+    calcular();
+  });
+  campoLancePercentual.addEventListener("blur", function() {
+    if (this.value.trim() !== "") this.value = lerPercentualBR(this.value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  });
+  campoCredito.addEventListener("input", function() {
+    if (campoLancePercentual === document.activeElement) atualizarValorDoLance();
+    else atualizarPercentualDoLance();
+  });
+
+  ["input-taxa-adm", "input-juros-fin", "input-incc"].forEach(function(id) {
     var el = document.getElementById(id);
     if(el) {
       el.addEventListener("input", calcular);
@@ -377,6 +428,33 @@
         if (e.key === "Enter") { e.preventDefault(); calcular(); }
       });
     }
+  });
+
+  var campoPrazoAnos = document.getElementById("input-prazo");
+  var campoPrazoMeses = document.getElementById("input-prazo-meses");
+  campoPrazoAnos.addEventListener("input", function() {
+    var anosDigitados = parseFloat(this.value);
+    if (this.value !== "" && Number.isFinite(anosDigitados) && anosDigitados > 0) {
+      campoPrazoMeses.value = String(Math.max(1, Math.min(600, Math.round(anosDigitados * 12))));
+    } else if (this.value === "") {
+      campoPrazoMeses.value = "";
+    }
+    calcular();
+  });
+  campoPrazoMeses.addEventListener("input", function() {
+    var mesesDigitados = parseInt(this.value, 10);
+    if (this.value !== "" && Number.isFinite(mesesDigitados) && mesesDigitados > 0) {
+      campoPrazoAnos.value = (Math.max(1, Math.min(600, mesesDigitados)) / 12).toFixed(2);
+    } else if (this.value === "") {
+      campoPrazoAnos.value = "";
+    }
+    calcular();
+  });
+  [campoPrazoAnos, campoPrazoMeses].forEach(function(el) {
+    el.addEventListener("change", calcular);
+    el.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") { e.preventDefault(); calcular(); }
+    });
   });
 
   var amortizacaoFin = "PRICE";
@@ -393,12 +471,16 @@
     var credito = lerNumero("input-credito");
     var entrada = lerNumero("input-entrada");
     var lance = lerNumero("input-lance");
-    var anos = parseInt(document.getElementById("select-prazo").value, 10) || 30;
+    var prazoMesesInformado = parseInt(document.getElementById("input-prazo-meses").value, 10);
+    var n = Number.isFinite(prazoMesesInformado) ? Math.min(600, Math.max(1, prazoMesesInformado)) : 360;
+    var prazoAnosInformado = parseFloat(document.getElementById("input-prazo").value);
+    document.getElementById("input-prazo").setCustomValidity(!Number.isFinite(prazoAnosInformado) || prazoAnosInformado <= 0 || prazoAnosInformado > 50 ? "Informe um prazo maior que zero e de até 50 anos." : "");
+    document.getElementById("input-prazo-meses").setCustomValidity(!Number.isFinite(prazoMesesInformado) || prazoMesesInformado < 1 || prazoMesesInformado > 600 ? "Informe de 1 a 600 meses." : "");
     var taxaAdmPercentual = lerNumero("input-taxa-adm") / 100;
     var inccAnual = lerNumero("input-incc") / 100;
     var jurosAnual = Math.max(0, lerNumero("input-juros-fin") / 100);
 
-    var n = anos * 12;
+    // O prazo usado nos dois cenários é o número de meses informado/sincronizado.
 
     // --- CÁLCULO CONSÓRCIO ---
     var valorTaxaAdmTotal = credito * taxaAdmPercentual;
@@ -473,7 +555,9 @@
     document.getElementById("input-credito").value = "";
     document.getElementById("input-entrada").value = "";
     document.getElementById("input-lance").value = "";
-    document.getElementById("select-prazo").value = "15";
+    document.getElementById("input-lance-percentual").value = "";
+    document.getElementById("input-prazo").value = "30";
+    document.getElementById("input-prazo-meses").value = "360";
     document.getElementById("input-taxa-adm").value = "25,0";
     document.getElementById("input-incc").value = "7,0";
     document.getElementById("input-juros-fin").value = "10,5";
@@ -486,6 +570,7 @@
     document.getElementById("res-diferenca").textContent = "R$ 0,00";
   });
 
+  atualizarPercentualDoLance();
   calcular();
 })();
 </script>
