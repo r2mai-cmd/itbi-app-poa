@@ -1407,7 +1407,7 @@ white-space: nowrap;
         });
       },
       processarCsv: function (texto, ano) {
-        var linhas = texto.split("\n");
+        var linhas = texto.split(/\r\n|\n|\r/);
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
           var linha = linhas[i].replace(/\r$/, "");
@@ -1434,7 +1434,7 @@ white-space: nowrap;
         });
       },
       processarCsv: function (texto, anoPedido) {
-        var linhas = texto.split("\n");
+        var linhas = texto.split(/\r\n|\n|\r/);
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
           var linha = linhas[i].replace(/\r$/, "");
@@ -1469,7 +1469,7 @@ white-space: nowrap;
       },
       processarCsv: function (texto, ano) {
         if (!texto) return [];
-        var linhas = texto.split("\n");
+        var linhas = texto.split(/\r\n|\n|\r/);
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
           var linha = linhas[i].replace(/\r$/, "");
@@ -1506,7 +1506,7 @@ white-space: nowrap;
       },
       processarCsv: function (texto, ano) {
         if (!texto) return [];
-        var linhas = texto.split("\n");
+        var linhas = texto.split(/\r\n|\n|\r/);
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
           var linha = linhas[i].replace(/\r$/, "");
@@ -1546,7 +1546,7 @@ white-space: nowrap;
       },
       processarCsv: function (texto, ano) {
         if (!texto) return [];
-        var linhas = texto.split("\n");
+        var linhas = texto.split(/\r\n|\n|\r/);
         var registros = [];
         for (var i = 1; i < linhas.length; i++) {
           var linha = linhas[i].replace(/\r$/, "");
