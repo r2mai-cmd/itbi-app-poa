@@ -1023,40 +1023,57 @@ white-space: nowrap;
     var resultado = [];
     var i = 0;
     var n = linha.length;
+
     while (i <= n) {
       if (i === n) {
-        if (resultado.length === 0 || linha.charAt(linha.length - 1) === ";") {
+        if (resultado.length === 0 || linha.charAt(n - 1) === ";") {
           resultado.push("");
         }
         break;
       }
-      if (linha.charAt(i) === "'") {
+
+      var aspas = linha.charAt(i);
+      if (aspas === '"' || aspas === "'") {
         var sb = "";
         i++;
         while (i < n) {
-          if (linha.charAt(i) === "'") {
-            if (i + 1 < n && linha.charAt(i + 1) === "'") {
-              sb += "'";
+          var ch = linha.charAt(i);
+          if (ch === aspas) {
+            // Aspas duplicadas dentro do campo representam uma aspa literal.
+            if (i + 1 < n && linha.charAt(i + 1) === aspas) {
+              sb += aspas;
               i += 2;
             } else {
               i++;
               break;
             }
           } else {
-            sb += linha.charAt(i);
+            sb += ch;
             i++;
           }
         }
         resultado.push(sb);
+        // Avança até o próximo separador, tolerando espaços após as aspas.
         while (i < n && linha.charAt(i) !== ";") i++;
-        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
+        if (i < n) {
+          i++;
+          if (i === n) resultado.push("");
+        } else {
+          break;
+        }
       } else {
         var inicio = i;
         while (i < n && linha.charAt(i) !== ";") i++;
-        resultado.push(linha.substring(inicio, i));
-        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
+        resultado.push(linha.substring(inicio, i).trim());
+        if (i < n) {
+          i++;
+          if (i === n) resultado.push("");
+        } else {
+          break;
+        }
       }
     }
+
     return resultado;
   }
 
