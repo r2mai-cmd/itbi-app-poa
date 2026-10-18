@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild Porto Alegre 2026 statistics without modifying source CSVs."""
 import csv
+import io
 import json
 import re
 from collections import defaultdict
@@ -49,13 +50,40 @@ def numero(valor):
 
 
 def data_pagamento(valor):
-    s = str(valor or "").strip()
-    for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y", "%d/%m/%y"):
+    s = str(valor or "").strip().replace("\u00a0", " ")
+    candidatos = [s, s[:10], s.split(" ")[0]]
+    formatos = ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y", "%d/%m/%y", "%m/%d/%Y")
+    for candidato in candidatos:
+        for fmt in formatos:
+            try:
+                return datetime.strptime(candidato, fmt).date()
+            except ValueError:
+                pass
+    try:
+        return datetime.fromisoformat(s.replace("Z", "+00:00")).date()
+    except ValueError:
+        return None
+
+
+def detectar_delimitador(caminho):
+    """Choose the delimiter that best matches the expected 18-column file."""
+    with caminho.open("r", encoding="utf-8-sig", errors="replace", newline="") as f:
+        amostra = "".join(f.readline() for _ in range(3))
+    if not amostra:
+        return ";"
+    opcoes = []
+    for delimitador in (";", ",", "\t", "|"):
         try:
-            return datetime.strptime(s, fmt).date()
-        except ValueError:
-            pass
-    return None
+            primeira = next(csv.reader(io.StringIO(amostra), delimiter=delimitador, quotechar="'"), [])
+            n = len(primeira)
+            score = abs(n - len(COLUNAS))
+            if delimitador != ";":
+                score += 0.01
+            opcoes.append((score, delimitador, n))
+        except csv.Error:
+            continue
+    _, delimitador, _ = min(opcoes)
+    return delimitador
 
 
 def chave_unidade(row, indice):
@@ -96,16 +124,24 @@ def pontuacao(row):
 
 def carregar_registros(caminho):
     registros = []
+    delimitador = detectar_delimitador(caminho)
+    linhas_lidas = 0
+    datas_validas = 0
+    anos_encontrados = defaultdict(int)
     with caminho.open("r", encoding="utf-8-sig", errors="replace", newline="") as f:
-        reader = csv.reader(f, delimiter=";", quotechar="'")
+        reader = csv.reader(f, delimiter=delimitador, quotechar="'")
         for indice, campos in enumerate(reader):
             if not campos or not any(str(x).strip() for x in campos):
                 continue
             if indice == 0 and ("DATA" in campos[0].upper() or "ESTIMATIVA" in campos[0].upper()):
                 continue
+            linhas_lidas += 1
             campos = campos[:18] + [""] * max(0, 18 - len(campos))
             row = dict(zip(COLUNAS, campos[:18]))
             row["data"] = data_pagamento(row.get("DATA_PAGAMENTO"))
+            if row["data"] is not None:
+                datas_validas += 1
+                anos_encontrados[row["data"].year] += 1
             if row["data"] is None or row["data"].year != 2026:
                 continue
             row["_indice"] = indice
@@ -114,6 +150,11 @@ def carregar_registros(caminho):
             row["_valor"] = numero(row.get("VALOR"))
             row["_area"] = numero(row.get("AREA_PRIV"))
             registros.append(row)
+    print(
+        f"CSV Porto Alegre: delimitador={delimitador!r}; linhas={linhas_lidas}; "
+        f"datas válidas={datas_validas}; datas por ano={dict(sorted(anos_encontrados.items()))}; "
+        f"registros de 2026 com data={len(registros)}."
+    )
     return registros
 
 
@@ -220,7 +261,6 @@ def main():
         )
         return
 
-    # Preserve 2020-2025; regenerate 2026 coherently using the updated CSV.
     historico = [x for x in historico_antigo if int(x.get("ano", 0)) != 2026]
     historico.extend(historico_2026)
     historico.sort(key=lambda x: (int(x["ano"]), int(x["mes"]), str(x["bairro"])))
