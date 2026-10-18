@@ -273,10 +273,10 @@ def main():
     historico_2026 = agregar(consolidados)
     periodo_novo = max(((x["ano"], x["mes"]) for x in historico_2026), default=(0, 0))
 
-    if periodo_novo <= ultimo_anterior:
+    if periodo_novo == (0, 0):
         print(
-            "Nenhum período novo encontrado no CSV de Porto Alegre. "
-            f"Último período no JSON: {ultimo_anterior}; no CSV após filtros: {periodo_novo}. "
+            "Nenhum período válido encontrado no CSV de Porto Alegre após os filtros. "
+            f"Último período no JSON: {ultimo_anterior}. "
             "JSON preservado para evitar substituir dados bons por uma base incompleta."
         )
         return
@@ -285,7 +285,9 @@ def main():
     historico.extend(historico_2026)
     historico.sort(key=lambda x: (int(x["ano"]), int(x["mes"]), str(x["bairro"])))
 
-    bairros = sorted(set(anterior.get("bairros", [])) | {x["bairro"] for x in historico_2026})
+    # Rebuild the list from the final history instead of unioning the old list:
+    # this removes legacy duplicate labels such as '"TERESOPOLIS"' and TERESOPOLIS.
+    bairros = sorted({normalizar(x.get("bairro", "")) for x in historico if normalizar(x.get("bairro", ""))})
     anos = sorted({int(x["ano"]) for x in historico})
     saida = {
         "cidade": anterior.get("cidade", "Porto Alegre - RS"),
