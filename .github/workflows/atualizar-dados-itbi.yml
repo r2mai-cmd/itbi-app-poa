@@ -23,11 +23,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Baixar CSV de Porto Alegre — 2025
+        if: github.event_name != 'push'
         run: |
           curl -fsSL -o docs/data/itbi-2025.csv \
             "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv"
 
       - name: Baixar CSV de Porto Alegre — 2026
+        if: github.event_name != 'push'
         run: |
           curl -fsSL -o docs/data/itbi-2026.csv \
             "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
@@ -39,6 +41,7 @@ jobs:
             "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv"
 
       - name: Verificar tamanho dos arquivos baixados
+        if: github.event_name != 'push'
         run: |
           arquivos="docs/data/itbi-2025.csv docs/data/itbi-2026.csv"
           if [ "$GITHUB_EVENT_NAME" != "push" ]; then
