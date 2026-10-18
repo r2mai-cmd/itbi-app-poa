@@ -66,6 +66,7 @@
   .campo select:focus, .campo input[type="text"]:focus, .campo input[type="number"]:focus { border-bottom: 2px solid var(--laranja); }
   .texto-apoio-prazo { margin: 6px 0 0; color: #66645e; font-size: .75rem; line-height: 1.45; }
   .input-grupo:focus-within { border-bottom: 2px solid var(--laranja); }
+  .campo input:invalid { border-bottom: 2px solid #b53a32; }
 
   .campo-linha { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
   /* Mantém os dois campos da entrada alinhados mesmo quando um rótulo quebra em duas linhas. */
@@ -438,6 +439,23 @@
     return Number.isFinite(numero) ? numero : 0;
   }
 
+  // Leitura estrita para percentuais: aceita vírgula decimal pt-BR ou ponto decimal,
+  // mas não transforma texto malformado silenciosamente em zero.
+  function interpretarPercentual(valor) {
+    var bruto = String(valor == null ? "" : valor).trim().replace(/\s/g, "");
+    if (!bruto) return { valor: NaN, valido: false };
+    var normalizado;
+    if (bruto.indexOf(",") >= 0) {
+      if (!/^[+-]?(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?$/.test(bruto)) return { valor: NaN, valido: false };
+      normalizado = bruto.replace(/\./g, "").replace(",", ".");
+    } else {
+      if (!/^[+-]?\d+(?:\.\d+)?$/.test(bruto)) return { valor: NaN, valido: false };
+      normalizado = bruto;
+    }
+    var numero = Number(normalizado);
+    return { valor: numero, valido: Number.isFinite(numero) };
+  }
+
   function atualizarPercentualDoLance() {
     var credito = lerNumero("input-credito");
     var lance = lerNumero("input-lance");
@@ -625,21 +643,41 @@
     campoPrazoConsorcio.setCustomValidity(!Number.isFinite(prazoConsorcioInformado) || prazoConsorcioInformado < 1 || prazoConsorcioInformado > 216 ? "Informe um prazo de consórcio entre 1 e 216 meses." : "");
     document.getElementById("input-prazo").setCustomValidity(!Number.isFinite(prazoAnosInformado) || prazoAnosInformado <= 0 || prazoAnosInformado > 50 ? "Informe um prazo maior que zero e de até 50 anos." : "");
     document.getElementById("input-prazo-meses").setCustomValidity(!Number.isFinite(prazoMesesInformado) || prazoMesesInformado < 1 || prazoMesesInformado > 600 ? "Informe de 1 a 600 meses." : "");
-    var taxaAdmPercentual = lerNumero("input-taxa-adm") / 100;
-    var inccAnual = lerNumero("input-incc") / 100;
-    var jurosAnual = Math.max(0, lerNumero("input-juros-fin") / 100);
+    var leituraTaxaAdm = interpretarPercentual(document.getElementById("input-taxa-adm").value);
+    var leituraIncc = interpretarPercentual(document.getElementById("input-incc").value);
+    var leituraJuros = interpretarPercentual(document.getElementById("input-juros-fin").value);
+    var taxaAdmPercentual = (leituraTaxaAdm.valido ? leituraTaxaAdm.valor : 0) / 100;
+    var inccAnual = (leituraIncc.valido ? leituraIncc.valor : 0) / 100;
+    var jurosAnual = (leituraJuros.valido ? leituraJuros.valor : 0) / 100;
 
     // Evita comparar cenários com entradas inválidas ou fora da escala do crédito.
     var campoCreditoValidacao = document.getElementById("input-credito");
     var campoEntradaValidacao = document.getElementById("input-entrada");
     var campoLanceValidacao = document.getElementById("input-lance");
-    campoCreditoValidacao.setCustomValidity(credito <= 0 ? "Informe um valor de crédito maior que zero." : "");
-    campoEntradaValidacao.setCustomValidity(entrada < 0 || entrada > credito ? "A entrada deve estar entre R$ 0,00 e o valor do crédito." : "");
-    campoLanceValidacao.setCustomValidity(lance < 0 || lance > credito ? "O lance deve estar entre R$ 0,00 e o valor do crédito." : "");
+    var leituraLancePercentual = interpretarPercentual(campoLancePercentual.value);
+    var leituraEntradaPercentual = interpretarPercentual(campoEntradaPercentual.value);
+    var lancePercentualInvalido = campoLancePercentual.value.trim() !== "" &&
+      (!leituraLancePercentual.valido || leituraLancePercentual.valor < 0 || leituraLancePercentual.valor > 100);
+    var entradaPercentualInvalido = campoEntradaPercentual.value.trim() !== "" &&
+      (!leituraEntradaPercentual.valido || leituraEntradaPercentual.valor < 0 || leituraEntradaPercentual.valor > 100);
+    document.getElementById("input-lance-percentual").setCustomValidity(lancePercentualInvalido ? "O percentual do lance deve estar entre 0% e 100%." : "");
+    document.getElementById("input-entrada-percentual").setCustomValidity(entradaPercentualInvalido ? "O percentual da entrada deve estar entre 0% e 100%." : "");
+    document.getElementById("input-taxa-adm").setCustomValidity(!leituraTaxaAdm.valido || leituraTaxaAdm.valor < 0 || leituraTaxaAdm.valor > 100 ? "Informe uma taxa de administração entre 0% e 100%." : "");
+    document.getElementById("input-incc").setCustomValidity(!leituraIncc.valido || leituraIncc.valor <= -100 || leituraIncc.valor > 100 ? "Informe um INCC entre -100% e 100%." : "");
+    document.getElementById("input-juros-fin").setCustomValidity(!leituraJuros.valido || leituraJuros.valor < 0 || leituraJuros.valor > 100 ? "Informe juros anuais entre 0% e 100%." : "");
     if (credito <= 0 || entrada < 0 || entrada > credito || lance < 0 || lance > credito ||
+        lancePercentualInvalido || entradaPercentualInvalido ||
+        !leituraTaxaAdm.valido || leituraTaxaAdm.valor < 0 || leituraTaxaAdm.valor > 100 ||
+        !leituraIncc.valido || leituraIncc.valor <= -100 || leituraIncc.valor > 100 ||
+        !leituraJuros.valido || leituraJuros.valor < 0 || leituraJuros.valor > 100 ||
         !Number.isFinite(prazoMesesInformado) || prazoMesesInformado < 1 || prazoMesesInformado > 600 ||
-        !Number.isFinite(prazoAnosInformado) || prazoAnosInformado <= 0 || prazoAnosInformado > 50 ||
+        !Number.isFinite(prazoAnosInformado) || prazoAnosInformado < 0.08 || prazoAnosInformado > 50 ||
         !Number.isFinite(prazoConsorcioInformado) || prazoConsorcioInformado < 1 || prazoConsorcioInformado > 216) {
+      document.getElementById("res-custo-consorcio").textContent = "—";
+      document.getElementById("res-parc-consorcio").textContent = "Corrija os campos destacados para calcular.";
+      document.getElementById("res-detalhe-consorcio").textContent = "A simulação não foi calculada.";
+      document.getElementById("res-custo-fin").textContent = "—";
+      document.getElementById("res-parc-fin").textContent = "Corrija os campos destacados para calcular.";
       document.getElementById("res-diferenca").textContent = "Revise os campos destacados antes de comparar.";
       return;
     }
@@ -751,6 +789,9 @@
     document.getElementById("res-custo-fin").textContent = "R$ 0,00";
     document.getElementById("res-parc-fin").textContent = "Prazo: 360 meses | parcela mensal: R$ 0,00";
     document.getElementById("res-diferenca").textContent = "R$ 0,00";
+    atualizarPercentualDoLance();
+    atualizarPercentualDaEntrada();
+    calcular();
   });
 
   atualizarPercentualDoLance();
