@@ -36,18 +36,39 @@
     return r;
   }
 
+  function normalizarBairro(valor) {
+    return String(valor == null ? "" : valor)
+      .trim()
+      .replace(/^["']+|["']+$/g, "")
+      .replace(/\\u00a0/g, " ")
+      .replace(/\\s+/g, " ")
+      .toLocaleUpperCase("pt-BR");
+  }
+
   function linhasFiltradas(ignorarBairro) {
     if (!dadosAtuais) return [];
     var b = elBairro.value, a = elAno.value, m = elMes.value;
     return dadosAtuais.historico_mensal.filter(function (x) {
-      return (ignorarBairro || b === "todos" || x.bairro === b) &&
+      return (ignorarBairro || b === "todos" || normalizarBairro(x.bairro) === normalizarBairro(b)) &&
         (a === "todos" || String(x.ano) === a) &&
         (m === "todos" || String(x.mes) === m);
     });
   }
 
   function preencherFiltros() {
-    var bairros = (dadosAtuais.bairros || []).slice().sort(function (a,b) { return a.localeCompare(b, "pt-BR"); });
+    // Canonicalize labels defensively: old JSON versions may contain both
+    // TERESOPOLIS and "TERESOPOLIS". Use a Set after stripping outer quotes.
+    var mapaBairros = new Map();
+    (dadosAtuais.bairros || []).forEach(function (original) {
+      var bairro = normalizarBairro(original);
+      if (bairro && !mapaBairros.has(bairro)) mapaBairros.set(bairro, bairro);
+    });
+    // Also include names present in the monthly history, in case the list is stale.
+    (dadosAtuais.historico_mensal || []).forEach(function (linha) {
+      var bairro = normalizarBairro(linha.bairro);
+      if (bairro && !mapaBairros.has(bairro)) mapaBairros.set(bairro, bairro);
+    });
+    var bairros = Array.from(mapaBairros.values()).sort(function (a,b) { return a.localeCompare(b, "pt-BR"); });
     elBairro.innerHTML = '<option value="todos">Todos os Bairros</option>';
     bairros.forEach(function (b) {
       var o = document.createElement("option"); o.value = b; o.textContent = b; elBairro.appendChild(o);
