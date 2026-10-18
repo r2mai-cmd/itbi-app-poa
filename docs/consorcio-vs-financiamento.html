@@ -227,23 +227,21 @@
 <div class="input-grupo"><span>R$</span><input id="input-credito" type="tel" value="400.000,00"/></div>
 </div>
 <div class="campo">
-<label>Prazo desejado para comparação</label>
-<div class="prazo-linha">
-  <div>
-    <label for="input-prazo" style="letter-spacing:0; text-transform:none;">Anos</label>
-    <input id="input-prazo" type="number" inputmode="decimal" min="0.08" max="50" step="0.01" value="30" aria-describedby="aviso-prazo-consorcio"/>
-  </div>
-  <div>
-    <label for="input-prazo-meses" style="letter-spacing:0; text-transform:none;">Meses</label>
-    <input id="input-prazo-meses" type="number" inputmode="numeric" min="1" max="600" step="1" value="360"/>
-  </div>
+<label for="input-prazo-consorcio-meses">Prazo do consórcio (meses)</label>
+<input id="input-prazo-consorcio-meses" type="number" inputmode="numeric" min="1" max="216" step="1" value="180" aria-describedby="aviso-prazo-consorcio"/>
+<p id="aviso-prazo-consorcio" class="texto-apoio-prazo">Use de 1 a 216 meses (até 18 anos) nesta simulação genérica. Os prazos disponíveis variam conforme a administradora e o grupo.</p>
 </div>
-<p id="aviso-prazo-consorcio" class="texto-apoio-prazo">Digite em anos ou meses; o outro campo será atualizado automaticamente. É um horizonte de comparação: no consórcio, o prazo real depende das regras e do andamento do grupo.</p>
+<div class="campo" style="margin-top:-6px;">
+<label style="display:flex;align-items:flex-start;gap:8px;letter-spacing:0;text-transform:none;font-size:.82rem;font-weight:700;">
+<input id="input-mesmo-prazo-entrada" type="checkbox" style="margin-top:2px;accent-color:var(--laranja);width:16px;height:16px;flex-shrink:0;"/>
+<span>Usar o mesmo prazo e entrada para o consórcio e financiamento</span>
+</label>
+<p class="texto-apoio-prazo">Quando marcado, o prazo será sincronizado nas duas modalidades e o valor da entrada será igualado ao lance do consórcio.</p>
 </div>
 <div class="secao-titulo">2. Critérios do Consórcio</div>
 <div class="campo">
 <label for="input-taxa-adm">Taxa Adm. Total (%)</label>
-<input id="input-taxa-adm" inputmode="decimal" type="text" value="25,0"/>
+<input id="input-taxa-adm" inputmode="decimal" type="text" value="20,0"/>
 </div>
 <div class="campo-linha">
 <div class="campo">
@@ -269,6 +267,20 @@
 <input id="input-incc" inputmode="decimal" type="text" value="7,0"/>
 </div>
 <div class="secao-titulo">3. Critérios do Financiamento</div>
+<div class="campo">
+<label>Prazo do financiamento</label>
+<div class="prazo-linha">
+  <div>
+    <label for="input-prazo" style="letter-spacing:0; text-transform:none;">Anos</label>
+    <input id="input-prazo" type="number" inputmode="decimal" min="0.08" max="50" step="0.01" value="30" aria-describedby="aviso-prazo-financiamento"/>
+  </div>
+  <div>
+    <label for="input-prazo-meses" style="letter-spacing:0; text-transform:none;">Meses</label>
+    <input id="input-prazo-meses" type="number" inputmode="numeric" min="1" max="600" step="1" value="360"/>
+  </div>
+</div>
+<p id="aviso-prazo-financiamento" class="texto-apoio-prazo">Digite em anos ou meses; o outro campo será atualizado automaticamente. O prazo máximo da simulação é de 600 meses.</p>
+</div>
 <div class="campo">
 <label>Sistema de Amortização</label>
 <div class="botoes-seletor" id="grupo-amortizacao">
@@ -330,7 +342,7 @@
   <p>Consórcio e financiamento são formas diferentes de planejar a aquisição de um imóvel. A comparação depende do prazo, dos recursos próprios disponíveis, do custo da modalidade escolhida e, no caso do consórcio, das condições de contemplação e dos reajustes previstos no contrato.</p>
 
   <h3>Como funciona a comparação nesta ferramenta?</h3>
-  <p>A calculadora coloca as duas alternativas em um horizonte de prazo equivalente e estima o custo total a partir dos valores informados. No consórcio, são considerados o crédito, a taxa de administração, o lance e o reajuste anual pelo INCC configurado na ferramenta. No financiamento, são considerados a entrada, a taxa de juros e o sistema de amortização escolhido.</p>
+  <p>A calculadora permite definir prazos independentes para cada alternativa. Para o consórcio, a simulação genérica aceita de 1 a 216 meses (até 18 anos); para o financiamento, de 1 a 600 meses. Esses limites são parâmetros da ferramenta, não garantias de prazo oferecido por uma administradora ou banco. No consórcio, são considerados crédito, taxa de administração, lance e reajuste anual pelo INCC; no financiamento, entrada, juros e sistema de amortização.</p>
 
   <h3>Consórcio: o que observar</h3>
   <p>No modelo usado pela ferramenta, a taxa de administração é aplicada sobre o valor do crédito e o lance reduz o saldo utilizado na simulação. As parcelas são reajustadas anualmente pelo percentual de INCC informado. Na prática, as condições de cada grupo e contrato devem ser verificadas antes da contratação.</p>
@@ -343,7 +355,7 @@
 
   <h3>Como usar esta calculadora</h3>
   <ul>
-    <li>Informe o <strong>valor do imóvel ou crédito desejado</strong> e escolha o prazo de comparação.</li>
+    <li>Informe o <strong>valor do imóvel ou crédito desejado</strong> e os prazos separados para consórcio e financiamento.</li>
     <li>Preencha os critérios do <strong>consórcio</strong>, incluindo taxa de administração, lance e INCC.</li>
     <li>Informe os critérios do <strong>financiamento</strong>, como entrada, juros e sistema SAC ou PRICE.</li>
     <li>Clique em <strong>Comparar Alternativas</strong> e observe os custos totais e as parcelas estimadas.</li>
@@ -417,6 +429,7 @@
   var campoLancePercentual = document.getElementById("input-lance-percentual");
   var campoEntrada = document.getElementById("input-entrada");
   var campoEntradaPercentual = document.getElementById("input-entrada-percentual");
+  var campoMesmoPrazoEntrada = document.getElementById("input-mesmo-prazo-entrada");
 
   function lerPercentualBR(valor) {
     if (!valor || !valor.trim()) return 0;
@@ -434,10 +447,7 @@
   function atualizarValorDoLance() {
     var credito = lerNumero("input-credito");
     var percentual = lerPercentualBR(campoLancePercentual.value);
-    if (campoLancePercentual.value.trim() === "" || credito <= 0) {
-      campoLance.value = "";
-      return;
-    }
+    if (campoLancePercentual.value.trim() === "" || credito <= 0) { campoLance.value = ""; return; }
     campoLance.value = (credito * percentual / 100).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
   }
 
@@ -450,34 +460,67 @@
   function atualizarValorDaEntrada() {
     var credito = lerNumero("input-credito");
     var percentual = lerPercentualBR(campoEntradaPercentual.value);
-    if (campoEntradaPercentual.value.trim() === "" || credito <= 0) {
-      campoEntrada.value = "";
-      calcular();
-      return;
-    }
+    if (campoEntradaPercentual.value.trim() === "" || credito <= 0) { campoEntrada.value = ""; return; }
     campoEntrada.value = (credito * percentual / 100).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    calcular();
   }
 
-  campoEntrada.addEventListener("input", atualizarPercentualDaEntrada);
-  campoEntradaPercentual.addEventListener("input", atualizarValorDaEntrada);
-  campoEntradaPercentual.addEventListener("blur", function() {
-    if (this.value.trim() !== "") this.value = lerPercentualBR(this.value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  campoLance.addEventListener("input", function() {
+    atualizarPercentualDoLance();
+    if (campoMesmoPrazoEntrada.checked) {
+      campoEntrada.value = campoLance.value;
+      atualizarPercentualDaEntrada();
+    }
+    calcular();
   });
-
-  campoLance.addEventListener("input", atualizarPercentualDoLance);
+  campoEntrada.addEventListener("input", function() {
+    atualizarPercentualDaEntrada();
+    if (campoMesmoPrazoEntrada.checked) {
+      campoLance.value = campoEntrada.value;
+      atualizarPercentualDoLance();
+    }
+    calcular();
+  });
   campoLancePercentual.addEventListener("input", function() {
     atualizarValorDoLance();
+    if (campoMesmoPrazoEntrada.checked) {
+      campoEntrada.value = campoLance.value;
+      atualizarPercentualDaEntrada();
+    }
     calcular();
   });
   campoLancePercentual.addEventListener("blur", function() {
     if (this.value.trim() !== "") this.value = lerPercentualBR(this.value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
   });
+  campoEntradaPercentual.addEventListener("input", function() {
+    atualizarValorDaEntrada();
+    if (campoMesmoPrazoEntrada.checked) {
+      campoLance.value = campoEntrada.value;
+      atualizarPercentualDoLance();
+    }
+    calcular();
+  });
+  campoEntradaPercentual.addEventListener("blur", function() {
+    if (this.value.trim() !== "") this.value = lerPercentualBR(this.value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  });
   campoCredito.addEventListener("input", function() {
-    if (campoLancePercentual === document.activeElement) atualizarValorDoLance();
+    var percentualLanceEmEdicao = campoLancePercentual === document.activeElement;
+    var percentualEntradaEmEdicao = campoEntradaPercentual === document.activeElement;
+    if (percentualLanceEmEdicao) atualizarValorDoLance();
     else atualizarPercentualDoLance();
-    if (campoEntradaPercentual === document.activeElement) atualizarValorDaEntrada();
-    else atualizarPercentualDaEntrada();
+    if (campoMesmoPrazoEntrada.checked) {
+      if (percentualEntradaEmEdicao) {
+        atualizarValorDaEntrada();
+        campoLance.value = campoEntrada.value;
+      } else {
+        campoEntrada.value = campoLance.value;
+      }
+      atualizarPercentualDaEntrada();
+      atualizarPercentualDoLance();
+    } else {
+      if (percentualEntradaEmEdicao) atualizarValorDaEntrada();
+      else atualizarPercentualDaEntrada();
+    }
+    calcular();
   });
 
   ["input-taxa-adm", "input-juros-fin", "input-incc"].forEach(function(id) {
@@ -493,22 +536,55 @@
 
   var campoPrazoAnos = document.getElementById("input-prazo");
   var campoPrazoMeses = document.getElementById("input-prazo-meses");
+  var campoPrazoConsorcio = document.getElementById("input-prazo-consorcio-meses");
+  var sincronizandoCampos = false;
+  function sincronizarPrazo(origem) {
+    if (!campoMesmoPrazoEntrada.checked || sincronizandoCampos) return;
+    sincronizandoCampos = true;
+    if (origem === "consorcio") {
+      var mesesC = parseInt(campoPrazoConsorcio.value, 10);
+      if (Number.isFinite(mesesC) && mesesC >= 1 && mesesC <= 216) {
+        campoPrazoMeses.value = String(mesesC);
+        campoPrazoAnos.value = (mesesC / 12).toFixed(2);
+      }
+    } else {
+      var mesesF = parseInt(campoPrazoMeses.value, 10);
+      if (Number.isFinite(mesesF) && mesesF >= 1 && mesesF <= 600) {
+        var mesesSincronizados = Math.min(216, mesesF);
+        campoPrazoConsorcio.value = String(mesesSincronizados);
+        if (mesesF > 216) campoPrazoMeses.value = String(mesesSincronizados);
+        campoPrazoAnos.value = (parseInt(campoPrazoMeses.value, 10) / 12).toFixed(2);
+      }
+    }
+    sincronizandoCampos = false;
+  }
+
+  campoPrazoConsorcio.addEventListener("input", function() { sincronizarPrazo("consorcio"); calcular(); });
+  campoPrazoConsorcio.addEventListener("change", function() { sincronizarPrazo("consorcio"); calcular(); });
+  campoMesmoPrazoEntrada.addEventListener("change", function() {
+    if (this.checked) {
+      sincronizarPrazo("financiamento");
+      campoEntrada.value = campoLance.value;
+      atualizarPercentualDaEntrada();
+      atualizarPercentualDoLance();
+      calcular();
+    }
+  });
+
   campoPrazoAnos.addEventListener("input", function() {
     var anosDigitados = parseFloat(this.value);
     if (this.value !== "" && Number.isFinite(anosDigitados) && anosDigitados > 0) {
       campoPrazoMeses.value = String(Math.max(1, Math.min(600, Math.round(anosDigitados * 12))));
-    } else if (this.value === "") {
-      campoPrazoMeses.value = "";
-    }
+    } else if (this.value === "") campoPrazoMeses.value = "";
+    sincronizarPrazo("financiamento");
     calcular();
   });
   campoPrazoMeses.addEventListener("input", function() {
     var mesesDigitados = parseInt(this.value, 10);
     if (this.value !== "" && Number.isFinite(mesesDigitados) && mesesDigitados > 0) {
       campoPrazoAnos.value = (Math.max(1, Math.min(600, mesesDigitados)) / 12).toFixed(2);
-    } else if (this.value === "") {
-      campoPrazoAnos.value = "";
-    }
+    } else if (this.value === "") campoPrazoAnos.value = "";
+    sincronizarPrazo("financiamento");
     calcular();
   });
   [campoPrazoAnos, campoPrazoMeses].forEach(function(el) {
@@ -542,15 +618,33 @@
     var entrada = lerNumero("input-entrada");
     var lance = lerNumero("input-lance");
     var prazoMesesInformado = parseInt(document.getElementById("input-prazo-meses").value, 10);
-    var n = Number.isFinite(prazoMesesInformado) ? Math.min(600, Math.max(1, prazoMesesInformado)) : 360;
+    var nFin = Number.isFinite(prazoMesesInformado) ? Math.min(600, Math.max(1, prazoMesesInformado)) : 360;
     var prazoAnosInformado = parseFloat(document.getElementById("input-prazo").value);
+    var prazoConsorcioInformado = parseInt(campoPrazoConsorcio.value, 10);
+    var nConsorcio = Number.isFinite(prazoConsorcioInformado) ? Math.min(216, Math.max(1, prazoConsorcioInformado)) : 180;
+    campoPrazoConsorcio.setCustomValidity(!Number.isFinite(prazoConsorcioInformado) || prazoConsorcioInformado < 1 || prazoConsorcioInformado > 216 ? "Informe um prazo de consórcio entre 1 e 216 meses." : "");
     document.getElementById("input-prazo").setCustomValidity(!Number.isFinite(prazoAnosInformado) || prazoAnosInformado <= 0 || prazoAnosInformado > 50 ? "Informe um prazo maior que zero e de até 50 anos." : "");
     document.getElementById("input-prazo-meses").setCustomValidity(!Number.isFinite(prazoMesesInformado) || prazoMesesInformado < 1 || prazoMesesInformado > 600 ? "Informe de 1 a 600 meses." : "");
     var taxaAdmPercentual = lerNumero("input-taxa-adm") / 100;
     var inccAnual = lerNumero("input-incc") / 100;
     var jurosAnual = Math.max(0, lerNumero("input-juros-fin") / 100);
 
-    // O prazo usado nos dois cenários é o número de meses informado/sincronizado.
+    // Evita comparar cenários com entradas inválidas ou fora da escala do crédito.
+    var campoCreditoValidacao = document.getElementById("input-credito");
+    var campoEntradaValidacao = document.getElementById("input-entrada");
+    var campoLanceValidacao = document.getElementById("input-lance");
+    campoCreditoValidacao.setCustomValidity(credito <= 0 ? "Informe um valor de crédito maior que zero." : "");
+    campoEntradaValidacao.setCustomValidity(entrada < 0 || entrada > credito ? "A entrada deve estar entre R$ 0,00 e o valor do crédito." : "");
+    campoLanceValidacao.setCustomValidity(lance < 0 || lance > credito ? "O lance deve estar entre R$ 0,00 e o valor do crédito." : "");
+    if (credito <= 0 || entrada < 0 || entrada > credito || lance < 0 || lance > credito ||
+        !Number.isFinite(prazoMesesInformado) || prazoMesesInformado < 1 || prazoMesesInformado > 600 ||
+        !Number.isFinite(prazoAnosInformado) || prazoAnosInformado <= 0 || prazoAnosInformado > 50 ||
+        !Number.isFinite(prazoConsorcioInformado) || prazoConsorcioInformado < 1 || prazoConsorcioInformado > 216) {
+      document.getElementById("res-diferenca").textContent = "Revise os campos destacados antes de comparar.";
+      return;
+    }
+
+    // Os prazos são independentes: consórcio limitado a 216 meses e financiamento a 600.
 
     // --- CÁLCULO CONSÓRCIO ---
     var valorTaxaAdmTotal = credito * taxaAdmPercentual;
@@ -559,13 +653,13 @@
     // O modelo limita o lance ao saldo simulado e mantém explícito que INCC e amortização variam por contrato.
     var lanceAplicado = Math.min(Math.max(0, lance), custoBrutoConsorcio);
     var saldoDevedorConsorcio = Math.max(0, custoBrutoConsorcio - lanceAplicado);
-    var parcelaConsorcioInicial = n > 0 ? (amortizacaoLance === "parcela" ? saldoDevedorConsorcio / n : custoBrutoConsorcio / n) : 0;
+    var parcelaConsorcioInicial = nConsorcio > 0 ? (amortizacaoLance === "parcela" ? saldoDevedorConsorcio / nConsorcio : custoBrutoConsorcio / nConsorcio) : 0;
     var custoConsorcioTotal = lanceAplicado;
     var parcelaAtual = parcelaConsorcioInicial;
     var parcelaConsorcioFinal = 0;
     var mesesConsorcioEstimados = 0;
     var saldoSimulado = saldoDevedorConsorcio;
-    var limiteMesesSimulacao = amortizacaoLance === "prazo" ? n : n;
+    var limiteMesesSimulacao = nConsorcio;
     for (var m = 1; m <= limiteMesesSimulacao && saldoSimulado > 0.005; m++) {
       if (m > 1 && (m - 1) % 12 === 0) {
         parcelaAtual *= (1 + inccAnual);
@@ -577,11 +671,9 @@
       parcelaConsorcioFinal = pagamentoMes;
       mesesConsorcioEstimados = m;
     }
-    // Com redução de prazo, o valor-base da parcela é mantido e o lance diminui a quantidade estimada de pagamentos.
-    // Com redução de parcela, o saldo amortizado é distribuído pelo prazo informado.
-    if (amortizacaoLance === "prazo" && saldoSimulado > 0.005) {
-      mesesConsorcioEstimados = n;
-    }
+    // Em "reduzir prazo", a parcela-base é calculada sem descontar o lance; o lance reduz o saldo,
+    // então a simulação encerra os pagamentos quando o saldo chega a zero, antes do limite se possível.
+    // Em "reduzir parcelas", o saldo após o lance é distribuído pelo prazo contratado simulado.
 
     // --- CÁLCULO FINANCIAMENTO (SAC ou PRICE) ---
     var saldoDevedorFin = Math.max(0, credito - entrada);
@@ -590,23 +682,23 @@
     var parcelaFinInici = 0;
     var parcelaFinFinal = 0;
 
-    if (n > 0 && saldoDevedorFin > 0) {
+    if (nFin > 0 && saldoDevedorFin > 0) {
       if (amortizacaoFin === "PRICE") {
         var pPrice = iMensal > 0
-          ? saldoDevedorFin * (iMensal * Math.pow(1 + iMensal, n)) / (Math.pow(1 + iMensal, n) - 1)
-          : saldoDevedorFin / n;
+          ? saldoDevedorFin * (iMensal * Math.pow(1 + iMensal, nFin)) / (Math.pow(1 + iMensal, nFin) - 1)
+          : saldoDevedorFin / nFin;
         parcelaFinInici = pPrice;
         parcelaFinFinal = pPrice;
-        custoFinanciamento += (pPrice * n);
+        custoFinanciamento += (pPrice * nFin);
       } else {
         // SAC
-        var amortSac = saldoDevedorFin / n;
+        var amortSac = saldoDevedorFin / nFin;
         var saldoAux = saldoDevedorFin;
-        for (var m = 1; m <= n; m++) {
+        for (var m = 1; m <= nFin; m++) {
           var jurosMes = saldoAux * iMensal;
           var pSac = amortSac + jurosMes;
           if (m === 1) parcelaFinInici = pSac;
-          if (m === n) parcelaFinFinal = pSac;
+          if (m === nFin) parcelaFinFinal = pSac;
           custoFinanciamento += pSac;
           saldoAux = Math.max(0, saldoAux - amortSac);
         }
@@ -619,16 +711,16 @@
       : "Financiamento: R$ " + fmtMoeda.format(diferenca).replace("R$", "").trim() + " menor desembolso nominal*";
 
     document.getElementById("res-custo-consorcio").textContent = fmtMoeda.format(custoConsorcioTotal);
-    document.getElementById("res-parc-consorcio").textContent = "Parcela inicial estimada: " + fmtMoeda.format(parcelaConsorcioInicial) + (n > 1 ? " | última: " + fmtMoeda.format(parcelaConsorcioFinal) : "") + (amortizacaoLance === "prazo" ? " | prazo estimado: " + mesesConsorcioEstimados + " meses" : "");
+    document.getElementById("res-parc-consorcio").textContent = "Prazo: " + nConsorcio + " meses" + (amortizacaoLance === "prazo" ? " (estimado: " + mesesConsorcioEstimados + " meses)" : "") + " | parcela inicial: " + fmtMoeda.format(parcelaConsorcioInicial) + (mesesConsorcioEstimados > 1 ? " | última: " + fmtMoeda.format(parcelaConsorcioFinal) : "");
     document.getElementById("res-detalhe-consorcio").textContent = "Taxa Adm fixa no modelo (" + document.getElementById("input-taxa-adm").value + "% da carta): " + fmtMoeda.format(valorTaxaAdmTotal) + ". Lance aplicado: " + fmtMoeda.format(lanceAplicado) + ".";
 
     document.getElementById("txt-label-fin").textContent = "Financiamento (Custo Total - " + amortizacaoFin + ")";
     document.getElementById("res-custo-fin").textContent = fmtMoeda.format(custoFinanciamento);
     
     if (amortizacaoFin === "PRICE") {
-      document.getElementById("res-parc-fin").textContent = "Parcela mensal fixa: " + fmtMoeda.format(parcelaFinInici);
+      document.getElementById("res-parc-fin").textContent = "Prazo: " + nFin + " meses | parcela mensal fixa: " + fmtMoeda.format(parcelaFinInici);
     } else {
-      document.getElementById("res-parc-fin").textContent = "1ª Parcela: " + fmtMoeda.format(parcelaFinInici) + " | Última: " + fmtMoeda.format(parcelaFinFinal);
+      document.getElementById("res-parc-fin").textContent = "Prazo: " + nFin + " meses | 1ª parcela: " + fmtMoeda.format(parcelaFinInici) + " | última: " + fmtMoeda.format(parcelaFinFinal);
     }
 
     document.getElementById("res-diferenca").textContent = txtDiferenca;
@@ -636,24 +728,28 @@
 
   document.getElementById("btn-calcular").addEventListener("click", calcular);
   document.getElementById("btn-limpar").addEventListener("click", function() {
-    document.getElementById("input-credito").value = "";
-    document.getElementById("input-entrada").value = "";
-    document.getElementById("input-entrada-percentual").value = "";
-    document.getElementById("input-lance").value = "";
-    document.getElementById("input-lance-percentual").value = "";
+    document.getElementById("input-credito").value = "400.000,00";
+    document.getElementById("input-entrada").value = "80.000,00";
+    document.getElementById("input-entrada-percentual").value = "20,00";
+    document.getElementById("input-lance").value = "250.000,00";
+    document.getElementById("input-lance-percentual").value = "62,50";
+    document.getElementById("input-prazo-consorcio-meses").value = "180";
+    document.getElementById("input-mesmo-prazo-entrada").checked = false;
     document.getElementById("input-prazo").value = "30";
     document.getElementById("input-prazo-meses").value = "360";
-    document.getElementById("input-taxa-adm").value = "25,0";
+    document.getElementById("input-taxa-adm").value = "20,0";
     document.getElementById("input-incc").value = "7,0";
-    amortizacaoLance = "parcela";
-    document.querySelectorAll("#grupo-amortizacao-lance .btn-seletor").forEach(function(b) { b.classList.toggle("ativo", b.getAttribute("data-lance-amort") === "parcela"); });
     document.getElementById("input-juros-fin").value = "10,5";
+    amortizacaoLance = "parcela";
+    amortizacaoFin = "PRICE";
+    document.querySelectorAll("#grupo-amortizacao-lance .btn-seletor").forEach(function(b) { b.classList.toggle("ativo", b.getAttribute("data-lance-amort") === "parcela"); });
+    document.querySelectorAll("#grupo-amortizacao .btn-seletor").forEach(function(b) { b.classList.toggle("ativo", b.getAttribute("data-amort") === "PRICE"); });
 
     document.getElementById("res-custo-consorcio").textContent = "R$ 0,00";
-    document.getElementById("res-parc-consorcio").textContent = "Parcela mensal inicial: R$ 0,00";
+    document.getElementById("res-parc-consorcio").textContent = "Prazo: 180 meses | parcela inicial: R$ 0,00";
     document.getElementById("res-detalhe-consorcio").textContent = "Taxa Adm sobre o crédito total";
     document.getElementById("res-custo-fin").textContent = "R$ 0,00";
-    document.getElementById("res-parc-fin").textContent = "Parcela mensal: R$ 0,00";
+    document.getElementById("res-parc-fin").textContent = "Prazo: 360 meses | parcela mensal: R$ 0,00";
     document.getElementById("res-diferenca").textContent = "R$ 0,00";
   });
 
