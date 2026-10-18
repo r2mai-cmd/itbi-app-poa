@@ -433,10 +433,8 @@
   var campoMesmoPrazoEntrada = document.getElementById("input-mesmo-prazo-entrada");
 
   function lerPercentualBR(valor) {
-    if (!valor || !valor.trim()) return 0;
-    var limpo = valor.trim().replace(/\s/g, "").replace(/\./g, "").replace(",", ".");
-    var numero = parseFloat(limpo);
-    return Number.isFinite(numero) ? numero : 0;
+    var leitura = interpretarPercentual(valor);
+    return leitura.valido ? leitura.valor : 0;
   }
 
   // Leitura estrita para percentuais: aceita vírgula decimal pt-BR ou ponto decimal,
@@ -507,7 +505,9 @@
     calcular();
   });
   campoLancePercentual.addEventListener("blur", function() {
-    if (this.value.trim() !== "") this.value = lerPercentualBR(this.value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    var leitura = interpretarPercentual(this.value);
+    if (this.value.trim() !== "" && leitura.valido) this.value = leitura.valor.toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    calcular();
   });
   campoEntradaPercentual.addEventListener("input", function() {
     atualizarValorDaEntrada();
@@ -518,7 +518,9 @@
     calcular();
   });
   campoEntradaPercentual.addEventListener("blur", function() {
-    if (this.value.trim() !== "") this.value = lerPercentualBR(this.value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    var leitura = interpretarPercentual(this.value);
+    if (this.value.trim() !== "" && leitura.valido) this.value = leitura.valor.toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    calcular();
   });
   campoCredito.addEventListener("input", function() {
     var percentualLanceEmEdicao = campoLancePercentual === document.activeElement;
