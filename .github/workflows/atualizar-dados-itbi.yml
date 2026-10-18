@@ -1,7 +1,7 @@
 name: Atualizar dados de ITBI
 
-# Atualiza mensalmente e também pode ser executado manualmente pela aba Actions.
-# Em pushes de código, pula Fortaleza para agilizar a regeneração do painel de POA.
+# Atualiza mensalmente e pode ser executado manualmente pela aba Actions.
+# Pushes de correção apenas regeneram estatísticas com os CSVs versionados.
 on:
   push:
     branches: [main]
@@ -25,20 +25,17 @@ jobs:
       - name: Baixar CSV de Porto Alegre — 2025
         if: github.event_name != 'push'
         run: |
-          curl -fsSL -o docs/data/itbi-2025.csv \
-            "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv"
+          curl -fsSL -o docs/data/itbi-2025.csv "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.csv"
 
       - name: Baixar CSV de Porto Alegre — 2026
         if: github.event_name != 'push'
         run: |
-          curl -fsSL -o docs/data/itbi-2026.csv \
-            "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
+          curl -fsSL -o docs/data/itbi-2026.csv "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.csv"
 
       - name: Baixar CSV de Fortaleza (todos os anos)
         if: github.event_name != 'push'
         run: |
-          curl -fsSL -o docs/data/itbi-fortaleza.csv \
-            "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv"
+          curl -fsSL -o docs/data/itbi-fortaleza.csv "https://dados.fortaleza.ce.gov.br/dataset/32608ed2-e4ad-4cd2-b7bc-deea35dd189f/resource/46324d49-9809-4d32-8e5c-b4b570f067ce/download/dados_abertos_itbi_transacoes_imobiliarias.csv"
 
       - name: Extrair CSVs de Porto Alegre se a fonte vier compactada
         run: |
@@ -47,42 +44,9 @@ jobs:
             [ -f "$f" ] || { echo "::error::Arquivo ausente: $f"; exit 1; }
             assinatura=$(head -c 2 "$f" | od -An -t x1 | tr -d ' \n')
             if [ "$assinatura" = "504b" ]; then
-              zipfile="${f}.download.zip"
+              zipfile="$f.source.zip"
               mv "$f" "$zipfile"
-              nome=$(basename "$f")
-              entrada=$(unzip -Z1 "$zipfile" | grep -iE "(^|/)${nome//./\\.}$" | head -n 1 || true)
-              if [ -z "$entrada" ]; then
-                entrada=$(unzip -Z1 "$zipfile" | grep -iE '\\.csv        if: github.event_name != 'push'
-        run: |
-          arquivos="docs/data/itbi-2025.csv docs/data/itbi-2026.csv"
-          if [ "$GITHUB_EVENT_NAME" != "push" ]; then
-            arquivos="$arquivos docs/data/itbi-fortaleza.csv"
-          fi
-          for f in $arquivos; do
-            tamanho=$(stat -c%s "$f")
-            echo "$f: $tamanho bytes"
-            if [ "$tamanho" -lt 1000 ]; then
-              echo "::error::Arquivo $f ficou suspeitosamente pequeno ($tamanho bytes) — abortando sem commitar, para não substituir dados bons por um download que falhou."
-              exit 1
-            fi
-          done
-
-      - name: Regenerar estatísticas de Porto Alegre
-        run: python3 docs/scripts/gerar_estatisticas_poa.py
-
-      - name: Commitar e enviar dados e estatísticas, se houver mudança
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/*.csv docs/data/estatisticas-porto-alegre.json
-          if git diff --cached --quiet; then
-            echo "Nenhuma mudança nos dados desde a última atualização."
-          else
-            git commit -m "Atualiza dados e estatísticas de ITBI ($(date -u +%Y-%m-%d))"
-            git push
-          fi
- | head -n 1 || true)
-              fi
+              entrada=$(unzip -Z1 "$zipfile" | grep -i '\.csv$' | head -n 1 || true)
               if [ -z "$entrada" ]; then
                 echo "::error::Nenhum CSV encontrado dentro de $zipfile"
                 unzip -Z1 "$zipfile"
@@ -92,22 +56,18 @@ jobs:
               rm "$zipfile"
               echo "Extraído $entrada para $f"
             else
-              echo "$f já é um CSV não compactado."
+              echo "$f já é CSV não compactado."
             fi
           done
 
       - name: Verificar tamanho dos arquivos baixados
         if: github.event_name != 'push'
         run: |
-          arquivos="docs/data/itbi-2025.csv docs/data/itbi-2026.csv"
-          if [ "$GITHUB_EVENT_NAME" != "push" ]; then
-            arquivos="$arquivos docs/data/itbi-fortaleza.csv"
-          fi
-          for f in $arquivos; do
+          for f in docs/data/itbi-2025.csv docs/data/itbi-2026.csv docs/data/itbi-fortaleza.csv; do
             tamanho=$(stat -c%s "$f")
             echo "$f: $tamanho bytes"
             if [ "$tamanho" -lt 1000 ]; then
-              echo "::error::Arquivo $f ficou suspeitosamente pequeno ($tamanho bytes) — abortando sem commitar, para não substituir dados bons por um download que falhou."
+              echo "::error::Arquivo $f ficou suspeitosamente pequeno ($tamanho bytes)."
               exit 1
             fi
           done
