@@ -303,6 +303,7 @@
 <div class="campo">
 <label for="input-juros-fin">Taxa de Juros (% a.a.)</label>
 <input id="input-juros-fin" inputmode="decimal" type="text" value="10,5"/>
+<p class="texto-apoio-prazo">A taxa é interpretada como efetiva ao ano e convertida para uma taxa mensal equivalente. TR, seguros, tarifas e outros custos não são incluídos.</p>
 </div>
 <button class="botao botao-primario" id="btn-calcular" type="button">🔧 Comparar Alternativas</button>
 <div class="acoes-secundarias">
@@ -370,7 +371,7 @@
 
 </main>
 <div class="disclaimer-box" style="margin: 0 20px 24px;">
-<strong>Importante:</strong> a comparação é uma simulação simplificada e nominal, sem custo de oportunidade do dinheiro pago antecipadamente. No consórcio, a taxa de administração é calculada sobre o crédito e não diminui quando o lance aumenta. O lance é tratado como amortização antecipada; a opção escolhida simula redução do valor das parcelas ou do prazo, com reajuste anual simplificado pelo INCC. A regra efetiva, a base de reajuste e a forma de amortização dependem do contrato do grupo. Não são modelados fundo de reserva, seguro, contemplação, lance vencedor nem custos específicos. No financiamento, a taxa anual é convertida para uma taxa mensal equivalente.
+<strong>Importante:</strong> a comparação é uma simulação simplificada e nominal, sem custo de oportunidade do dinheiro pago antecipadamente. No consórcio, a taxa de administração é calculada sobre o crédito e não diminui quando o lance aumenta. O lance é tratado como amortização antecipada; a opção escolhida simula redução do valor das parcelas ou do prazo, com reajuste anual simplificado pelo INCC. A regra efetiva, a base de reajuste e a forma de amortização dependem do contrato do grupo. Não são modelados fundo de reserva, seguro, contemplação, lance vencedor nem custos específicos. No financiamento, a taxa informada é interpretada como efetiva ao ano e convertida para uma taxa mensal equivalente.
   </div>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
@@ -643,7 +644,7 @@
     var prazoConsorcioInformado = parseInt(campoPrazoConsorcio.value, 10);
     var nConsorcio = Number.isFinite(prazoConsorcioInformado) ? Math.min(216, Math.max(1, prazoConsorcioInformado)) : 180;
     campoPrazoConsorcio.setCustomValidity(!Number.isFinite(prazoConsorcioInformado) || prazoConsorcioInformado < 1 || prazoConsorcioInformado > 216 ? "Informe um prazo de consórcio entre 1 e 216 meses." : "");
-    document.getElementById("input-prazo").setCustomValidity(!Number.isFinite(prazoAnosInformado) || prazoAnosInformado <= 0 || prazoAnosInformado > 50 ? "Informe um prazo maior que zero e de até 50 anos." : "");
+    document.getElementById("input-prazo").setCustomValidity(!Number.isFinite(prazoAnosInformado) || prazoAnosInformado < 0.08 || prazoAnosInformado > 50 ? "Informe um prazo entre 0,08 e 50 anos." : "");
     document.getElementById("input-prazo-meses").setCustomValidity(!Number.isFinite(prazoMesesInformado) || prazoMesesInformado < 1 || prazoMesesInformado > 600 ? "Informe de 1 a 600 meses." : "");
     var leituraTaxaAdm = interpretarPercentual(document.getElementById("input-taxa-adm").value);
     var leituraIncc = interpretarPercentual(document.getElementById("input-incc").value);
