@@ -5,7 +5,7 @@ import io
 import json
 import re
 from collections import defaultdict
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -66,24 +66,23 @@ def data_pagamento(valor):
 
 
 def detectar_delimitador(caminho):
-    """Choose the delimiter that best matches the expected 18-column file."""
+    """Detect the delimiter from the first physical line, even if quoting is imperfect."""
     with caminho.open("r", encoding="utf-8-sig", errors="replace", newline="") as f:
-        amostra = "".join(f.readline() for _ in range(3))
-    if not amostra:
+        primeira_linha = ""
+        for linha in f:
+            if linha.strip():
+                primeira_linha = linha
+                break
+    if not primeira_linha:
         return ";"
-    opcoes = []
-    for delimitador in (";", ",", "\t", "|"):
-        try:
-            primeira = next(csv.reader(io.StringIO(amostra), delimiter=delimitador, quotechar="'"), [])
-            n = len(primeira)
-            score = abs(n - len(COLUNAS))
-            if delimitador != ";":
-                score += 0.01
-            opcoes.append((score, delimitador, n))
-        except csv.Error:
-            continue
-    _, delimitador, _ = min(opcoes)
-    return delimitador
+    # The source normally has 18 columns (17 separators); avoid parsing a
+    # sample with csv.reader, which can fail on a malformed quote.
+    delimitadores = (";", ",", "\t", "|")
+    preferencia = {";": 4, ",": 3, "\t": 2, "|": 1}
+    return min(
+        delimitadores,
+        key=lambda d: (abs(primeira_linha.count(d) - (len(COLUNAS) - 1)), -preferencia[d]),
+    )
 
 
 def chave_unidade(row, indice):
