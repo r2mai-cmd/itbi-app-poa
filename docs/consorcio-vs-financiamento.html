@@ -99,9 +99,8 @@
   .botao-primario:hover { filter: brightness(1.06); }
   
   .acoes-secundarias { display: flex; justify-content: space-between; margin-top: 8px; }
-  .botao-texto { display: inline-flex; align-items: center; background: none; border: none; border-radius: 5px; color: var(--texto-card-sutil); font-family: var(--fonte-corpo); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer; padding: 8px 2px; outline-offset: 3px; }
+  .botao-texto { background: none; border: none; color: var(--texto-card-sutil); font-family: var(--fonte-corpo); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; cursor: pointer; padding: 8px 2px; }
   .botao-texto:hover { color: var(--texto-card); }
-  .botao-texto:focus { outline: 2px solid var(--laranja); }
 
   .card-destaque { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--laranja); }
   .card-destaque-rotulo { font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--texto-card-sutil); margin: 0 0 4px; }
@@ -308,7 +307,7 @@
 </div>
 <button class="botao botao-primario" id="btn-calcular" type="button">🔧 Comparar Alternativas</button>
 <div class="acoes-secundarias">
-<button class="botao-texto" id="btn-limpar" type="button">Restaurar padrões</button>
+<button class="botao-texto" id="btn-limpar" type="button">↺ Restaurar padrões</button>
 </div>
 </div>
 <div class="col-resultados">
