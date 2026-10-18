@@ -127,6 +127,8 @@ def carregar_registros(caminho):
     linhas_lidas = 0
     datas_validas = 0
     anos_encontrados = defaultdict(int)
+    diagnostico_datas = {"DATA_PAGAMENTO": 0, "DATA_ESTIMATIVA": 0}
+    amostras_datas = []
     with caminho.open("r", encoding="utf-8-sig", errors="replace", newline="") as f:
         reader = csv.reader(f, delimiter=delimitador, quotechar="'")
         for indice, campos in enumerate(reader):
@@ -137,7 +139,19 @@ def carregar_registros(caminho):
             linhas_lidas += 1
             campos = campos[:18] + [""] * max(0, 18 - len(campos))
             row = dict(zip(COLUNAS, campos[:18]))
-            row["data"] = data_pagamento(row.get("DATA_PAGAMENTO"))
+            data_pag = data_pagamento(row.get("DATA_PAGAMENTO"))
+            data_est = data_pagamento(row.get("DATA_ESTIMATIVA"))
+            if data_pag is not None:
+                diagnostico_datas["DATA_PAGAMENTO"] += 1
+            if data_est is not None:
+                diagnostico_datas["DATA_ESTIMATIVA"] += 1
+            if len(amostras_datas) < 6:
+                amostras_datas.append({
+                    "DATA_PAGAMENTO": str(row.get("DATA_PAGAMENTO", ""))[:40],
+                    "DATA_ESTIMATIVA": str(row.get("DATA_ESTIMATIVA", ""))[:40],
+                    "SITUACAO": str(row.get("SITUACAO", ""))[:40],
+                })
+            row["data"] = data_pag
             if row["data"] is not None:
                 datas_validas += 1
                 anos_encontrados[row["data"].year] += 1
@@ -151,9 +165,10 @@ def carregar_registros(caminho):
             registros.append(row)
     print(
         f"CSV Porto Alegre: delimitador={delimitador!r}; linhas={linhas_lidas}; "
-        f"datas válidas={datas_validas}; datas por ano={dict(sorted(anos_encontrados.items()))}; "
+        f"datas válidas no campo usado={datas_validas}; datas por ano={dict(sorted(anos_encontrados.items()))}; "
         f"registros de 2026 com data={len(registros)}."
     )
+    print(f"Diagnóstico datas por coluna: {diagnostico_datas}; amostras (sem endereço): {amostras_datas}")
     return registros
 
 
