@@ -1,10 +1,14 @@
 name: Atualizar dados de ITBI
 
-# Roda automaticamente todo dia 1 de cada mês às 06:00 UTC (03:00 em
-# Brasília), e também pode ser disparado manualmente a qualquer momento pela
-# aba Actions (botão "Run workflow"), caso queira forçar uma atualização
-# antes da próxima data agendada.
+# Atualiza mensalmente e também pode ser executado manualmente pela aba Actions.
+# O push restrito aos arquivos do processo serve para executar a primeira regeneração
+# após a instalação do gerador, sem disparar o workflow a cada commit de dados.
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/atualizar-dados-itbi.yml"
+      - "docs/scripts/gerar_estatisticas_poa.py"
   schedule:
     - cron: '0 6 1 * *'
   workflow_dispatch:
@@ -45,14 +49,17 @@ jobs:
             fi
           done
 
-      - name: Commitar e enviar, se houver mudança nos dados
+      - name: Regenerar estatísticas de Porto Alegre
+        run: python3 docs/scripts/gerar_estatisticas_poa.py
+
+      - name: Commitar e enviar dados e estatísticas, se houver mudança
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/data/*.csv
+          git add docs/data/*.csv docs/data/estatisticas-porto-alegre.json
           if git diff --cached --quiet; then
             echo "Nenhuma mudança nos dados desde a última atualização."
           else
-            git commit -m "Atualiza dados de ITBI automaticamente ($(date -u +%Y-%m-%d))"
+            git commit -m "Atualiza dados e estatísticas de ITBI ($(date -u +%Y-%m-%d))"
             git push
           fi
