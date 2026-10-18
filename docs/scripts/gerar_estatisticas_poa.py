@@ -26,11 +26,9 @@ METODOLOGIA = (
 
 
 def normalizar(texto):
-    # Algumas versões recentes do CSV municipal trazem o bairro entre aspas
-    # literais (ex.: '"TERESOPOLIS"'), enquanto a base histórica não.
-    # Remove aspas externas para manter uma única chave por bairro.
-    valor = str(texto or "").strip().replace("\\u00a0", " ")
-    while len(valor) >= 2 and valor[0] == valor[-1] and valor[0] in ("\\\"", "'"):
+    # Remove aspas externas que algumas versões do CSV trazem literalmente.
+    valor = str(texto or "").strip().replace("\u00a0", " ")
+    while len(valor) >= 2 and valor[0] == valor[-1] and valor[0] in ('"', "'"):
         valor = valor[1:-1].strip()
     return " ".join(valor.upper().split())
 
