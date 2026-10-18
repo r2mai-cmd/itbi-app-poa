@@ -40,8 +40,8 @@
     return String(valor == null ? "" : valor)
       .trim()
       .replace(/^["']+|["']+$/g, "")
-      .replace(/\\u00a0/g, " ")
-      .replace(/\\s+/g, " ")
+      .replace(/\u00a0/g, " ")
+      .replace(/\s+/g, " ")
       .toLocaleUpperCase("pt-BR");
   }
 
