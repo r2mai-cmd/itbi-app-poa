@@ -1856,7 +1856,7 @@ html, body {
   var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
   var ultimosRegistros = [];
   var paginaAtual = 1;
-  var tamanhoPagina = 10;
+  var tamanhoPagina = parseInt(elSelectTamanhoPagina.value, 10) || 10;
 
   function definirCarregando(carregando) {
     elBtnPesquisar.disabled = carregando;
@@ -3261,7 +3261,7 @@ html, body {
   var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
   var ultimosRegistros = [];
   var paginaAtual = 1;
-  var tamanhoPagina = 10;
+  var tamanhoPagina = parseInt(elSelectTamanhoPagina.value, 10) || 10;
 
   function definirCarregando(carregando) {
     elBtnPesquisar.disabled = carregando;
