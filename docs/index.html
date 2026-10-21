@@ -705,66 +705,125 @@ white-space: nowrap;
   margin: 0 !important;
 }
 
-/* ===== Conteúdo editorial / confiança / SEO ===== */
+/* ===== Conteúdo editorial: cartões informativos ===== */
 .conteudo-editorial {
-  max-width: 920px;
-  margin: 10px auto 28px;
-  background: transparent;
-  color: var(--texto-sobre-fundo);
+  width: 100%;
+  max-width: 1020px;
+  margin: 18px auto 34px;
   padding: 0 20px;
+  color: var(--texto-sobre-fundo);
 }
+.conteudo-editorial + .conteudo-editorial { margin-top: 0; }
 .conteudo-editorial h2 {
-  margin: 0 0 6px;
-  padding-left: 10px;
-  border-left: 3px solid var(--laranja);
-  font-size: 1.15rem;
-  line-height: 1.3;
+  margin: 0 0 4px;
+  padding-left: 12px;
+  border-left: 5px solid var(--laranja);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.25;
   font-weight: 800;
 }
 .conteudo-editorial .editorial-subtitulo {
-  margin: 0 0 14px 13px;
-  font-size: 0.8rem;
+  margin: 0 0 18px 17px;
+  font-size: .88rem;
+  line-height: 1.45;
   color: var(--texto-sobre-fundo-sutil);
-}
-.conteudo-editorial p {
-  margin: 0 0 10px;
-  line-height: 1.6;
-  font-size: 0.82rem;
 }
 .bloco-editorial-grade {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 12px;
+  align-items: stretch;
 }
 .bloco-editorial-grade > div {
-  background: var(--fundo-escuro-claro);
-  border: 1px solid rgba(245,243,237,0.10);
-  border-radius: 8px;
-  padding: 10px;
-  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(220,232,239,.13);
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+  box-shadow: 0 5px 18px rgba(0,0,0,.08);
 }
-.bloco-editorial-grade > div:last-child {
-  grid-column: 1 / -1;
-  border-left: 3px solid var(--agua-turquesa);
+.bloco-editorial-grade > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.bloco-editorial-grade .editorial-icone {
+  display: flex; align-items: center; justify-content: center;
+  flex: 0 0 48px; width: 48px; height: 48px; margin-top: 0;
+  border: 0; border-radius: 50%; padding: 0; min-height: 48px;
+  color: white; font-size: 1.45rem; line-height: 1;
 }
-.conteudo-editorial h3 {
-  margin: 0 0 6px;
-  font-size: 0.86rem;
-  line-height: 1.35;
-  font-weight: 800;
-}
-.conteudo-editorial ul, .conteudo-editorial ol {
-  margin: 6px 0 0 18px;
-  padding: 0;
-  line-height: 1.55;
-  font-size: 0.78rem;
-}
-.conteudo-editorial a { color: var(--agua-turquesa); font-weight: 700; }
+.editorial-icone.azul { background: #176bb5; }
+.editorial-icone.verde { background: #079b8c; }
+.editorial-icone.laranja { background: #e86e13; }
+.editorial-icone.roxo { background: #6744bd; }
+.editorial-icone.turquesa { background: #119f9d; }
+.editorial-cartao-texto { flex: 1; min-width: 0; }
+.conteudo-editorial h3 { margin: 1px 0 8px; font-size: .98rem; line-height: 1.3; font-weight: 800; }
+.conteudo-editorial p { margin: 0; font-size: .88rem; line-height: 1.5; color: rgba(245,243,237,.83); }
+.conteudo-editorial a { color: var(--agua-turquesa); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.conteudo-editorial .editorial-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; text-decoration: none; }
+.conteudo-editorial .editorial-link:hover { color: #8ce7e1; }
+.conteudo-editorial .editorial-destaque { border-color: #169f9d; background: linear-gradient(115deg, rgba(15,157,154,.14), rgba(255,255,255,.035)); }
+.conteudo-editorial .editorial-destaque .editorial-icone { background: #119f9d; }
 @media (max-width: 650px) {
-  .conteudo-editorial { padding: 0 14px; }
-  .bloco-editorial-grade { grid-template-columns: 1fr; }
-  .bloco-editorial-grade > div:last-child { grid-column: auto; }
+  .conteudo-editorial { padding: 0 14px; margin: 16px auto 26px; }
+  .conteudo-editorial h2 { font-size: 1.12rem; }
+  .conteudo-editorial .editorial-subtitulo { font-size: .82rem; margin-bottom: 14px; }
+  .bloco-editorial-grade { grid-template-columns: 1fr; gap: 10px; }
+  .bloco-editorial-grade > div, .bloco-editorial-grade > div:last-child:nth-child(odd) { grid-column: auto; }
+  .bloco-editorial-grade > div { gap: 12px; padding: 14px; }
+  .bloco-editorial-grade .editorial-icone { flex-basis: 42px; width: 42px; height: 42px; min-height: 42px; font-size: 1.25rem; }
+  .conteudo-editorial h3 { font-size: .92rem; }
+  .conteudo-editorial p { font-size: .82rem; }
 }
+
+/* ===== Ajuste mobile: usar toda a largura disponível ===== */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+@media (max-width: 600px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+  .pagina {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  .barra-marca {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .link-marca { min-width: 0; gap: 8px; }
+  .menu-nav { min-width: 0; gap: 4px; }
+  .btn-nav { padding: 7px 9px; font-size: .72rem; }
+  .cabecalho { width: 100%; max-width: 100%; }
+  .corpo {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    gap: 14px;
+  }
+  .barra-lateral, .area-principal, .grade-resultados,
+  .cartao, .barra-topo-resultados, .resultado, .ficha-cartoes {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .cartao { padding: 20px 18px 22px; }
+  .resultado { padding: 18px 16px; gap: 8px; }
+  .resultado-info { min-width: 0; overflow-wrap: anywhere; }
+  .resultado-valores { min-width: 0; }
+  .resultado-preco { font-size: .9rem; }
+}
+
 
 </style>
 </head>
@@ -908,80 +967,1432 @@ white-space: nowrap;
     </div>
 
     <section class="conteudo-editorial" aria-labelledby="sobre-itbidata">
-      <h2 id="sobre-itbidata">Entenda os dados de transações imobiliárias</h2>
-      <p class="editorial-subtitulo">Um guia rápido para interpretar as informações apresentadas pelo itbidata.</p>
-      <div class="bloco-editorial-grade">
-        <div>
-          <h3>O que é o ITBI?</h3>
-          <p>ITBI é o Imposto sobre a Transmissão de Bens Imóveis, relacionado a transações onerosas de imóveis entre vivos. As bases utilizadas pelo itbidata são informações públicas disponibilizadas pelos municípios.</p>
-        </div>
-        <div>
-          <h3>O que significa o valor de uma transação?</h3>
-          <p>O valor exibido corresponde a uma informação presente na base pública utilizada para aquela cidade e período. Ele não é uma avaliação feita pelo itbidata e não representa, por si só, o preço atual de mercado de um imóvel.</p>
-        </div>
-        <div>
-          <h3>Como interpretar os R$/m²?</h3>
-          <p>O valor por metro quadrado é uma medida de comparação entre registros quando existem dados compatíveis de valor e área. Imóveis de uma mesma rua ou bairro podem ter R$/m² diferentes por causa de área, localização, características, conservação, data e condições de negociação.</p>
-        </div>
-        <div>
-          <h3>Por que os resultados podem variar?</h3>
-          <p>Cada prefeitura possui sua própria base, estrutura, cobertura e critérios de publicação. Além disso, os imóveis presentes em uma amostra não são necessariamente iguais. Por isso, médias e comparações devem ser interpretadas dentro do contexto do período e da cidade pesquisados.</p>
-        </div>
-        <div>
-          <h3>Use os dados como referência</h3>
-          <p>O itbidata organiza dados públicos para facilitar pesquisa e comparação. Para decisões de compra, venda, financiamento, investimento ou questões jurídicas, confira a informação diretamente na fonte oficial do município e, quando necessário, utilize documentos e orientação profissional.</p>
-        </div>
-      </div>
-    </section>
+  <h2 id="sobre-itbidata">Entenda os dados de transações imobiliárias</h2>
+  <p class="editorial-subtitulo">Um guia rápido para interpretar as informações apresentadas pelo itbidata.</p>
+  <div class="bloco-editorial-grade">
+    <div><span class="editorial-icone azul" aria-hidden="true">⌂</span><div class="editorial-cartao-texto"><h3>O que é o ITBI?</h3><p>ITBI é o Imposto sobre a Transmissão de Bens Imóveis, relacionado a transações onerosas de imóveis entre vivos. As bases utilizadas pelo itbidata são informações públicas disponibilizadas pelos municípios.</p></div></div>
+    <div><span class="editorial-icone verde" aria-hidden="true">▤</span><div class="editorial-cartao-texto"><h3>O que significa o valor de uma transação?</h3><p>O valor exibido corresponde a uma informação presente na base pública utilizada para aquela cidade e período. Ele não é uma avaliação feita pelo itbidata e não representa, por si só, o preço atual de mercado de um imóvel.</p></div></div>
+    <div><span class="editorial-icone laranja" aria-hidden="true">▥</span><div class="editorial-cartao-texto"><h3>Como interpretar os R$/m²?</h3><p>O valor por metro quadrado é uma medida de comparação entre registros quando existem dados compatíveis de valor e área. Imóveis de uma mesma rua ou bairro podem ter R$/m² diferentes por causa de área, localização, características, conservação, data e condições de negociação.</p></div></div>
+    <div><span class="editorial-icone roxo" aria-hidden="true">↗</span><div class="editorial-cartao-texto"><h3>Por que os resultados podem variar?</h3><p>Cada prefeitura possui sua própria base, estrutura, cobertura e critérios de publicação. Além disso, os imóveis presentes em uma amostra não são necessariamente iguais. Por isso, médias e comparações devem ser interpretadas dentro do contexto do período e da cidade pesquisados.</p></div></div>
+    <div class="editorial-destaque"><span class="editorial-icone turquesa" aria-hidden="true">▤</span><div class="editorial-cartao-texto"><h3>Use os dados como referência</h3><p>O itbidata organiza dados públicos para facilitar pesquisa e comparação. Para decisões de compra, venda, financiamento, investimento ou questões jurídicas, confira a informação diretamente na fonte oficial do município e, quando necessário, utilize documentos e orientação profissional.</p></div></div>
+  </div>
+</section>
 
-    <section class="conteudo-editorial" aria-labelledby="como-usar-itbidata">
-      <h2 id="como-usar-itbidata">O que você pode fazer no itbidata?</h2>
-      <p class="editorial-subtitulo">A plataforma reúne consulta de transações, estatísticas e ferramentas de planejamento imobiliário em um único lugar.</p>
-      <div class="bloco-editorial-grade">
-        <div>
-          <h3>Pesquisar transações imobiliárias</h3>
-          <p>Consulte registros públicos por cidade, endereço, número, unidade ou complemento e período. Quando houver dados disponíveis, a ficha do registro apresenta as informações encontradas na base utilizada para aquela pesquisa.</p>
-          <p><a href="#cabecalho">Voltar ao formulário de pesquisa</a></p>
-        </div>
-        <div>
-          <h3>Analisar estatísticas do mercado</h3>
-          <p>A página de <a href="estatisticas.html">Estatísticas</a> reúne indicadores derivados das bases disponíveis, como valores médios, quantidade de transações, evolução ao longo do tempo e recortes por localização.</p>
-        </div>
-        <div>
-          <h3>Usar ferramentas de planejamento</h3>
-          <p>Os <a href="simulador-financiamento.html">simuladores</a> ajudam a explorar cenários de financiamento, custos de ITBI, poder de compra, compra ou aluguel, preço por metro quadrado e comparação entre consórcio e financiamento.</p>
-        </div>
-        <div>
-          <h3>Consultar a origem e a metodologia</h3>
-          <p>O itbidata é um projeto independente que organiza informações públicas. A <a href="metodologia.html">metodologia</a> explica as fontes utilizadas, a organização dos dados, os critérios de tratamento e as limitações que devem ser consideradas na interpretação dos resultados.</p>
-        </div>
-      </div>
-    </section>
+<section class="conteudo-editorial" aria-labelledby="recursos-itbidata">
+  <h2 id="recursos-itbidata">O que você pode fazer no itbidata?</h2>
+  <p class="editorial-subtitulo">A plataforma reúne consulta de transações, estatísticas e ferramentas de planejamento imobiliário em um único lugar.</p>
+  <div class="bloco-editorial-grade">
+    <div><span class="editorial-icone azul" aria-hidden="true">⌕</span><div class="editorial-cartao-texto"><h3>Pesquisar transações imobiliárias</h3><p>Consulte registros públicos por cidade, endereço, número, unidade ou complemento e período. Quando houver dados disponíveis, a ficha do registro apresenta as informações encontradas na base utilizada para aquela pesquisa.</p><a class="editorial-link" href="#cabecalho">Voltar ao formulário de pesquisa <span aria-hidden="true">→</span></a></div></div>
+    <div><span class="editorial-icone verde" aria-hidden="true">▥</span><div class="editorial-cartao-texto"><h3>Analisar estatísticas do mercado</h3><p>A página de <a href="estatisticas.html">Estatísticas</a> reúne indicadores derivados das bases disponíveis, como valores médios, quantidade de transações, evolução ao longo do tempo e recortes por localização.</p><a class="editorial-link" href="estatisticas.html">Acessar Estatísticas <span aria-hidden="true">→</span></a></div></div>
+    <div><span class="editorial-icone laranja" aria-hidden="true">▦</span><div class="editorial-cartao-texto"><h3>Usar ferramentas de planejamento</h3><p>Os <a href="simulador-financiamento.html">simuladores</a> ajudam a explorar cenários de financiamento, custos de ITBI, poder de compra, compra ou aluguel, preço por metro quadrado e comparação entre consórcio e financiamento.</p><a class="editorial-link" href="simulador-financiamento.html">Acessar simuladores <span aria-hidden="true">→</span></a></div></div>
+    <div><span class="editorial-icone roxo" aria-hidden="true">▤</span><div class="editorial-cartao-texto"><h3>Consultar a origem e a metodologia</h3><p>O itbidata é um projeto independente que organiza informações públicas. A <a href="metodologia.html">metodologia</a> explica as fontes utilizadas, a organização dos dados, os critérios de tratamento e as limitações que devem ser consideradas na interpretação dos resultados.</p><a class="editorial-link" href="metodologia.html">Ver metodologia <span aria-hidden="true">→</span></a></div></div>
+  </div>
+</section>
 
-    <section class="conteudo-editorial" aria-labelledby="cobertura-itbidata">
-      <h2 id="cobertura-itbidata">Cobertura e atualização dos dados</h2>
-      <p class="editorial-subtitulo">A cobertura depende da disponibilidade e das características das bases públicas de cada município.</p>
-      <div class="bloco-editorial-grade">
-        <div>
-          <h3>Cidades atendidas</h3>
-          <p>Atualmente, a busca disponibiliza dados para <strong>Porto Alegre, Fortaleza, São Paulo, Belo Horizonte e Recife</strong>. A quantidade de anos e registros disponíveis pode variar conforme a fonte municipal.</p>
-        </div>
-        <div>
-          <h3>Por que os dados podem mudar?</h3>
-          <p>Portais municipais podem publicar novas informações, corrigir registros ou apresentar períodos com cobertura diferente. Por isso, uma consulta deve ser interpretada de acordo com a cidade, o período e a fonte correspondente.</p>
-        </div>
-        <div>
-          <h3>Dados públicos não são avaliação imobiliária</h3>
-          <p>Os registros ajudam em pesquisa e comparação, mas não substituem avaliação profissional, documentos oficiais ou análise das características específicas de um imóvel.</p>
-        </div>
-        <div>
-          <h3>Fonte e transparência</h3>
-          <p>Sempre que necessário, consulte a <a href="metodologia.html">metodologia</a> e a fonte municipal indicada para entender a origem e as limitações da informação apresentada.</p>
-        </div>
-      </div>
-    </section>
+<section class="conteudo-editorial" aria-labelledby="cobertura-itbidata">
+  <h2 id="cobertura-itbidata">Cobertura e atualização dos dados</h2>
+  <p class="editorial-subtitulo">A cobertura depende da disponibilidade e das características das bases públicas de cada município.</p>
+  <div class="bloco-editorial-grade">
+    <div><span class="editorial-icone azul" aria-hidden="true">●</span><div class="editorial-cartao-texto"><h3>Cidades atendidas</h3><p>Atualmente, a busca disponibiliza dados para Porto Alegre, Fortaleza, São Paulo, Belo Horizonte e Recife. A quantidade de anos e registros disponíveis pode variar conforme a fonte municipal.</p></div></div>
+    <div><span class="editorial-icone verde" aria-hidden="true">⟳</span><div class="editorial-cartao-texto"><h3>Por que os dados podem mudar?</h3><p>Portais municipais podem publicar novas informações, corrigir registros ou apresentar períodos com cobertura diferente. Por isso, uma pesquisa feita hoje pode trazer resultados diferentes de uma pesquisa realizada em outra data.</p></div></div>
+  </div>
+</section>
 
-    <!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
+    <footer class="rodape">
+      <p>
+        Dados: portais oficiais de dados abertos e transparência dos municípios atendidos.
+        As condições de uso e atribuição devem ser verificadas em cada fonte municipal.
+      </p>
+      <p>
+        O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura ou órgão público.
+        As informações têm caráter informativo, incluindo os valores de correção monetária
+        (calculados automaticamente a partir de índices públicos). Não substituem certidões
+        oficiais nem assessoria jurídica ou financeira &mdash; confira sempre a fonte original
+        antes de qualquer decisão.
+      </p>
+      <div class="links-rodape">
+        <a href="sobre.html">Sobre</a>
+        <span>&bull;</span>
+        <a href="fontes.html">Fontes dos dados</a>
+        <span>&bull;</span>
+        <a href="metodologia.html">Metodologia</a>
+        <span>&bull;</span>
+        <a href="contato.html">Contato</a>
+        <span>&bull;</span>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <span>&bull;</span>
+        <a href="termos.html">Termos de Uso</a>
+      </div>
+    </footer>
+  </div>
+
+  <div id="cookie-banner" class="banner-cookies">
+    <p>
+      Este site pode usar cookies e tecnologias semelhantes para análise de audiência e publicidade. Fechar este aviso não altera as configurações de cookies de análise ou publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para mais informações.
+    </p>
+    <button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  var cacheCsv = {};
+
+  function parseLinhaCsv(linha) {
+    var resultado = [];
+    var i = 0;
+    var n = linha.length;
+    while (i <= n) {
+      if (i === n) {
+        if (resultado.length === 0 || linha.charAt(linha.length - 1) === ";") {
+          resultado.push("");
+        }
+        break;
+      }
+      if (linha.charAt(i) === "'") {
+        var sb = "";
+        i++;
+        while (i < n) {
+          if (linha.charAt(i) === "'") {
+            // Aspas duplicadas dentro de um campo representam apóstrofo,
+            // exceto quando a segunda aspa fecha um campo vazio ('').
+            if (i + 1 < n && linha.charAt(i + 1) === "'" &&
+                i + 2 < n && linha.charAt(i + 2) !== ";") {
+              sb += "'";
+              i += 2;
+            } else {
+              i++;
+              break;
+            }
+          } else {
+            sb += linha.charAt(i);
+            i++;
+          }
+        }
+        resultado.push(sb);
+        while (i < n && linha.charAt(i) !== ";") i++;
+        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
+      } else {
+        var inicio = i;
+        while (i < n && linha.charAt(i) !== ";") i++;
+        resultado.push(linha.substring(inicio, i));
+        if (i < n) { i++; if (i === n) resultado.push(""); } else { break; }
+      }
+    }
+    return resultado;
+  }
+
+  function normalizarParaBusca(s) {
+    return String(s || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase()
+      .trim();
+  }
+
+  // Compara o nome do logradouro sem depender de abreviações de tipo
+  // e títulos que aparecem antes do nome: AV., AV, AVENIDA, PROF.,
+  // PROFESSOR, DR., DOUTOR, PRES., PRESIDENTE etc.
+  // Exemplos: "Av. Prof. Oscar" = "Avenida Professor Oscar".
+  function normalizarLogradouro(s) {
+    // Uniformiza o tipo da via sem remover partes do nome próprio.
+    return normalizarParaBusca(s)
+      .replace(/\b(AVENIDA|AV\.?|RUA|R\.?|TRAVESSA|TV\.?|ALAMEDA|AL\.?|ESTRADA|EST\.?|RODOVIA|ROD\.?|PRACA|PCA\.?|LARGO)\b/g, " ")
+      .replace(/\b(DE|DA|DO|DAS|DOS|E)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function parseDataPoa(texto) {
+    if (!texto) return null;
+    var t = String(texto).trim();
+    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
+    if (m) {
+      return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+    }
+    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (m) {
+      return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
+    }
+    return null;
+  }
+  function chaveOrdenacao(data) {
+    return data ? data.y * 10000 + data.mo * 100 + data.d : -1;
+  }
+  function formatarDataBr(data) {
+    if (!data) return null;
+    function d2(n) { return n < 10 ? "0" + n : "" + n; }
+    return d2(data.d) + "/" + d2(data.mo) + "/" + d2(data.y);
+  }
+
+  // Conversor específico da base de ITBI de São Paulo.
+  function parseDataGenerica(texto) {
+    if (!texto) return null;
+    var t = String(texto).trim().replace(/^['"]+|['"]+$/g, "");
+    if (!t) return null;
+
+    var m = t.match(/^(\d{4})[\/-](\d{2})[\/-](\d{2})/);
+    if (m) return { y: parseInt(m[1], 10), mo: parseInt(m[2], 10), d: parseInt(m[3], 10) };
+
+    m = t.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})/);
+    if (m) return { y: parseInt(m[3], 10), mo: parseInt(m[2], 10), d: parseInt(m[1], 10) };
+
+    return null;
+  }
+
+  function parseNumeroGenerico(texto) {
+    if (texto === null || texto === undefined) return null;
+    var t = String(texto).trim().replace(/^['\"]+|['\"]+$/g, "");
+    if (!t) return null;
+    if (t.indexOf(",") !== -1 && t.indexOf(".") !== -1) {
+      t = t.replace(/\./g, "").replace(",", ".");
+    } else if (t.indexOf(",") !== -1) {
+      t = t.replace(",", ".");
+    }
+    var n = parseFloat(t);
+    return isNaN(n) ? null : n;
+  }
+
+
+  function converterRegistroSp(campos, anoPedido) {
+    if (campos.length < 18) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined || v === null) return null;
+      v = String(v).trim().replace(/^['"]+|['"]+$/g, "");
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      return parseNumeroGenerico(v);
+    }
+    var dataEstimativa = parseDataGenerica(c(0));
+    var dataPagamento = parseDataGenerica(c(1));
+    var perc = num(3);
+    if (perc !== null && perc > 100) perc = perc / 100;
+    return {
+      cidadeNome: "São Paulo",
+      estadoSigla: "SP",
+      ano: anoPedido,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(2),
+      percTransmitido: perc,
+      finalidadeConstrucao: c(4),
+      logradouro: c(5),
+      numeroEndereco: c(6),
+      numeroUnidade: c(7),
+      complementoEndereco: c(8),
+      bairro: c(9),
+      cep: c(10),
+      areaTotalTerreno: num(11),
+      areaConstrTotal: num(12),
+      areaConstrPrivativa: num(13),
+      anoConstrucao: c(14) ? parseInt(c(14), 10) : null,
+      numeroMatricula: c(15),
+      numeroZona: c(16),
+      situacao: c(17)
+    };
+  }
+
+
+  function converterRegistroPoa(campos, ano) {
+    if (campos.length < 18) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined) return null;
+      v = v.trim();
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      var n = parseFloat(v);
+      return isNaN(n) ? null : n;
+    }
+    var dataEstimativa = parseDataPoa(c(0));
+    var dataPagamento = parseDataPoa(c(1));
+    return {
+      cidadeNome: "Porto Alegre",
+      estadoSigla: "RS",
+      ano: ano,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(2),
+      percTransmitido: num(3),
+      finalidadeConstrucao: c(4),
+      logradouro: c(5),
+      numeroEndereco: c(6),
+      numeroUnidade: c(7),
+      complementoEndereco: c(8),
+      bairro: c(9),
+      cep: c(10),
+      areaTotalTerreno: num(11),
+      areaConstrTotal: num(12),
+      areaConstrPrivativa: num(13),
+      anoConstrucao: c(14) ? parseInt(c(14), 10) : null,
+      numeroMatricula: c(15),
+      numeroZona: c(16),
+      situacao: c(17)
+    };
+  }
+
+  function parseDataFortaleza(texto) {
+    if (!texto) return null;
+    var m = texto.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+    if (!m) return null;
+    return { d: parseInt(m[1], 10), mo: parseInt(m[2], 10), y: parseInt(m[3], 10) };
+  }
+
+  function converterRegistroFortaleza(campos, anoPedido) {
+    if (campos.length < 31) return null;
+    function c(i) {
+      var v = campos[i];
+      if (v === undefined) return null;
+      v = v.trim();
+      return v === "" ? null : v;
+    }
+    function num(i) {
+      var v = c(i);
+      if (v === null) return null;
+      var n = parseFloat(v.replace(",", "."));
+      return isNaN(n) ? null : n;
+    }
+    var ano = c(4) ? parseInt(c(4), 10) : null;
+    if (ano !== anoPedido) return null;
+
+    var fracaoIdeal = num(13);
+    var dataConstrucao = parseDataFortaleza(c(16));
+    var dataEstimativa = parseDataFortaleza(c(5));
+    var dataPagamento = parseDataFortaleza(c(24));
+
+    return {
+      cidadeNome: "Fortaleza",
+      estadoSigla: "CE",
+      ano: ano,
+      dataEstimativa: dataEstimativa,
+      dataPagamento: dataPagamento,
+      dataReferencia: dataPagamento || dataEstimativa,
+      baseCalculo: num(27),
+      percTransmitido: fracaoIdeal !== null ? fracaoIdeal * 100 : null,
+      finalidadeConstrucao: c(18),
+      logradouro: c(8),
+      numeroEndereco: c(9),
+      numeroUnidade: null,
+      complementoEndereco: null,
+      bairro: c(7),
+      cep: c(6),
+      areaTotalTerreno: num(14),
+      areaConstrTotal: num(15),
+      areaConstrPrivativa: null,
+      anoConstrucao: dataConstrucao ? dataConstrucao.y : null,
+      numeroMatricula: null,
+      numeroZona: c(23),
+      situacao: c(19)
+    };
+  }
+
+
+  // Correção robusta com Trava Global de Outliers para Porto Alegre
+  function corrigirValorPoaConhecido(r) {
+    if (!r || r.cidadeNome !== "Porto Alegre") return r;
+
+    var valor = Number(r.baseCalculo);
+    if (!isFinite(valor)) return r;
+
+    // Trava Automática de Segurança para valores inflados acima de R$ 30 Milhões
+    if (valor > 30000000) {
+      var log = normalizarLogradouro(r.logradouro || "");
+      var numEnd = String(r.numeroEndereco || "").trim();
+      var unid = String(r.numeroUnidade || "").trim();
+
+      if (log.indexOf("casemiro de abreu") !== -1 && numEnd === "1668" && unid === "601") {
+        r.baseCalculo = 1215000.00;
+      } else if (log.indexOf("ciro gaviao") !== -1 && numEnd === "66" && unid === "504") {
+        r.baseCalculo = 810000.00;
+      } else if (log.indexOf("vicente da fontoura") !== -1 && numEnd === "2005" && unid === "101") {
+        r.baseCalculo = 355000.00;
+      } else {
+        r.baseCalculo = valor / 1000;
+      }
+      r._valorPoaCorrigido = true;
+    }
+
+    return r;
+  }
+
+  function enderecoCompleto(r) {
+    var partes = [];
+    if (r.logradouro) partes.push(r.logradouro);
+    if (r.numeroEndereco && r.numeroEndereco !== "0") partes.push(r.numeroEndereco);
+    if (r.numeroUnidade) partes.push("Unid. " + r.numeroUnidade);
+    if (r.complementoEndereco) partes.push(r.complementoEndereco);
+    return partes.join(", ");
+  }
+
+  var PROXIES_CORS = [
+    function (url) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url); },
+    function (url) { return "https://corsproxy.io/?url=" + encodeURIComponent(url); }
+  ];
+
+  function tentarComProxies(url, indiceProxy, ultimoErro) {
+    if (indiceProxy >= PROXIES_CORS.length) {
+      throw ultimoErro || new Error("Todas as tentativas de acesso falharam.");
+    }
+    var proxied = PROXIES_CORS[indiceProxy](url);
+    return fetch(proxied).then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status + " (proxy " + (indiceProxy + 1) + ")");
+      return resp.text();
+    }).catch(function (erro) {
+      return tentarComProxies(url, indiceProxy + 1, erro);
+    });
+  }
+
+  function baixarTexto(url) {
+    return fetch(url).then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      return resp.text();
+    }).catch(function (erroDireto) {
+      return tentarComProxies(url, 0, erroDireto).catch(function (erroFinal) {
+        var motivo = erroDireto && erroDireto.message ? erroDireto.message : String(erroDireto);
+        throw new Error("Falha ao acessar " + url.split("/download/")[1] + " \u2014 " + motivo);
+      });
+    });
+  }
+
+  var FONTES = {
+    poa: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocalPorAno: { 
+        2020: "data/itbi-2020.csv", 
+        2021: "data/itbi-2021.csv", 
+        2022: "data/itbi-2022.csv", 
+        2023: "data/itbi-2023.csv", 
+        2024: "data/itbi-2024.csv", 
+        2025: "data/itbi-2025.csv", 
+        2026: "data/itbi-2026.csv" 
+      },
+      chaveCache: function (ano) { return "poa_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroPoa(parseLinhaCsv(linha), ano);
+            if (reg) registros.push(corrigirValorPoaConhecido(reg));
+          } catch (e) { /* ignora linha malformada */ }
+        }
+        return registros;
+      }
+    },
+
+    fortaleza: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocal: "data/itbi-fortaleza.csv",
+      chaveCache: function () { return "fortaleza_completo"; },
+      baixarCsv: function () {
+        return fetch(this.arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local itbi-fortaleza.csv)");
+          return resp.arrayBuffer();
+        }).then(function (buffer) {
+          return new TextDecoder("iso-8859-1").decode(buffer);
+        });
+      },
+      processarCsv: function (texto, anoPedido) {
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var reg = converterRegistroFortaleza(linha.split(";"), anoPedido);
+            if (reg) registros.push(reg);
+          } catch (e) { /* ignora linha malformada */ }
+        }
+        return registros;
+      }
+    },
+
+    "sao-paulo": {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2020],
+      arquivoLocalPorAno: {
+        2020: "data/itbi-sp-2020.csv",
+        2022: "data/itbi-sp-2022.csv",
+        2023: "data/itbi-sp-2023.csv",
+        2024: "data/itbi-sp-2024.csv",
+        2025: "data/itbi-sp-2025.csv",
+        2026: "data/itbi-sp-2026.csv"
+      },
+      chaveCache: function (ano) { return "sao-paulo_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (!arquivoLocal) return Promise.resolve("");
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        if (!texto) return [];
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var campos = parseLinhaCsv(linha);
+            var reg = converterRegistroSp(campos, ano);
+            if (reg) registros.push(reg);
+          } catch (e) {}
+        }
+        return registros;
+      }
+    },
+
+    "belo-horizonte": {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocalPorAno: {
+        2020: "data/itbi-bh-2020.csv",
+        2021: "data/itbi-bh-2021.csv",
+        2022: "data/itbi-bh-2022.csv",
+        2023: "data/itbi-bh-2023.csv",
+        2024: "data/itbi-bh-2024.csv",
+        2025: "data/itbi-bh-2025.csv",
+        2026: "data/itbi-bh-2026.csv"
+      },
+      chaveCache: function (ano) { return "belo-horizonte_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (!arquivoLocal) return Promise.resolve("");
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        if (!texto) return [];
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var campos = parseLinhaCsv(linha);
+            var reg = converterRegistroPoa(campos, ano);
+            if (reg) {
+              reg.cidadeNome = "Belo Horizonte";
+              reg.estadoSigla = "MG";
+              registros.push(reg);
+            }
+          } catch (e) {}
+        }
+        return registros;
+      }
+    },
+
+    recife: {
+      anosDisponiveis: [2026, 2025, 2024, 2023, 2022, 2021, 2020],
+      arquivoLocalPorAno: {
+        2020: "data/itbi-recife-2020.csv",
+        2021: "data/itbi-recife-2021.csv",
+        2022: "data/itbi-recife-2022.csv",
+        2023: "data/itbi-recife-2023.csv",
+        2024: "data/itbi-recife-2024.csv",
+        2025: "data/itbi-recife-2025.csv",
+        2026: "data/itbi-recife-2026.csv"
+      },
+      chaveCache: function (ano) { return "recife_" + ano; },
+      baixarCsv: function (ano) {
+        var arquivoLocal = this.arquivoLocalPorAno[ano];
+        if (!arquivoLocal) return Promise.resolve("");
+        return fetch(arquivoLocal).then(function (resp) {
+          if (!resp.ok) throw new Error("HTTP " + resp.status + " (arquivo local " + arquivoLocal + ")");
+          return resp.text();
+        });
+      },
+      processarCsv: function (texto, ano) {
+        if (!texto) return [];
+        var linhas = texto.split("\n");
+        var registros = [];
+        for (var i = 1; i < linhas.length; i++) {
+          var linha = linhas[i].replace(/\r$/, "");
+          if (!linha.trim()) continue;
+          try {
+            var campos = parseLinhaCsv(linha);
+            var reg = converterRegistroPoa(campos, ano);
+            if (reg) {
+              reg.cidadeNome = "Recife";
+              reg.estadoSigla = "PE";
+              registros.push(reg);
+            }
+          } catch (e) {}
+        }
+        return registros;
+      }
+    }
+  };
+
+  function baixarCsvDaFonte(fonte, ano, forcarAtualizacao) {
+    var chave = fonte.chaveCache(ano);
+    if (!forcarAtualizacao && cacheCsv[chave]) {
+      return Promise.resolve(cacheCsv[chave]);
+    }
+    return fonte.baixarCsv(ano).then(function (texto) {
+      cacheCsv[chave] = texto;
+      return texto;
+    });
+  }
+
+  function numeroCoincide(registro, numeroBusca) {
+    return !numeroBusca ||
+      (registro.numeroEndereco && registro.numeroEndereco.trim() === numeroBusca);
+  }
+
+  function unidadeCoincide(registro, unidadeBusca) {
+    if (!unidadeBusca) return true;
+
+    var busca = normalizarParaBusca(unidadeBusca).replace(/[.,#\-]+/g, " ").replace(/\s+/g, " ").trim();
+    if (!busca) return true;
+
+    var unidade = registro.numeroUnidade ? String(registro.numeroUnidade).trim() : "";
+    if (unidade && normalizarParaBusca(unidade).replace(/[.,#\-]+/g, " ").replace(/\s+/g, " ").trim() === busca) {
+      return true;
+    }
+
+    var complemento = registro.complementoEndereco ? normalizarParaBusca(registro.complementoEndereco).replace(/[.,#\-]+/g, " ").replace(/\s+/g, " ").trim() : "";
+    if (complemento && complemento === busca) return true;
+
+    // Permite pesquisar apenas pelo número da unidade quando a fonte o traz
+    // dentro do complemento, por exemplo: "APTO 91".
+    if (/^\d+$/.test(busca) && complemento) {
+      var m = complemento.match(/\b(?:APTO|APARTAMENTO|UNID|UNIDADE|SALA|LOJA|CASA|BOX)\s*0*(\d+)\b/);
+      if (m && String(parseInt(m[1], 10)) === String(parseInt(busca, 10))) return true;
+    }
+
+    return false;
+  }
+
+  // Retorna o grau de correspondência do logradouro:
+  // 2 = nome exato; 1 = busca parcial; 0 = não corresponde.
+  // O tipo do logradouro (Rua/Av./Avenida etc.) e títulos (Prof./Dr./Pres. etc.)
+  // já foram removidos por normalizarLogradouro().
+  function grauCorrespondenciaLogradouro(registro, logradouroBusca) {
+    if (!logradouroBusca) return 2;
+    var logradouroRegistro = normalizarLogradouro(registro.logradouro || "");
+    if (!logradouroRegistro) return 0;
+    if (logradouroRegistro === logradouroBusca) return 2;
+    // Busca parcial somente no sentido: o nome pesquisado precisa estar
+    // contido no logradouro do registro. Não usamos o sentido inverso,
+    // pois isso gera falsos positivos com nomes curtos. Ex.: pesquisar
+    // "25 de março" não deve trazer "R do Mar" só porque "MAR"
+    // aparece dentro de "25 MARCO" após a normalização.
+    if (logradouroRegistro.indexOf(logradouroBusca) !== -1) return 1;
+    return 0;
+  }
+
+  // Comparação específica para São Paulo. Mantemos palavras como DE/DO/DA
+  // no nome da via, mas usamos os termos relevantes para evitar falsos
+  // positivos. Ex.: "25 de março" deve encontrar "R 25 DE MARÇO",
+  // e também "vinte e cinco de março".
+  function normalizarNumerosExtensoSp(texto) {
+    var unidades = {
+      "ZERO": 0, "UM": 1, "UMA": 1, "DOIS": 2, "DUAS": 2, "TRES": 3,
+      "QUATRO": 4, "CINCO": 5, "SEIS": 6, "SETE": 7, "OITO": 8, "NOVE": 9,
+      "DEZ": 10, "ONZE": 11, "DOZE": 12, "TREZE": 13, "QUATORZE": 14,
+      "QUINZE": 15, "DEZESSEIS": 16, "DEZESSETE": 17, "DEZOITO": 18, "DEZENOVE": 19
+    };
+    var dezenas = {
+      "VINTE": 20, "TRINTA": 30, "QUARENTA": 40, "CINQUENTA": 50,
+      "SESSENTA": 60, "SETENTA": 70, "OITENTA": 80, "NOVENTA": 90
+    };
+    var tokens = texto.split(/\s+/).filter(Boolean);
+    var saida = [];
+
+    for (var i = 0; i < tokens.length; i++) {
+      var atual = tokens[i];
+
+      if (dezenas[atual] !== undefined) {
+        var valor = dezenas[atual];
+        var j = i + 1;
+        if (tokens[j] === "E") j++;
+        if (unidades[tokens[j]] !== undefined && unidades[tokens[j]] > 0) {
+          valor += unidades[tokens[j]];
+          i = j;
+        }
+        saida.push(String(valor));
+        continue;
+      }
+
+      if (unidades[atual] !== undefined) {
+        saida.push(String(unidades[atual]));
+        continue;
+      }
+
+      saida.push(atual);
+    }
+
+    return saida.join(" ");
+  }
+
+  function normalizarLogradouroSp(s) {
+    var texto = normalizarParaBusca(s)
+      .replace(/[^A-Z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Equivalência entre números em algarismos e por extenso:
+    // "25 DE MARCO" e "VINTE E CINCO DE MARCO" passam a ter a mesma base.
+    texto = normalizarNumerosExtensoSp(texto);
+
+    var prefixos = [
+      "AVENIDA", "AV", "RUA", "R", "ALAMEDA", "AL", "TRAVESSA", "TRAV", "TV",
+      "ESTRADA", "EST", "RODOVIA", "ROD", "PRACA", "PCA", "PC", "LARGO", "LG",
+      "PARQUE", "PQ", "BECO", "BC", "VIELA", "VL", "SERVIDAO", "SER",
+      "PROFESSOR", "PROF", "DOUTOR", "DR", "PRESIDENTE", "PRES", "GOVERNADOR", "GOV",
+      "SENADOR", "SEN", "DESEMBARGADOR", "DES", "CORONEL", "CEL", "MARECHAL", "MAL",
+      "GENERAL", "GEN", "ALMIRANTE", "ALM", "PADRE", "PE", "FREI", "FR"
+    ];
+
+    var alterou = true;
+    while (alterou && texto) {
+      alterou = false;
+      for (var i = 0; i < prefixos.length; i++) {
+        var re = new RegExp("^" + prefixos[i] + "(?:\\s+|$)");
+        if (re.test(texto)) {
+          texto = texto.replace(re, "").trim();
+          alterou = true;
+          break;
+        }
+      }
+    }
+    return texto;
+  }
+
+  function tokensRelevantesSp(texto) {
+    return normalizarLogradouroSp(texto)
+      .split(/\s+/)
+      .filter(function (t) {
+        return t && t !== "DE" && t !== "DA" && t !== "DO" && t !== "DAS" && t !== "DOS" && t !== "E";
+      });
+  }
+
+  function grauCorrespondenciaLogradouroSp(registro, logradouroBusca) {
+    var nomeRegistro = normalizarLogradouroSp(registro.logradouro || "");
+    var nomeBusca = normalizarLogradouroSp(logradouroBusca || "");
+    if (!nomeRegistro || !nomeBusca) return 0;
+    if (nomeRegistro === nomeBusca) return 2;
+
+    var busca = tokensRelevantesSp(nomeBusca);
+    var registro = tokensRelevantesSp(nomeRegistro);
+    if (!busca.length || !registro.length) return 0;
+
+    // Cada termo relevante pesquisado precisa aparecer no logradouro do
+    // registro, na mesma ordem. Aceitamos prefixo do último termo para
+    // permitir buscas parciais como "25 mar" -> "25 MARÇO".
+    var pos = 0;
+    for (var i = 0; i < busca.length; i++) {
+      var termo = busca[i];
+      var encontrado = false;
+      for (; pos < registro.length; pos++) {
+        if (registro[pos] === termo || registro[pos].indexOf(termo) === 0) {
+          encontrado = true;
+          pos++;
+          break;
+        }
+      }
+      if (!encontrado) return 0;
+    }
+    return 1;
+  }
+
+  function coincideSaoPaulo(registro, logradouroBusca, numeroBusca, unidadeBusca) {
+    return grauCorrespondenciaLogradouroSp(registro, logradouroBusca) > 0 &&
+      numeroCoincide(registro, numeroBusca) &&
+      unidadeCoincide(registro, unidadeBusca);
+  }
+
+  function coincide(registro, logradouroBusca, numeroBusca, unidadeBusca) {
+    return grauCorrespondenciaLogradouro(registro, logradouroBusca) > 0 &&
+      numeroCoincide(registro, numeroBusca) &&
+      unidadeCoincide(registro, unidadeBusca);
+  }
+
+  function ordenarRegistros(lista, criterio) {
+    var copia = lista.slice();
+    copia.sort(function(a, b) {
+      if (criterio === "recente") {
+        return chaveOrdenacao(b.dataReferencia) - chaveOrdenacao(a.dataReferencia);
+      } else if (criterio === "antigo") {
+        return chaveOrdenacao(a.dataReferencia) - chaveOrdenacao(b.dataReferencia);
+      } else if (criterio === "maior-valor") {
+        var va = (a.baseCalculo !== null && a.baseCalculo !== undefined) ? a.baseCalculo : -1;
+        var vb = (b.baseCalculo !== null && b.baseCalculo !== undefined) ? b.baseCalculo : -1;
+        return vb - va;
+      } else if (criterio === "menor-valor") {
+        var va = (a.baseCalculo !== null && a.baseCalculo !== undefined) ? a.baseCalculo : Infinity;
+        var vb = (b.baseCalculo !== null && b.baseCalculo !== undefined) ? b.baseCalculo : Infinity;
+        return va - vb;
+      }
+      return 0;
+    });
+    return copia;
+  }
+
+  function buscar(cidadeId, anoUnico, logradouro, numero, unidade, forcarAtualizacao, aoProgredir) {
+    var fonte = FONTES[cidadeId];
+    var anos = anoUnico ? [anoUnico] : fonte.anosDisponiveis;
+    var logradouroBusca = normalizarLogradouro(logradouro);
+    var numeroBusca = numero ? numero.trim() : null;
+    var unidadeBusca = unidade ? unidade.trim() : null;
+    var registros = [];
+    var anosComErro = [];
+    var ultimoErro = null;
+    var indice = 0;
+
+    function proximo() {
+      if (indice >= anos.length) {
+        if (registros.length === 0 && anosComErro.length === anos.length) {
+          var detalhe = ultimoErro && ultimoErro.message ? " Detalhe: " + ultimoErro.message : "";
+          return Promise.reject(new Error("N\u00e3o foi poss\u00edvel obter os dados de nenhum ano consultado." + detalhe));
+        }
+        // Quando existe correspondência exata para o nome pesquisado,
+        // mostramos somente ela. Assim, uma busca por "Barbedo" não mistura
+        // "Rua Barbedo" com "Rua Armando Barbedo".
+        // Se não houver correspondência exata, mantemos a busca parcial para
+        // permitir consultas por trechos do nome. O número informado também
+        // participa dessa decisão para não esconder um endereço válido.
+        if (logradouroBusca) {
+          var exatos = registros.filter(function (r) {
+            return (cidadeId === "sao-paulo" ? grauCorrespondenciaLogradouroSp(r, logradouroBusca) === 2 : grauCorrespondenciaLogradouro(r, logradouroBusca) === 2) &&
+              numeroCoincide(r, numeroBusca) &&
+              unidadeCoincide(r, unidadeBusca);
+          });
+          if (exatos.length > 0) {
+            registros = exatos;
+          } else if (cidadeId !== "sao-paulo" && logradouroBusca) {
+            // Quando não há igualdade exata, prioriza nomes terminados pelas
+            // palavras pesquisadas (ex.: BARBEDO em vez de ARMANDO BARBEDO).
+            var tokensBusca = logradouroBusca.split(" ").filter(Boolean);
+            var porPalavra = registros.filter(function (r) {
+              var tokens = normalizarLogradouro(r.logradouro || "").split(" ").filter(Boolean);
+              return tokensBusca.length > 0 && tokens.slice(-tokensBusca.length).join(" ") === logradouroBusca;
+            });
+            if (porPalavra.length > 0) registros = porPalavra;
+          }
+        }
+
+        var criterioAtual = elSelectOrdenacao ? elSelectOrdenacao.value : "recente";
+        var registrosOrdenados = ordenarRegistros(registros, criterioAtual);
+        return Promise.resolve({ registros: registrosOrdenados, anosComErro: anosComErro });
+      }
+      var ano = anos[indice];
+      indice++;
+      if (aoProgredir) aoProgredir(indice, anos.length);
+      return baixarCsvDaFonte(fonte, ano, forcarAtualizacao).then(function (texto) {
+        var funcaoCoincidencia = cidadeId === "sao-paulo" ? coincideSaoPaulo : coincide;
+        var doAno = fonte.processarCsv(texto, ano).filter(function (r) {
+          return funcaoCoincidencia(r, logradouroBusca, numeroBusca, unidadeBusca);
+        });
+        registros = registros.concat(doAno);
+      }).catch(function (erro) {
+        ultimoErro = erro;
+        anosComErro.push(ano);
+      }).then(proximo);
+    }
+
+    return proximo();
+  }
+
+  var elCidade = document.getElementById("cidade");
+  var elEndereco = document.getElementById("endereco");
+  var elNumero = document.getElementById("numero");
+  var elUnidade = document.getElementById("unidade");
+  var elAno = document.getElementById("ano");
+  var elBtnPesquisar = document.getElementById("btn-pesquisar");
+  var elBtnLimpar = document.getElementById("btn-limpar");
+  var elBtnAtualizar = document.getElementById("btn-atualizar");
+  var elBarraProgresso = document.getElementById("barra-progresso");
+  var elTextoProgresso = document.getElementById("texto-progresso");
+  var elFaixaErro = document.getElementById("faixa-erro");
+  var elTextoErro = document.getElementById("texto-erro");
+  var elFaixaAvisoAnos = document.getElementById("faixa-aviso-anos");
+  var elTextoAvisoAnos = document.getElementById("texto-aviso-anos");
+  var elContagem = document.getElementById("contagem");
+  var elResultados = document.getElementById("resultados");
+  var elDetalhe = document.getElementById("detalhe");
+  var elBarraTopoResultados = document.getElementById("barra-topo-resultados");
+  var elSelectOrdenacao = document.getElementById("select-ordenacao");
+
+  var elControlesPaginacao = document.getElementById("controles-paginacao");
+  var elPaginacaoInfo = document.getElementById("paginacao-info");
+  var elBtnPrimeira = document.getElementById("btn-primeira");
+  var elBtnAnterior = document.getElementById("btn-anterior");
+  var elPaginacaoNumeros = document.getElementById("paginacao-numeros");
+  var elBtnProxima = document.getElementById("btn-proxima");
+  var elBtnUltima = document.getElementById("btn-ultima");
+  var elSelectTamanhoPagina = document.getElementById("select-tamanho-pagina");
+
+  if (window.location.protocol === "file:") {
+    elFaixaErro.classList.add("ativa");
+    elTextoErro.textContent =
+      "Este arquivo foi aberto direto do dispositivo (file://). A busca só funciona quando o site está " +
+      "hospedado de verdade (ex.: GitHub Pages) — abrir o arquivo local bloqueia o navegador de buscar dados, " +
+      "mesmo os que estão na mesma pasta.";
+  }
+
+  var formatoMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  var ultimosRegistros = [];
+  var paginaAtual = 1;
+  var tamanhoPagina = 10;
+
+  function definirCarregando(carregando) {
+    elBtnPesquisar.disabled = carregando;
+    elBtnLimpar.disabled = carregando;
+    elBtnAtualizar.disabled = carregando;
+    elBarraProgresso.classList.toggle("ativa", carregando);
+    if (!carregando) elTextoProgresso.style.display = "none";
+  }
+
+  function renderizarResultados(registros) {
+    elResultados.innerHTML = "";
+    if (registros.length === 0) {
+      elBarraTopoResultados.style.display = "none";
+      elControlesPaginacao.style.display = "none";
+      return;
+    }
+
+    elBarraTopoResultados.style.display = "flex";
+    elControlesPaginacao.style.display = "flex";
+
+    var totalRegistros = registros.length;
+    var totalPaginas = Math.ceil(totalRegistros / tamanhoPagina) || 1;
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+    var inicio = (paginaAtual - 1) * tamanhoPagina;
+    var fim = Math.min(inicio + tamanhoPagina, totalRegistros);
+    var paginaRegistros = registros.slice(inicio, fim);
+
+    elPaginacaoInfo.textContent = "Mostrando " + (inicio + 1) + " a " + fim + " de " + totalRegistros + " registros";
+    elPaginacaoNumeros.textContent = "Pág. " + paginaAtual + " de " + totalPaginas;
+
+    elBtnPrimeira.disabled = (paginaAtual === 1);
+    elBtnAnterior.disabled = (paginaAtual === 1);
+    elBtnProxima.disabled = (paginaAtual === totalPaginas);
+    elBtnUltima.disabled = (paginaAtual === totalPaginas);
+
+    paginaRegistros.forEach(function (r) {
+      var indiceReal = ultimosRegistros.indexOf(r);
+      var card = document.createElement("div");
+      card.className = "resultado";
+      var dataTxt = formatarDataBr(r.dataReferencia) || "sem data";
+      var subTxt = [r.bairro, r.finalidadeConstrucao].filter(Boolean).join(" · ");
+      var precoTxt = (r.baseCalculo !== null && r.baseCalculo !== undefined && r.baseCalculo > 0)
+        ? formatoMoeda.format(r.baseCalculo)
+        : "—";
+
+      card.innerHTML =
+        '<div class="resultado-info">' +
+          '<p class="resultado-endereco"></p>' +
+          '<p class="resultado-sub"></p>' +
+        '</div>' +
+        '<div class="resultado-valores">' +
+          '<div class="resultado-preco"></div>' +
+          '<div class="resultado-data"></div>' +
+        '</div>' +
+      '<div class="resultado-mais"><span class="resultado-mais-icone">+</span><span class="resultado-mais-texto">DETALHES</span></div>';
+
+      card.querySelector(".resultado-endereco").textContent = enderecoCompleto(r);
+      card.querySelector(".resultado-sub").textContent = subTxt;
+      card.querySelector(".resultado-preco").textContent = precoTxt;
+      card.querySelector(".resultado-data").textContent = dataTxt;
+      card.addEventListener("click", function () { abrirDetalhe(indiceReal); });
+      elResultados.appendChild(card);
+    });
+  }
+
+  elBtnPrimeira.addEventListener("click", function () { paginaAtual = 1; renderizarResultados(ultimosRegistros); });
+  elBtnAnterior.addEventListener("click", function () { if (paginaAtual > 1) { paginaAtual--; renderizarResultados(ultimosRegistros); } });
+  elBtnProxima.addEventListener("click", function () { var totalP = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; if (paginaAtual < totalP) { paginaAtual++; renderizarResultados(ultimosRegistros); } });
+  elBtnUltima.addEventListener("click", function () { paginaAtual = Math.ceil(ultimosRegistros.length / tamanhoPagina) || 1; renderizarResultados(ultimosRegistros); });
+  
+  elSelectTamanhoPagina.addEventListener("change", function () {
+    tamanhoPagina = parseInt(this.value, 10);
+    paginaAtual = 1;
+    renderizarResultados(ultimosRegistros);
+  });
+
+  elSelectOrdenacao.addEventListener("change", function () {
+    var criterio = this.value;
+    ultimosRegistros = ordenarRegistros(ultimosRegistros, criterio);
+    paginaAtual = 1;
+    renderizarResultados(ultimosRegistros);
+  });
+
+  function linhaFicha(rotulo, valor) {
+    return '<div class="ficha-linha"><div class="ficha-rotulo">' + rotulo +
+      '</div><div class="ficha-valor">' + valor + '</div></div>';
+  }
+
+  function construirUrlDetalhe(r) {
+    var params = new URLSearchParams();
+    var cidade = elCidade.value || "";
+    var ano = r.ano || (elAno.value || "");
+    var logradouro = r.logradouro || elEndereco.value || "";
+    var numero = r.numeroEndereco || elNumero.value || "";
+    var unidade = r.numeroUnidade || r.complementoEndereco || elUnidade.value || "";
+
+    if (cidade) params.set("cidade", cidade);
+    if (ano) params.set("ano", String(ano));
+    if (logradouro) params.set("logradouro", logradouro);
+    if (numero) params.set("numero", numero);
+    if (unidade) params.set("unidade", unidade);
+
+    return window.location.origin + window.location.pathname + "?" + params.toString();
+  }
+
+  function abrirWhatsAppCompartilhar() {
+    if (!urlDetalheAtual) return;
+    var texto = "Confira este registro no itbidata: " + urlDetalheAtual;
+    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank", "noopener");
+  }
+
+  function abrirEmailCompartilhar() {
+    if (!urlDetalheAtual) return;
+    var assunto = "Registro de imóvel no itbidata";
+    var corpo = "Confira este registro no itbidata:\n\n" + urlDetalheAtual;
+    window.location.href = "mailto:?subject=" + encodeURIComponent(assunto) + "&body=" + encodeURIComponent(corpo);
+  }
+
+  function copiarLinkCompartilhar() {
+    if (!urlDetalheAtual) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(urlDetalheAtual).then(function () {
+        var btn = document.getElementById("btn-copiar-link");
+        if (btn) {
+          var textoOriginal = btn.textContent;
+          btn.textContent = "Link copiado!";
+          setTimeout(function () { btn.textContent = textoOriginal; }, 1400);
+        }
+      }).catch(function () {
+        window.prompt("Copie o link abaixo:", urlDetalheAtual);
+      });
+    } else {
+      window.prompt("Copie o link abaixo:", urlDetalheAtual);
+    }
+  }
+
+  function compartilharDetalhe() {
+    if (!urlDetalheAtual) return;
+    var titulo = "itbidata — registro imobiliário";
+    var texto = "Confira este registro no itbidata.";
+
+    if (navigator.share) {
+      navigator.share({ title: titulo, text: texto, url: urlDetalheAtual }).catch(function () {});
+      return;
+    }
+
+    var menu = document.getElementById("menu-compartilhar");
+    if (menu) menu.classList.toggle("ativo");
+  }
+
+  var scrollPosicaoLista = 0;
+
+  function restaurarScrollLista() {
+    window.scrollTo({ top: scrollPosicaoLista, behavior: "auto" });
+  }
+
+  function abrirDetalhe(indice) {
+    var r = ultimosRegistros[indice];
+    if (!r) return;
+    // Guarda a posição exata da lista para retornar ao mesmo resultado após fechar os detalhes.
+    scrollPosicaoLista = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    var precoTxt = (r.baseCalculo !== null && r.baseCalculo !== undefined) ? formatoMoeda.format(r.baseCalculo) : "não informado";
+    var areaTxt = function (v) { return (v !== null && v !== undefined) ? v.toFixed(2).replace(".", ",") + " m²" : "—"; };
+    var dataTxt = function (d) { return formatarDataBr(d) || "—"; };
+    var percTxt = (r.percTransmitido !== null && r.percTransmitido !== undefined) ? r.percTransmitido.toFixed(2).replace(".", ",") + "%" : "—";
+
+    var numero = r.numeroEndereco && r.numeroEndereco !== "0" ? r.numeroEndereco : null;
+    var cidadeEstado = r.cidadeNome && r.estadoSigla ? r.cidadeNome + " - " + r.estadoSigla : "Brasil";
+    var enderecoMapa = r.logradouro ? r.logradouro + (numero ? ", " + numero : "") + ", " + cidadeEstado + ", Brasil" : null;
+
+    urlDetalheAtual = construirUrlDetalhe(r);
+
+    var html = '<div class="acoes-detalhe">';
+    html += '<a class="link-voltar" id="link-voltar">&larr; Voltar à lista</a>';
+    html += '</div>';
+    html += '<h2 class="ficha-titulo"></h2>';
+    html += '<p class="ficha-subtitulo" id="ficha-bairro"></p>';
+    html += '<div class="menu-compartilhar" id="menu-compartilhar">';
+    html += '<button id="btn-whatsapp" type="button">WhatsApp</button>';
+    html += '<button id="btn-email" type="button">E-mail</button>';
+    html += '<button id="btn-copiar-link" type="button">Copiar link</button>';
+    html += '</div>';
+
+    html += '<div class="ficha-cartoes">';
+    html += '<div class="cartao"><p class="ficha-secao-titulo">Dados da negociação</p>';
+    html += linhaFicha("Valor da negociação", precoTxt);
+    var m2Privativo = (r.baseCalculo && r.areaConstrPrivativa) ? formatoMoeda.format(r.baseCalculo / r.areaConstrPrivativa) + " / m²" : "—";
+    html += '<div class="ficha-linha destaque-m2"><div class="ficha-rotulo">Preço do m² (privativo)</div><div class="ficha-valor">' + m2Privativo + '</div></div>';
+    html += linhaFicha("Data de referência", dataTxt(r.dataReferencia));
+    html += linhaFicha("Data estimativa", dataTxt(r.dataEstimativa));
+    html += linhaFicha("Data pagamento", dataTxt(r.dataPagamento));
+    html += linhaFicha("Percentual transmitido", percTxt);
+    html += linhaFicha("Finalidade", r.finalidadeConstrucao || "—");
+    html += '</div>';
+
+    html += '<div class="cartao"><p class="ficha-secao-titulo">Dados do imóvel</p>';
+    html += linhaFicha("Área total do terreno", areaTxt(r.areaTotalTerreno));
+    html += linhaFicha("Área construída total", areaTxt(r.areaConstrTotal));
+    html += linhaFicha("Área construída privativa", areaTxt(r.areaConstrPrivativa));
+    html += linhaFicha("Ano de construção", r.anoConstrucao || "—");
+    html += linhaFicha("Matrícula", r.numeroMatricula || "—");
+    html += linhaFicha("CEP", r.cep || "—");
+    html += linhaFicha("Situação", r.situacao || "—");
+    html += '</div>';
+    html += '</div>';
+
+    html += '<h3 class="titulo-correcao">Correção do valor</h3>';
+    html += '<p class="legenda-correcao">Atualiza o valor da negociação até hoje, por CDI (% à sua escolha), IPCA ou IGP-M.</p>';
+
+    if (r.baseCalculo != null && r.dataReferencia) {
+      html += '<div class="cartao bloco-correcao-form">';
+      html += '  <div class="campo">';
+      html += '    <label for="input-perc-cdi">% do CDI desejado</label>';
+      html += '    <input type="text" id="input-perc-cdi" value="100" inputmode="decimal">';
+      html += '  </div>';
+      html += '  <button class="botao botao-primario" id="btn-recalcular" type="button">Recalcular correção</button>';
+      html += '  <p class="texto-erro-correcao" id="correcao-erro"></p>';
+      html += '</div>';
+      html += '<div class="cartao bloco-correcao" id="bloco-cdi"></div>';
+      html += '<div class="cartao bloco-correcao" id="bloco-ipca"></div>';
+      html += '<div class="cartao bloco-correcao" id="bloco-igpm"></div>';
+    } else {
+      html += '<p class="legenda-correcao">Não é possível calcular: falta o valor ou a data desta negociação.</p>';
+    }
+
+    elDetalhe.innerHTML = html;
+    elDetalhe.querySelector(".ficha-titulo").textContent = enderecoCompleto(r);
+    var bairroEl = elDetalhe.querySelector("#ficha-bairro");
+    if (r.bairro) {
+      bairroEl.textContent = r.bairro;
+      if (enderecoMapa) {
+        var link = document.createElement("a");
+        link.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(enderecoMapa) + "&layer=c";
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.className = "link-streetview";
+        link.textContent = "VER NO STREETVIEW";
+        bairroEl.appendChild(link);
+      }
+    }
+    var btnCompartilhar = document.createElement("button");
+    btnCompartilhar.id = "btn-compartilhar";
+    btnCompartilhar.type = "button";
+    btnCompartilhar.className = "botao-compartilhar";
+    btnCompartilhar.innerHTML = "&#8599; Compartilhar";
+    bairroEl.appendChild(btnCompartilhar);
+    document.getElementById("link-voltar").addEventListener("click", function () {
+      fecharDetalhe();
+    });
+    document.getElementById("btn-compartilhar").addEventListener("click", compartilharDetalhe);
+    document.getElementById("btn-whatsapp").addEventListener("click", abrirWhatsAppCompartilhar);
+    document.getElementById("btn-email").addEventListener("click", abrirEmailCompartilhar);
+    document.getElementById("btn-copiar-link").addEventListener("click", copiarLinkCompartilhar);
+
+    if (r.baseCalculo != null && r.dataReferencia) {
+      var btnRecalcular = document.getElementById("btn-recalcular");
+      var inputPercCdi = document.getElementById("input-perc-cdi");
+      btnRecalcular.addEventListener("click", function () {
+        var perc = parseFloat(inputPercCdi.value.replace(",", "."));
+        var elErro = document.getElementById("correcao-erro");
+        if (isNaN(perc) || perc <= 0) {
+          elErro.textContent = "Informe um percentual de CDI válido (ex.: 90, 100, 110).";
+          elErro.classList.add("ativa");
+          return;
+        }
+        elErro.classList.remove("ativa");
+        calcularCorrecoes(r.baseCalculo, r.dataReferencia, perc);
+      });
+      calcularCorrecoes(r.baseCalculo, r.dataReferencia, 100);
+    }
+
+    if (!detalheEmpilhadoNoHistorico) {
+      history.pushState({ itbidataDetalhe: true }, "", urlDetalheAtual);
+      detalheEmpilhadoNoHistorico = true;
+    } else {
+      history.replaceState({ itbidataDetalhe: true }, "", urlDetalheAtual);
+    }
+
+    elResultados.style.display = "none";
+    elBarraTopoResultados.style.display = "none";
+    elControlesPaginacao.style.display = "none";
+    
+    elDetalhe.hidden = false;
+    elDetalhe.style.display = "block";
+    
+    setTimeout(function() {
+      var rect = elDetalhe.getBoundingClientRect();
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo({ top: rect.top + scrollTop - 10, behavior: "smooth" });
+    }, 30);
+  }
+
+  function dataParaBcb(data) {
+    function d2(n) { return n < 10 ? "0" + n : "" + n; }
+    return d2(data.d) + "/" + d2(data.mo) + "/" + data.y;
+  }
+
+  function hojeObj() {
+    var agora = new Date();
+    return { d: agora.getDate(), mo: agora.getMonth() + 1, y: agora.getFullYear() };
+  }
+
+  function buscarSerieBcb(codigo, dataInicioObj, dataFimObj) {
+    var url = "https://api.bcb.gov.br/dados/serie/bcdata.sgs." + codigo + "/dados?formato=json" +
+      "&dataInicial=" + dataParaBcb(dataInicioObj) + "&dataFinal=" + dataParaBcb(dataFimObj);
+    return fetch(url).then(function (resp) {
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      return resp.text();
+    }).then(function (corpo) {
+      corpo = corpo.trim();
+      if (corpo.charAt(0) !== "[") {
+        throw new Error("O Banco Central não respondeu como esperado agora.");
+      }
+      var array = JSON.parse(corpo);
+      return array.map(function (item) { return parseFloat(String(item.valor).replace(",", ".")); });
+    });
+  }
+
+  function comporTaxasMensais(taxas) {
+    var fator = 1;
+    taxas.forEach(function (t) { fator *= (1 + t / 100); });
+    return fator;
+  }
+
+  function comporCdi(taxasDiarias, percCdi) {
+    var fator = 1;
+    taxasDiarias.forEach(function (t) { fator *= (1 + (t / 100) * (percCdi / 100)); });
+    return fator;
+  }
+
+  function preencherPlaceholder(blocoId, titulo, mensagem) {
+    var el = document.getElementById(blocoId);
+    if (!el) return;
+    el.innerHTML = '<p class="ficha-secao-titulo">' + titulo + '</p>' +
+      '<p class="correcao-legenda">' + mensagem + '</p>';
+  }
+
+  function preencherResultado(blocoId, titulo, valorOriginal, fator, dataInicioObj, dataFimObj) {
+    var el = document.getElementById(blocoId);
+    if (!el) return;
+    var valorCorrigido = valorOriginal * fator;
+    var percentual = (fator - 1) * 100;
+    el.innerHTML = '<p class="ficha-secao-titulo">' + titulo + '</p>' +
+      '<div class="valor-corrigido">' + formatoMoeda.format(valorCorrigido) + '</div>' +
+      '<p class="correcao-legenda">Variação acumulada: +' + percentual.toFixed(2).replace(".", ",") + '%  ·  ' +
+      formatarDataBr(dataInicioObj) + ' a ' + formatarDataBr(dataFimObj) + '</p>';
+  }
+
+  function calcularCorrecoes(valorOriginal, dataInicioObj, percCdi) {
+    var hoje = hojeObj();
+    preencherPlaceholder("bloco-cdi", percCdi + "% do CDI", "Calculando...");
+    preencherPlaceholder("bloco-ipca", "IPCA", "Calculando...");
+    preencherPlaceholder("bloco-igpm", "IGP-M", "Calculando...");
+
+    Promise.all([
+      buscarSerieBcb(12, dataInicioObj, hoje),
+      buscarSerieBcb(433, dataInicioObj, hoje),
+      buscarSerieBcb(189, dataInicioObj, hoje)
+    ]).then(function (resultados) {
+      var fatorCdi = comporCdi(resultados[0], percCdi);
+      var fatorIpca = comporTaxasMensais(resultados[1]);
+      var fatorIgpm = comporTaxasMensais(resultados[2]);
+      preencherResultado("bloco-cdi", percCdi + "% do CDI", valorOriginal, fatorCdi, dataInicioObj, hoje);
+      preencherResultado("bloco-ipca", "IPCA", valorOriginal, fatorIpca, dataInicioObj, hoje);
+      preencherResultado("bloco-igpm", "IGP-M", valorOriginal, fatorIgpm, dataInicioObj, hoje);
+    }).catch(function (erro) {
+      var mensagem = "Não foi possível calcular agora. " + (erro.message || "");
+      preencherPlaceholder("bloco-cdi", percCdi + "% do CDI", mensagem);
+      preencherPlaceholder("bloco-ipca", "IPCA", mensagem);
+      preencherPlaceholder("bloco-igpm", "IGP-M", mensagem);
+    });
+  }
+
+  function fecharDetalhe() {
+    if (detalheEmpilhadoNoHistorico) {
+      history.back();
+      return;
+    }
+    elDetalhe.hidden = true;
+    elDetalhe.style.display = "none";
+    elResultados.style.display = "";
+    if (ultimosRegistros.length > 0) {
+      elBarraTopoResultados.style.display = "flex";
+      elControlesPaginacao.style.display = "flex";
+    }
+    detalheEmpilhadoNoHistorico = false;
+    
+    setTimeout(function() {
+      restaurarScrollLista();
+    }, 30);
+  }
+
+  var detalheEmpilhadoNoHistorico = false;
+  var urlDetalheAtual = "";
+  window.addEventListener("popstate", function () {
+    if (!elDetalhe.hidden) {
+      elDetalhe.hidden = true;
+      elDetalhe.style.display = "none";
+      elResultados.style.display = "";
+      if (ultimosRegistros.length > 0) {
+        elBarraTopoResultados.style.display = "flex";
+        elControlesPaginacao.style.display = "flex";
+      }
+      detalheEmpilhadoNoHistorico = false;
+      urlDetalheAtual = "";
+      setTimeout(function() {
+        restaurarScrollLista();
+      }, 30);
+    }
+  });
+
+  function executarBusca(forcarAtualizacao, abrirDetalheAutomaticamente) {
+    var logradouro = elEndereco.value.trim();
+    if (!logradouro) {
+      elFaixaErro.classList.add("ativa");
+      elTextoErro.textContent = "Digite ao menos parte do nome da rua/avenida.";
+      return;
+    }
+
+    elFaixaErro.classList.remove("ativa");
+    elFaixaAvisoAnos.classList.remove("ativa");
+    fecharDetalhe();
+    definirCarregando(true);
+
+    // Mostra imediatamente que uma nova busca começou. O pequeno atraso
+    // permite ao navegador pintar a mensagem antes de iniciar a leitura dos CSVs.
+    elTextoProgresso.style.display = "block";
+    elTextoProgresso.textContent = "Consultando dados...";
+
+    var anoValor = elAno.value ? parseInt(elAno.value, 10) : null;
+    var numero = elNumero.value.trim();
+    var unidade = elUnidade.value.trim();
+
+    setTimeout(function () {
+      buscar(elCidade.value, anoValor, logradouro, numero, unidade, forcarAtualizacao, function (feito, total) {
+        if (total > 1) {
+          elTextoProgresso.style.display = "block";
+          elTextoProgresso.textContent = "Consultando dados... " + feito + "/" + total + " anos";
+        } else {
+          elTextoProgresso.style.display = "block";
+          elTextoProgresso.textContent = "Consultando dados...";
+        }
+      }).then(function (resultado) {
+      definirCarregando(false);
+      ultimosRegistros = resultado.registros;
+      paginaAtual = 1;
+      elContagem.textContent = resultado.registros.length + " registro(s) encontrado(s)";
+      renderizarResultados(resultado.registros);
+
+      if (abrirDetalheAutomaticamente && resultado.registros.length > 0) {
+        setTimeout(function () { abrirDetalhe(0); }, 50);
+      }
+      
+      setTimeout(function() {
+        var rect = elBarraTopoResultados.getBoundingClientRect();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+      }, 50);
+
+      if (resultado.anosComErro.length > 0) {
+        elFaixaAvisoAnos.classList.add("ativa");
+        elTextoAvisoAnos.textContent = "Não foi possível consultar: " + resultado.anosComErro.sort().join(", ");
+      }
+      }).catch(function (erro) {
+        definirCarregando(false);
+        elFaixaErro.classList.add("ativa");
+        elTextoErro.textContent = erro.message || "Não foi possível concluir a busca. Tente novamente.";
+      });
+    }, 50);
+  }
+
+  [elEndereco, elNumero, elUnidade].forEach(function (el) {
+    el.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); executarBusca(false); }
+    });
+  });
+
+  elBtnPesquisar.addEventListener("click", function () { executarBusca(false); });
+  elBtnAtualizar.addEventListener("click", function () { executarBusca(true); });
+  elBtnLimpar.addEventListener("click", function () {
+    elEndereco.value = "";
+    elNumero.value = "";
+    elUnidade.value = "";
+    elAno.value = "2026";
+    elBarraTopoResultados.style.display = "none";
+    elControlesPaginacao.style.display = "none";
+    elResultados.innerHTML = "";
+    ultimosRegistros = [];
+    fecharDetalhe();
+  });
+
+  function carregarDetalheDaUrl() {
+    var params = new URLSearchParams(window.location.search);
+    var cidade = params.get("cidade");
+    var ano = params.get("ano");
+    var logradouro = params.get("logradouro");
+    var numero = params.get("numero") || "";
+    var unidade = params.get("unidade") || "";
+
+    if (!cidade || !logradouro) return;
+    if (!FONTES[cidade]) return;
+
+    elCidade.value = cidade;
+    elEndereco.value = logradouro;
+    elNumero.value = numero;
+    elUnidade.value = unidade;
+    if (ano) elAno.value = ano;
+
+    // Troca a entrada atual pela página de busca limpa. A abertura da ficha
+    // fará um pushState com a URL específica do registro.
+    history.replaceState({ itbidataBusca: true }, "", window.location.pathname);
+    executarBusca(false, true);
+  }
+
+  carregarDetalheDaUrl();
+
+  // ===== Banner de cookies =====
+  (function () {
+    var banner = document.getElementById("cookie-banner");
+    var btn = document.getElementById("btn-aceitar-cookies");
+    var chaveAviso = "itbidata_aviso_fechado_v1";
+    try {
+      if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+    } catch (e) { /* localStorage indisponível */ }
+
+    if (btn) btn.addEventListener("click", function () {
+      if (banner) banner.style.display = "none";
+      try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+    });
+  })();
+})();
+</script>
+</body>
+</html><!-- Rodapé atualizado com disclaimer genérico multiciadades, termos e contato -->
     <footer class="rodape">
       <p>
         Dados: Portais de Dados Abertos Municipais &mdash; portais oficiais de transparência das prefeituras atendidas,
