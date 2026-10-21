@@ -1878,6 +1878,8 @@ html, body {
   }
 
   function renderizarResultados(registros) {
+    // Mantém a quantidade exibida sincronizada com o seletor, inclusive após uma nova busca.
+    tamanhoPagina = parseInt(elSelectTamanhoPagina.value, 10) || 10;
     elResultados.innerHTML = "";
     if (registros.length === 0) {
       elBarraTopoResultados.style.display = "none";
@@ -2019,9 +2021,17 @@ html, body {
     if (menu) menu.classList.toggle("ativo");
   }
 
+  var scrollPosicaoLista = 0;
+
+  function restaurarScrollLista() {
+    window.scrollTo({ top: scrollPosicaoLista, behavior: "auto" });
+  }
+
   function abrirDetalhe(indice) {
     var r = ultimosRegistros[indice];
     if (!r) return;
+    // Guarda a posição exata da lista para retornar ao mesmo resultado após fechar os detalhes.
+    scrollPosicaoLista = window.pageYOffset || document.documentElement.scrollTop || 0;
 
     var precoTxt = (r.baseCalculo !== null && r.baseCalculo !== undefined) ? formatoMoeda.format(r.baseCalculo) : "não informado";
     var areaTxt = function (v) { return (v !== null && v !== undefined) ? v.toFixed(2).replace(".", ",") + " m²" : "—"; };
@@ -2250,9 +2260,7 @@ html, body {
     detalheEmpilhadoNoHistorico = false;
     
     setTimeout(function() {
-      var rect = elBarraTopoResultados.getBoundingClientRect();
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+      restaurarScrollLista();
     }, 30);
   }
 
@@ -2270,9 +2278,7 @@ html, body {
       detalheEmpilhadoNoHistorico = false;
       urlDetalheAtual = "";
       setTimeout(function() {
-        var rect = elBarraTopoResultados.getBoundingClientRect();
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        window.scrollTo({ top: rect.top + scrollTop - 16, behavior: "smooth" });
+        restaurarScrollLista();
       }, 30);
     }
   });
