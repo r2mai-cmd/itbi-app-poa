@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
 <title>Calculadora de Poder de Compra e Renda — itbidata</title>
 <link href="./favicon.png" rel="icon" type="image/png"/>
 <link href="./favicon.png" rel="apple-touch-icon"/>
@@ -172,7 +173,8 @@
   }
 
 </style>
-<meta content="Estime o poder de compra imobiliário a partir da renda, entrada e condições de financiamento informadas." name="description"/><link href="https://www.itbidata.com.br/poder-de-compra.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Calculadora de Poder de Compra e Renda — itbidata" property="og:title"/><meta content="Estime o poder de compra imobiliário a partir da renda, entrada e condições de financiamento informadas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/poder-de-compra.html" property="og:url"/></head>
+<meta name="description" content="Estime o valor de imóvel compatível com renda e entrada, usando prazo e taxa informados. A simulação não representa aprovação de crédito."><meta content="index, follow" name="robots"/><meta content="Calculadora de Poder de Compra e Renda — itbidata" property="og:title"/><meta content="Estime o poder de compra imobiliário a partir da renda, entrada e condições de financiamento informadas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://itbidata.com.br/poder-de-compra.html" property="og:url"/><link rel="canonical" href="https://itbidata.com.br/poder-de-compra.html">
+</head>
 <body>
 <div class="barra-marca">
 <a class="link-marca" href="index.html">
@@ -296,9 +298,19 @@
   <p>Use esta calculadora para comparar cenários antes de procurar uma instituição financeira. Depois, confira as condições efetivamente oferecidas pelo banco ou agente financeiro, especialmente taxa, prazo, valor financiável, seguros e custos adicionais.</p>
 
   <p><strong>Importante:</strong> os valores apresentados são estimativas educacionais baseadas nas premissas informadas na própria ferramenta. Eles não constituem proposta de crédito, aprovação de financiamento ou consultoria financeira.</p>
+  <h3>Perguntas frequentes</h3>
+  <h4>Como a calculadora estima o valor máximo do imóvel?</h4>
+  <p>A estimativa usa as informações fornecidas e as premissas exibidas na ferramenta para relacionar renda, entrada e valor do imóvel. O resultado não é uma oferta de crédito nem uma garantia de que o banco financiará esse valor.</p>
+  <h4>Por que a renda necessária pode ser diferente da análise do banco?</h4>
+  <p>Cada instituição aplica regras próprias de comprometimento de renda e considera fatores como outros empréstimos, idade, prazo, seguros, tarifas e perfil de crédito. Também é importante considerar despesas que não entram no cálculo, como condomínio, IPTU, manutenção e custos familiares.</p>
+  <h4>Uma entrada maior sempre é melhor?</h4>
+  <p>Uma entrada maior tende a reduzir o saldo financiado e as parcelas estimadas, mas também diminui o dinheiro disponível para custos de aquisição, reformas e emergências. Compare cenários sem comprometer toda a reserva financeira.</p>
+  <h4>O que devo fazer depois da simulação?</h4>
+  <p>Use o resultado para organizar cenários e solicite propostas formais a instituições financeiras. Compare o custo efetivo total, seguros, tarifas, indexadores, condições de amortização e regras para aprovação.</p>
+
 </section>
 
-</main>
+<section class="card"><h2>Estimativa de orçamento não é aprovação de crédito</h2><p>A capacidade efetiva de financiamento depende da análise de crédito, dos seguros, tarifas, critérios de entrada e regras vigentes da instituição. Use a simulação como planejamento inicial e confirme as condições diretamente com o banco. Para compreender referências de valores imobiliários, leia o <a href="guia-interpretar-transacoes.html">guia para interpretar dados de ITBI</a>.</p></section></main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
 <div class="links-rodape">
@@ -308,23 +320,22 @@
 </div>
 </footer>
 <div class="banner-privacidade" id="banner-privacidade">
-<p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
-<button id="btn-aceitar-cookies" type="button">Entendi &amp; Aceitar</button>
+<p>Este site pode utilizar cookies e tecnologias semelhantes para melhorar a navegação, medir audiência e veicular publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para saber mais sobre essas tecnologias.</p>
+<button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
 </div>
 <script>
 (function() {
   "use strict";
   var banner = document.getElementById("banner-privacidade");
   var btnCookie = document.getElementById("btn-aceitar-cookies");
-  if (localStorage.getItem("itbidata_privacidade_aceita")) {
-    if (banner) banner.style.display = "none";
-  }
-  if (btnCookie) {
-    btnCookie.addEventListener("click", function() {
-      localStorage.setItem("itbidata_privacidade_aceita", "true");
-      if (banner) banner.style.display = "none";
-    });
-  }
+  var chaveAviso = "itbidata_aviso_fechado_v1";
+      try {
+        if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+      } catch (e) { /* localStorage indisponível */ }
+      if (btnCookie) btnCookie.addEventListener("click", function() {
+        if (banner) banner.style.display = "none";
+        try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+      });
 
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
