@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como interpretar dados de ITBI e transações imobiliárias | itbidata</title>
+<meta name="description" content="Guia prático para interpretar registros de ITBI, valores de transação, preço por metro quadrado, médias, períodos e limitações das bases municipais.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://itbidata.com.br/guia-interpretar-transacoes.html">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#34383d;--panel:#41464a;--paper:#ede9de;--ink:#24231f;--muted:#6b6a63;--orange:#f0913a;--teal:#4fbfb8;--light:#f5f3ed}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--light);font:16px/1.7 Inter,Arial,sans-serif}a{color:var(--teal)}.top{padding:16px max(20px,calc((100% - 980px)/2));background:var(--panel);display:flex;justify-content:space-between;gap:14px;align-items:center}.brand{font-weight:800;font-size:1.15rem;color:var(--light);text-decoration:none}.nav{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem}.wrap{max-width:900px;margin:34px auto;padding:0 20px 50px}.eyebrow{color:var(--teal);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}h1{font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.2;margin:.5rem 0 1rem}h2{font-size:1.4rem;line-height:1.3;margin:2rem 0 .6rem;padding-left:12px;border-left:4px solid var(--orange)}h3{font-size:1.05rem;margin:0 0 .4rem}p,li{color:#e5e4df}.lead{font-size:1.12rem;color:#d5d9dc}.panel{background:var(--panel);border:1px solid #565c61;border-radius:12px;padding:20px;margin:18px 0}.panel strong{color:white}.note{border-left:4px solid var(--teal)}.steps{padding-left:1.25rem}.steps li{margin:.6rem 0}.footer{border-top:1px solid #565c61;padding-top:20px;margin-top:40px;font-size:.9rem;color:#c4c8ca}.footer a{margin-right:10px}@media(max-width:600px){.top{align-items:flex-start;flex-direction:column}.wrap{margin:22px auto;padding:0 15px 35px}.panel{padding:16px}body{font-size:15px}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Como interpretar dados de ITBI e transações imobiliárias",
+  "description": "Guia prático para interpretar registros de ITBI, valores de transação, preço por metro quadrado, médias, períodos e limitações das bases municipais.",
+  "inLanguage": "pt-BR",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://itbidata.com.br/guia-interpretar-transacoes.html"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "itbidata",
+    "url": "https://itbidata.com.br/"
+  }
+}
+</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">itbidata</a><nav class="nav" aria-label="Navegação principal"><a href="index.html">Pesquisar</a><a href="estatisticas.html">Estatísticas</a><a href="metodologia.html">Metodologia</a><a href="simulador-financiamento.html">Simuladores</a></nav></header>
+<main class="wrap">
+<div class="eyebrow">Guia de interpretação</div>
+<h1>Como interpretar dados de ITBI e transações imobiliárias</h1>
+<p class="lead">Registros públicos podem ajudar a compreender o comportamento das transações imobiliárias, mas precisam ser lidos no contexto certo. Este guia explica o que observar antes de comparar valores, bairros ou períodos.</p>
+<div class="panel note"><strong>Em resumo:</strong> um registro é evidência de uma transação informada à fonte pública; não é, por si só, uma avaliação atual do imóvel nem uma garantia de que imóveis semelhantes serão negociados pelo mesmo valor.</div>
+
+<h2>1. O que um registro de ITBI representa?</h2>
+<p>ITBI é o Imposto sobre Transmissão de Bens Imóveis, cobrado em situações de transmissão onerosa de imóveis, conforme as regras aplicáveis em cada município. Bases públicas relacionadas ao imposto podem disponibilizar informações sobre transações, como endereço, data, valor informado e área, dependendo do conjunto de dados publicado pela prefeitura.</p>
+<p>Os campos disponíveis não são necessariamente iguais entre cidades ou anos. Antes de comparar registros, confira quais informações estão presentes e se a fonte descreve o significado de cada campo. Quando houver dúvida sobre um caso concreto, consulte o portal oficial ou a documentação do município responsável.</p>
+
+<h2>2. Valor da transação não é o mesmo que preço atual de mercado</h2>
+<p>O valor exibido em uma base é o valor associado àquele registro segundo a fonte e o tratamento de dados adotado. Ele não deve ser interpretado automaticamente como preço pedido em anúncio, avaliação bancária, valor venal para fins tributários ou estimativa do preço atual de um imóvel.</p>
+<p>Uma transação passada descreve um evento específico, ocorrido em determinada data e sob condições próprias. Para estimar um valor atual, seria necessário considerar informações recentes e características comparáveis do imóvel, além de outras evidências de mercado. O itbidata não realiza vistoria nem avaliação individual dos imóveis.</p>
+
+<h2>3. Como usar o preço por metro quadrado</h2>
+<p>O preço por metro quadrado é uma medida de comparação entre registros com valor e área compatíveis. Ele pode ajudar a perceber diferenças e acompanhar tendências, mas não elimina as diferenças entre imóveis.</p>
+<div class="panel"><h3>Exemplo ilustrativo</h3><p>Imagine dois registros hipotéticos: um imóvel de 60 m² transacionado por R$ 360 mil e outro de 100 m² por R$ 500 mil. Os valores unitários seriam, respectivamente, R$ 6.000/m² e R$ 5.000/m². Isso não prova que o primeiro imóvel seja melhor ou que o segundo esteja barato: localização exata, conservação, idade, andar, vagas e outras características podem ser diferentes.</p></div>
+<p>Também é importante confirmar como a área foi definida. Área privativa, área total e outras medidas não são intercambiáveis. Se a base não esclarecer qual área utiliza, trate a comparação com cautela.</p>
+
+<h2>4. Média, mediana e quantidade de registros</h2>
+<p>Uma média resume um conjunto, mas pode ser influenciada por transações de valor muito alto ou muito baixo. A mediana, quando disponível, representa o valor central após ordenar os registros e pode ser menos sensível a extremos. Nenhuma das duas medidas, isoladamente, descreve todas as características de um mercado.</p>
+<p>Observe também a quantidade de registros por trás de um indicador. Uma média baseada em poucos casos pode mudar bastante quando um novo registro entra na base. Compare períodos equivalentes e evite concluir que existe uma tendência duradoura com base em apenas um mês ou em uma amostra pequena.</p>
+
+<h2>5. Como comparar bairros e períodos</h2>
+<ol class="steps">
+<li><strong>Defina a pergunta.</strong> Por exemplo, acompanhar a evolução dos valores unitários ou comparar o volume de registros entre períodos.</li>
+<li><strong>Use filtros consistentes.</strong> Compare a mesma cidade, períodos equivalentes e, quando possível, tipos de imóvel ou áreas semelhantes.</li>
+<li><strong>Confira o volume.</strong> Verifique quantos registros compõem cada grupo e se a cobertura mudou de um período para outro.</li>
+<li><strong>Investigue diferenças.</strong> Um bairro pode ter imóveis de padrões variados; a média do bairro não é o preço de cada imóvel.</li>
+<li><strong>Valide na origem.</strong> Consulte a fonte municipal para confirmar dados relevantes antes de tomar decisões financeiras ou jurídicas.</li>
+</ol>
+
+<h2>6. Por que os números podem mudar?</h2>
+<p>Portais municipais podem acrescentar registros, corrigir informações ou reorganizar arquivos. A cobertura histórica também pode variar por cidade. Por isso, resultados consultados em datas diferentes podem não ser idênticos, mesmo quando o período pesquisado é o mesmo.</p>
+<p>A ausência de registros em um mês não significa necessariamente que não houve transações: pode refletir a disponibilidade ou o formato dos dados publicados. As bases devem ser interpretadas considerando a data de atualização e as limitações documentadas para cada município.</p>
+
+<h2>7. Um roteiro responsável para usar os dados</h2>
+<div class="panel"><ol class="steps"><li>Use a <a href="index.html">pesquisa de transações</a> para localizar registros de uma cidade, endereço e período.</li><li>Explore a página de <a href="estatisticas.html">Estatísticas</a> para observar indicadores agregados e seus recortes.</li><li>Leia a <a href="metodologia.html">Metodologia e fontes</a> para entender como os dados são organizados.</li><li>Use os <a href="simulador-financiamento.html">simuladores</a> para explorar cenários, lembrando que seus resultados dependem das premissas informadas.</li><li>Confirme informações relevantes na fonte oficial e procure avaliação profissional quando a decisão exigir análise individual.</li></ol></div>
+<p>O itbidata é uma plataforma independente de consulta e organização de dados públicos. Não substitui documentos oficiais, aconselhamento jurídico, avaliação imobiliária ou análise financeira individualizada.</p>
+<div class="footer"><a href="sobre.html">Sobre</a><a href="fontes.html">Fontes dos dados</a><a href="contato.html">Contato</a><a href="privacidade.html">Privacidade</a><a href="termos.html">Termos de uso</a></div>
+</main>
+</body>
+</html>
