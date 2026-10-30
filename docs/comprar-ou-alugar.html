@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
 <title>Comprar ou Alugar? Calculadora Imobiliária — itbidata</title>
 <link href="./favicon.png" rel="icon" type="image/png"/>
 <link href="./favicon.png" rel="apple-touch-icon"/>
@@ -153,7 +154,8 @@
   }
 
 </style>
-<meta content="Compare, de forma simplificada, cenários de compra e aluguel de imóvel considerando valores, aluguel e custos informados." name="description"/><link href="https://www.itbidata.com.br/comprar-ou-alugar.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Comprar ou Alugar? Calculadora Imobiliária — itbidata" property="og:title"/><meta content="Compare, de forma simplificada, cenários de compra e aluguel de imóvel considerando valores, aluguel e custos informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/comprar-ou-alugar.html" property="og:url"/></head>
+<meta name="description" content="Compare cenários simplificados de compra e aluguel de imóvel e conheça as premissas, custos não considerados e limites da estimativa."><meta content="index, follow" name="robots"/><meta content="Comprar ou Alugar? Calculadora Imobiliária — itbidata" property="og:title"/><meta content="Compare, de forma simplificada, cenários de compra e aluguel de imóvel considerando valores, aluguel e custos informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://itbidata.com.br/comprar-ou-alugar.html" property="og:url"/><link rel="canonical" href="https://itbidata.com.br/comprar-ou-alugar.html">
+</head>
 <body>
 <div class="barra-marca">
 <a class="link-marca" href="index.html">
@@ -254,9 +256,19 @@
   <div class="nota-editorial">
     <strong>Importante:</strong> esta calculadora foi criada para fins educacionais e de planejamento. O resultado representa uma análise simplificada baseada nos valores informados pelo usuário e não substitui uma avaliação financeira completa.
   </div>
+  <h3>Perguntas frequentes</h3>
+  <h4>O limite de 0,5% ao mês determina se devo comprar ou alugar?</h4>
+  <p>Não. É apenas uma regra simplificada usada como referência inicial. A decisão depende do preço e do aluguel de imóveis equivalentes, do tempo previsto de permanência, dos custos de transação, da manutenção e das alternativas para o capital que seria usado na compra.</p>
+  <h4>Quais custos devo considerar além da parcela ou do aluguel?</h4>
+  <p>Na compra, considere ITBI, registro, eventuais custos de financiamento, condomínio, IPTU, manutenção e reformas. No aluguel, confira reajustes, condomínio, IPTU conforme o contrato, garantias locatícias e custos de mudança.</p>
+  <h4>Como o rendimento do dinheiro investido afeta a comparação?</h4>
+  <p>O capital usado na entrada e nos custos de compra poderia permanecer investido. O retorno líquido esperado desse capital é um custo de oportunidade relevante, mas não é garantido e deve ser comparado com riscos, impostos, inflação e horizonte de tempo.</p>
+  <h4>O resultado serve para qualquer imóvel?</h4>
+  <p>Para que a comparação seja útil, use valores de imóveis equivalentes em localização, tamanho, estado de conservação e padrão. A calculadora é simplificada e não prevê com precisão a valorização futura, mudanças no aluguel ou todos os custos individuais.</p>
+
 </section>
 
-</main>
+<section class="card"><h2>Antes de decidir entre comprar e alugar</h2><p>O resultado depende das premissas informadas e não substitui uma análise de custos completos, horizonte de permanência e alternativas de investimento. Ao estimar o valor do imóvel, compare referências compatíveis e confira a data dos dados. Consulte o <a href="guia-interpretar-transacoes.html">guia para interpretar transações imobiliárias</a>.</p></section></main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
 <div class="links-rodape">
@@ -266,23 +278,22 @@
 </div>
 </footer>
 <div class="banner-privacidade" id="banner-privacidade">
-<p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
-<button id="btn-aceitar-cookies" type="button">Entendi &amp; Aceitar</button>
+<p>Este site pode utilizar cookies e tecnologias semelhantes para melhorar a navegação, medir audiência e veicular publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para saber mais sobre essas tecnologias.</p>
+<button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
 </div>
 <script>
 (function() {
   "use strict";
   var banner = document.getElementById("banner-privacidade");
   var btnCookie = document.getElementById("btn-aceitar-cookies");
-  if (localStorage.getItem("itbidata_privacidade_aceita")) {
-    if (banner) banner.style.display = "none";
-  }
-  if (btnCookie) {
-    btnCookie.addEventListener("click", function() {
-      localStorage.setItem("itbidata_privacidade_aceita", "true");
-      if (banner) banner.style.display = "none";
-    });
-  }
+  var chaveAviso = "itbidata_aviso_fechado_v1";
+      try {
+        if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+      } catch (e) { /* localStorage indisponível */ }
+      if (btnCookie) btnCookie.addEventListener("click", function() {
+        if (banner) banner.style.display = "none";
+        try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+      });
 
   function lerNumero(inputId) {
     var val = document.getElementById(inputId).value;
