@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
 <title>Simulador de Financiamento Imobiliário — itbidata</title>
 <link href="./favicon.png" rel="icon" type="image/png"/>
 <link href="./favicon.png" rel="apple-touch-icon"/>
@@ -135,7 +136,8 @@
   .secao-editorial li { margin-bottom: 8px; font-size: 0.9rem; line-height: 1.55; }
   .secao-editorial strong { color: var(--texto-card); }
 </style>
-<meta content="Simule financiamento imobiliário em modelos SAC e PRICE com entrada, prazo, taxa e condições informadas." name="description"/><link href="https://www.itbidata.com.br/simulador-financiamento.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Simulador de Financiamento Imobiliário — itbidata" property="og:title"/><meta content="Simule financiamento imobiliário em modelos SAC e PRICE com entrada, prazo, taxa e condições informadas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/simulador-financiamento.html" property="og:url"/></head>
+<meta name="description" content="Simule financiamento imobiliário nos sistemas SAC e PRICE com entrada, prazo, juros e indexadores. Use os resultados como estimativa educacional."><meta content="index, follow" name="robots"/><meta content="Simulador de Financiamento Imobiliário — itbidata" property="og:title"/><meta content="Simule financiamento imobiliário em modelos SAC e PRICE com entrada, prazo, taxa e condições informadas." property="og:description"/><meta content="website" property="og:type"/><meta content="https://itbidata.com.br/simulador-financiamento.html" property="og:url"/><link rel="canonical" href="https://itbidata.com.br/simulador-financiamento.html">
+</head>
 <body>
 <div class="barra-marca">
 <a class="link-marca" href="index.html">
@@ -295,9 +297,19 @@
 <li>Compare os resultados antes de alterar uma variável por vez, como prazo ou entrada.</li>
 </ul>
 
+<h3>Perguntas frequentes</h3>
+<h4>SAC ou PRICE: qual sistema é melhor?</h4>
+<p>Não existe uma resposta universal. No SAC, a amortização do principal é constante no modelo e as prestações normalmente começam maiores e diminuem. Na PRICE, as prestações calculadas tendem a ser mais estáveis, conforme as premissas utilizadas. Compare o valor inicial, o total estimado e a compatibilidade das parcelas com seu orçamento.</p>
+<h4>A parcela simulada será igual à parcela do banco?</h4>
+<p>Não necessariamente. A prestação real pode incluir seguros, tarifas, atualização do saldo, regras contratuais e outros componentes que variam entre instituições e modalidades. Use a simulação para comparar cenários e peça uma proposta formal ao banco antes de assumir compromissos.</p>
+<h4>Como devo interpretar TR, IPCA e poupança nesta simulação?</h4>
+<p>São hipóteses de correção previstas pela ferramenta, não previsões do comportamento futuro desses indicadores. Os índices podem variar ao longo do contrato, alterando o saldo e as prestações. Confira qual indexador é realmente oferecido na proposta e avalie se consegue suportar possíveis aumentos.</p>
+<h4>Qual percentual da renda posso comprometer?</h4>
+<p>A ferramenta apresenta uma estimativa inicial de comprometimento, mas não define aprovação de crédito nem substitui o orçamento doméstico. Considere também condomínio, IPTU, manutenção, seguros, despesas familiares e uma reserva para imprevistos. A instituição financeira aplica seus próprios critérios de análise.</p>
+
 <p><strong>Importante:</strong> os resultados desta ferramenta são estimativos e educacionais. As condições efetivas de um financiamento dependem do contrato, da instituição financeira, das taxas aplicadas, do perfil do cliente e dos índices observados durante a operação.</p>
 </section>
-</main>
+<section class="card"><h2>Como usar esta simulação com responsabilidade</h2><p>Taxas, indexadores, seguros, tarifas e regras de crédito podem variar entre instituições e contratos. Compare propostas oficiais com o mesmo prazo, sistema de amortização e hipóteses de correção. Para pesquisar referências de transações, consulte o <a href="guia-interpretar-transacoes.html">guia de interpretação dos dados imobiliários</a>.</p></section></main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
 <div class="links-rodape">
@@ -307,23 +319,22 @@
 </div>
 </footer>
 <div class="banner-privacidade" id="banner-privacidade">
-<p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
-<button id="btn-aceitar-cookies" type="button">Entendi &amp; Aceitar</button>
+<p>Este site pode utilizar cookies e tecnologias semelhantes para melhorar a navegação, medir audiência e veicular publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para saber mais sobre essas tecnologias.</p>
+<button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
 </div>
 <script>
 (function() {
   "use strict";
   var banner = document.getElementById("banner-privacidade");
   var btnCookie = document.getElementById("btn-aceitar-cookies");
-  if (localStorage.getItem("itbidata_privacidade_aceita")) {
-    if (banner) banner.style.display = "none";
-  }
-  if (btnCookie) {
-    btnCookie.addEventListener("click", function() {
-      localStorage.setItem("itbidata_privacidade_aceita", "true");
-      if (banner) banner.style.display = "none";
-    });
-  }
+  var chaveAviso = "itbidata_aviso_fechado_v1";
+      try {
+        if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+      } catch (e) { /* localStorage indisponível */ }
+      if (btnCookie) btnCookie.addEventListener("click", function() {
+        if (banner) banner.style.display = "none";
+        try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+      });
 
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
