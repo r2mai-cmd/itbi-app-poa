@@ -4,8 +4,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
 <title>Estatísticas de Transações Imobiliárias — itbidata</title>
-<link href="style.css" rel="stylesheet"/>
+<!-- Removido: style.css não existe no diretório docs; os estilos estão em dashboard.css e no bloco inline. -->
 <link href="dashboard.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -53,7 +54,8 @@
     .grade-explicacao span { display: block; line-height: 1.5; font-size: .9rem; }
     @media (max-width: 760px) { .grade-explicacao { grid-template-columns: 1fr; } .texto-estatisticas { padding: 18px; } }
   </style>
-<meta content="Explore estatísticas de transações imobiliárias por cidade, bairro e período, com indicadores de valor, R$/m², quantidade de transações e evolução histórica." name="description"/><link href="https://www.itbidata.com.br/estatisticas.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Estatísticas de Transações Imobiliárias — itbidata" property="og:title"/><meta content="Explore estatísticas de transações imobiliárias por cidade, bairro e período, com indicadores de valor, R$/m², quantidade de transações e evolução histórica." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/estatisticas.html" property="og:url"/></head>
+<meta name="description" content="Explore indicadores de transações imobiliárias por cidade, bairro e período. Entenda valores médios, preço por metro quadrado, volume de registros e limitações dos dados."><meta content="index, follow" name="robots"/><meta content="Estatísticas de Transações Imobiliárias — itbidata" property="og:title"/><meta content="Explore estatísticas de transações imobiliárias por cidade, bairro e período, com indicadores de valor, R$/m², quantidade de transações e evolução histórica." property="og:description"/><meta content="website" property="og:type"/><meta content="https://itbidata.com.br/estatisticas.html" property="og:url"/><link rel="canonical" href="https://itbidata.com.br/estatisticas.html">
+</head>
 <body class="fundo-escuro">
 <header class="barra-topo">
 <a class="marca" href="index.html">
@@ -236,12 +238,38 @@
 </div>
 </div>
 </section>
+<section class="explicacao-estatisticas">
+  <div class="texto-estatisticas">
+    <h2>Como usar os gráficos para analisar o mercado</h2>
+    <p>Comece selecionando a cidade e o período. Quando houver dados suficientes, filtre também por bairro para observar diferenças dentro do município. Compare períodos equivalentes sempre que possível: um mês isolado pode ter poucas transações e não representar uma tendência duradoura.</p>
+    <div class="grade-explicacao">
+      <div><strong>Evolução do preço por m²</strong><span>Ajuda a acompanhar como o valor unitário registrado muda ao longo do tempo. Observe a sequência de meses, a quantidade de registros e a cobertura da fonte antes de interpretar uma alta ou queda.</span></div>
+      <div><strong>Ranking de bairros</strong><span>Mostra os bairros com maiores valores médios no recorte selecionado. Um ranking não significa que todos os imóveis daquele bairro tenham esse preço, nem que bairros com poucos registros sejam diretamente comparáveis.</span></div>
+      <div><strong>Volume de transações</strong><span>Ajuda a contextualizar os indicadores de preço. Uma média calculada com poucos registros pode variar bastante quando entram novas transações ou correções na base.</span></div>
+    </div>
+    <p class="link-guia"><strong>Quer aprofundar a leitura dos indicadores?</strong> Consulte o <a href="guia-interpretar-transacoes.html">guia para interpretar registros de ITBI, médias e preço por metro quadrado</a>.</p>
+    <h2>Como os números devem ser interpretados</h2>
+    <p>Os indicadores são calculados a partir dos registros públicos disponíveis e dos filtros aplicados. O valor médio por metro quadrado é obtido pela soma dos valores considerados dividida pela soma das áreas compatíveis; o ticket médio corresponde à soma dos valores dividida pela quantidade de transações consideradas.</p>
+    <p>Essas médias descrevem o conjunto de registros selecionado, não o valor de mercado de um imóvel específico. Diferenças de conservação, idade, padrão construtivo, andar, vagas, localização exata e condições de negociação podem influenciar o preço. O painel não substitui uma avaliação imobiliária nem uma pesquisa individualizada de imóveis comparáveis.</p>
+    <h2>Limitações e atualização das bases</h2>
+    <p>As bases municipais podem ter datas de atualização, campos, períodos de cobertura e critérios de publicação diferentes. Registros podem ser incluídos ou corrigidos pelas fontes oficiais, fazendo os resultados históricos mudarem. A ausência de dados em um mês não significa necessariamente ausência de transações no mercado.</p>
+    <p>Use os gráficos como instrumento de exploração e comparação inicial. Antes de tomar uma decisão de compra, venda ou investimento, consulte a fonte municipal original e considere as características específicas do imóvel e da negociação.</p>
+    <p><a href="metodologia.html">Leia a metodologia e as fontes dos dados</a> para conhecer a organização dos registros e as limitações da análise.</p>
+  </div>
+</section>
+
+    <section class="faq-estatisticas" aria-labelledby="faq-estatisticas"><h2 id="faq-estatisticas">Perguntas frequentes sobre as estatísticas</h2>
+    <h3>O que significa o ticket médio?</h3><p>É a média aritmética dos valores das transações incluídas no recorte selecionado. Pode ser influenciada por registros de valor muito alto ou muito baixo e não representa necessariamente o imóvel típico da região.</p>
+    <h3>Como interpretar o valor médio por metro quadrado?</h3><p>É uma medida agregada calculada a partir dos valores e áreas considerados pelo painel. Não controla automaticamente diferenças de tamanho, estado de conservação, idade, padrão ou localização exata; use-a como referência exploratória, não como avaliação individual.</p>
+    <h3>Por que o resultado muda quando altero o período?</h3><p>O conjunto de registros incluídos muda com o filtro temporal. A comparação é mais útil quando os períodos têm duração equivalente e cobertura semelhante. Atualizações na base de origem também podem alterar resultados históricos.</p>
+    <h3>Uma região sem registros não teve transações?</h3><p>Não é possível concluir isso apenas pela ausência de resultados. A base pode não cobrir o período, pode ter campos ausentes ou pode não conter todos os registros do mercado. Consulte a página de fontes e a publicação municipal original.</p>
+    <h3>Posso usar as estatísticas para definir o preço de um imóvel?</h3><p>Elas podem ajudar a contextualizar uma pesquisa, mas não substituem avaliação individual nem comparação com imóveis de características semelhantes e informações atualizadas.</p>
+    </section>
 </main>
 <!-- Rodapé Institucional com Disclaimer e Links -->
 <footer class="rodape">
 <p>
-      Dados: Portais de Dados Abertos Municipais — portais oficiais de transparência das prefeituras atendidas,
-      sob licença aberta Creative Commons (CC-BY).
+      Dados: portais oficiais de dados abertos e transparência dos municípios atendidos. As licenças e condições de reutilização variam por conjunto de dados; o itbidata não presume uma licença única para todas as bases. Consulte <a href="fontes.html">Fontes dos dados</a> para acessar as publicações oficiais e verificar os metadados disponíveis.
     </p>
 <p>
       O itbidata é um projeto independente, sem vínculo com nenhuma prefeitura ou órgão público.
@@ -258,8 +286,8 @@
 </footer>
 <!-- Banner de Privacidade / LGPD -->
 <div class="banner-privacidade" id="banner-privacidade">
-<p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
-<button id="btn-aceitar-cookies" type="button">Entendi &amp; Aceitar</button>
+<p>Este site pode utilizar cookies e tecnologias semelhantes para melhorar a navegação, medir audiência e veicular publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para saber mais sobre essas tecnologias.</p>
+<button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
 </div>
 <script src="dashboard.js"></script>
 <script>
@@ -267,15 +295,14 @@
       "use strict";
       var banner = document.getElementById("banner-privacidade");
       var btnCookie = document.getElementById("btn-aceitar-cookies");
-      if (localStorage.getItem("itbidata_privacidade_aceita")) {
+      var chaveAviso = "itbidata_aviso_fechado_v1";
+      try {
+        if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+      } catch (e) { /* localStorage indisponível */ }
+      if (btnCookie) btnCookie.addEventListener("click", function() {
         if (banner) banner.style.display = "none";
-      }
-      if (btnCookie) {
-        btnCookie.addEventListener("click", function() {
-          localStorage.setItem("itbidata_privacidade_aceita", "true");
-          if (banner) banner.style.display = "none";
-        });
-      }
+        try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+      });
     })();
   </script>
 </body>
