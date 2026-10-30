@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
 <title>Calculadora de ITBI e Custos de Registro — itbidata</title>
 <link href="./favicon.png" rel="icon" type="image/png"/>
 <link href="./favicon.png" rel="apple-touch-icon"/>
@@ -115,7 +116,8 @@
   .conteudo-editorial .nota { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--dourado-linha); font-size: 0.86rem; color: var(--texto-card-sutil); }
   @media (max-width: 600px) { .conteudo-editorial { padding: 24px 20px; } }
 </style>
-<meta content="Estime custos de ITBI, escritura e registro de um imóvel com uma calculadora simplificada para planejamento imobiliário." name="description"/><link href="https://www.itbidata.com.br/calculadora-itbi.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Calculadora de ITBI e Custos de Registro — itbidata" property="og:title"/><meta content="Estime custos de ITBI, escritura e registro de um imóvel com uma calculadora simplificada para planejamento imobiliário." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/calculadora-itbi.html" property="og:url"/></head>
+<meta name="description" content="Estime ITBI, escritura e registro para planejar a compra de um imóvel. Confira as limitações do cálculo e valide os valores nas fontes oficiais."><meta content="index, follow" name="robots"/><meta content="Calculadora de ITBI e Custos de Registro — itbidata" property="og:title"/><meta content="Estime custos de ITBI, escritura e registro de um imóvel com uma calculadora simplificada para planejamento imobiliário." property="og:description"/><meta content="website" property="og:type"/><meta content="https://itbidata.com.br/calculadora-itbi.html" property="og:url"/><link rel="canonical" href="https://itbidata.com.br/calculadora-itbi.html">
+</head>
 <body>
 <div class="barra-marca">
 <a class="link-marca" href="index.html">
@@ -230,10 +232,20 @@
     <h3>Antes de fechar a compra</h3>
     <p>Use o resultado como uma referência inicial para organizar o orçamento da aquisição. Antes de tomar uma decisão, confirme a alíquota e a base de cálculo do ITBI com a prefeitura e consulte o cartório competente para obter os valores atualizados dos atos necessários.</p>
 
+    <h3>Perguntas frequentes</h3>
+    <h4>A alíquota do ITBI é igual em todas as cidades?</h4>
+    <p>Não. O ITBI é um imposto municipal, e as alíquotas, regras de cálculo, hipóteses de benefício e procedimentos variam conforme a legislação local. Confira sempre as informações atualizadas no portal oficial da prefeitura responsável pelo imóvel.</p>
+    <h4>O município sempre calcula o imposto sobre o preço declarado?</h4>
+    <p>A base de cálculo e os procedimentos para apuração dependem das normas aplicáveis e das circunstâncias da operação. Não presuma que o valor informado na simulação será necessariamente aceito como base definitiva; consulte a prefeitura e, se houver divergência, os canais oficiais de orientação e contestação.</p>
+    <h4>Financiar o imóvel muda os custos?</h4>
+    <p>Pode mudar a forma de formalização e os custos envolvidos. O tratamento do ITBI, os atos cartorários e eventuais condições específicas dependem do município, do contrato e do tipo de operação. Peça uma estimativa atualizada ao cartório e confirme as regras municipais antes de concluir a compra.</p>
+    <h4>Esta calculadora inclui todas as despesas de aquisição?</h4>
+    <p>Não necessariamente. A ferramenta estima os componentes que apresenta na tela. A compra também pode envolver avaliação do imóvel, tarifas bancárias, seguros, certidões, mudança, reformas e outras despesas específicas. Confira cada item com os prestadores e órgãos responsáveis.</p>
+
     <p class="nota">Esta página é uma ferramenta de simulação e planejamento. Os valores apresentados são estimativos e não substituem informações oficiais da prefeitura, do cartório ou de outros órgãos responsáveis pela operação.</p>
   </section>
 
-</main>
+<section class="card"><h2>Como conferir os custos da compra</h2><p>As alíquotas, bases de cálculo e emolumentos podem depender das regras vigentes e das características da operação. Use o resultado como estimativa inicial e confirme os valores com a prefeitura e o cartório competente. Veja também o <a href="guia-interpretar-transacoes.html">guia de interpretação dos dados imobiliários</a> e a página de <a href="fontes.html">fontes oficiais</a>.</p></section></main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
 <div class="links-rodape">
@@ -243,23 +255,22 @@
 </div>
 </footer>
 <div class="banner-privacidade" id="banner-privacidade">
-<p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
-<button id="btn-aceitar-cookies" type="button">Entendi &amp; Aceitar</button>
+<p>Este site pode utilizar cookies e tecnologias semelhantes para melhorar a navegação, medir audiência e veicular publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para saber mais sobre essas tecnologias.</p>
+<button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
 </div>
 <script>
 (function() {
   "use strict";
   var banner = document.getElementById("banner-privacidade");
   var btnCookie = document.getElementById("btn-aceitar-cookies");
-  if (localStorage.getItem("itbidata_privacidade_aceita")) {
-    if (banner) banner.style.display = "none";
-  }
-  if (btnCookie) {
-    btnCookie.addEventListener("click", function() {
-      localStorage.setItem("itbidata_privacidade_aceita", "true");
-      if (banner) banner.style.display = "none";
-    });
-  }
+  var chaveAviso = "itbidata_aviso_fechado_v1";
+      try {
+        if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+      } catch (e) { /* localStorage indisponível */ }
+      if (btnCookie) btnCookie.addEventListener("click", function() {
+        if (banner) banner.style.display = "none";
+        try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+      });
 
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
