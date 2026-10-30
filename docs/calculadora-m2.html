@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
 <title>Calculadora de Preço do Metro Quadrado — itbidata</title>
 <link href="./favicon.png" rel="icon" type="image/png"/>
 <link href="./favicon.png" rel="apple-touch-icon"/>
@@ -104,7 +105,8 @@
   .conteudo-editorial .nota { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--dourado-linha); font-size: 0.86rem; color: var(--texto-card-sutil); }
   @media (max-width: 600px) { .conteudo-editorial { padding: 24px 20px; } }
 </style>
-<meta content="Calcule e compare o preço por metro quadrado de um imóvel a partir do valor e da área informados." name="description"/><link href="https://www.itbidata.com.br/calculadora-m2.html" rel="canonical"/><meta content="index, follow" name="robots"/><meta content="Calculadora de Preço do Metro Quadrado — itbidata" property="og:title"/><meta content="Calcule e compare o preço por metro quadrado de um imóvel a partir do valor e da área informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://www.itbidata.com.br/calculadora-m2.html" property="og:url"/></head>
+<meta name="description" content="Calcule o preço por metro quadrado de um imóvel e entenda como comparar áreas, valores e características sem confundir o indicador com uma avaliação."><meta content="index, follow" name="robots"/><meta content="Calculadora de Preço do Metro Quadrado — itbidata" property="og:title"/><meta content="Calcule e compare o preço por metro quadrado de um imóvel a partir do valor e da área informados." property="og:description"/><meta content="website" property="og:type"/><meta content="https://itbidata.com.br/calculadora-m2.html" property="og:url"/><link rel="canonical" href="https://itbidata.com.br/calculadora-m2.html">
+</head>
 <body>
 <div class="barra-marca">
 <a class="link-marca" href="index.html">
@@ -184,10 +186,20 @@
       <li>Clique em <strong>Calcular Preço do m²</strong> ou altere a área para atualizar o resultado.</li>
     </ul>
 
+    <h3>Perguntas frequentes</h3>
+    <h4>Devo usar a área total ou a área privativa?</h4>
+    <p>Para comparar apartamentos, normalmente é mais consistente usar a área privativa informada nos anúncios ou documentos do imóvel. Não misture área privativa, área total e áreas comuns, pois isso pode distorcer a comparação. Confira sempre qual conceito de área foi usado na fonte de cada imóvel.</p>
+    <h4>Um preço por metro quadrado menor significa que o imóvel é melhor negócio?</h4>
+    <p>Não necessariamente. Um valor unitário menor pode refletir necessidade de reforma, localização, características do prédio, liquidez ou outras diferenças. Compare imóveis semelhantes e considere também custos de aquisição, conservação e eventuais obras.</p>
+    <h4>Posso comparar diretamente imóveis de bairros diferentes?</h4>
+    <p>É possível usar o indicador como ponto de partida, mas a comparação precisa considerar diferenças de localização, infraestrutura, acesso a serviços, idade do imóvel e padrão construtivo. Se estiver usando dados históricos de transações, confira também o período e a origem dos registros.</p>
+    <h4>O cálculo representa o preço efetivo de venda?</h4>
+    <p>O resultado representa apenas a divisão do valor informado pela área informada. Anúncios podem apresentar preços pedidos, enquanto bases públicas podem registrar valores declarados ou campos definidos pelo órgão responsável. Esses valores não devem ser tratados como equivalentes sem verificar a metodologia e a fonte.</p>
+
     <p class="nota">Esta calculadora apresenta um cálculo matemático do valor unitário informado pelo usuário. O resultado não substitui uma avaliação imobiliária profissional e não considera, por si só, as características específicas do imóvel ou as condições da negociação.</p>
   </section>
 
-</main>
+<section class="card"><h2>Como comparar imóveis com mais segurança</h2><p>O preço por metro quadrado é uma referência, não uma avaliação definitiva. Antes de comparar imóveis, verifique se a área utilizada é equivalente e considere localização, conservação e características da unidade. Leia nosso <a href="guia-interpretar-transacoes.html">guia para interpretar transações imobiliárias e dados de ITBI</a>.</p></section></main>
 <footer class="rodape">
 <p>© itbidata — Plataforma independente de simulação e análise imobiliária. Os resultados possuem caráter exclusivamente estimativo e educacional, não constituindo proposta de crédito ou consultoria financeira oficial. Recomenda-se a consulta às fontes oficiais das instituições financeiras para tomada de qualquer decisão.</p>
 <div class="links-rodape">
@@ -197,23 +209,22 @@
 </div>
 </footer>
 <div class="banner-privacidade" id="banner-privacidade">
-<p>Utilizamos cookies e tecnologias semelhantes para melhorar a sua experiência. Ao continuar navegando, você concorda com a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
-<button id="btn-aceitar-cookies" type="button">Entendi &amp; Aceitar</button>
+<p>Este site pode utilizar cookies e tecnologias semelhantes para melhorar a navegação, medir audiência e veicular publicidade. Consulte a <a href="privacidade.html">Política de Privacidade</a> para saber mais sobre essas tecnologias.</p>
+<button id="btn-aceitar-cookies" type="button">Fechar aviso</button>
 </div>
 <script>
 (function() {
   "use strict";
   var banner = document.getElementById("banner-privacidade");
   var btnCookie = document.getElementById("btn-aceitar-cookies");
-  if (localStorage.getItem("itbidata_privacidade_aceita")) {
-    if (banner) banner.style.display = "none";
-  }
-  if (btnCookie) {
-    btnCookie.addEventListener("click", function() {
-      localStorage.setItem("itbidata_privacidade_aceita", "true");
-      if (banner) banner.style.display = "none";
-    });
-  }
+  var chaveAviso = "itbidata_aviso_fechado_v1";
+      try {
+        if (localStorage.getItem(chaveAviso) === "true" && banner) banner.style.display = "none";
+      } catch (e) { /* localStorage indisponível */ }
+      if (btnCookie) btnCookie.addEventListener("click", function() {
+        if (banner) banner.style.display = "none";
+        try { localStorage.setItem(chaveAviso, "true"); } catch (e) { /* ignora */ }
+      });
 
   var fmtMoeda = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 
