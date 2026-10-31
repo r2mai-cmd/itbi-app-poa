@@ -1782,24 +1782,36 @@ html, body {
         // permitir consultas por trechos do nome. O número informado também
         // participa dessa decisão para não esconder um endereço válido.
         if (logradouroBusca) {
-          var exatos = registros.filter(function (r) {
-            return (cidadeId === "sao-paulo" ? grauCorrespondenciaLogradouroSp(r, logradouroBusca) === 2 : grauCorrespondenciaLogradouro(r, logradouroBusca) === 2) &&
-              numeroCoincide(r, numeroBusca) &&
-              unidadeCoincide(r, unidadeBusca);
+          // Prioriza correspondências exatas separadamente por ano. Uma
+          // correspondência exata em um ano não deve esconder resultados
+          // válidos de outros anos, cujos logradouros podem ter grafia distinta.
+          var registrosPorAno = {};
+          registros.forEach(function (r) {
+            var chaveAno = r.ano != null ? String(r.ano) : "sem-ano";
+            if (!registrosPorAno[chaveAno]) registrosPorAno[chaveAno] = [];
+            registrosPorAno[chaveAno].push(r);
           });
-          if (exatos.length > 0) {
-            registros = exatos;
-          } else if (cidadeId !== "sao-paulo" && logradouroBusca) {
-            // Quando não há igualdade exata, prioriza nomes terminados pelas
-            // palavras pesquisadas (ex.: BARBEDO em vez de ARMANDO BARBEDO).
-            var tokensBusca = logradouroBusca.split(" ").filter(Boolean);
-            var porPalavra = registros.filter(function (r) {
-              var tokens = normalizarLogradouro(r.logradouro || "").split(" ").filter(Boolean);
-              return tokensBusca.length > 0 && tokens.slice(-tokensBusca.length).join(" ") === logradouroBusca;
+          registros = Object.keys(registrosPorAno).reduce(function (acumulado, chaveAno) {
+            var grupo = registrosPorAno[chaveAno];
+            var exatos = grupo.filter(function (r) {
+              return (cidadeId === "sao-paulo" ? grauCorrespondenciaLogradouroSp(r, logradouroBusca) === 2 : grauCorrespondenciaLogradouro(r, logradouroBusca) === 2) &&
+                numeroCoincide(r, numeroBusca) &&
+                unidadeCoincide(r, unidadeBusca);
             });
-            if (porPalavra.length > 0) registros = porPalavra;
-          }
-        }
+            if (exatos.length > 0) return acumulado.concat(exatos);
+
+            if (cidadeId !== "sao-paulo") {
+              // Quando não há igualdade exata neste ano, prioriza nomes
+              // terminados pelas palavras pesquisadas, sem eliminar outros anos.
+              var tokensBusca = logradouroBusca.split(" ").filter(Boolean);
+              var porPalavra = grupo.filter(function (r) {
+                var tokens = normalizarLogradouro(r.logradouro || "").split(" ").filter(Boolean);
+                return tokensBusca.length > 0 && tokens.slice(-tokensBusca.length).join(" ") === logradouroBusca;
+              });
+              if (porPalavra.length > 0) return acumulado.concat(porPalavra);
+            }
+            return acumulado.concat(grupo);
+          }, []);
 
         var criterioAtual = elSelectOrdenacao ? elSelectOrdenacao.value : "recente";
         var registrosOrdenados = ordenarRegistros(registros, criterioAtual);
