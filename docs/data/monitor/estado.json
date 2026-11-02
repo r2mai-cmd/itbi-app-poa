@@ -317,7 +317,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
-    "verificado_em": "2026-10-26T14:53:37.880716+00:00"
+    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
   },
   "fortaleza": {
     "fingerprint": "e1128cc159da1faeb4b79f3d545b0619bb8442ba9845585cc9126de0adb2f011",
@@ -337,7 +337,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
-    "verificado_em": "2026-10-26T14:53:37.880716+00:00"
+    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
   },
   "porto-alegre": {
     "fingerprint": "2240db5b226225faab28ac761dab30a8930118349d2c54d27f4b8c0c2075de17",
@@ -427,7 +427,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
-    "verificado_em": "2026-10-26T14:53:37.880716+00:00"
+    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
   },
   "recife": {
     "fingerprint": "84abd427966006927546e80f72b65a9102c3167e1fa97baf307b1997e6000e55",
@@ -570,13 +570,13 @@
     "verificado_em": "2026-10-12T17:27:07.314167+00:00"
   },
   "sao-paulo": {
-    "content_length": 188010,
-    "fingerprint": "43e94645115eb633ebc967d46c3be4e539b0b009f912ded6c79006e424d565d3",
+    "content_length": 184738,
+    "fingerprint": "d7ed8ea3b3d23ac2c37245757d325865e63f2c5b8215966d9619535c8c5b2176",
     "last_modified_http": null,
     "nome": "São Paulo",
     "tipo": "pagina",
     "titulo": "<!DOCTYPE html> <html class=\"ltr\" dir=\"ltr\" lang=\"pt-BR\"> <head> <title>Dados das Transações I",
     "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
-    "verificado_em": "2026-10-26T14:53:37.880716+00:00"
+    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
   }
 }
