@@ -1,6 +1,6 @@
 {
   "belo-horizonte": {
-    "fingerprint": "aa96d153bd09a7172907e361c73ce5f95b876aeeba927efd255b4f8e241cedc7",
+    "fingerprint": "1303fa7a5b1bc5389d4866ce88b1d365bab3edc262980f0fdeaf204c001cd8f7",
     "nome": "Belo Horizonte",
     "package_name": "ITBI Relatórios",
     "recursos": [
@@ -285,6 +285,16 @@
         "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/0773a6b9-b107-4692-9b85-760221ec3abb/download/pda_itbi_relatorio_202603.csv"
       },
       {
+        "created": "2026-11-03T14:13:58.178351",
+        "format": "CSV",
+        "hash": "78658bcb3443b2b247f282c3adcd0caf",
+        "id": "255cd101-66ac-4a76-9a4c-793719d88c21",
+        "last_modified": "2026-11-03T14:13:57.916550",
+        "name": "2026 - Setembro - ITBI Relatórios",
+        "size": 394582,
+        "url": "https://ckan.pbh.gov.br/dataset/0e13bf71-5355-47ce-8607-966413b08c0a/resource/255cd101-66ac-4a76-9a4c-793719d88c21/download/pda_itbi_relatorio_202609.csv"
+      },
+      {
         "created": "2024-07-15T14:33:28.824017",
         "format": "PDF",
         "hash": "",
@@ -317,7 +327,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
-    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
+    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
   },
   "fortaleza": {
     "fingerprint": "e1128cc159da1faeb4b79f3d545b0619bb8442ba9845585cc9126de0adb2f011",
@@ -337,10 +347,10 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
-    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
+    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
   },
   "porto-alegre": {
-    "fingerprint": "2240db5b226225faab28ac761dab30a8930118349d2c54d27f4b8c0c2075de17",
+    "fingerprint": "dd5edc381e0ac68e04ff6cdbe900c4364a791f626d10cae21d235514b22b67a4",
     "nome": "Porto Alegre",
     "package_name": "ITBI",
     "recursos": [
@@ -349,7 +359,7 @@
         "format": "PDF",
         "hash": "",
         "id": "b0fe9643-82bb-4b91-be26-b6292b7aeac7",
-        "last_modified": "2026-10-14T17:43:49.087624",
+        "last_modified": "2026-11-06T18:56:36.011250",
         "name": "Dicionário de Dados",
         "size": 368786,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b0fe9643-82bb-4b91-be26-b6292b7aeac7/download/dicionario-de-dados.pdf"
@@ -359,9 +369,9 @@
         "format": "ZIP",
         "hash": "",
         "id": "60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b",
-        "last_modified": "2026-10-14T17:43:52.156557",
+        "last_modified": "2026-11-06T18:51:50.152570",
         "name": "ITBI 2020",
-        "size": 1837593,
+        "size": 1596900,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/60256fcf-9ae6-4adf-b0b4-b6b45fb4b34b/download/itbi-2020.zip"
       },
       {
@@ -369,9 +379,9 @@
         "format": "ZIP",
         "hash": "",
         "id": "150848b4-0d01-4ffb-96e0-f5f2a276f5ef",
-        "last_modified": "2026-10-14T17:43:54.144727",
+        "last_modified": "2026-11-06T18:51:51.876568",
         "name": "ITBI 2021",
-        "size": 2303870,
+        "size": 2034448,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/150848b4-0d01-4ffb-96e0-f5f2a276f5ef/download/itbi-2021.zip"
       },
       {
@@ -379,9 +389,9 @@
         "format": "ZIP",
         "hash": "",
         "id": "102520c0-3edc-4f85-947f-6a98b96ed160",
-        "last_modified": "2026-10-14T17:43:57.047419",
+        "last_modified": "2026-11-06T18:51:54.717783",
         "name": "ITBI 2022",
-        "size": 2428022,
+        "size": 2125336,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/102520c0-3edc-4f85-947f-6a98b96ed160/download/itbi-2022.zip"
       },
       {
@@ -389,9 +399,9 @@
         "format": "ZIP",
         "hash": "",
         "id": "2a4b0aee-7126-4323-936d-5f82fd04aeef",
-        "last_modified": "2026-10-14T17:43:58.810973",
+        "last_modified": "2026-11-06T18:51:56.041711",
         "name": "ITBI 2023",
-        "size": 2358363,
+        "size": 2078246,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/2a4b0aee-7126-4323-936d-5f82fd04aeef/download/itbi-2023.zip"
       },
       {
@@ -399,9 +409,9 @@
         "format": "ZIP",
         "hash": "",
         "id": "4947bed6-6be6-40e6-a120-42957e745da5",
-        "last_modified": "2026-10-14T17:44:00.379569",
+        "last_modified": "2026-11-06T18:51:57.959807",
         "name": "ITBI 2024",
-        "size": 2272694,
+        "size": 2019234,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/4947bed6-6be6-40e6-a120-42957e745da5/download/itbi-2024.zip"
       },
       {
@@ -409,9 +419,9 @@
         "format": "ZIP",
         "hash": "",
         "id": "e46f56f3-ac8a-4513-b155-5d3038a275b2",
-        "last_modified": "2026-10-14T17:44:02.174678",
+        "last_modified": "2026-11-06T18:52:00.501233",
         "name": "ITBI 2025",
-        "size": 2499258,
+        "size": 2233069,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/e46f56f3-ac8a-4513-b155-5d3038a275b2/download/itbi-2025.zip"
       },
       {
@@ -419,18 +429,18 @@
         "format": "ZIP",
         "hash": "",
         "id": "b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c",
-        "last_modified": "2026-10-14T17:44:04.727291",
+        "last_modified": "2026-11-06T18:52:02.100925",
         "name": "ITBI 2026",
-        "size": 1905140,
+        "size": 1859569,
         "url": "https://dadosabertos.poa.br/dataset/dd8ee5be-06f4-4107-a3bf-5e15aebba6c1/resource/b4cf6e78-6cb9-41f7-8ef7-57dc67feda0c/download/itbi-2026.zip"
       }
     ],
     "tipo": "ckan",
     "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
-    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
+    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
   },
   "recife": {
-    "fingerprint": "84abd427966006927546e80f72b65a9102c3167e1fa97baf307b1997e6000e55",
+    "fingerprint": "0db06ba35c8299f3444dd2a81c6a357e0b9e394fa843b7ce646b4ef665853e19",
     "nome": "Recife",
     "package_name": "Imposto sobre Transmissão de Bens Imóveis (ITBI)",
     "recursos": [
@@ -559,24 +569,24 @@
         "format": "CSV",
         "hash": "",
         "id": "fc95e204-a121-4b7a-94b2-e4420539c0d1",
-        "last_modified": "2026-10-03T02:06:11.462192",
+        "last_modified": "2026-11-03T02:05:00.698813",
         "name": "ITBI 2026 - Imposto sobre a Transmissão de Bens Imóveis",
-        "size": 2947186,
+        "size": 3211008,
         "url": "https://dados.recife.pe.gov.br:443/dataset/ae32808e-ab98-4fe4-bacf-a72b2ac14551/resource/fc95e204-a121-4b7a-94b2-e4420539c0d1/download/itbi_2026.csv"
       }
     ],
     "tipo": "ckan",
     "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi",
-    "verificado_em": "2026-10-12T17:27:07.314167+00:00"
+    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
   },
   "sao-paulo": {
-    "content_length": 184738,
-    "fingerprint": "d7ed8ea3b3d23ac2c37245757d325865e63f2c5b8215966d9619535c8c5b2176",
+    "content_length": 189089,
+    "fingerprint": "e61535a274ecc638d27dae20e64affb4995ff1d43a1ae1b4d7bede6f829188f6",
     "last_modified_http": null,
     "nome": "São Paulo",
     "tipo": "pagina",
     "titulo": "<!DOCTYPE html> <html class=\"ltr\" dir=\"ltr\" lang=\"pt-BR\"> <head> <title>Dados das Transações I",
     "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
-    "verificado_em": "2026-11-02T17:54:01.598375+00:00"
+    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
   }
 }
