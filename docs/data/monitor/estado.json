@@ -327,7 +327,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.pbh.gov.br/api/3/action/package_show?id=itbi-relatorios",
-    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
+    "verificado_em": "2026-11-16T17:59:54.107023+00:00"
   },
   "fortaleza": {
     "fingerprint": "e1128cc159da1faeb4b79f3d545b0619bb8442ba9845585cc9126de0adb2f011",
@@ -347,7 +347,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.fortaleza.ce.gov.br/api/3/action/package_show?id=dados_abertos_itbi_transacoes_imobiliarias",
-    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
+    "verificado_em": "2026-11-16T17:59:54.107023+00:00"
   },
   "porto-alegre": {
     "fingerprint": "dd5edc381e0ac68e04ff6cdbe900c4364a791f626d10cae21d235514b22b67a4",
@@ -437,7 +437,7 @@
     ],
     "tipo": "ckan",
     "url": "https://dadosabertos.poa.br/api/3/action/package_show?id=itbi",
-    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
+    "verificado_em": "2026-11-16T17:59:54.107023+00:00"
   },
   "recife": {
     "fingerprint": "0db06ba35c8299f3444dd2a81c6a357e0b9e394fa843b7ce646b4ef665853e19",
@@ -577,16 +577,16 @@
     ],
     "tipo": "ckan",
     "url": "https://dados.recife.pe.gov.br/api/3/action/package_show?id=imposto-sobre-transmissao-de-bens-imoveis-itbi",
-    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
+    "verificado_em": "2026-11-16T17:59:54.107023+00:00"
   },
   "sao-paulo": {
-    "content_length": 189089,
-    "fingerprint": "e61535a274ecc638d27dae20e64affb4995ff1d43a1ae1b4d7bede6f829188f6",
+    "content_length": 189128,
+    "fingerprint": "7e9c6a03f894d9c484f3832285f0409a4dd85b7b20c69a05c1aff712b962df92",
     "last_modified_http": null,
     "nome": "São Paulo",
     "tipo": "pagina",
     "titulo": "<!DOCTYPE html> <html class=\"ltr\" dir=\"ltr\" lang=\"pt-BR\"> <head> <title>Dados das Transações I",
     "url": "https://prefeitura.sp.gov.br/web/fazenda/w/acesso_a_informacao/31501",
-    "verificado_em": "2026-11-09T18:25:24.571745+00:00"
+    "verificado_em": "2026-11-16T17:59:54.107023+00:00"
   }
 }
